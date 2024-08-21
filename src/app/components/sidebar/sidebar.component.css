@@ -1,0 +1,58 @@
+.listSide:hover {
+  background: #004884;
+  color: white !important;
+}
+
+.listSide:hover span {
+  background: #004884;
+  color: white !important;
+}
+
+.listSide:hover .p-list {
+  text-decoration: underline;
+}
+
+.active-link {
+  background-color: #004884;
+  /* Ejemplo de color de fondo activo */
+  color: #ffffff;
+  /* Ejemplo de color de texto activo */
+}
+
+.active-link1 {
+  background-color: white;
+  /* Ejemplo de color de fondo activo */
+  
+}
+.active-link1 span {
+  text-decoration: underline;
+}
+
+.active-link span {
+  color: #ffffff !important;
+  /* Ejemplo de color de texto activo */
+}
+
+.rotate {
+  display: inline-block;
+  transition: transform 0.5s;
+  transform: rotate(180deg);
+}
+
+.activado{
+  background: #004884;
+  color: white !important;
+}
+
+.activado span {
+  color: #ffffff !important;
+  /* Ejemplo de color de texto activo */
+}
+/* .rotate::before {
+  display: inline-block;
+  transition: transform 1s;
+}
+
+#rotate-checkbox:checked + label .rotate::before {
+  transform: rotate(180deg);
+} */

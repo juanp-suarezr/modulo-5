@@ -1,0 +1,360 @@
+<div class="sm:grid sm:grid-cols-10 gap-4" *ngIf="user.roles[0].roleName == 'ROLE_ESCRITURA_MIN'">
+
+    <div class="md:col-span-2 sm:col-span-3 w-auto sm:mt-16 mt-12">
+        <app-left-nav [data]="infoMenu" active="{{activeNum}}"></app-left-nav>
+    </div>
+    <!-- solicitud contet -->
+    <div class="md:col-span-8 sm:col-span-7 w-auto sm:mt-10 mt-4 md:px-8 px-2" *ngIf="activeNum == '0'">
+        <h3 class="text-primary1 !font-bold">Fijación de Capacidad Transportadora</h3>
+
+        <!-- sttepper -->
+        <div class="mt-4 w-full inline-flex justify-center">
+            <app-sttepper [dataStep]="infoStepper"></app-sttepper>
+        </div>
+
+        <!-- form 1 -->
+        <form [formGroup]="formGroup1" class="px-4 md:pl-16 md:pe-16 mt-6 active1 mb-6" *ngIf="activeStep == 1">
+            <div class="col-span-2">
+                <p class="font-bold">Cargue de documentación*</p>
+                <p class="text-primary4 font-[500]">Los campos marcados con * son obligatorios</p>
+            </div>
+            <!-- content 1 -->
+            <div class="content1 md:grid sm:grid-cols-2 md:gap-x-36 md:flex items-center h-full">
+                <!-- cargue 1 solicitud fijacion -->
+                <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+                    <p class="text-primary3 font-semibold h-full">
+                        Solicitud de fijación de capacidad transportadora*
+                    </p>
+                    <app-file-upload class="mt-2" [dataClass]="dataClass" [maxFiles]="1" mimes=".pdf" [error]="errorStates[1]"
+                        (fileSelected)="onFileSelected($event, 1)"></app-file-upload>
+                </div>
+
+                <!-- cargue 2 contrato prestacion del servicio de transporte -->
+                <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+                    <p class="text-primary3 font-semibold h-full">
+                        Contratos de prestación del servicio de transporte
+                        terrestre automotor especial suscritos por la empresa
+                        de transporte*
+                    </p>
+                    <app-file-upload class="mt-2" [dataClass]="dataClass" mimes=".pdf" [error]="errorStates[2]"
+                        (fileSelected)="onFileSelected($event, 2)"></app-file-upload>
+                </div>
+            </div>
+
+            <!-- content 2 -->
+            <div class="content2 md:grid sm:grid-cols-2 md:gap-x-36 md:flex items-center h-full pt-6">
+                <!-- cargue 3 Plan de Rodamiento -->
+                <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+                    <p class="text-primary3 font-semibold h-full">
+                        Plan de Rodamiento*
+                    </p>
+                    <!-- texto informativo -->
+                    <div class="flex inline-flex md:gap-3 gap-2 h-full w-full">
+
+                        <span class="lg:w-[12%] sm:w-[12%] w-[10%] h-full flex justify-center lg:px-1 m-auto">
+                            <img class="w-full m-auto" src="assets/iconoInfo.svg">
+                        </span>
+                        <p class="text-primary1 work-sans text-[11px] mt-2 w-auto">
+                            Con cuadro detallado de cantidad de pasajeros movilizados por
+                            tipología vehicular
+                        </p>
+                    </div>
+
+                    <app-file-upload class="mt-2"
+                        [dataClass]="{textSize: 'xs', textInfo: 'Archivo PDF o .xlsx. Peso máximo: 2MB'}"
+                        mimes=".pdf,.xlsx" (fileSelected)="onFileSelected($event, 3)"></app-file-upload>
+                </div>
+
+                <!-- cargue 4 Estructura costos básicos contratante y contratista -->
+                <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+                    <p class="text-primary3 font-semibold h-full">
+                        Estructura costos básicos contratante y contratista*
+                    </p>
+                    <app-file-upload class="mt-2" [dataClass]="dataClass" mimes=".pdf"
+                        (fileSelected)="onFileSelected($event, 4)"></app-file-upload>
+                </div>
+            </div>
+
+            <!-- content 3 -->
+            <div class="content1 md:grid sm:grid-cols-2 md:gap-x-36 md:flex items-center h-full pt-6">
+                <!-- cargue 5 certificado de existencia -->
+                <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+                    <p class="text-primary3 font-semibold h-full">
+                        Certificado de Existencia y Representación legal no
+                        menos a 30 días*
+                    </p>
+                    <app-file-upload class="mt-2" [dataClass]="dataClass" mimes=".pdf"
+                        (fileSelected)="onFileSelected($event, 5)"></app-file-upload>
+                </div>
+
+                <!-- cargue 6 Registro Único Tributario -->
+                <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+                    <p class="text-primary3 font-semibold h-full">
+                        Registro Único Tributario*
+                    </p>
+                    <app-file-upload class="mt-2" [dataClass]="dataClass" mimes=".pdf"
+                        (fileSelected)="onFileSelected($event, 6)"></app-file-upload>
+                </div>
+            </div>
+
+            <div class="mt-6 w-full flex justify-end">
+                <app-primary-button class=""  (click)="changeActiveStep(2)">continuar</app-primary-button>
+            </div>
+
+        </form>
+
+        <!-- form 2 -->
+        <div class="px-4 md:pl-16 md:pe-16 mt-6 active1 mb-6" *ngIf="activeStep == 2">
+            <div class="col-span-2">
+                <p class="font-bold">Cargue de documentación*</p>
+                <p class="text-primary4 font-[500]">Los campos marcados con * son obligatorios</p>
+            </div>
+            <!-- content 1 -->
+            <div class="content1 md:grid sm:grid-cols-2 md:gap-x-36 md:flex items-center h-full">
+                <!-- cargue 7 Resolución de habilitación* -->
+                <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+                    <p class="text-primary3 font-semibold h-full">
+                        Resolución de habilitación*
+                    </p>
+                    <app-file-upload class="mt-2" [dataClass]="dataClass" mimes=".pdf"
+                        (fileSelected)="onFileSelected($event, 7)"></app-file-upload>
+                </div>
+
+                <!-- cargue 8 Cédula de Ciudadanía del Representante Legal* -->
+                <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+                    <p class="text-primary3 font-semibold h-full">
+                        Cédula de Ciudadanía del Representante Legal*
+                    </p>
+                    <app-file-upload class="mt-2" [dataClass]="dataClass" mimes=".pdf"
+                        (fileSelected)="onFileSelected($event, 8)"></app-file-upload>
+                </div>
+            </div>
+
+            <!-- content 2 -->
+            <div class="content2 md:grid sm:grid-cols-2 md:gap-x-36 md:flex items-center h-full pt-6">
+                <!-- cargue 9 Estados financieros de la empresa* -->
+                <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+                    <p class="text-primary3 font-semibold h-full">
+                        Estados financieros de la empresa*
+                    </p>
+
+                    <app-file-upload class="mt-2" [dataClass]="dataClass" mimes=".pdf"
+                        (fileSelected)="onFileSelected($event, 9)"></app-file-upload>
+                </div>
+
+                <!-- cargue 10 Cédula del contador que firma los estados financieros -->
+                <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+                    <p class="text-primary3 font-semibold h-full">
+                        Cédula del contador que firma los estados financieros*
+                    </p>
+                    <app-file-upload class="mt-2" [dataClass]="dataClass" mimes=".pdf"
+                        (fileSelected)="onFileSelected($event, 10)"></app-file-upload>
+                </div>
+            </div>
+
+            <!-- content 3 -->
+            <div class="content1 md:gap-x-36 md:flex items-center h-full pt-6">
+                <!-- cargue 11 Tarjeta profesional contador que firma estados financieros* -->
+                <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+                    <p class="text-primary3 font-semibold h-full">
+                        Tarjeta profesional contador que firma estados financieros*
+                    </p>
+                    <app-file-upload class="mt-2" [dataClass]="dataClass" mimes=".pdf"
+                        (fileSelected)="onFileSelected($event, 11)"></app-file-upload>
+                </div>
+
+            </div>
+
+            <div class="mt-6 w-full flex justify-end">
+                <app-primary-button class="" (click)="changeActiveStep(3)">continuar</app-primary-button>
+            </div>
+
+        </div>
+
+        <!-- form 3 -->
+        <form class="px-4 md:pl-16 md:pe-16 mt-6 active1 mb-6" *ngIf="activeStep == 3">
+            <div class="col-span-2">
+                <p class="font-bold">Digitar los siguientes campos*</p>
+                <p class="text-primary4 font-[500]">Los campos marcados con * son obligatorios</p>
+            </div>
+            <!-- content 1 -->
+            <div class="content1 md:grid sm:grid-cols-2 md:gap-x-36 md:flex items-center h-full">
+                <!-- input 1 Capital Social en SMLV* -->
+                <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+                    <p class="text-primary3 font-semibold h-full">
+                        Capital Social en SMLV*
+                    </p>
+                    <input-text class="w-full mt-2 cursor-pointer" [input]="inputs[0]" [index]="0"
+                        (inputChange)="onInputChange($event.index, $event.event)"></input-text>
+
+                </div>
+
+                <!-- input 2 Patrimonio Líquido en SMLV* -->
+                <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+                    <p class="text-primary3 font-semibold h-full">
+                        Patrimonio Líquido en SMLV*
+                    </p>
+
+                </div>
+            </div>
+
+            <!-- content 2 -->
+            <div class="content2 md:grid sm:grid-cols-2 md:gap-x-36 md:flex items-center h-full pt-6">
+                <!-- select1 Cantidad de vehículos que está requiriendo fijar* -->
+                <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+                    <p class="text-primary3 font-semibold h-full">
+                        Cantidad de vehículos que está requiriendo fijar*
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="mt-6 w-full flex justify-end">
+                <app-primary-button class="" (click)="changeActiveStep(4)">continuar</app-primary-button>
+            </div>
+
+        </form>
+
+    </div>
+    <!-- operativo contet -->
+    <div class="md:col-span-8 sm:col-span-7 w-auto sm:mt-10 mt-4 md:px-8 px-2" *ngIf="activeNum == '1'">
+        <h3 class="text-primary1 !font-bold">Fijación de Capacidad Transportadora</h3>
+
+        <!-- form 3 -->
+        <div class="px-4 md:pl-16 md:pe-16 mt-6 active1 mb-6">
+            <div class="col-span-2">
+                <p class="font-bold">Digitar los siguientes campos*</p>
+                <p class="text-primary4 font-[500]">Los campos marcados con * son obligatorios</p>
+                <!-- texto informativo -->
+                <div class="flex inline-flex md:gap-3 gap-2 h-full w-full">
+
+                    <span class="lg:w-[12%] sm:w-[12%] w-[10%] h-full flex justify-center lg:px-1 m-auto">
+                        <img class="w-full m-auto" src="assets/iconoInfo.svg">
+                    </span>
+                    <p class="text-primary1 work-sans text-[11px] mt-2 w-auto">
+                        Con el fin de identificar cuantas veces tiene que digitar la siguiente información, teniendo en
+                        cuenta que esta
+                        información se debe diligenciar por cada uno de los contratos.
+                    </p>
+                </div>
+            </div>
+            <!-- content 1 -->
+            <div class="content1 md:grid sm:grid-cols-2 md:grid-cols-3 md:gap-x-24 md:flex items-center h-full">
+                <!-- input 3 Cantidad de contratos* -->
+                <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+                    <p class="text-primary3 font-semibold h-full">
+                        Cantidad de contratos*
+                    </p>
+
+                </div>
+
+                <!-- input 4 N° de contrato* -->
+                <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+                    <p class="text-primary3 font-semibold h-full">
+                        N° de contrato*
+                    </p>
+
+                </div>
+
+                <!-- input 5 Contratante* -->
+                <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+                    <p class="text-primary3 font-semibold h-full">
+                        Contratante*
+                    </p>
+
+                </div>
+            </div>
+
+            <!-- content 2 -->
+            <div class="content1 md:grid sm:grid-cols-2 md:grid-cols-3 md:gap-x-24 md:flex items-center h-full">
+                <!-- input 7 Fecha de inicio* -->
+                <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+                    <p class="text-primary3 font-semibold h-full">
+                        Fecha de inicio*
+                    </p>
+
+                </div>
+
+                <!-- input 8 Fecha de terminación* -->
+                <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+                    <p class="text-primary3 font-semibold h-full">
+                        Fecha de terminación*
+                    </p>
+
+                </div>
+
+                <!-- select1 Duración en meses* -->
+                <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+                    <p class="text-primary3 font-semibold h-full">
+                        Duración en meses*
+                    </p>
+
+                </div>
+            </div>
+
+            <!-- content 3 -->
+            <div class="content1 md:grid sm:grid-cols-2 md:grid-cols-3 md:gap-x-24 md:flex items-center h-full">
+                <!-- select2 N° de Vehículos / Contrato* -->
+                <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+                    <p class="text-primary3 font-semibold h-full">
+                        N° de Vehículos / Contrato*
+                    </p>
+
+                </div>
+
+                <!-- select3 Clase de vehículo* -->
+                <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+                    <p class="text-primary3 font-semibold h-full">
+                        Clase de vehículo*
+                    </p>
+
+                </div>
+
+                <!-- input 10 Valor del Contrato* -->
+                <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+                    <p class="text-primary3 font-semibold h-full">
+                        Valor del Contrato*
+                    </p>
+
+                </div>
+            </div>
+
+            <!-- content 4 -->
+            <div class="content1 md:grid sm:grid-cols-2 md:grid-cols-3 md:gap-x-24 md:flex items-center h-full">
+                <!-- select4 Forma de pago* -->
+                <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+                    <p class="text-primary3 font-semibold h-full">
+                        Forma de pago*
+                    </p>
+
+                </div>
+
+                <!-- select5 Áreas de Operación* -->
+                <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+                    <p class="text-primary3 font-semibold h-full">
+                        Áreas de Operación*
+                    </p>
+
+                </div>
+
+                <!-- select6 Tiempos estimados (En horas) -->
+                <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+                    <p class="text-primary3 font-semibold h-full">
+                        Tiempos estimados (En horas) - Disponibilidad de Vehículos*
+                    </p>
+
+                </div>
+            </div>
+
+
+            <div class="mt-6 w-full flex justify-center">
+                <app-primary-button class="" (click)="changeActiveStep(4)">Enviar</app-primary-button>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

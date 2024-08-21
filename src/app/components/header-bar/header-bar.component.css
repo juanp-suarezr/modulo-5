@@ -1,0 +1,13 @@
+.header-bar{
+    z-index: 10000;
+    position: relative;
+    top: 0;
+    width: 100%;
+}
+
+.user{
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    background: #5b84d6;
+}

@@ -1,0 +1,84 @@
+@import "primeng/resources/themes/lara-light-blue/theme.css";
+@import "primeng/resources/primeng.css";
+
+body{
+    font-family: "Montserrat", sans-serif;
+    background-color:#f6f8fa;
+    font-size: 14px;
+}
+
+h1 {
+    font-family: "Montserrat", sans-serif;
+    font-size: 40px !important;
+    font-weight: 600;
+    line-height: 48px !important;
+}
+
+h2 {
+    font-family: "Montserrat", sans-serif;
+    font-size: 32px !important;
+    font-weight: 600;
+    line-height: 40px !important;
+}
+h3 {
+    font-family: "Montserrat", sans-serif;
+    font-size: 24px !important;
+    font-weight: 600;
+    line-height: 32px !important;
+}
+h4 {
+    font-family: "Montserrat", sans-serif;
+    font-size: 20px !important;
+    font-weight: 500;
+    line-height: 30px !important;
+}
+
+h5 {
+    font-family: "Montserrat", sans-serif;
+    font-size: 18px !important;
+    font-weight: 500;
+    line-height: 24px !important;
+}
+
+h6 {
+    font-family: "Montserrat", sans-serif;
+    font-size: 22px !important;
+    font-weight: 500;
+    line-height: 16px !important;
+}
+
+.work-sans {
+    font-family: "Work Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+  }
+/* Estilo para el scrollbar */
+::-webkit-scrollbar {
+    /* Ancho del scrollbar vertical */
+    width: 8px;
+    height: 8px;
+    /* Altura del scrollbar horizontal */
+}
+
+/* Estilo para el scrollbar thumb */
+::-webkit-scrollbar-thumb {
+    background-color: #888;
+    /* Color del scrollbar thumb */
+    border-radius: 6px;
+    /* Radio de borde del scrollbar thumb */
+}
+
+/* Estilo para el scrollbar track */
+::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+    /* Color del scrollbar track */
+}
+
+.border_verde{
+    border-bottom: #0f946e solid 2px;
+    padding-bottom: 15px;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;/* You can add global styles to this file, and also import other style files */

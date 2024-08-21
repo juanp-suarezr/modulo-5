@@ -1,0 +1,39 @@
+<!-- Botón para abrir/cerrar el menú en dispositivos pequeños -->
+<div class="block sm:hidden mt-4 px-4">
+    <button (click)="toggleSidebar()" class="p-2">
+        <span *ngIf="isSidebarOpen" class="text-primary4 pi pi-times"></span>
+        <span *ngIf="!isSidebarOpen" class="text-primary4 pi pi-bars"></span>
+    </button>
+</div>
+<div class="sm:mt-6 border-b-[3px] border-primary2 inset-0 sm:inset-auto w-full sm:relative transition-transform transform md:translate-x-0"
+    [ngClass]="{'hidden': !isSidebarOpen, 'block': isSidebarOpen}">
+    <nav class="bg-secondary3 sm:flex md:h-[72px] sm:h-[52px] md:pl-[86px] sm:pl-[18px]">
+        <ng-container *ngFor="let item of items">
+            <a *ngIf="item.route; else noLink" [routerLink]="item.route" routerLinkActive="active-link"
+                [routerLinkActiveOptions]="{ exact: true }" class="flex px-2 sm:py-[18px] listSide">
+                <span class="text-primary4 text-[14px] hover:text-white work-sans font-medium px-4">{{ item.label }}</span>
+            </a>
+            <ng-template #noLink>
+                <div class="flex px-2 sm:py-[18px] cursor-pointer listSide group "
+                    [ngClass]="{'activado': item.isExpanded}" (click)="toggleSubItems(item)">
+                    <span class="text-primary4 text-[14px] work-sans font-medium px-4 p-list">{{ item.label }}</span>
+                    <span class="ml-2 pi pi-sort-down-fill text-primary4 h-fit transition-all"
+                        [ngClass]="{'rotate': item.isExpanded}"></span>
+                </div>
+                <!-- Show sub-items if expanded -->
+                <ng-container *ngIf="item.subItems">
+                    <div class="hidden group-hover:block absolute top-full left-[10%] bg-secondary3 shadow-md rounded-br-md rounded-bl-md"
+                        [ngClass]="{'!block': item.isExpanded}">
+                        <a *ngFor="let subItem of item.subItems" [routerLink]="subItem.route"
+                            routerLinkActive="active-link1" [routerLinkActiveOptions]="{ exact: true }"
+                            class="flex items-center p-2 listSide" (click)="selectSubItem(item.label)">
+                            <span class="text-primary4 text-[14px] hover:text-white work-sans font-medium px-4">{{ subItem.label }}</span>
+                        </a>
+                    </div>
+                </ng-container>
+            </ng-template>
+        </ng-container>
+    </nav>
+</div>
+
+

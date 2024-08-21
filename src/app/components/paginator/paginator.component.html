@@ -1,0 +1,50 @@
+<div *ngIf="links.length > 3">
+    <div class="flex flex-wrap -mb-1">
+        <ng-container *ngFor="let link of links; let key = index">
+            <!-- Si el enlace no tiene URL -->
+            <ng-container *ngIf="!link.url">
+                <div class="px-2 py-1 mr-1 mb-1 sm:text-[16px] text-xs text-primary3/40 work-sans underline">
+                    <ng-container *ngIf="!isResponsive">
+                        <!-- Mostrar texto normal si no es responsive -->
+                        <span [innerHTML]="link.label"></span>
+                    </ng-container>
+                    <ng-container *ngIf="isResponsive">
+                        <!-- Mostrar flechas si es responsive -->
+                        <ng-container *ngIf="link.label === 'Anterior'">
+                            <span class="pi pi-angle-right text-xs h-fit rotate-180"></span>
+                        </ng-container>
+                        <ng-container *ngIf="link.label === 'Siguiente'">
+                            <span class="pi pi-angle-right text-xs h-fit"></span>
+                        </ng-container>
+                    </ng-container>
+                </div>
+            </ng-container>
+
+            <!-- Si el enlace tiene URL -->
+            <ng-container *ngIf="link.url">
+                <a [routerLink]="link.url" class="px-3 py-1 text-primary2 sm:text-[16px] text-xs" [ngClass]="{
+               'text-white bg-primary1 rounded border': link.active,
+               'hover:bg-secondary1 hover:rounded focus:border-secondary1 focus:rounded focus:border-2 focus:border-primary3': !link.active
+             }">
+                    <ng-container *ngIf="isResponsive">
+                        <!-- Mostrar flechas si es responsive -->
+                        <ng-container *ngIf="link.label === 'Anterior'">
+                            <span class="pi pi-angle-right text-xs h-fit rotate-180"></span>
+                        </ng-container>
+                        <ng-container *ngIf="link.label === 'Siguiente'">
+                            <span class="pi pi-angle-right text-xs h-fit"></span>
+                        </ng-container>
+                        <ng-container *ngIf="!['Anterior', 'Siguiente'].includes(link.label)">
+                            <!-- Mostrar números si no es 'Anterior' o 'Siguiente' -->
+                            <span [innerHTML]="link.label"></span>
+                        </ng-container>
+                    </ng-container>
+                    <ng-container *ngIf="!isResponsive">
+                        <!-- Mostrar el texto normal si no es responsive -->
+                        <span [innerHTML]="link.label"></span>
+                    </ng-container>
+                </a>
+            </ng-container>
+        </ng-container>
+    </div>
+</div>

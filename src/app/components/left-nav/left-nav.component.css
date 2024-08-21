@@ -1,0 +1,9 @@
+.rotate {
+    display: inline-block;
+    transition: transform 0.5s;
+    transform: rotate(180deg);
+}
+
+.borderLeft {
+    border-left: 10px solid #004884 !important;
+}

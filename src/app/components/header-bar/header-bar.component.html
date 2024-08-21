@@ -1,0 +1,32 @@
+<div class="header-bar h-[48px] px-[18px] sm:px-[48px] bg-primary1">
+    <div class="flex w-full items-center gap-6">
+        <div class="w-1/2 flex pt-1 justify-start">
+            <a href="https://www.gov.co/" target="_blank" title="Ir a la GOV.CO">
+                <img src="assets/logo.svg" alt="Logo de GOV.CO" class="sm:h-[38px] h-[44px] w-auto">
+            </a>
+        </div>
+
+        <div class="w-1/2 flex justify-end">
+            <div class="flex items-center gap-4" (focusin)="onFocus()" (focusout)="onFocusOut()">
+              <p class="text-white text-[14px]">{{ user.fullName }}</p>
+              <div class="flex items-center justify-center user cursor-pointer" tabindex="0">
+                <span class="pi pi-user text-white"></span>
+              </div>
+            </div>
+            
+            <div 
+              *ngIf="menuVisible" 
+              class="absolute right-0 z-10 mt-10 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" 
+              role="menu" 
+              aria-orientation="vertical" 
+              aria-labelledby="user-menu-button" 
+              tabindex="-1"
+            >
+              <a href="#" class="block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="user-menu-item-0">Perfil</a>
+              <a href="#" class="block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="user-menu-item-2">Cerrar Sesion</a>
+            </div>
+
+        </div>
+
+    </div>
+</div>

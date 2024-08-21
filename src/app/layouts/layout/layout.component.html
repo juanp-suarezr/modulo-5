@@ -1,0 +1,19 @@
+<div class="bg-gray-50/50">
+    <app-header-bar [user]="user" />
+    
+    
+    <div class="mt-[12px] mb-[13px] pl-[18px] sm:mt-[32px] sm:mb-[22px] sm:pl-[86px]">
+        <img src="assets/super_transporte.png" class="w-auto sm:h-[48px] h-[35px]" alt="">
+    </div>
+    
+    <app-header *ngIf="user.roles[0].roleName == 'ROLE_ESCRITURA_MIN'" [breadcrumb]="breadcrumb"></app-header>
+    <app-sidebar />
+    <div class="">
+        <div class="">
+            <router-outlet />
+        </div>
+    </div>
+    <div class="text-blue-gray-600">
+        <app-footer />
+    </div>
+</div>

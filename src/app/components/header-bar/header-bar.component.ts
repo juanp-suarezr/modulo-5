@@ -1,0 +1,24 @@
+import { Component, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
+@Component({
+  selector: 'app-header-bar',
+  standalone: true,
+  imports: [CommonModule],
+  templateUrl: './header-bar.component.html',
+  styleUrl: './header-bar.component.css'
+})
+export class HeaderBarComponent {
+  @Input() user:any = [];
+  menuVisible = false;
+
+  onFocus() {
+    this.menuVisible = true;
+  }
+
+  onFocusOut() {
+    setTimeout(() => {
+      this.menuVisible = false;
+    }, 100);
+  }
+}

@@ -1,0 +1,6 @@
+app-sidebar {
+    position: -webkit-sticky; /* Para compatibilidad con navegadores WebKit */
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}

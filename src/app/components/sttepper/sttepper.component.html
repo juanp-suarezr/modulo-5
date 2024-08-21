@@ -1,0 +1,21 @@
+<div class="relative w-full mb-4">
+    <!-- Barra de progreso -->
+    <div class="absolute top-0 left-0 h-[3px] bg-secondary2 w-full"></div>
+    <div class="absolute top-0 left-0 h-[3px] bg-primary1"
+        [ngStyle]="{ width: (active / (dataStep.length)) * 100 + '%' }"></div>
+</div>
+<ol class="items-center w-full sm:flex sm:space-x-8 sm:space-y-0 rtl:space-x-reverse">
+    <li *ngFor="let item of dataStep" class="flex items-center text-[15px] space-x-2.5 rtl:space-x-reverse">
+        <span
+            class="work-sans text-primary2 flex items-center justify-center w-8 h-8 border-2 border-primary2 rounded-full shrink-0 font-semibold"
+            [ngClass]="{'!bg-primary1 !border-primary1 text-blanco': active === item.num, '!text-white !bg-primary3 !border-primary3': active > item.num}">
+            {{item.num}}
+        </span>
+        <span>
+            <p class="work-sans text-primary2 leading-tight font-normal"
+                [ngClass]="{'!text-primary1 font-semibold': active === item.num, 'text-primary3': active > item.num}">
+                {{item.info}}</p>
+        </span>
+    </li>
+
+</ol>

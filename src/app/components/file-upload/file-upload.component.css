@@ -1,0 +1,17 @@
+#file-name {
+    cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+@media (min-width: 1200px) {
+    .containerUpload {
+        display: inline-flex;
+        overflow: hidden;
+    }
+
+    .inputFile {
+        width: 70%;
+    }
+}
