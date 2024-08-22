@@ -36,7 +36,6 @@ export class FileUploadComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     // Inicialización necesaria antes de que la vista esté disponible
-    console.log(this.error);
     
   }
 
