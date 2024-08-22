@@ -16,7 +16,7 @@ import {
   Validators,
   ReactiveFormsModule,
 } from '@angular/forms';
-
+import { log } from 'node:console';
 
 @Component({
   selector: 'app-fijacion',
@@ -29,7 +29,6 @@ import {
     CommonModule,
     InputText,
     ReactiveFormsModule,
-    
   ],
   templateUrl: './fijacion.component.html',
   styleUrl: './fijacion.component.css',
@@ -40,7 +39,7 @@ export default class FijacionComponent {
     private stepperService: ActiveNumStepperService,
     private apiService: ApiService,
     private fb: FormBuilder,
-    private errorService: ErrorService,
+    private errorService: ErrorService
   ) {}
 
   activeNum: string = '0';
@@ -49,7 +48,7 @@ export default class FijacionComponent {
   formGroup2!: FormGroup;
   formGroup3!: FormGroup;
   errorStates: { [key: number]: boolean } = {};
-  
+
   user: any;
 
   infoMenu = [
@@ -90,12 +89,12 @@ export default class FijacionComponent {
       good: 'Dato correcto',
     },
     {
-      name: 'email',
+      name: 'Patrimonio_liquido',
       placeholder: '$100.000',
-      label: 'Email',
+      label: 'Patrimonio Líquido en SMLV',
       required: true,
       value: '',
-      error: 'Email es obligatorio',
+      error: 'Patrimonio Líquido en SMLV es obligatorio',
       good: 'Dato correcto',
     },
     // Agrega más inputs según sea necesario
@@ -105,13 +104,6 @@ export default class FijacionComponent {
     textSize: 'xs',
     textInfo: 'Archivo PDF. Peso máximo: 2MB',
   };
-  
-
-  onInputChange(index: number, event: Event) {
-    const inputElement = event.target as HTMLInputElement;
-    const value = inputElement?.value ?? ''; // Maneja valores nulos
-    this.inputs[index].value = value;
-  }
 
   ngOnInit(): void {
     // Suscribirse al observable para obtener los cambios reactivos del menuleft
@@ -140,16 +132,21 @@ export default class FijacionComponent {
       2: [null, Validators.required],
       3: [null, Validators.required],
       4: [null, Validators.required],
-      5: [null, Validators.required],      
+      5: [null, Validators.required],
       6: [null, Validators.required],
     });
 
     this.formGroup2 = this.fb.group({
-      file7: ['', Validators.required],
+      7: [null, Validators.required],
+      8: [null, Validators.required],
+      9: [null, Validators.required],
+      10: [null, Validators.required],
+      11: [null, Validators.required],
     });
 
     this.formGroup3 = this.fb.group({
-      file8: ['', Validators.required],
+      0: ['', Validators.required],
+      1: ['', Validators.required],
     });
 
     this.errorService.errorStates$.subscribe((errorStates) => {
@@ -168,59 +165,130 @@ export default class FijacionComponent {
       case 1:
         break;
       case 2:
-        
         if (this.formGroup1.valid) {
           // Avanzar solo si el formulario es válido
           this.stepperService.setActiveNum(newValue);
         } else {
-
           console.log(this.formGroup1.controls);
           const newErrorStates: { [key: number]: boolean } = {};
 
           for (const key in this.formGroup1.controls) {
             if (this.formGroup1.controls.hasOwnProperty(key)) {
               const control = this.formGroup1.controls[key];
-              
+
               // Revisa si el control está vacío o tiene errores de validación
               if (!control.value || control.invalid) {
                 const errorKey = parseInt(key, 10); // Convierte la clave a número
                 newErrorStates[errorKey] = true;
-
-                
               }
-            }};
-            this.errorService.updateErrorStates(newErrorStates);
+            }
+          }
+          this.errorService.updateErrorStates(newErrorStates);
         }
         break;
       case 3:
+        if (this.formGroup2.valid) {
+          // Avanzar solo si el formulario es válido
+          this.stepperService.setActiveNum(newValue);
+        } else {
+          console.log(this.formGroup2.controls);
+          const newErrorStates: { [key: number]: boolean } = {};
+
+          for (const key in this.formGroup2.controls) {
+            if (this.formGroup2.controls.hasOwnProperty(key)) {
+              const control = this.formGroup2.controls[key];
+
+              // Revisa si el control está vacío o tiene errores de validación
+              if (!control.value || control.invalid) {
+                const errorKey = parseInt(key, 10); // Convierte la clave a número
+                newErrorStates[errorKey] = true;
+              }
+            }
+          }
+          this.errorService.updateErrorStates(newErrorStates);
+        }
         break;
       case 4:
-        this.changeActiveNum('1');
+        let newErrorStates: { [key: number]: boolean } = {};
+        if (this.formGroup3.valid) {
+          // Avanzar solo si el formulario es válido
+          this.stepperService.setActiveNum(3);
+          this.changeActiveNum('1');
+        } else {
+          console.log(this.formGroup3.controls);
+
+          for (const key in this.formGroup3.controls) {
+            if (this.formGroup3.controls.hasOwnProperty(key)) {
+              const control = this.formGroup3.controls[key];
+
+              // Revisa si el control está vacío o tiene errores de validación
+              if (!control.value || control.invalid) {
+                const errorKey = parseInt(key, 10); // Convierte la clave a número
+                newErrorStates[errorKey] = true;
+              }
+            }
+          }
+        }
+        this.errorService.updateErrorStates(newErrorStates);
+
         break;
 
       default:
         break;
-    }
-
-    if (newValue == 4) {
-      this.stepperService.setActiveNum(3);
     }
 
     console.log(this.errorStates);
-    
   }
 
+  //metodo para guardar el archivo seleccionado
   onFileSelected(file: File[], FormControlName: number) {
     switch (FormControlName) {
       case 1:
-        console.log(FormControlName);
-        
         this.formGroup1.patchValue({ [FormControlName]: file });
+        break;
+      case 2:
+        this.formGroup1.patchValue({ [FormControlName]: file });
+        break;
+      case 3:
+        this.formGroup1.patchValue({ [FormControlName]: file });
+        break;
+      case 4:
+        this.formGroup1.patchValue({ [FormControlName]: file });
+        break;
+      case 5:
+        this.formGroup1.patchValue({ [FormControlName]: file });
+        break;
+      case 6:
+        this.formGroup1.patchValue({ [FormControlName]: file });
+        break;
+      case 7:
+        this.formGroup2.patchValue({ [FormControlName]: file });
+        break;
+      case 8:
+        this.formGroup2.patchValue({ [FormControlName]: file });
+        break;
+      case 9:
+        this.formGroup2.patchValue({ [FormControlName]: file });
+        break;
+      case 10:
+        this.formGroup2.patchValue({ [FormControlName]: file });
+        break;
+      case 11:
+        this.formGroup2.patchValue({ [FormControlName]: file });
         break;
 
       default:
         break;
     }
+  }
+
+  //metodo para guardar el valor del input
+  onInputChange(index: number, event: Event) {
+    const inputElement = event.target as HTMLInputElement;
+    const value = inputElement?.value ?? ''; // Maneja valores nulos
+    console.log(value);
+    this.inputs[index].value = value;
+    this.formGroup3.patchValue({ [index]: value });
   }
 
   onSubmitAllForms() {
