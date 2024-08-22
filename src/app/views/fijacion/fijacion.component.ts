@@ -2,7 +2,7 @@ import { ErrorService } from './../../services/error/error.service';
 import { PrimaryButtonComponent } from './../../components/primary-button/primary-button.component';
 import { ActiveNumService } from '../../services/left-nav/active-num.service';
 import { ActiveNumStepperService } from '../../services/stepper/active-num.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { LeftNavComponent } from '../../components/left-nav/left-nav.component';
 import { SttepperComponent } from '../../components/sttepper/sttepper.component';
 import { FileUploadComponent } from '../../components/file-upload/file-upload.component';
@@ -16,7 +16,8 @@ import {
   Validators,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { log } from 'node:console';
+import { SelectComponent } from '../../components/select/select.component';
+
 
 @Component({
   selector: 'app-fijacion',
@@ -29,6 +30,7 @@ import { log } from 'node:console';
     CommonModule,
     InputText,
     ReactiveFormsModule,
+    SelectComponent,
   ],
   templateUrl: './fijacion.component.html',
   styleUrl: './fijacion.component.css',
@@ -41,16 +43,18 @@ export default class FijacionComponent {
     private fb: FormBuilder,
     private errorService: ErrorService
   ) {}
-
-  activeNum: string = '0';
-  activeStep: number = 1;
+  //objeto para manejar los active num del left menu y stepper.
+  activeNum: string = '0'; //left menu
+  activeStep: number = 1; //stteper
+  //forms
   formGroup1!: FormGroup;
   formGroup2!: FormGroup;
   formGroup3!: FormGroup;
+  //objeto para manejo de errores
   errorStates: { [key: number]: boolean } = {};
-
+  //respuesta de user activo y rol
   user: any;
-
+  //info menu left
   infoMenu = [
     {
       num: '0',
@@ -61,7 +65,7 @@ export default class FijacionComponent {
       name: 'Operativo',
     },
   ];
-
+  //info stepper
   infoStepper = [
     {
       num: 1,
@@ -76,7 +80,7 @@ export default class FijacionComponent {
       info: 'Digitar información',
     },
   ];
-
+  //info inputs tipo num, string o date
   inputs = [
     {
       name: 'capital_social',
@@ -97,14 +101,44 @@ export default class FijacionComponent {
       error: 'Patrimonio Líquido en SMLV es obligatorio',
       good: 'Dato correcto',
     },
+
+    //select
+    {
+      name: 'mySelect1',
+      required: true,
+      placeholder: 'Lista desplegable de números',
+      value: '', // Valor seleccionado
+      options: [
+        { value: 1, label: 1 },
+        { value: 2, label: 2 },
+        { value: 3, label: 3 },
+        { value: 4, label: 4 },
+        { value: 5, label: 5 },
+        { value: 6, label: 6 },
+        { value: 7, label: 7 },
+        { value: 8, label: 8 },
+        { value: 9, label: 9 },
+        { value: 10, label: 10 },
+        { value: 11, label: 11 },
+        { value: 12, label: 12 },
+        { value: 13, label: 13 },
+        { value: 14, label: 14 },
+        { value: 15, label: 15 },
+        // Más opciones
+      ],
+      good: 'Selection is valid',
+      error: 'Cantidad de vehículos es requerido',
+    },
     // Agrega más inputs según sea necesario
   ];
-
+  //props o datos para input upload
   dataClass = {
     textSize: 'xs',
     textInfo: 'Archivo PDF. Peso máximo: 2MB',
   };
+  
 
+  
   ngOnInit(): void {
     // Suscribirse al observable para obtener los cambios reactivos del menuleft
     this.stateService.activeNum$.subscribe((num) => {
@@ -117,7 +151,7 @@ export default class FijacionComponent {
       console.log('Active step:', step);
     });
 
-    //traer los datos de la consulta
+    //traer los datos de la consulta, para roles
     this.apiService.getAuthUserAndRoles().subscribe(
       (response) => {
         this.user = response.user;
@@ -126,7 +160,7 @@ export default class FijacionComponent {
         console.error('Error fetching user data', error);
       }
     );
-
+    //validaciones segun form
     this.formGroup1 = this.fb.group({
       1: [null, Validators.required],
       2: [null, Validators.required],
@@ -147,8 +181,10 @@ export default class FijacionComponent {
     this.formGroup3 = this.fb.group({
       0: ['', Validators.required],
       1: ['', Validators.required],
+      2: ['', Validators.required],
     });
 
+    //suscribirse al servicio de manejo de errores
     this.errorService.errorStates$.subscribe((errorStates) => {
       this.errorStates = errorStates;
     });
@@ -282,14 +318,17 @@ export default class FijacionComponent {
     }
   }
 
-  //metodo para guardar el valor del input
+  //metodo para guardar el valor del input y select
   onInputChange(index: number, event: Event) {
     const inputElement = event.target as HTMLInputElement;
     const value = inputElement?.value ?? ''; // Maneja valores nulos
     console.log(value);
     this.inputs[index].value = value;
     this.formGroup3.patchValue({ [index]: value });
-  }
+  };
+  
+
+  
 
   onSubmitAllForms() {
     if (

@@ -1,0 +1,22 @@
+<div>
+    <div class="relative">
+        <select [name]="input.name" [required]="input.required" [(ngModel)]="input.value"
+            (change)="onInputChange($event)" [size]="selectSize" (focus)="onSelectFocus()" (blur)="onSelectBlur()"
+            class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] bg-transparent border border-secondary2 focus:outline-none focus:border-primary1">
+            <option value="" disabled selected hidden>{{ input.placeholder }}</option>
+            <option *ngFor="let option of input.options" [value]="option.value">{{ option.label }}</option>
+        </select>
+        <span class="absolute inset-y-0 right-0 flex items-center pr-[10px]">
+            <span class="pi pi-exclamation-circle text-[#A80521] text-[24px] hidden"
+                [ngClass]="{'!block': error === true}" [id]="'errorIcon-' + input.name"></span>
+        </span>
+        <span class="absolute inset-y-0 right-0 flex items-center pr-[10px]">
+            <span class="pi pi-check-circle text-[#068460] text-[24px] hidden" [ngClass]="{'!block': error === false}"
+                [id]="'goodIcon-' + input.name"></span>
+        </span>
+    </div>
+    <span class="text-sm text-[#068460] hidden" [ngClass]="{'!block': error === false}" [id]="'good-' + index">{{
+        input.good }}</span>
+    <span class="text-sm text-[#A80521] hidden" [ngClass]="{'!block': error === true}" [id]="'error-' + index">{{
+        input.error }}</span>
+</div>

@@ -247,6 +247,7 @@
                     <p class="text-primary3 font-semibold h-full">
                         Cantidad de vehículos que está requiriendo fijar*
                     </p>
+                    <app-select class="w-full md:pe-2 m-auto cursor-pointer" [input]="inputs[2]" [index]="2" [error]="errorStates[2]" (inputChange)="onInputChange($event.index, $event.event)"></app-select>
 
                 </div>
 
