@@ -38,7 +38,7 @@ jobs:
         run: npm run build:prod
       #route file renaming
       - name: Rename index for routing
-        run: mv dist/startkit/index.html dist/startkit/404.html
+        run: mv dist/startkit/browser/index.html dist/startkit/browser/404.html
       #deploy to githpages
       - name: Deploy to pages
         uses: crazy-max/ghaction-github-pages@v4.0.0
