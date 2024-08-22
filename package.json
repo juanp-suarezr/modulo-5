@@ -5,7 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "build:prod": "ng build --configuration production --base href /modulo-5/",
+    "build:prod": "ng build --configuration production --base-href /modulo-5/",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:startkit": "node dist/startkit/server/server.mjs"
