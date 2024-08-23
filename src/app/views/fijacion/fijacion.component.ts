@@ -52,6 +52,9 @@ export default class FijacionComponent {
   formGroup4!: FormGroup;
   //fin forms
 
+  //departamentos
+  departamentos: any[] = [];
+
   contractDataArray: any[] = []; // Array para almacenar la información de cada iteración
   currentContractIteration: number = 0; // Contador para las iteraciones
   totalContracts: number = 0; // Número total de contratos
@@ -95,7 +98,7 @@ export default class FijacionComponent {
       name: 'capital_social',
       type: 'number',
       placeholder: '$100.000',
-      label: 'Capital social',
+      label: 'Capital social*',
       required: true,
       value: '',
       error: 'Capital social es obligatorio',
@@ -103,8 +106,9 @@ export default class FijacionComponent {
     },
     {
       name: 'Patrimonio_liquido',
+      type: 'number',
       placeholder: '$100.000',
-      label: 'Patrimonio Líquido en SMLV',
+      label: 'Patrimonio Líquido en SMLV*',
       required: true,
       value: '',
       error: 'Patrimonio Líquido en SMLV es obligatorio',
@@ -121,16 +125,161 @@ export default class FijacionComponent {
       good: 'Selection is valid',
       error: 'Cantidad de vehículos es requerido',
     },
-    //select2
+
+    //input
     {
-      name: 'mySelect2',
+      name: 'Cantidad de contratos',
+      type: 'number',
+      placeholder: '#',
+      label: 'Cantidad de contratos*',
       required: true,
-      placeholder: 'Lista desplegable de números',
-      value: '', // Valor seleccionado
-      options: this.generateOptions(15),
-      good: 'Selection is valid',
-      error: 'Cantidad de contratos es requerido',
+      value: '',
+      error: 'Cantidad de contratos es obligatorio',
+      good: 'Dato correcto',
     },
+    //input
+    {
+      name: 'N° de contrato',
+      type: 'number',
+      placeholder: '#',
+      label: 'N° de contrato*',
+      required: true,
+      value: '',
+      error: 'N° de contrato es obligatorio',
+      good: 'Dato correcto',
+    },
+    //input
+    {
+      name: 'Contratante',
+      type: 'string',
+      placeholder: 'Nombre de empresa contratante',
+      label: 'Contratante*',
+      required: true,
+      value: '',
+      error: 'Contratante es obligatorio',
+      good: 'Dato correcto',
+    },
+    {
+      name: 'Fecha de inicio',
+      type: 'date',
+      placeholder: 'dd/mm/aaaa',
+      label: 'Fecha de inicio*',
+      required: true,
+      value: '',
+      error: 'Fecha de inicio es obligatorio',
+      good: 'Dato correcto',
+    },
+    {
+      name: 'Fecha de terminacion',
+      type: 'date',
+      placeholder: 'dd/mm/aaaa',
+      label: 'Fecha de terminación*',
+      required: true,
+      value: '',
+      error: 'Fecha de terminación es obligatorio',
+      good: 'Dato correcto',
+    },
+    //select3
+    {
+      name: 'mySelect3',
+      required: true,
+      placeholder: 'Seleccione',
+      value: '', // Valor seleccionado
+      options: [
+        { value: '1 mes', label: '1 mes' },
+        { value: '2 meses', label: '2 meses' },
+        { value: '3 meses', label: '3 meses' },
+        { value: '4 meses', label: '4 meses' },
+        { value: '5 meses', label: '5 meses' },
+        { value: '6 meses', label: '6 meses' },
+        { value: '7 meses', label: '7 meses' },
+        { value: '8 meses', label: '8 meses' },
+        { value: '9 meses', label: '9 meses' },
+        { value: '10 meses', label: '10 meses' },
+        { value: '11 meses', label: '11 meses' },
+        { value: '12 meses', label: '12 meses' },
+        { value: '13 meses', label: '13 meses' },
+        { value: '14 meses', label: '14 meses' },
+        { value: '15 meses', label: '15 meses' },
+        { value: '16 meses', label: '16 meses' },
+        { value: '17 meses', label: '17 meses' },
+        { value: '18 meses', label: '18 meses' },
+        { value: '19 meses', label: '19 meses' },
+        { value: '20 meses', label: '20 meses' },
+        { value: '21 meses', label: '21 meses' },
+        { value: '22 meses', label: '22 meses' },
+        { value: '23 meses', label: '23 meses' },
+        { value: '24 meses', label: '24 meses' },
+        { value: 'Contrato indefinido', label: 'Contrato indefinido' },
+      ],
+      good: 'Selection is valid',
+      error: 'Duración en meses es requerido',
+    },
+    //input
+    {
+      name: 'N° de Vehículos / Contrato',
+      type: 'number',
+      placeholder: '10',
+      label: 'N° de Vehículos / Contrato*',
+      required: true,
+      value: '',
+      error: 'N° de Vehículos / Contrato es obligatorio',
+      good: 'Dato correcto',
+    },
+    //select
+    {
+      name: 'mySelect4',
+      required: true,
+      placeholder: 'Seleccione',
+      value: '', // Valor seleccionado
+      options: [
+        { value: 'Bus', label: 'Bus' },
+        { value: 'Microbus', label: 'Microbus' },
+        { value: 'Buseta', label: 'Buseta' },
+        { value: 'Camioneta DC', label: 'Camioneta DC' },
+        { value: 'Camioneta SW', label: 'Camioneta SW' },
+        { value: 'Automóvil', label: 'Automóvil' },
+        { value: 'Camioneta de platón', label: 'Camioneta de platón' },
+      ],
+      good: 'Selection is valid',
+      error: 'Clase de vehículo es requerido',
+    },
+    //input
+    {
+      name: 'Valor del Contrato',
+      type: 'number',
+      placeholder: '$',
+      label: 'Valor del Contrato*',
+      required: true,
+      value: '',
+      error: 'Valor del Contrato es obligatorio',
+      good: 'Dato correcto',
+    },
+    //select
+    {
+      name: 'mySelect5',
+      required: true,
+      placeholder: 'Seleccione',
+      value: '', // Valor seleccionado
+      options: [
+        { value: 'Diario', label: 'Diario' },
+        { value: 'Mensual', label: 'Mensual' },
+        { value: 'Anual', label: 'Anual' },
+      ],
+      good: 'Selection is valid',
+      error: 'Forma de pago es requerido',
+    },
+    //select depart
+    {
+      name: 'mySelect6',
+      required: true,
+      placeholder: 'Seleccione',
+      value: '', // Valor seleccionado
+      options: this.updateDepartamentosOptions,
+      good: 'Selection is valid',
+      error: 'Forma de pago es requerido',
+    },
+
     // Agrega más inputs según sea necesario
   ];
   //props o datos para input upload
@@ -188,6 +337,13 @@ export default class FijacionComponent {
       3: ['', Validators.required],
       4: ['', Validators.required],
       5: ['', Validators.required],
+      6: ['', Validators.required],
+      7: ['', Validators.required],
+      8: ['', Validators.required],
+      9: ['', Validators.required],
+      10: ['', Validators.required],
+      11: ['', Validators.required],
+      12: ['', Validators.required],
     });
 
     //suscribirse al servicio de manejo de errores
@@ -202,6 +358,21 @@ export default class FijacionComponent {
       value: i + 1,
       label: i + 1,
     }));
+  }
+
+  //traer departamentos
+  updateDepartamentosOptions() {
+
+    this.apiService.getDepartamentos().subscribe(
+      (departamentos) => {
+        this.departamentos = departamentos;
+      },
+      (error) => {
+        console.error('Error fetching user data', error);
+      }
+    );
+
+
   }
 
   // Método para cambiar el valor del menuleft
@@ -286,16 +457,15 @@ export default class FijacionComponent {
   onInputChange(index: number, event: any) {
     let value = null;
     if (event.target) {
-      console.log('input normal');
       const inputElement = event.target as HTMLInputElement;
       value = inputElement?.value ?? ''; // Maneja valores nulos
     } else {
       value = event?.value ?? ''; // Maneja valores nulos
     }
 
-    console.log(value);
     this.inputs[index].value = value;
     this.formGroup3.patchValue({ [index]: value });
+    this.formGroup4.patchValue({ [index]: value });
   }
 
   // Método para enviar los formularios
@@ -304,25 +474,48 @@ export default class FijacionComponent {
     this.totalContracts = parseInt(this.inputs[3].value, 10); // Valor de cantidad de contratos
 
     if (
-      this.formGroup1.valid &&
-      this.formGroup2.valid &&
-      this.formGroup3.valid &&
-      this.totalContracts > 0
+      // this.formGroup1.valid &&
+      // this.formGroup2.valid &&
+      // this.formGroup3.valid
+      true
     ) {
-      // Reiniciar contador e iteración de contratos
-      this.currentContractIteration = 0;
-      this.contractDataArray = []; // Reiniciar el array
+      if (this.totalContracts <= 0) {
+        if (this.validateFormGroup(this.formGroup4, this.errorStates)) {
+          // Reiniciar contador e iteración de contratos
+          this.currentContractIteration = 0;
+          this.contractDataArray = []; // Reiniciar el array
 
-      // Lógica para múltiples contratos
-      this.showModal = true; // Mostrar modal para cada contrato
-      this.processContractIteration(); // Procesar la primera iteración
+          // Lógica para múltiples contratos
+          this.showModal = true; // Mostrar modal para cada contrato
+          this.processContractIteration(); // Procesar la primera iteración
+        }
+      } else {
+        this.validateFormGroup(this.formGroup4, this.errorStates);
+      }
+    } else {
+      this.changeActiveNum('0');
+      if (!this.validateFormGroup(this.formGroup1, this.errorStates)) {
+        console.log('entro');
+
+        this.stepperService.setActiveNum(1);
+      } else if (!this.validateFormGroup(this.formGroup2, this.errorStates)) {
+        console.log('entro1');
+        this.stepperService.setActiveNum(2);
+      } else if (!this.validateFormGroup(this.formGroup3, this.errorStates)) {
+        console.log('entro2');
+        this.stepperService.setActiveNum(3);
+      }
     }
   }
 
   // Procesar cada iteración de contratos
   processContractIteration() {
     if (this.currentContractIteration < this.totalContracts) {
-      console.log(`Procesando contrato ${this.currentContractIteration + 1} de ${this.totalContracts}`);
+      console.log(
+        `Procesando contrato ${this.currentContractIteration + 1} de ${
+          this.totalContracts
+        }`
+      );
 
       if (this.formGroup4.valid) {
         // Guardar los datos del formulario en el array
