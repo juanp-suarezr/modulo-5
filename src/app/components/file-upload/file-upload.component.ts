@@ -23,7 +23,7 @@ import { PrimaryButtonComponent } from '../primary-button/primary-button.compone
 export class FileUploadComponent implements OnInit, AfterViewInit {
   @Input() dataClass: any = [];
   @Input() mimes: string = '*';
-  @Input() maxFiles: number = 1; // Define el máximo de archivos permitidos
+  @Input() maxFiles: number = 0; // Define el máximo de archivos permitidos
   @Input() error: boolean = false;
   @Output() fileSelected = new EventEmitter<File[]>();
   @ViewChild('fileInput') fileInput!: ElementRef;
@@ -54,7 +54,8 @@ export class FileUploadComponent implements OnInit, AfterViewInit {
     this.islimit = false;
     this.isFileUpdate = null;
     const selectedFiles = Array.from(event.target.files) as File[];
-    if (selectedFiles.length > this.maxFiles) {
+    
+    if (selectedFiles.length > this.maxFiles && this.maxFiles != 0) {
       this.files = [];
       this.fileName = '';
       this.islimit = true;
