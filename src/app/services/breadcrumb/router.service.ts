@@ -25,7 +25,7 @@ export class RouterService {
 
   private updateBreadcrumb(): void {
     const url = this.router.url;
-    
+
 
     if (url.includes('dashboard')) {
       this.breadcrumbSubject.next([{ name: 'Tramitar solicitud', route: 'NA' }]);
@@ -35,6 +35,14 @@ export class RouterService {
         {
           name: 'Fijación de Capacidad Transportadora',
           route: 'fijacioncapacidadtransportadora',
+        },
+      ]);
+    } else if (url.includes('incrementocapacidadtransportadora')) {
+      this.breadcrumbSubject.next([
+        {name: 'Tramitar solicitud', route: 'NA'},
+        {
+          name: 'Incremento de Capacidad Transportadora',
+          route: 'incrementocapacidadtransportadora',
         },
       ]);
     } else {
