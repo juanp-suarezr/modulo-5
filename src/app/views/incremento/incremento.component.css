@@ -1,0 +1,23 @@
+.custom-combobox {
+  margin-top: 8px;
+  width: 100%; /* Ocupa todo el espacio disponible del contenedor */
+  max-width: 150px; /* Ajusta el ancho máximo del combobox */
+  padding: 0.5rem 1rem; /* Espacio interno */
+  border-radius: 5px; /* Bordes redondeados */
+  border: 1px solid #ccc; /* Borde de 1px color gris */
+  text-align: center; /* Centrar el texto dentro del combobox */
+  background-color: #f9f9f9; /* Color de fondo */
+  height: 40px; /* Altura del combobox */
+  line-height: 40px; /* Alineación vertical del texto */
+}
+
+.custom-combobox:focus {
+  outline: none; /* Remueve el borde azul al enfocar */
+  border-color: #007bff; /* Cambia el color del borde al enfocar */
+}
+
+.w-30 {
+  width: 36%; /* Reduce el ancho de los inputs */
+}
+
+

@@ -5,11 +5,11 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root'
 })
 export class ActiveNumStepperService {
-  private activeNumSubject = new BehaviorSubject<number>(3);
+  private activeNumSubject = new BehaviorSubject<number>(2);
   activeStep$ = this.activeNumSubject.asObservable();
 
   setActiveNum(value: number) {
     this.activeNumSubject.next(value);
   }
-  
+
 }
