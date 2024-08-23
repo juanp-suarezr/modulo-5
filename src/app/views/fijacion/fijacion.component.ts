@@ -17,6 +17,7 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { SelectComponent } from '../../components/select/select.component';
+import { DEPARTAMENTOS } from '../../shared/data/departamentos';
 
 @Component({
   selector: 'app-fijacion',
@@ -52,8 +53,6 @@ export default class FijacionComponent {
   formGroup4!: FormGroup;
   //fin forms
 
-  //departamentos
-  departamentos: any[] = [];
 
   contractDataArray: any[] = []; // Array para almacenar la información de cada iteración
   currentContractIteration: number = 0; // Contador para las iteraciones
@@ -275,7 +274,7 @@ export default class FijacionComponent {
       required: true,
       placeholder: 'Seleccione',
       value: '', // Valor seleccionado
-      options: this.updateDepartamentosOptions,
+      options: DEPARTAMENTOS,
       good: 'Selection is valid',
       error: 'Forma de pago es requerido',
     },
@@ -309,6 +308,7 @@ export default class FijacionComponent {
         console.error('Error fetching user data', error);
       }
     );
+    
     //validaciones segun form
     this.formGroup1 = this.fb.group({
       1: [null, Validators.required],
@@ -358,21 +358,6 @@ export default class FijacionComponent {
       value: i + 1,
       label: i + 1,
     }));
-  }
-
-  //traer departamentos
-  updateDepartamentosOptions() {
-
-    this.apiService.getDepartamentos().subscribe(
-      (departamentos) => {
-        this.departamentos = departamentos;
-      },
-      (error) => {
-        console.error('Error fetching user data', error);
-      }
-    );
-
-
   }
 
   // Método para cambiar el valor del menuleft
