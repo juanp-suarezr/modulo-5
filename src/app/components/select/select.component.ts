@@ -1,13 +1,13 @@
-import { Component, Input, Output, EventEmitter, SimpleChanges, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, Input, Output, EventEmitter, SimpleChanges, ChangeDetectorRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-select',
-  standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule,],
   templateUrl: './select.component.html',
-  styleUrl: './select.component.css'
+  styleUrl: './select.component.css',
+  standalone: true,
 })
 export class SelectComponent {
   @Input() input: any;
@@ -15,16 +15,13 @@ export class SelectComponent {
   @Input() error: boolean = false;
   @Output() inputChange = new EventEmitter<{ index: number; event: Event }>();
 
-  selectSize: number = 1;  // Tamaño por defecto del select
+  isDropdownOpen: boolean = false;
+  selectedOption: any = null;
 
   constructor(private cd: ChangeDetectorRef) {}
-  
-  onSelectFocus() {
-    this.selectSize = 12;  // Cambia el tamaño al desplegar
-  }
 
-  onSelectBlur() {
-    this.selectSize = 1;  // Restablece el tamaño al colapsar
+  toggleDropdown() {
+    this.isDropdownOpen = !this.isDropdownOpen;
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -34,7 +31,19 @@ export class SelectComponent {
     }
   }
 
-  onInputChange(event: Event) {
-    this.inputChange.emit({ index: this.index, event });
+  
+  selectOption(option: any) {
+    this.selectedOption = option;
+    this.input.value = option.value;
+    this.isDropdownOpen = false;
+    this.onInputChange();
+  }
+
+  onInputChange() {
+    this.inputChange.emit({ index: this.index, event: this.selectedOption });
+  }
+
+  closeDropdown() {
+    this.isDropdownOpen = false;
   }
 }

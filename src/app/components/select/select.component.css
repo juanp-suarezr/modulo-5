@@ -1,0 +1,25 @@
+/* Estilos para el scrollbar */
+ul::-webkit-scrollbar {
+    width: 8px;  /* Ancho del scrollbar */
+    height: 8px; /* Alto del scrollbar horizontal si es necesario */
+  }
+  
+  ul::-webkit-scrollbar-track {
+    background: #E6EFFD; /* Color de fondo del track (la parte donde se mueve el scroll) */
+  }
+  
+  ul::-webkit-scrollbar-thumb {
+    background-color: #3366CC; /* Color azul para el thumb (la parte móvil del scroll) */
+    border-radius: 10px; /* Bordes redondeados */
+  }
+  
+  ul::-webkit-scrollbar-thumb:hover {
+    background-color: #004884; /* Color azul más oscuro cuando el usuario pasa el mouse sobre el thumb */
+  }
+  
+  /* Opcional: si necesitas también estilizar el scrollbar para Firefox */
+  ul {
+    scrollbar-width: thin; /* Ancho del scrollbar */
+    scrollbar-color: #3366CC #E6EFFD; /* Color del thumb y del track en Firefox */
+  }
+  

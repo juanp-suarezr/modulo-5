@@ -5,7 +5,11 @@
     </div>
     <!-- solicitud contet -->
     <div class="md:col-span-8 sm:col-span-7 w-auto sm:mt-10 mt-4 md:px-8 px-2" *ngIf="activeNum == '0'">
-        <h3 class="text-primary1 !font-bold">Fijación de Capacidad Transportadora</h3>
+        <!-- <h2 class="text-primary4 !font-semibold">
+            Indicadores de gestión y operación y sustentabilidad financiera
+            
+        </h2> -->
+        <h3 class="text-primary1 !font-bold mt-4">Fijación de Capacidad Transportadora</h3>
 
         <!-- sttepper -->
         <div class="mt-4 w-full inline-flex justify-center">
@@ -247,7 +251,8 @@
                     <p class="text-primary3 font-semibold h-full">
                         Cantidad de vehículos que está requiriendo fijar*
                     </p>
-                    <app-select class="w-full md:pe-2 m-auto cursor-pointer" [input]="inputs[2]" [index]="2" [error]="errorStates[2]" (inputChange)="onInputChange($event.index, $event.event)"></app-select>
+                    <app-select class="w-full md:pe-2 m-auto cursor-pointer mt-4" [input]="inputs[2]" [index]="2"
+                        [error]="errorStates[2]" (inputChange)="onInputChange($event.index, $event.event)"></app-select>
 
                 </div>
 

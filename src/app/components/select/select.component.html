@@ -1,22 +1,20 @@
-<div>
-    <div class="relative">
-        <select [name]="input.name" [required]="input.required" [(ngModel)]="input.value"
-            (change)="onInputChange($event)" [size]="selectSize" (focus)="onSelectFocus()" (blur)="onSelectBlur()"
-            class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] bg-transparent border border-secondary2 focus:outline-none focus:border-primary1">
-            <option value="" disabled selected hidden>{{ input.placeholder }}</option>
-            <option *ngFor="let option of input.options" [value]="option.value">{{ option.label }}</option>
-        </select>
-        <span class="absolute inset-y-0 right-0 flex items-center pr-[10px]">
-            <span class="pi pi-exclamation-circle text-[#A80521] text-[24px] hidden"
-                [ngClass]="{'!block': error === true}" [id]="'errorIcon-' + input.name"></span>
-        </span>
-        <span class="absolute inset-y-0 right-0 flex items-center pr-[10px]">
-            <span class="pi pi-check-circle text-[#068460] text-[24px] hidden" [ngClass]="{'!block': error === false}"
-                [id]="'goodIcon-' + input.name"></span>
-        </span>
+<div class="relative">
+    <div (click)="toggleDropdown()" [ngClass]="{'text-error !border border-error': error === true}"
+        class="cursor-pointer shadow-sm min-w-[160px] w-full p-[10px] h-[40px] bg-transparent border-2 border-secondary1 focus:outline-none focus:border-primary1 flex justify-between items-center">
+        <span *ngIf="!selectedOption" class="font-[500] text-xs" >{{ input.placeholder }}</span>
+        <span *ngIf="selectedOption" class="text-normal">{{ selectedOption.label }}</span>
+        <i class="pi pi-chevron-down text-primary2 text-xs" [ngClass]="{'!text-error': error === true}"></i>
     </div>
-    <span class="text-sm text-[#068460] hidden" [ngClass]="{'!block': error === false}" [id]="'good-' + index">{{
+
+    <ul *ngIf="isDropdownOpen"
+        class="absolute z-20 bg-secondary4 border border-primary1 shadow-md rounded-bl-md rounded-br-md w-full mt-1 max-h-48 overflow-y-auto">
+        <li *ngFor="let option of input.options" (click)="selectOption(option)"
+            class="cursor-pointer px-4 py-2 hover:bg-primary1 hover:text-white">
+            {{ option.label }}
+        </li>
+    </ul>
+    <span class="text-sm text-success hidden" [ngClass]="{'!block': error === false}" [id]="'good-' + index">{{
         input.good }}</span>
-    <span class="text-sm text-[#A80521] hidden" [ngClass]="{'!block': error === true}" [id]="'error-' + index">{{
+    <span class="text-sm text-error hidden" [ngClass]="{'!block': error === true}" [id]="'error-' + index">{{
         input.error }}</span>
 </div>

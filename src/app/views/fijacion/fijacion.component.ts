@@ -18,7 +18,6 @@ import {
 } from '@angular/forms';
 import { SelectComponent } from '../../components/select/select.component';
 
-
 @Component({
   selector: 'app-fijacion',
   standalone: true,
@@ -136,9 +135,7 @@ export default class FijacionComponent {
     textSize: 'xs',
     textInfo: 'Archivo PDF. Peso máximo: 2MB',
   };
-  
 
-  
   ngOnInit(): void {
     // Suscribirse al observable para obtener los cambios reactivos del menuleft
     this.stateService.activeNum$.subscribe((num) => {
@@ -319,16 +316,20 @@ export default class FijacionComponent {
   }
 
   //metodo para guardar el valor del input y select
-  onInputChange(index: number, event: Event) {
-    const inputElement = event.target as HTMLInputElement;
-    const value = inputElement?.value ?? ''; // Maneja valores nulos
+  onInputChange(index: number, event: any) {
+    let value = null;
+    if (event.target) {
+      console.log('input normal');
+      const inputElement = event.target as HTMLInputElement;
+      value = inputElement?.value ?? ''; // Maneja valores nulos
+    } else {
+      value = event?.value ?? ''; // Maneja valores nulos
+    }
+
     console.log(value);
     this.inputs[index].value = value;
     this.formGroup3.patchValue({ [index]: value });
-  };
-  
-
-  
+  }
 
   onSubmitAllForms() {
     if (
