@@ -1,6 +1,6 @@
 <div class="sm:grid sm:grid-cols-10 gap-4" *ngIf="user.roles[0].roleName == 'ROLE_ESCRITURA_MIN'">
 
-    <div class="md:col-span-2 sm:col-span-3 w-auto sm:mt-16 mt-12">
+    <div class="md:col-span-2 sm:col-span-3 w-auto sm:mt-16 mt-12 mb-12">
         <app-left-nav [data]="infoMenu" active="{{activeNum}}"></app-left-nav>
     </div>
     <!-- solicitud contet -->
@@ -420,12 +420,15 @@
                     <p class="text-primary3 font-semibold h-full">
                         Tiempos estimados (En horas) - Disponibilidad de Vehículos*
                     </p>
+                    <app-select class="w-full m-auto cursor-pointer mt-2" [input]="inputs[14]" [index]="14"
+                        [error]="errorStates[14]"
+                        (inputChange)="onInputChange($event.index, $event.event)"></app-select>
 
                 </div>
             </div>
 
 
-            <div class="mt-6 w-full flex justify-center">
+            <div class="mt-8 w-full flex justify-center">
                 <app-primary-button class="" (click)="onSubmitAllForms()">Enviar</app-primary-button>
             </div>
 

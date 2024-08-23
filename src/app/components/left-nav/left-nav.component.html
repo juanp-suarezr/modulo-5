@@ -1,7 +1,7 @@
 <div class="sm:h-screen h-full overflow-auto bg-secondary4">
     <button *ngFor="let item of data"
-        class="border-[3px] border-secondary1 w-full h-auto inline-flex flex justify-between p-4 items-center work-sans md:text-lg text-primary1 cursor-pointer hover:bg-primary2"
-        [ngClass]="{'!border-secondary2 !border-2 borderLeft': active === item.num}" (click)="changeActiveNum(item.num)">
+        class="border-[3px] border-secondary1 w-full h-auto inline-flex flex justify-between p-4 items-center work-sans md:text-lg text-primary1 cursor-pointer hover:!bg-primary2 hover:text-white"
+        [ngClass]="{'!border-secondary2 !border-2 borderLeft !bg-white': active === item.num}" (click)="changeActiveNum(item.num)">
         <p class="font-medium" [ngClass]="{'!font-bold': active === item.num}">{{item.name}}</p>
         <span class="pi pi-angle-right text-right text-2xl h-fit transition-all"
             [ngClass]="{'rotate': active === item.num}"></span>

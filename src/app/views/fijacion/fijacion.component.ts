@@ -276,7 +276,42 @@ export default class FijacionComponent {
       value: '', // Valor seleccionado
       options: DEPARTAMENTOS,
       good: 'Selection is valid',
-      error: 'Forma de pago es requerido',
+      error: 'Áreas de Operación es requerido',
+    },
+    //select tienpo estimado
+    {
+      name: 'mySelect6',
+      required: true,
+      placeholder: 'Seleccione',
+      value: '', // Valor seleccionado
+      options: [
+        { value: '1 hora', label: '1 hora' },
+        { value: '2 horas', label: '2 horas' },
+        { value: '3 horas', label: '3 horas' },
+        { value: '4 horas', label: '4 horas' },
+        { value: '5 horas', label: '5 horas' },
+        { value: '6 horas', label: '6 horas' },
+        { value: '7 horas', label: '7 horas' },
+        { value: '8 horas', label: '8 horas' },
+        { value: '9 horas', label: '9 horas' },
+        { value: '10 horas', label: '10 horas' },
+        { value: '11 horas', label: '11 horas' },
+        { value: '12 horas', label: '12 horas' },
+        { value: '13 horas', label: '13 horas' },
+        { value: '14 horas', label: '14 horas' },
+        { value: '15 horas', label: '15 horas' },
+        { value: '16 horas', label: '16 horas' },
+        { value: '17 horas', label: '17 horas' },
+        { value: '18 horas', label: '18 horas' },
+        { value: '19 horas', label: '19 horas' },
+        { value: '20 horas', label: '20 horas' },
+        { value: '21 horas', label: '21 horas' },
+        { value: '22 horas', label: '22 horas' },
+        { value: '23 horas', label: '23 horas' },
+        { value: '24 horas', label: '24 horas' },
+      ],
+      good: 'Selection is valid',
+      error: 'Tiempos estimados es requerido',
     },
 
     // Agrega más inputs según sea necesario
@@ -308,7 +343,7 @@ export default class FijacionComponent {
         console.error('Error fetching user data', error);
       }
     );
-    
+
     //validaciones segun form
     this.formGroup1 = this.fb.group({
       1: [null, Validators.required],
@@ -344,6 +379,8 @@ export default class FijacionComponent {
       10: ['', Validators.required],
       11: ['', Validators.required],
       12: ['', Validators.required],
+      13: ['', Validators.required],
+      14: ['', Validators.required],
     });
 
     //suscribirse al servicio de manejo de errores
