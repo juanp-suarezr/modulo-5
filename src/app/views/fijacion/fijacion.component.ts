@@ -39,13 +39,14 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
   styleUrl: './fijacion.component.css',
 })
 export default class FijacionComponent {
+  parseInt: any;
   constructor(
     private stateService: ActiveNumService,
     private stepperService: ActiveNumStepperService,
     private apiService: ApiService,
     private fb: FormBuilder,
     private errorService: ErrorService,
-    private cdr: ChangeDetectorRef,
+    private cdr: ChangeDetectorRef
   ) {}
   //objeto para manejar los active num del left menu y stepper.
   activeNum: string = '0'; //left menu
@@ -135,7 +136,7 @@ export default class FijacionComponent {
       placeholder: '#',
       label: 'Cantidad de contratos*',
       required: true,
-      value: '',
+      value: '0',
       error: 'Cantidad de contratos es obligatorio',
       good: 'Dato correcto',
     },
@@ -400,6 +401,16 @@ export default class FijacionComponent {
     }));
   }
 
+  //formatear texto a int
+  convertToNumber(value: string) {
+    const textValue = parseInt(value, 10);
+    
+    if (isNaN(textValue)) {
+      return 0;
+    } else {
+      return textValue;
+    }
+  }
   // Método para cambiar el valor del menuleft
   changeActiveNum(newValue: string) {
     this.stateService.setActiveNum(newValue);
@@ -496,7 +507,9 @@ export default class FijacionComponent {
   // Método para enviar los formularios
   onSubmitAllForms() {
     // Obtener el valor de input[3] para determinar la cantidad de contratos
-    this.totalContracts = parseInt(this.inputs[3].value, 10); // Valor de cantidad de contratos
+    if (this.currentContractIteration == 0) {
+      this.totalContracts = parseInt(this.inputs[3].value, 10); // Valor de cantidad de contratos
+    }
 
     if (
       // this.formGroup1.valid &&
@@ -509,13 +522,12 @@ export default class FijacionComponent {
         console.log(this.totalContracts);
         //si el form esta lleno con todos los datos
         if (this.validateFormGroup(this.formGroup4, this.errorStates)) {
-          // Reiniciar contador e iteración de contratos
-          this.currentContractIteration = 0;
-
+          this.currentContractIteration += 1;
           // Lógica para múltiples contratos
           this.showModal = true; // Mostrar modal para cada contrato
         }
       } else {
+        //cuando ya llego al tope
         this.validateFormGroup(this.formGroup4, this.errorStates);
       }
     } else {
@@ -561,45 +573,33 @@ export default class FijacionComponent {
 
   // Procesar cada iteración de contratos
   processContractIteration() {
-    if (this.currentContractIteration < this.totalContracts) {
-      if (this.formGroup4.valid) {
-        // Guardar los datos del formulario en el array
+    if (this.formGroup4.valid) {
+      // Guardar los datos del formulario en el array
 
-        this.contractDataArray.push(this.formGroup4.value);
-        console.log(this.contractDataArray);
-        this.inputs[3].value = (
-          parseInt(this.inputs[3].value, 10) - 1
-        ).toString();
+      this.contractDataArray.push(this.formGroup4.value);
+      console.log(this.contractDataArray);
+      this.inputs[3].value = (
+        parseInt(this.inputs[3].value, 10) - 1
+      ).toString();
 
-        // Avanzar a la siguiente iteración
-        if (this.totalContracts == 0) {
-          console.log('fin');
-          this.showFinalModal = true;
+      
+      // Reiniciar el formulario para la siguiente iteración
+      Object.keys(this.formGroup4.controls).forEach((key, index) => {
+        if (index !== 0) {
+          this.inputs[parseInt(key, 10)].value = '';
+          // Si el índice NO es 0, reseteamos el control
+          this.formGroup4.controls[key].reset();
+          this.formGroup4.controls[key].markAsPristine();
+          this.formGroup4.controls[key].markAsUntouched();
         }
+      });
 
-        // Reiniciar el formulario para la siguiente iteración
-        Object.keys(this.formGroup4.controls).forEach((key, index) => {
-          
-          
-          if (index !== 0) {
-            this.inputs[parseInt(key, 10)].value = '';
-            // Si el índice NO es 0, reseteamos el control
-            this.formGroup4.controls[key].reset();
-            this.formGroup4.controls[key].markAsPristine();
-            this.formGroup4.controls[key].markAsUntouched();
-          }
-        });
+      // Forzamos la detección de cambios
+      this.cdr.detectChanges();
 
-        // Forzamos la detección de cambios
-        this.cdr.detectChanges();
-
-        console.log(this.formGroup4);
-        console.log(this.inputs);
-      } else {
-        console.log('Formulario de contrato no válido');
-      }
+      console.log(this.inputs);
     } else {
-      console.log('Todas las iteraciones han sido procesadas');
+      console.log('Formulario de contrato no válido');
     }
   }
 
@@ -613,6 +613,7 @@ export default class FijacionComponent {
     };
 
     console.log(allFormsData);
+    this.showFinalModal = true;
 
     // this.apiService.sendContractForms(allFormsData).subscribe(
     //   (response) => {

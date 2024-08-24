@@ -295,7 +295,7 @@
                     <p class="text-primary3 font-semibold h-full">
                         Cantidad de contratos*
                     </p>
-                    <input-text class="w-full mt-2 cursor-pointer" [input]="inputs[3]" [index]="3"
+                    <input-text class="w-full mt-2 cursor-pointer" [input]="inputs[3]" [index]="3" [disabled]="convertToNumber(inputs[3].value) != totalContracts"
                         [error]="errorStates[3]" (inputChange)="onInputChange($event.index, $event.event)"></input-text>
 
                 </div>
@@ -441,8 +441,15 @@
 <!-- modal de confirmación -->
 <app-alert [showModal]="showModal" title="¿Está seguro de enviar?" subtitle="¿Está seguro de enviar?"
     [showSubtitle]="false" [message]="'Una vez enviado, no podrá cambiar la información.'" buttonText="Enviar"
-    [showFirstButton]="true" cancelButtonText="Cancelar" [showCancelButton]="true" TypeAlert="info"
-    (close)="handleClose()" (closeByButton1)="handleCloseByButton1()" (closeByButton2)="handleCloseByButton2()"
+    [showFirstButton]="true" cancelButtonText="Cancelar" [showCancelButton]="true" TypeAlert="success"
+    (close)="handleClose()" (closeByButton1)="currentContractIteration == totalContracts ? sendAllContracts() : handleCloseByButton1()" (closeByButton2)="handleCloseByButton2()"
     (closeByIcon)="handleCloseByIcon()" (closeByBackdrop)="handleCloseByBackdrop()"
     (close)="showModal = false"></app-alert>
 
+<!-- modal final -->
+<app-alert [showModal]="showFinalModal" title="Envío exitoso" textColor="text-success" [showSubtitle]="false"
+    [message]="'Su solicitud ha sido enviada exitosamente, se le asignará un radicado para su trámite'"
+    buttonText="Continuar" [showFirstButton]="true" [showCancelButton]="false"
+    TypeAlert="success" (close)="handleClose()" (closeByButton1)="showFinalModal = false"
+    (closeByButton2)="handleCloseByButton2()" (closeByIcon)="handleCloseByIcon()"
+    (closeByBackdrop)="handleCloseByBackdrop()" (close)="showFinalModal = false"></app-alert>

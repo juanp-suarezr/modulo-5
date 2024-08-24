@@ -5,7 +5,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { SafeHtml } from '@angular/platform-browser';
 
 
-type AlertType = 'loader' | 'error' | 'warning' | 'info';
+type AlertType = 'loader' | 'error' | 'warning' | 'info' | 'success';
 
 @Component({
   selector: 'app-alert',
@@ -39,8 +39,10 @@ export class AlertComponent {
   @Input() title: string = 'Header';
   @Input() subtitle: string = 'Header';
   @Input() message: SafeHtml = '';
+  @Input() textColor: string = 'text-primary1';
   @Input() buttonText: string = 'Go back';
   @Input() cancelButtonText: string = 'Cancel';
+  @Input() showTitle: boolean = true;
   @Input() showSubtitle: boolean = true;
   @Input() showFirstButton: boolean = true;
   @Input() showCancelButton: boolean = true;
@@ -55,7 +57,8 @@ export class AlertComponent {
     loader: { icon: 'pi pi-spinner', iconColor: 'text-purple-500', titleColor: 'text-green-500' },
     error: { icon: 'pi pi-times-circle', iconColor: 'text-red-500', titleColor: 'text-red-500' },
     warning: { icon: 'pi pi-exclamation-triangle', iconColor: 'text-yellow-500', titleColor: 'text-orange-500' },
-    info: { icon: 'pi pi-info-circle', iconColor: 'text-green-500', titleColor: 'text-green-500' }
+    info: { icon: 'pi pi-info-circle', iconColor: this.textColor, titleColor: this.textColor },
+    success: { icon: 'pi pi-success', iconColor: this.textColor, titleColor: this.textColor }
   };
 
   get icon() {
