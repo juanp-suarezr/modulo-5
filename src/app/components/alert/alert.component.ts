@@ -58,7 +58,7 @@ export class AlertComponent {
     error: { icon: 'pi pi-times-circle', iconColor: 'text-red-500', titleColor: 'text-red-500' },
     warning: { icon: 'pi pi-exclamation-triangle', iconColor: 'text-yellow-500', titleColor: 'text-orange-500' },
     info: { icon: 'pi pi-info-circle', iconColor: this.textColor, titleColor: this.textColor },
-    success: { icon: 'pi pi-success', iconColor: this.textColor, titleColor: this.textColor }
+    success: { icon: 'pi pi-check-circle', iconColor: this.textColor, titleColor: this.textColor }
   };
 
   get icon() {
@@ -66,6 +66,7 @@ export class AlertComponent {
   }
 
   get iconColor() {
+    
     return this.alertSettings[this.TypeAlert].iconColor;
   }
 

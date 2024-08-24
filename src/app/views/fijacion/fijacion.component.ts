@@ -615,7 +615,7 @@ export default class FijacionComponent {
   // Método para enviar todos los contratos al servidor
   sendAllContracts() {
 
-    if (true) {
+    if (this.totalContracts == 1) {
       this.contractDataArray.push(this.formGroup4.value);
     }
 
