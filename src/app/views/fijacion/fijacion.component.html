@@ -439,6 +439,10 @@
 </div>
 
 <!-- modal de confirmación -->
-<app-alert [showModal]="showModal" title="¿Está seguro de enviar?" subtitle="¿Está seguro de enviar?" [showSubtitle]="false" [message]="'Una vez enviado, no podrá cambiar la información.'"
-    buttonText="Enviar" [showFirstButton]="true" cancelButtonText="Cancelar" [showCancelButton]="true" TypeAlert="info"
+<app-alert [showModal]="showModal" title="¿Está seguro de enviar?" subtitle="¿Está seguro de enviar?"
+    [showSubtitle]="false" [message]="'Una vez enviado, no podrá cambiar la información.'" buttonText="Enviar"
+    [showFirstButton]="true" cancelButtonText="Cancelar" [showCancelButton]="true" TypeAlert="info"
+    (close)="handleClose()" (closeByButton1)="handleCloseByButton1()" (closeByButton2)="handleCloseByButton2()"
+    (closeByIcon)="handleCloseByIcon()" (closeByBackdrop)="handleCloseByBackdrop()"
     (close)="showModal = false"></app-alert>
+

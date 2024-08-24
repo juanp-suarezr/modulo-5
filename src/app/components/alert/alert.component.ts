@@ -46,6 +46,10 @@ export class AlertComponent {
   @Input() showCancelButton: boolean = true;
   @Input() TypeAlert: AlertType = 'info';
   @Output() close = new EventEmitter<void>();
+  @Output() closeByButton1 = new EventEmitter<void>();
+  @Output() closeByButton2 = new EventEmitter<void>();
+  @Output() closeByIcon = new EventEmitter<void>();
+  @Output() closeByBackdrop = new EventEmitter<void>();
 
    alertSettings: Record<AlertType, { icon: string; iconColor: string; titleColor: string }> = {
     loader: { icon: 'pi pi-spinner', iconColor: 'text-purple-500', titleColor: 'text-green-500' },
@@ -73,5 +77,21 @@ export class AlertComponent {
 
   onBackdropClick(event: MouseEvent) {
     this.closeModal();
+    this.closeByBackdrop.emit();
+  }
+
+  onCloseIconClick() {
+    this.closeModal();
+    this.closeByIcon.emit();
+  }
+
+  onButton1Click() {
+    this.closeModal();
+    this.closeByButton1.emit();
+  }
+
+  onButton2Click() {
+    this.closeModal();
+    this.closeByButton2.emit();
   }
 }

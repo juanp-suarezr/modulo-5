@@ -15,7 +15,7 @@
     >
       <button
         class="absolute top-2 right-2 focus:outline-none p-2"
-        (click)="closeModal()"
+        (click)="onCloseIconClick()"
       >
         <svg
           class="fill-primary1"
@@ -57,14 +57,14 @@
           <button
             *ngIf="showFirstButton"
             class="bg-primary1 font-semibold text-white p-2 w-32 rounded-full focus:outline-none focus:ring shadow-lg hover:shadow-none transition-all duration-300"
-            (click)="closeModal()"
+            (click)="onButton1Click()"
           >
             {{ buttonText }}
           </button>
           <button
             *ngIf="showCancelButton"
             class="border border-primary1 font-semibold text-primary1 p-2 w-32 rounded-full focus:outline-none focus:ring shadow-lg hover:shadow-none transition-all duration-300"
-            (click)="closeModal()"
+            (click)="onButton2Click()"
           >
             {{ cancelButtonText }}
           </button>
