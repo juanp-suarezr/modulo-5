@@ -5,7 +5,7 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root'
 })
 export class ActiveNumStepperService {
-  private activeNumSubject = new BehaviorSubject<number>(2);
+  private activeNumSubject = new BehaviorSubject<number>(3);
   activeStep$ = this.activeNumSubject.asObservable();
 
   setActiveNum(value: number) {

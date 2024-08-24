@@ -18,6 +18,7 @@ import {
 } from '@angular/forms';
 import { SelectComponent } from '../../components/select/select.component';
 import { DEPARTAMENTOS } from '../../shared/data/departamentos';
+import { AlertComponent } from '../../components/alert/alert.component';
 
 @Component({
   selector: 'app-fijacion',
@@ -31,6 +32,7 @@ import { DEPARTAMENTOS } from '../../shared/data/departamentos';
     InputText,
     ReactiveFormsModule,
     SelectComponent,
+    AlertComponent,
   ],
   templateUrl: './fijacion.component.html',
   styleUrl: './fijacion.component.css',
@@ -501,7 +503,9 @@ export default class FijacionComponent {
       // this.formGroup3.valid
       true
     ) {
-      if (this.totalContracts <= 0) {
+      if (this.totalContracts > 0) {
+        console.log(this.totalContracts);
+        
         if (this.validateFormGroup(this.formGroup4, this.errorStates)) {
           // Reiniciar contador e iteración de contratos
           this.currentContractIteration = 0;

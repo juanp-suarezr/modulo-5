@@ -408,7 +408,7 @@
                     <p class="text-primary3 font-semibold h-full">
                         Áreas de Operación*
                     </p>
-                    
+
                     <app-select class="w-full m-auto cursor-pointer mt-2" [input]="inputs[13]" [index]="13"
                         [error]="errorStates[13]"
                         (inputChange)="onInputChange($event.index, $event.event)"></app-select>
@@ -437,3 +437,8 @@
     </div>
 
 </div>
+
+<!-- modal de confirmación -->
+<app-alert [showModal]="showModal" title="¿Está seguro de enviar?" subtitle="¿Está seguro de enviar?" [showSubtitle]="false" [message]="'Una vez enviado, no podrá cambiar la información.'"
+    buttonText="Enviar" [showFirstButton]="true" cancelButtonText="Cancelar" [showCancelButton]="true" TypeAlert="info"
+    (close)="showModal = false"></app-alert>
