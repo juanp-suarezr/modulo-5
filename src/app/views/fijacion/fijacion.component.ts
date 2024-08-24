@@ -20,6 +20,7 @@ import { SelectComponent } from '../../components/select/select.component';
 import { DEPARTAMENTOS } from '../../shared/data/departamentos';
 import { AlertComponent } from '../../components/alert/alert.component';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-fijacion',
@@ -46,7 +47,8 @@ export default class FijacionComponent {
     private apiService: ApiService,
     private fb: FormBuilder,
     private errorService: ErrorService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private router: Router
   ) {}
   //objeto para manejar los active num del left menu y stepper.
   activeNum: string = '0'; //left menu
@@ -569,6 +571,13 @@ export default class FijacionComponent {
     console.log('Modal closed by clicking on Backdrop');
   }
 
+  finalStep() {
+    this.showFinalModal = false;
+    this.router.navigate(['/dashboard']).then(() => {
+      location.reload();
+    });
+  }
+
   //fin MODAL
 
   // Procesar cada iteración de contratos
@@ -605,6 +614,11 @@ export default class FijacionComponent {
 
   // Método para enviar todos los contratos al servidor
   sendAllContracts() {
+
+    if (true) {
+      this.contractDataArray.push(this.formGroup4.value);
+    }
+
     const allFormsData = {
       form1: this.formGroup1.value,
       form2: this.formGroup2.value,

@@ -36,7 +36,7 @@ export class FileUploadComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     // Inicialización necesaria antes de que la vista esté disponible
-    
+
   }
 
   ngAfterViewInit() {
@@ -54,23 +54,37 @@ export class FileUploadComponent implements OnInit, AfterViewInit {
     this.islimit = false;
     this.isFileUpdate = null;
     const selectedFiles = Array.from(event.target.files) as File[];
-    
-    if (selectedFiles.length > this.maxFiles && this.maxFiles != 0) {
+
+    if (selectedFiles.length > this.maxFiles && this.maxFiles !== 0) {
       this.files = [];
       this.fileName = '';
       this.islimit = true;
-    } else{
+    } else {
       this.files = selectedFiles;
       this.fileName = this.files.length > 0 ? this.files[0].name : '';
       this.islimit = false;
     }
+
     this.fileSelected.emit(this.files);
+
+    // Restablece el valor del input para permitir la selección del mismo archivo nuevamente
+    if (this.fileInput) {
+      this.fileInput.nativeElement.value = '';
+    }
   }
 
 
   deleteFile(file: File) {
     this.files = this.files.filter(f => f !== file);
     this.fileName = this.files.length > 0 ? this.files[0].name : '';
+
+    // Emitir la lista actualizada de archivos
+    this.fileSelected.emit(this.files);
+
+    // Si todos los archivos fueron eliminados, establece isFileUpdate en null
+    if (this.files.length === 0) {
+      this.isFileUpdate = null;
+    }
   }
 
   triggerFileInput() {
@@ -83,7 +97,7 @@ export class FileUploadComponent implements OnInit, AfterViewInit {
     if (this.files.length === 0) {
       this.isFileUpdate = false;
     } else {
-      
+
       this.isFileUpdate = true;
       // Lógica adicional para manejar la carga del archivo
     }
