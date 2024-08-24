@@ -1,61 +1,42 @@
 <div
   class="fixed inset-0 w-full h-full z-[1000] bg-black bg-opacity-50 duration-300 overflow-y-auto flex items-center justify-center"
-  *ngIf="showModal"
-  [@fadeInOut]
->
-  <div
-    class="relative sm:w-3/4 md:w-1/2 lg:w-1/3 mx-2 sm:mx-auto my-10 opacity-100"
-  >
-    <div
-      class="relative bg-white shadow-lg rounded-md text-gray-900 z-20 p-4"
-      (click)="closeModal()"
-      *ngIf="showModal"
-      [@scaleInOut]
-    >
-      <button
-        class="absolute top-2 right-2 focus:outline-none p-2"
-        (click)="closeModal()"
-      >
-        <svg
-          class="fill-current"
-          xmlns="http://www.w3.org/2000/svg"
-          width="18"
-          height="18"
-          viewBox="0 0 18 18"
-        >
+  *ngIf="showModal" [@fadeInOut] (click)="onBackdropClick($event)">
+  <div class="relative sm:w-3/4 md:w-1/2 lg:w-1/3 mx-2 sm:mx-auto my-10 opacity-100" (click)="$event.stopPropagation()">
+    <div class="relative bg-white shadow-lg rounded-md text-gray-900 z-20 p-4 py-11" *ngIf="showModal" [@scaleInOut]>
+      <button class="absolute top-2 right-2 focus:outline-none p-2" (click)="onCloseIconClick()">
+        <svg class="fill-primary1" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
           <path
-            d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"
-          ></path>
+            d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z">
+          </path>
         </svg>
       </button>
       <div class="flex flex-col items-center">
-        <div class="mb-4">
+        <div class="mb-4 mt-4">
           <!-- Icono centrado -->
-          <svg
-            class="w-12 h-12 text-primary1"
-            fill="currentColor"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 20 20"
-          >
-            <path
-              d="M10 15l-5.5-5.5 1.5-1.5L10 12l4.5-4.5 1.5 1.5L10 15z"
-            ></path>
-          </svg>
+          <i class="pi text-[40px]" [ngClass]="[
+              alertSettings[TypeAlert].icon,
+              textColor
+            ]" [ngStyle]="{
+              animation:
+                TypeAlert === 'loader' ? 'spin 1s linear infinite' : 'none'
+            }"></i>
         </div>
-        <h2 class="font-semibold text-lg mb-2 text-center">{{ title }}</h2>
-        <p class="text-center mb-4">{{ message }}</p>
+        <p class="font-semibold text-2xl mb-2 text-center" [ngClass]="textColor">
+          {{ title }}
+        </p>
+
+        <p *ngIf="showSubtitle" class="text-center text-gray-600"><b>{{ subtitle }}</b></p>
+        <p [innerHTML]="message" class="text-center mb-4"></p>
         <div class="flex space-x-4">
-          <button
+          <button *ngIf="showFirstButton"
             class="bg-primary1 font-semibold text-white p-2 w-32 rounded-full focus:outline-none focus:ring shadow-lg hover:shadow-none transition-all duration-300"
-            (click)="closeModal()"
-          >
+            (click)="onButton1Click()">
             {{ buttonText }}
           </button>
-          <button
+          <button *ngIf="showCancelButton"
             class="border border-primary1 font-semibold text-primary1 p-2 w-32 rounded-full focus:outline-none focus:ring shadow-lg hover:shadow-none transition-all duration-300"
-            (click)="closeModal()"
-          >
-            Cancel
+            (click)="onButton2Click()">
+            {{ cancelButtonText }}
           </button>
         </div>
       </div>
