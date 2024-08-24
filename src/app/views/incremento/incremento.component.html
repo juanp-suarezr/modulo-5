@@ -1,97 +1,108 @@
-<div class="sm:grid sm:grid-cols-10 gap-4" *ngIf="user.roles[0].roleName == 'ROLE_ESCRITURA_MIN'">
+<div class="sm:grid sm:grid-cols-10 gap-4" *ngIf="user.roles[0].roleName == 'ROLE_ESCRITURA_MIN'"
+     xmlns="http://www.w3.org/1999/html">
 
   <div class="md:col-span-2 sm:col-span-3 w-auto sm:mt-16 mt-12">
     <app-left-nav [data]="infoMenu" active="{{activeNum}}"></app-left-nav>
   </div>
-  <!-- solicitud contet -->
+  <!-- solicitud contenido -->
   <div class="md:col-span-8 sm:col-span-7 w-auto sm:mt-10 mt-4 md:px-8 px-2" *ngIf="activeNum == '0'">
-    <h3 class="text-primary1 !font-bold"> Incremento de Capacidad Transportadora</h3>
+
+    <h3 class="text-primary1 !font-bold mt-4"> Incremento de Capacidad Transportadora</h3>
 
     <!-- sttepper -->
     <div class="mt-4 w-full inline-flex justify-center">
       <app-sttepper [dataStep]="infoStepper"></app-sttepper>
     </div>
 
-    <!-- form 1 -->
+    <!-- formulario 1 -->
     <form [formGroup]="formGroup1" class="px-4 md:pl-16 md:pe-16 mt-6 active1 mb-6" *ngIf="activeStep == 1">
+
       <div class="col-span-2">
         <p class="font-bold">Cargue de documentación*</p>
         <p class="text-primary4 font-[500]">Los campos marcados con * son obligatorios</p>
       </div>
-      <!-- content 1 -->
+
+      <!-- contenido 1 -->
       <div class="content1 md:grid sm:grid-cols-2 md:gap-x-36 md:flex items-center h-full">
+
         <!-- cargue 1 -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
-          <p class="text-primary3 font-semibold h-full"
+          <p class="text-primary3 font-semibold"
              [ngClass]="{'!text-error !font-normal': errorStates[1]}">
             Copia de los contratos de servicio especial, que esté
             ejecutando y de los nuevos que requiere atender con la
             nueva capacidad*
           </p>
-          <app-file-upload class="mt-2" [dataClass]="dataClass" [maxFiles]="1" mimes=".pdf"
+          <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" [maxFiles]="1" mimes=".pdf"
                            [error]="errorStates[1]" (fileSelected)="onFileSelected($event, 1)"></app-file-upload>
         </div>
 
         <!-- cargue 2 -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
-          <p class="text-primary3 font-semibold h-full"
+          <p class="text-primary3 font-semibold"
              [ngClass]="{'!text-error !font-normal': errorStates[2]}">
             Plan de rodamiento, donde demuestre la utilización
             de vehículos autorizados y de los que solicitan con el
             aumento, aclarando cuales son los vehículos nuevos*
           </p>
-          <app-file-upload class="mt-2" [dataClass]="dataClass" [maxFiles]="1" mimes=".pdf"
+          <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" [maxFiles]="1" mimes=".pdf"
                            [error]="errorStates[2]" (fileSelected)="onFileSelected($event, 2)"></app-file-upload>
         </div>
+
       </div>
 
-      <!-- content 2 -->
+      <!-- contenido 2 -->
       <div class="content2 md:grid sm:grid-cols-2 md:gap-x-36 md:flex items-center h-full pt-6">
+
         <!-- cargue 3 -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
-          <p class="text-primary3 font-semibold h-full"
+          <p class="text-primary3 font-semibold"
              [ngClass]="{'!text-error !font-normal': errorStates[3]}">
             Estructura de costos de las operaciones que tienen
             contratadas y las tarifas establecidas por el servicio*
           </p>
-          <app-file-upload class="mt-2" [dataClass]="dataClass" [maxFiles]="1" mimes=".pdf"
+          <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" [maxFiles]="1" mimes=".pdf"
                            [error]="errorStates[3]" (fileSelected)="onFileSelected($event, 3)"></app-file-upload>
         </div>
 
         <!-- cargue 4 -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
-          <p class="text-primary3 font-semibold h-full"
+          <p class="text-primary3 font-semibold"
              [ngClass]="{'!text-error !font-normal': errorStates[4]}">
             Certificado de cumplimiento del 10% de flota de la
             empresa*
           </p>
-          <app-file-upload class="mt-2" [dataClass]="dataClass" [maxFiles]="1" mimes=".pdf"
+          <br>
+          <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" [maxFiles]="1" mimes=".pdf"
                            [error]="errorStates[4]" (fileSelected)="onFileSelected($event, 4)"></app-file-upload>
         </div>
+
       </div>
 
-      <!-- content 3 -->
+      <!-- contenido 3 -->
       <div class="content1 md:grid sm:grid-cols-2 md:gap-x-36 md:flex items-center h-full pt-6">
+
         <!-- cargue 5 -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
-          <p class="text-primary3 font-semibold h-full"
+          <p class="text-primary3 font-semibold"
              [ngClass]="{'!text-error !font-normal': errorStates[5]}">
             Certificado de Existencia y Representación legal no
             menos a 30 días*
           </p>
-          <app-file-upload class="mt-2" [dataClass]="dataClass" [maxFiles]="1" mimes=".pdf"
+          <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" [maxFiles]="1" mimes=".pdf"
                            [error]="errorStates[5]" (fileSelected)="onFileSelected($event, 5)"></app-file-upload>
         </div>
 
         <!-- cargue 6 -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
-          <p class="text-primary3 font-semibold h-full"
+          <p class="text-primary3 font-semibold"
              [ngClass]="{'!text-error !font-normal': errorStates[6]}">
             Registro Único Tributario*
           </p>
-          <app-file-upload class="mt-2" [dataClass]="dataClass" [maxFiles]="1" mimes=".pdf"
+          <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" [maxFiles]="1" mimes=".pdf"
                            [error]="errorStates[6]" (fileSelected)="onFileSelected($event, 6)"></app-file-upload>
         </div>
+
       </div>
 
       <div class="mt-6 w-full flex justify-end">
@@ -100,111 +111,102 @@
 
     </form>
 
-    <!-- form 2 -->
+    <!-- formulario 2 -->
     <form [formGroup]="formGroup2" class="px-4 md:pl-16 md:pe-16 mt-6 active1 mb-6" *ngIf="activeStep == 2">
+
       <div class="col-span-2">
         <p class="font-bold">Cargue de documentación*</p>
         <p class="text-primary4 font-[500]">Los campos marcados con * son obligatorios</p>
       </div>
-      <!-- content 1 -->
+
+      <!-- contenido 1 -->
       <div class="content1 md:grid sm:grid-cols-2 md:gap-x-36 md:flex items-center h-full">
+
         <!-- cargue 7 -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
-          <p class="text-primary3 font-semibold h-full"
+          <p class="text-primary3 font-semibold"
              [ngClass]="{'!text-error !font-normal': errorStates[7]}">
             Resolución de habilitación*
           </p>
-          <app-file-upload class="mt-2" [dataClass]="dataClass" mimes=".pdf" [error]="errorStates[7]"
-                           (fileSelected)="onFileSelected($event, 7)"></app-file-upload>
+          <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" mimes=".pdf" [maxFiles]="1"
+                           [error]="errorStates[7]" (fileSelected)="onFileSelected($event, 7)"></app-file-upload>
         </div>
 
         <!-- cargue 8 -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
-          <p class="text-primary3 font-semibold h-full"
+          <p class="text-primary3 font-semibold"
              [ngClass]="{'!text-error !font-normal': errorStates[8]}">
             Cédula de Ciudadanía del Representante Legal*
           </p>
-          <app-file-upload class="mt-2" [dataClass]="dataClass" mimes=".pdf" [error]="errorStates[8]"
-                           (fileSelected)="onFileSelected($event, 8)"></app-file-upload>
+          <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" mimes=".pdf" [maxFiles]="1"
+                           [error]="errorStates[8]" (fileSelected)="onFileSelected($event, 8)"></app-file-upload>
         </div>
       </div>
 
-      <!-- content 2 -->
+      <!-- contenido 2 -->
       <div class="content2 md:grid sm:grid-cols-2 md:gap-x-36 md:flex items-center h-full pt-6">
+
         <!-- cargue 9 -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
-          <p class="text-primary3 font-semibold h-full"
+          <p class="text-primary3 font-semibold"
              [ngClass]="{'!text-error !font-normal': errorStates[9]}">
             Estados financieros de la empresa*
           </p>
-
-          <app-file-upload class="mt-2" [dataClass]="dataClass" mimes=".pdf" [error]="errorStates[9]"
-                           (fileSelected)="onFileSelected($event, 9)"></app-file-upload>
+          <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" mimes=".pdf" [maxFiles]="1"
+                           [error]="errorStates[9]" (fileSelected)="onFileSelected($event, 9)"></app-file-upload>
         </div>
 
         <!-- cargue 10 -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
-          <p class="text-primary3 font-semibold h-full"
+          <p class="text-primary3 font-semibold"
              [ngClass]="{'!text-error !font-normal': errorStates[10]}">
             Cédula del contador que firma los estados financieros*
           </p>
-          <app-file-upload class="mt-2" [dataClass]="dataClass" mimes=".pdf" [error]="errorStates[10]"
-                           (fileSelected)="onFileSelected($event, 10)"></app-file-upload>
+          <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" mimes=".pdf" [maxFiles]="1"
+                           [error]="errorStates[10]" (fileSelected)="onFileSelected($event, 10)"></app-file-upload>
         </div>
       </div>
 
-      <!-- content 3 -->
+      <!-- contenido 3 -->
       <div class="content1 md:gap-x-36 md:flex items-center h-full pt-6">
+
         <!-- cargue 11 -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
-          <p class="text-primary3 font-semibold h-full"
+          <p class="text-primary3 font-semibold"
              [ngClass]="{'!text-error !font-normal': errorStates[11]}">
             Tarjeta profesional contador que firma estados financieros*
           </p>
-          <app-file-upload class="mt-2" [dataClass]="dataClass" mimes=".pdf" [error]="errorStates[11]"
-                           (fileSelected)="onFileSelected($event, 11)"></app-file-upload>
+          <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" mimes=".pdf" [maxFiles]="1"
+                           [error]="errorStates[11]" (fileSelected)="onFileSelected($event, 11)"></app-file-upload>
         </div>
 
-        <!-- Titulos -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
-          <div class="w-full flex flex-row justify-center items-start pt-6 my-auto h-full">
-            <p class="text-primary3 font-semibold h-full"
+
+          <!-- Titulos -->
+          <div class="w-full flex flex-row justify-center items-start pt-6 my-auto">
+            <p class="text-primary3 font-semibold"
                [ngClass]="{'!text-error !font-normal': errorStates[0]}">
-              Cantidad vehiculos que está
+              Cantidad vehículos que está
               requiriendo incrementar*
             </p>
-            <p class="text-primary3 font-semibold h-full" *ngIf="!isValidSelection()"
-               [ngClass]="{'!text-error !font-normal': errorStates[0]}">
-              0% de propiedad
-              de la empresa*
-            </p>
-            <p class="text-primary3 font-semibold h-full" *ngIf="isValidSelection()"
-               [ngClass]="{'!text-error !font-normal': errorStates[0]}">
-              {{ selectedOption }} de propiedad
+
+            <p class="text-primary3 font-semibold"
+               [ngClass]="{'!text-error !font-normal': errorStates[1]}">
+              10% de propiedad
               de la empresa*
             </p>
           </div>
-          <div class="w-full flex flex-row justify-center items-center pt-6 my-auto h-full">
-            <!-- input 1 -->
-            <input-text class="w-30 mt-2 cursor-pointer" [input]="inputs[0]" [index]="0"
-                        [error]="errorStates[0]" (inputChange)="onInputChange($event.index, $event.event)"></input-text>
 
-            <!-- combobox -->
-            <div class="flex justify-center items-center mx-2">
-              <select (change)="onOptionSelected($event)" class="custom-combobox">
-                <option *ngFor="let option of options" [value]="option.value">
-                  {{ option.label }}
-                </option>
-              </select>
-            </div>
-
-            <!-- input 2 -->
-            <input-text class="w-30 mt-2 cursor-pointer" [input]="inputs[1]" [index]="1"
+          <div class="flex flex-row justify-center items-start pt-6 my-auto">
+            <!--Input-->
+            <input-text class="w-full mt-2 cursor-pointer" [input]="inputs[0]" [index]="0"
                         [error]="errorStates[0]" (inputChange)="onInputChange($event.index, $event.event)"></input-text>
+            <app-select class="w-full mt-2 cursor-pointer" [input]="inputs[1]" [index]="1"
+                        [error]="errorStates[1]" (inputChange)="onInputChange($event.index, $event.event)"></app-select>
           </div>
+
           <!-- texto informativo -->
           <div class="flex inline-flex md:gap-3 gap-2 h-full w-full mt-2">
-
                         <span class="lg:w-[12%] sm:w-[12%] w-[10%] h-full flex justify-center lg:px-1 m-auto">
                             <img class="w-full m-auto" src="assets/iconoInfo.svg">
                         </span>
@@ -231,53 +233,13 @@
         <p class="font-bold">Digitar los siguientes campos*</p>
         <p class="text-primary4 font-[500]">Los campos marcados con * son obligatorios</p>
       </div>
-
       <!-- content 1 -->
       <div class="content1 md:grid sm:grid-cols-2 md:gap-x-36 md:flex items-center h-full">
-
-        <!-- cargue 11 -->
-        <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
-          <p class="text-primary3 font-semibold h-full"
-             [ngClass]="{'!text-error !font-normal': errorStates[0]}">
-            Certificado del 10% de propiedad de la empresa*
-          </p>
-          <app-file-upload class="mt-2" [dataClass]="dataClass" mimes=".pdf" [error]="errorStates[0]"
-                           (fileSelected)="onFileSelected($event, 0)"></app-file-upload>
-        </div>
-
-        <!-- input 3 -->
-        <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
-          <p class="text-primary3 font-semibold h-full"
-             [ngClass]="{'!text-error !font-normal': errorStates[1]}">
-            Capital Social en SMLV*
-          </p>
-          <!-- input -->
-          <input-text class="w-full mt-2 cursor-pointer" [input]="inputs[1]" [index]="1"
-                      [error]="errorStates[1]" (inputChange)="onInputChange($event.index, $event.event)"></input-text>
-          <!-- texto informativo -->
-          <div class="flex inline-flex md:gap-3 gap-2 h-full w-full mt-2">
-
-                        <span class="lg:w-[12%] sm:w-[12%] w-[10%] h-full flex justify-center lg:px-1 m-auto">
-                            <img class="w-full m-auto" src="assets/iconoInfo.svg">
-                        </span>
-            <p class="text-primary1 work-sans text-[11px] mt-2 w-auto">
-              Empresa con capacidad transportadora operacional autorizada de
-              hasta 51 y 300 vehículos: Capital pagado mínimo: 400 SMLMV –
-              Patrimonio líquido mínimo > 280 SMLMV
-            </p>
-          </div>
-
-        </div>
-
-      </div>
-
-      <!-- content 2 -->
-      <div class="content1 md:grid sm:grid-cols-2 md:gap-x-36 md:flex items-center h-full">
-        <!-- input 4 -->
+        <!-- input 1 Capital Social en SMLV* -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
           <p class="text-primary3 font-semibold h-full"
              [ngClass]="{'!text-error !font-normal': errorStates[2]}">
-            Patrimonio Líquido en SMLV*
+            Capital Social en SMLV*
           </p>
           <!-- input -->
           <input-text class="w-full mt-2 cursor-pointer" [input]="inputs[2]" [index]="2"
@@ -296,6 +258,44 @@
           </div>
 
         </div>
+
+        <!-- input 2 Patrimonio Líquido en SMLV* -->
+        <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+          <p class="text-primary3 font-semibold h-full"
+             [ngClass]="{'!text-error !font-normal': errorStates[1]}">
+            Patrimonio Líquido en SMLV*
+          </p>
+          <!-- input -->
+          <input-text class="w-full mt-2 cursor-pointer" [input]="inputs[1]" [index]="1"
+                      [error]="errorStates[1]" (inputChange)="onInputChange($event.index, $event.event)"></input-text>
+          <!-- texto informativo -->
+          <div class="flex inline-flex md:gap-3 gap-2 h-full w-full mt-2">
+
+                        <span class="lg:w-[12%] sm:w-[12%] w-[10%] h-full flex justify-center lg:px-1 m-auto">
+                            <img class="w-full m-auto" src="assets/iconoInfo.svg">
+                        </span>
+            <p class="text-primary1 work-sans text-[11px] mt-2 w-auto">
+              Empresa con capacidad transportadora operacional autorizada de
+              hasta 51 y 300 vehículos: Capital pagado mínimo: 400 SMLMV –
+              Patrimonio líquido mínimo > 280 SMLMV
+            </p>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- content 2 -->
+      <div class="content2 md:grid sm:grid-cols-2 md:gap-x-36 md:flex items-center h-full pt-6">
+        <!-- select1 Cantidad de vehículos que está requiriendo fijar* -->
+        <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+          <p class="text-primary3 font-semibold h-full">
+            Cantidad de vehículos que está requiriendo fijar*
+          </p>
+          <app-select class="w-full md:pe-2 m-auto cursor-pointer mt-4" [input]="inputs[2]" [index]="2"
+                      [error]="errorStates[2]" (inputChange)="onInputChange($event.index, $event.event)"></app-select>
+
+        </div>
+
       </div>
 
 
@@ -310,15 +310,15 @@
   <div class="md:col-span-8 sm:col-span-7 w-auto sm:mt-10 mt-4 md:px-8 px-2" *ngIf="activeNum == '1'">
     <h3 class="text-primary1 !font-bold">Fijación de Capacidad Transportadora</h3>
 
-    <!-- form 3 -->
-    <div class="px-4 md:pl-16 md:pe-16 mt-6 active1 mb-6">
+    <!-- form 4 -->
+    <form [formGroup]="formGroup3" class="px-4 md:pl-16 md:pe-16 mt-6 active1 mb-6">
       <div class="col-span-2">
         <p class="font-bold">Digitar los siguientes campos*</p>
-        <p class="text-primary4 font-[500]">Los campos marcados con * son obligatorios</p>
+        <p class="text-primary4 font-[500] pt-4">Los campos marcados con * son obligatorios</p>
         <!-- texto informativo -->
-        <div class="flex inline-flex md:gap-3 gap-2 h-full w-full">
+        <div class="md:w-4/6 flex inline-flex md:gap-3 gap-2 h-full w-full mt-2">
 
-                    <span class="lg:w-[12%] sm:w-[12%] w-[10%] h-full flex justify-center lg:px-1 m-auto">
+                    <span class="lg:w-[7%] sm:w-[8%] w-[10%] h-full flex justify-center lg:px-1 m-auto">
                         <img class="w-full m-auto" src="assets/iconoInfo.svg">
                     </span>
           <p class="text-primary1 work-sans text-[11px] mt-2 w-auto">
@@ -335,7 +335,8 @@
           <p class="text-primary3 font-semibold h-full">
             Cantidad de contratos*
           </p>
-
+          <app-select class="w-full md:pe-2 m-auto cursor-pointer mt-4" [input]="inputs[3]" [index]="3"
+                      [error]="errorStates[3]" (inputChange)="onInputChange($event.index, $event.event)"></app-select>
         </div>
 
         <!-- input 4 N° de contrato* -->
@@ -438,10 +439,10 @@
 
 
       <div class="mt-6 w-full flex justify-center">
-        <app-primary-button class="" (click)="changeActiveStep(4)">Enviar</app-primary-button>
+        <app-primary-button class="" (click)="onSubmitAllForms()">Enviar</app-primary-button>
       </div>
 
-    </div>
+    </form>
 
   </div>
 
