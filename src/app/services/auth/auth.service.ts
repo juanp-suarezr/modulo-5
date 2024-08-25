@@ -41,8 +41,14 @@ export class AuthService {
       lastLogin: '2024-08-15T18:45:00Z',
     },
   ];
+  currentUser: any = null;
 
-  constructor() {}
+  constructor() {
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      this.currentUser = JSON.parse(storedUser); // Restaura el usuario autenticado
+    }
+  }
 
   login(email: string, password: string): Observable<any> {
     const user = this.users.find(
@@ -51,6 +57,8 @@ export class AuthService {
 
     if (user) {
       // Simula una respuesta tipo Spring Boot con JSON
+      localStorage.setItem('user', JSON.stringify(user));
+      this.currentUser = user; // Actualiza el usuario autenticado en el servicio
       return of({
         token: 'fake-jwt-token',
         user: {
@@ -71,5 +79,15 @@ export class AuthService {
 
   getUsers(): any {
     return this.users;
+  }
+
+  logout(): void {
+    localStorage.removeItem('user'); // Elimina el usuario de localStorage
+    this.currentUser = null; // Resetea el estado del usuario autenticado
+  }
+
+  isAuthenticated(): boolean {
+    // Verifica si hay un usuario autenticado
+    return !!this.currentUser;
   }
 }

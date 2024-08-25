@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { AuthGuard } from './auth.guard';
 
 export const routes: Routes = [
     {
@@ -7,18 +8,18 @@ export const routes: Routes = [
         children: [
             {
                 path: 'dashboard',
-                loadComponent: () => import('./views/dashboard/dashboard.component')
-                
+                loadComponent: () => import('./views/dashboard/dashboard.component'),
+                canActivate: [AuthGuard],
             },
             {
                 path: 'fijacioncapacidadtransportadora',
-                loadComponent: () => import('./views/fijacion/fijacion.component')
-                
+                loadComponent: () => import('./views/fijacion/fijacion.component'),
+                canActivate: [AuthGuard],
             },
             {
                 path: 'incrementocapacidadtransportadora',
-                loadComponent: () => import('./views/incremento/incremento.component')
-                
+                loadComponent: () => import('./views/incremento/incremento.component'),
+                canActivate: [AuthGuard],
             },
             {
                 path: '',
@@ -35,10 +36,12 @@ export const routes: Routes = [
             {
                 path: 'login',
                 loadComponent: () => import('./views/login/login.component'),
+                canActivate: [AuthGuard],
             },
             {
                 path: 'verificacion',
                 loadComponent: () => import('./views/verificacion/verificacion.component'),
+                canActivate: [AuthGuard],
             },
             
             {
