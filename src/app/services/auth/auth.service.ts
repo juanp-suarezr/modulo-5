@@ -68,4 +68,8 @@ export class AuthService {
       return of({ error: 'Invalid credentials' });
     }
   }
+
+  getUsers(): any {
+    return this.users;
+  }
 }
