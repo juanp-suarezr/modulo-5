@@ -14,6 +14,7 @@ import { RouterService } from '../../services/breadcrumb/router.service';
 import { Subscription } from 'rxjs';
 //servicios de consultas api
 import { ApiService } from '../../services/api/api.service';
+import { AuthService } from '../../services/auth/auth.service';
 
 @Component({
   selector: 'app-layout',
@@ -35,7 +36,7 @@ export default class LayoutComponent implements OnInit, OnDestroy {
 
   constructor(
     private breadcrumbService: RouterService,
-    private apiService: ApiService
+    private authService: AuthService
   ) {}
 
   user: any;
@@ -48,15 +49,7 @@ export default class LayoutComponent implements OnInit, OnDestroy {
     );
 
     //traer los datos de la consulta
-    this.apiService.getAuthUserAndRoles().subscribe(
-      (response) => {
-        this.user = response.user;
-        console.log('User data:', this.user);
-      },
-      (error) => {
-        console.error('Error fetching user data', error);
-      }
-    );
+    this.user = this.authService.currentUser;
   }
 
   ngOnDestroy(): void {
@@ -64,4 +57,5 @@ export default class LayoutComponent implements OnInit, OnDestroy {
       this.breadcrumbSubscription.unsubscribe();
     }
   }
+
 }

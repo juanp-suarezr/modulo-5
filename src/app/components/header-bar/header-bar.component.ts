@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../../services/auth/auth.service';
 
 @Component({
   selector: 'app-header-bar',
@@ -11,6 +12,10 @@ import { CommonModule } from '@angular/common';
 export class HeaderBarComponent {
   @Input() user:any = [];
   menuVisible = false;
+  
+  constructor(
+    private authService: AuthService
+  ) {}
 
   onFocus() {
     this.menuVisible = true;
@@ -20,5 +25,11 @@ export class HeaderBarComponent {
     setTimeout(() => {
       this.menuVisible = false;
     }, 100);
+  }
+
+  logout() {
+    console.log("cerrar sesion");
+    this.authService.logout();
+    location.reload();
   }
 }
