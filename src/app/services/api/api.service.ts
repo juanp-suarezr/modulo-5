@@ -117,6 +117,62 @@ export class ApiService {
 
     return of(response);
   }
+
+  //obtener solicitudes indicadores gestion
+  getSolicitudesTransporte2(): Observable<any> {
+    const response = {
+      data: [
+        {
+          id: '1.586',
+          fecha: '2024-07-11T05:00:00',
+          empresa: 'Transdep Especial Colombia S.A.S',
+          territorial: 'Dirección Territorial Magdalena',
+          EstadoSolicitud: 'Asignar',
+          categoria: 'Fijación de Capacidad Transportadora',
+          Semáforoalerta: '',
+          numradicado: ''
+        },
+        {
+          id: '1.587',
+          fecha: '2024-08-11T05:00:00',
+          empresa: 'Transdep Especial Colombia S.A.S',
+          territorial: 'Dirección Territorial Magdalena',
+          EstadoSolicitud: 'En estudio',
+          categoria: 'Fijación de Capacidad Transportadora',
+          Semáforoalerta: '6 dias',
+          numradicado: '2024123456'
+
+        },
+        {
+          id: '1.588',
+          fecha: '2024-09-11T05:00:00',
+          empresa: 'Transdep Especial Colombia S.A.S',
+          territorial: 'Dirección Territorial Magdalena',
+          EstadoSolicitud: 'Asignar',
+          categoria: 'Fijación de Capacidad Transportadora',
+          Semáforoalerta: '',
+          numradicado: ''
+        },
+      ],
+      current_page: 1,
+      per_page: 3,
+      total: 10,
+      total_pages: 4,
+      next_page_url: 'https://api.example.com/data?page=2',
+      prev_page_url: null,
+      links: [
+        { url: null, label: 'Anterior', active: false },
+        {
+          url: 'https://api.example.com/data?page=1',
+          label: '1',
+          active: true,
+        },
+        
+      ],
+    };
+
+    return of(response);
+  }
   
   
 }
