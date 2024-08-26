@@ -27,24 +27,28 @@
 
         <!-- cargue 1 -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+
           <p class="text-primary3 font-semibold"
              [ngClass]="{'!text-error !font-normal': errorStates[1]}">
             Copia de los contratos de servicio especial, que esté
             ejecutando y de los nuevos que requiere atender con la
             nueva capacidad*
           </p>
+
           <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" [maxFiles]="1" mimes=".pdf"
                            [error]="errorStates[1]" (fileSelected)="onFileSelected($event, 1)"></app-file-upload>
         </div>
 
         <!-- cargue 2 -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+
           <p class="text-primary3 font-semibold"
              [ngClass]="{'!text-error !font-normal': errorStates[2]}">
             Plan de rodamiento, donde demuestre la utilización
             de vehículos autorizados y de los que solicitan con el
             aumento, aclarando cuales son los vehículos nuevos*
           </p>
+
           <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" [maxFiles]="1" mimes=".pdf"
                            [error]="errorStates[2]" (fileSelected)="onFileSelected($event, 2)"></app-file-upload>
         </div>
@@ -56,23 +60,26 @@
 
         <!-- cargue 3 -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+
           <p class="text-primary3 font-semibold"
              [ngClass]="{'!text-error !font-normal': errorStates[3]}">
             Estructura de costos de las operaciones que tienen
             contratadas y las tarifas establecidas por el servicio*
           </p>
+
           <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" [maxFiles]="1" mimes=".pdf"
                            [error]="errorStates[3]" (fileSelected)="onFileSelected($event, 3)"></app-file-upload>
         </div>
 
         <!-- cargue 4 -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+
           <p class="text-primary3 font-semibold"
              [ngClass]="{'!text-error !font-normal': errorStates[4]}">
             Certificado de cumplimiento del 10% de flota de la
             empresa*
-          </p>
-          <br>
+          </p><br>
+
           <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" [maxFiles]="1" mimes=".pdf"
                            [error]="errorStates[4]" (fileSelected)="onFileSelected($event, 4)"></app-file-upload>
         </div>
@@ -84,21 +91,25 @@
 
         <!-- cargue 5 -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+
           <p class="text-primary3 font-semibold"
              [ngClass]="{'!text-error !font-normal': errorStates[5]}">
             Certificado de Existencia y Representación legal no
             menos a 30 días*
           </p>
+
           <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" [maxFiles]="1" mimes=".pdf"
                            [error]="errorStates[5]" (fileSelected)="onFileSelected($event, 5)"></app-file-upload>
         </div>
 
         <!-- cargue 6 -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+
           <p class="text-primary3 font-semibold"
              [ngClass]="{'!text-error !font-normal': errorStates[6]}">
             Registro Único Tributario*
           </p>
+
           <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" [maxFiles]="1" mimes=".pdf"
                            [error]="errorStates[6]" (fileSelected)="onFileSelected($event, 6)"></app-file-upload>
         </div>
@@ -124,20 +135,24 @@
 
         <!-- cargue 7 -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+
           <p class="text-primary3 font-semibold"
              [ngClass]="{'!text-error !font-normal': errorStates[7]}">
             Resolución de habilitación*
           </p>
+
           <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" mimes=".pdf" [maxFiles]="1"
                            [error]="errorStates[7]" (fileSelected)="onFileSelected($event, 7)"></app-file-upload>
         </div>
 
         <!-- cargue 8 -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+
           <p class="text-primary3 font-semibold"
              [ngClass]="{'!text-error !font-normal': errorStates[8]}">
             Cédula de Ciudadanía del Representante Legal*
           </p>
+
           <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" mimes=".pdf" [maxFiles]="1"
                            [error]="errorStates[8]" (fileSelected)="onFileSelected($event, 8)"></app-file-upload>
         </div>
@@ -148,20 +163,24 @@
 
         <!-- cargue 9 -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+
           <p class="text-primary3 font-semibold"
              [ngClass]="{'!text-error !font-normal': errorStates[9]}">
             Estados financieros de la empresa*
           </p>
+
           <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" mimes=".pdf" [maxFiles]="1"
                            [error]="errorStates[9]" (fileSelected)="onFileSelected($event, 9)"></app-file-upload>
         </div>
 
         <!-- cargue 10 -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+
           <p class="text-primary3 font-semibold"
              [ngClass]="{'!text-error !font-normal': errorStates[10]}">
             Cédula del contador que firma los estados financieros*
           </p>
+
           <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" mimes=".pdf" [maxFiles]="1"
                            [error]="errorStates[10]" (fileSelected)="onFileSelected($event, 10)"></app-file-upload>
         </div>
@@ -172,10 +191,12 @@
 
         <!-- cargue 11 -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+
           <p class="text-primary3 font-semibold"
              [ngClass]="{'!text-error !font-normal': errorStates[11]}">
             Tarjeta profesional contador que firma estados financieros*
           </p>
+
           <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" mimes=".pdf" [maxFiles]="1"
                            [error]="errorStates[11]" (fileSelected)="onFileSelected($event, 11)"></app-file-upload>
         </div>
@@ -192,17 +213,19 @@
 
             <p class="text-primary3 font-semibold"
                [ngClass]="{'!text-error !font-normal': errorStates[1]}">
-              10% de propiedad
-              de la empresa*
+              {{ selectedPercentage }} de propiedad de la empresa*
             </p>
           </div>
 
           <div class="flex flex-row justify-center items-start pt-6 my-auto">
-            <!--Input-->
             <input-text class="w-full mt-2 cursor-pointer" [input]="inputs[0]" [index]="0"
                         [error]="errorStates[0]" (inputChange)="onInputChange($event.index, $event.event)"></input-text>
+
             <app-select class="w-full mt-2 cursor-pointer" [input]="inputs[1]" [index]="1"
                         [error]="errorStates[1]" (inputChange)="onInputChange($event.index, $event.event)"></app-select>
+
+            <input-text class="w-full mt-2" [input]="inputs[2]" [index]="2"
+                        [error]="errorStates[2]" [disabled]="true"></input-text>
           </div>
 
           <!-- texto informativo -->
@@ -227,23 +250,37 @@
 
     </form>
 
-    <!-- form 3 -->
+    <!-- formulario 3 -->
     <form [formGroup]="formGroup3" class="px-4 md:pl-16 md:pe-16 mt-6 active1 mb-6" *ngIf="activeStep == 3">
       <div class="col-span-2">
         <p class="font-bold">Digitar los siguientes campos*</p>
         <p class="text-primary4 font-[500]">Los campos marcados con * son obligatorios</p>
       </div>
-      <!-- content 1 -->
+
+      <!-- contenido 1 -->
       <div class="content1 md:grid sm:grid-cols-2 md:gap-x-36 md:flex items-center h-full">
-        <!-- input 1 Capital Social en SMLV* -->
+
+        <!-- cargue 12 -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+          <p class="text-primary3 font-semibold"
+             [ngClass]="{'!text-error !font-normal': errorStates[12]}">
+            Certificado del 10% de propiedad de la empresa*
+          </p>
+          <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" mimes=".pdf" [maxFiles]="1"
+                           [error]="errorStates[12]" (fileSelected)="onFileSelected($event, 12)"></app-file-upload>
+        </div>
+
+        <!-- input 1 -->
+        <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+
           <p class="text-primary3 font-semibold h-full"
-             [ngClass]="{'!text-error !font-normal': errorStates[2]}">
+             [ngClass]="{'!text-error !font-normal': errorStates[3]}">
             Capital Social en SMLV*
           </p>
-          <!-- input -->
-          <input-text class="w-full mt-2 cursor-pointer" [input]="inputs[2]" [index]="2"
-                      [error]="errorStates[2]" (inputChange)="onInputChange($event.index, $event.event)"></input-text>
+
+          <input-text class="w-full mt-2 cursor-pointer" [input]="inputs[3]" [index]="3"
+                      [error]="errorStates[3]" (inputChange)="onInputChange($event.index, $event.event)"></input-text>
+
           <!-- texto informativo -->
           <div class="flex inline-flex md:gap-3 gap-2 h-full w-full mt-2">
 
@@ -255,44 +292,37 @@
               hasta 51 y 300 vehículos: Capital pagado mínimo: 400 SMLMV –
               Patrimonio líquido mínimo > 280 SMLMV
             </p>
+
           </div>
 
         </div>
 
-        <!-- input 2 Patrimonio Líquido en SMLV* -->
-        <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
-          <p class="text-primary3 font-semibold h-full"
-             [ngClass]="{'!text-error !font-normal': errorStates[1]}">
-            Patrimonio Líquido en SMLV*
-          </p>
-          <!-- input -->
-          <input-text class="w-full mt-2 cursor-pointer" [input]="inputs[1]" [index]="1"
-                      [error]="errorStates[1]" (inputChange)="onInputChange($event.index, $event.event)"></input-text>
-          <!-- texto informativo -->
-          <div class="flex inline-flex md:gap-3 gap-2 h-full w-full mt-2">
-
-                        <span class="lg:w-[12%] sm:w-[12%] w-[10%] h-full flex justify-center lg:px-1 m-auto">
-                            <img class="w-full m-auto" src="assets/iconoInfo.svg">
-                        </span>
-            <p class="text-primary1 work-sans text-[11px] mt-2 w-auto">
-              Empresa con capacidad transportadora operacional autorizada de
-              hasta 51 y 300 vehículos: Capital pagado mínimo: 400 SMLMV –
-              Patrimonio líquido mínimo > 280 SMLMV
-            </p>
-          </div>
-
-        </div>
       </div>
 
-      <!-- content 2 -->
+      <!-- contenido 2 -->
       <div class="content2 md:grid sm:grid-cols-2 md:gap-x-36 md:flex items-center h-full pt-6">
-        <!-- select1 Cantidad de vehículos que está requiriendo fijar* -->
+
+        <!-- input 2 -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
-          <p class="text-primary3 font-semibold h-full">
-            Cantidad de vehículos que está requiriendo fijar*
+          <p class="text-primary3 font-semibold h-full"
+             [ngClass]="{'!text-error !font-normal': errorStates[4]}">
+            Patrimonio Líquido en SMLV*
           </p>
-          <app-select class="w-full md:pe-2 m-auto cursor-pointer mt-4" [input]="inputs[2]" [index]="2"
-                      [error]="errorStates[2]" (inputChange)="onInputChange($event.index, $event.event)"></app-select>
+
+          <input-text class="w-full mt-2 cursor-pointer" [input]="inputs[4]" [index]="4"
+                      [error]="errorStates[4]" (inputChange)="onInputChange($event.index, $event.event)"></input-text>
+
+          <!-- texto informativo -->
+          <div class="flex inline-flex md:gap-3 gap-2 h-full w-full mt-2">
+                        <span class="lg:w-[12%] sm:w-[12%] w-[10%] h-full flex justify-center lg:px-1 m-auto">
+                            <img class="w-full m-auto" src="assets/iconoInfo.svg">
+                        </span>
+            <p class="text-primary1 work-sans text-[11px] mt-2 w-auto">
+              Empresa con capacidad transportadora operacional autorizada de
+              hasta 51 y 300 vehículos: Capital pagado mínimo: 400 SMLMV –
+              Patrimonio líquido mínimo > 280 SMLMV
+            </p>
+          </div>
 
         </div>
 
@@ -306,15 +336,16 @@
     </form>
 
   </div>
-  <!-- operativo contet -->
+  <!-- contenido operativo -->
   <div class="md:col-span-8 sm:col-span-7 w-auto sm:mt-10 mt-4 md:px-8 px-2" *ngIf="activeNum == '1'">
-    <h3 class="text-primary1 !font-bold">Fijación de Capacidad Transportadora</h3>
+    <h3 class="text-primary1 !font-bold">Incremento de Capacidad Transportadora</h3>
 
-    <!-- form 4 -->
-    <form [formGroup]="formGroup3" class="px-4 md:pl-16 md:pe-16 mt-6 active1 mb-6">
+    <!--formulario 4 -->
+    <form [formGroup]="formGroup4" class="px-4 md:pl-16 md:pe-16 mt-6 active1 mb-6">
       <div class="col-span-2">
         <p class="font-bold">Digitar los siguientes campos*</p>
         <p class="text-primary4 font-[500] pt-4">Los campos marcados con * son obligatorios</p>
+
         <!-- texto informativo -->
         <div class="md:w-4/6 flex inline-flex md:gap-3 gap-2 h-full w-full mt-2">
 
@@ -323,120 +354,182 @@
                     </span>
           <p class="text-primary1 work-sans text-[11px] mt-2 w-auto">
             Con el fin de identificar cuantas veces tiene que digitar la siguiente información, teniendo en
-            cuenta que esta
-            información se debe diligenciar por cada uno de los contratos.
+            cuenta que esta información se debe diligenciar por cada uno de los contratos.
           </p>
-        </div>
-      </div>
-      <!-- content 1 -->
-      <div class="content1 md:grid sm:grid-cols-2 md:grid-cols-3 md:gap-x-24 md:flex items-center h-full">
-        <!-- input 3 Cantidad de contratos* -->
-        <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
-          <p class="text-primary3 font-semibold h-full">
-            Cantidad de contratos*
-          </p>
-          <app-select class="w-full md:pe-2 m-auto cursor-pointer mt-4" [input]="inputs[3]" [index]="3"
-                      [error]="errorStates[3]" (inputChange)="onInputChange($event.index, $event.event)"></app-select>
         </div>
 
-        <!-- input 4 N° de contrato* -->
+      </div>
+
+      <!-- contenido 1 -->
+      <div class="content1 md:grid sm:grid-cols-2 md:grid-cols-3 md:gap-x-24 md:flex items-center h-full">
+
+        <!--input 1 -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
-          <p class="text-primary3 font-semibold h-full">
+
+          <p class="text-primary3 font-semibold h-full"
+             [ngClass]="{'!text-error !font-normal': errorStates[5]}">
+            Cantidad de contratos*
+          </p>
+
+          <input-text class="w-full mt-2 cursor-pointer" [input]="inputs[5]" [index]="5"
+                      [disabled]="currentContractIteration != 0"
+                      [error]="errorStates[5]" (inputChange)="onInputChange($event.index, $event.event)"></input-text>
+
+        </div>
+
+        <!-- input 2 -->
+        <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+
+          <p class="text-primary3 font-semibold h-full"
+             [ngClass]="{'!text-error !font-normal': errorStates[6]}">
             N° de contrato*
           </p>
 
+          <input-text class="w-full mt-2 cursor-pointer" [input]="inputs[6]" [index]="6"
+                      [error]="errorStates[6]" (inputChange)="onInputChange($event.index, $event.event)"></input-text>
         </div>
 
-        <!-- input 5 Contratante* -->
+        <!-- input 3 -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
-          <p class="text-primary3 font-semibold h-full">
+
+          <p class="text-primary3 font-semibold h-full"
+             [ngClass]="{'!text-error !font-normal': errorStates[7]}">
             Contratante*
           </p>
 
+          <input-text class="w-full mt-2 cursor-pointer" [input]="inputs[7]" [index]="7"
+                      [error]="errorStates[7]" (inputChange)="onInputChange($event.index, $event.event)"></input-text>
+
         </div>
       </div>
 
-      <!-- content 2 -->
+      <!-- contenido 2 -->
       <div class="content1 md:grid sm:grid-cols-2 md:grid-cols-3 md:gap-x-24 md:flex items-center h-full">
-        <!-- input 7 Fecha de inicio* -->
+
+        <!-- input 4 -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
-          <p class="text-primary3 font-semibold h-full">
+
+          <p class="text-primary3 font-semibold h-full"
+             [ngClass]="{'!text-error !font-normal': errorStates[8]}">
             Fecha de inicio*
           </p>
 
+          <input-text class="w-full mt-2 cursor-pointer" [input]="inputs[8]" [index]="8"
+                      [error]="errorStates[8]" (inputChange)="onInputChange($event.index, $event.event)"></input-text>
         </div>
 
-        <!-- input 8 Fecha de terminación* -->
+        <!-- input 5 -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
-          <p class="text-primary3 font-semibold h-full">
+
+          <p class="text-primary3 font-semibold h-full"
+             [ngClass]="{'!text-error !font-normal': errorStates[9]}">
             Fecha de terminación*
           </p>
 
+          <input-text class="w-full mt-2 cursor-pointer" [input]="inputs[9]" [index]="9"
+                      [error]="errorStates[9]" (inputChange)="onInputChange($event.index, $event.event)"></input-text>
+
         </div>
 
-        <!-- select1 Duración en meses* -->
+        <!-- select 1 -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
-          <p class="text-primary3 font-semibold h-full">
+
+          <p class="text-primary3 font-semibold h-full"
+             [ngClass]="{'!text-error !font-normal': errorStates[10]}">
             Duración en meses*
           </p>
 
+          <app-select class="w-full m-auto cursor-pointer mt-2" [input]="inputs[10]" [index]="10"
+                      [error]="errorStates[10]" (inputChange)="onInputChange($event.index, $event.event)"></app-select>
+
         </div>
       </div>
 
-      <!-- content 3 -->
+      <!-- contenido 3 -->
       <div class="content1 md:grid sm:grid-cols-2 md:grid-cols-3 md:gap-x-24 md:flex items-center h-full">
-        <!-- select2 N° de Vehículos / Contrato* -->
+
+        <!-- select 2 -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
-          <p class="text-primary3 font-semibold h-full">
+
+          <p class="text-primary3 font-semibold h-full"
+             [ngClass]="{'!text-error !font-normal': errorStates[11]}">
             N° de Vehículos / Contrato*
           </p>
 
+          <app-select class="w-full m-auto cursor-pointer mt-2" [input]="inputs[11]" [index]="11"
+                      [error]="errorStates[11]" (inputChange)="onInputChange($event.index, $event.event)"></app-select>
+
         </div>
 
-        <!-- select3 Clase de vehículo* -->
+        <!-- select 3 -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
-          <p class="text-primary3 font-semibold h-full">
+
+          <p class="text-primary3 font-semibold h-full"
+             [ngClass]="{'!text-error !font-normal': errorStates[12]}">
             Clase de vehículo*
           </p>
 
+          <app-select class="w-full m-auto cursor-pointer mt-2" [input]="inputs[12]" [index]="12"
+                      [error]="errorStates[12]"
+                      (inputChange)="onInputChange($event.index, $event.event)"></app-select>
+
         </div>
 
-        <!-- input 10 Valor del Contrato* -->
+        <!-- input 6 -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
-          <p class="text-primary3 font-semibold h-full">
+
+          <p class="text-primary3 font-semibold h-full"
+             [ngClass]="{'!text-error !font-normal': errorStates[13]}">
             Valor del Contrato*
           </p>
 
+          <input-text class="w-full mt-2 cursor-pointer" [input]="inputs[13]" [index]="13"
+                      [error]="errorStates[13]" (inputChange)="onInputChange($event.index, $event.event)"></input-text>
         </div>
       </div>
 
-      <!-- content 4 -->
+      <!-- contenido 4 -->
       <div class="content1 md:grid sm:grid-cols-2 md:grid-cols-3 md:gap-x-24 md:flex items-center h-full">
-        <!-- select4 Forma de pago* -->
+
+        <!-- select 4 -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
-          <p class="text-primary3 font-semibold h-full">
+
+          <p class="text-primary3 font-semibold h-full"
+             [ngClass]="{'!text-error !font-normal': errorStates[14]}">
             Forma de pago*
           </p>
 
+          <app-select class="w-full m-auto cursor-pointer mt-2" [input]="inputs[14]" [index]="14"
+                      [error]="errorStates[14]" (inputChange)="onInputChange($event.index, $event.event)"></app-select>
+
         </div>
 
-        <!-- select5 Áreas de Operación* -->
+        <!-- select 5 -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
-          <p class="text-primary3 font-semibold h-full">
+
+          <p class="text-primary3 font-semibold h-full"
+             [ngClass]="{'!text-error !font-normal': errorStates[15]}">
             Áreas de Operación*
           </p>
 
+          <app-select class="w-full m-auto cursor-pointer mt-2" [input]="inputs[15]" [index]="15"
+                      [error]="errorStates[15]" (inputChange)="onInputChange($event.index, $event.event)"></app-select>
+
         </div>
 
-        <!-- select6 Tiempos estimados (En horas) -->
+        <!-- select 6 -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
-          <p class="text-primary3 font-semibold h-full">
+
+          <p class="text-primary3 font-semibold h-full"
+             [ngClass]="{'!text-error !font-normal': errorStates[16]}">
             Tiempos estimados (En horas) - Disponibilidad de Vehículos*
           </p>
 
+          <app-select class="w-full m-auto cursor-pointer mt-2" [input]="inputs[16]" [index]="16"
+                      [error]="errorStates[16]" (inputChange)="onInputChange($event.index, $event.event)"></app-select>
+
         </div>
       </div>
-
 
       <div class="mt-6 w-full flex justify-center">
         <app-primary-button class="" (click)="onSubmitAllForms()">Enviar</app-primary-button>
@@ -447,3 +540,19 @@
   </div>
 
 </div>
+
+<!-- Primer Modal -->
+<app-alert [showModal]="showModal" title="¿Está seguro de enviar?" subtitle="¿Está seguro de enviar?"
+           [showSubtitle]="false" [message]="'Una vez enviado, no podrá cambiar la información.'" buttonText="Enviar"
+           [showFirstButton]="true" cancelButtonText="Cancelar" [showCancelButton]="true" TypeAlert="success"
+           (close)="handleClose()" (closeByButton1)="currentContractIteration == totalContracts ? sendAllContracts() : handleCloseByButton1()" (closeByButton2)="handleCloseByButton2()"
+           (closeByIcon)="handleCloseByIcon()" (closeByBackdrop)="handleCloseByBackdrop()"
+           (close)="showModal = false"></app-alert>
+
+<!-- Final Modal -->
+<app-alert [showModal]="showFinalModal" title="Envío exitoso" textColor="text-success" [showSubtitle]="false"
+           [message]="'Su solicitud ha sido enviada exitosamente, se le asignará un radicado para su trámite'"
+           buttonText="Continuar" [showFirstButton]="true" [showCancelButton]="false"
+           TypeAlert="success" (close)="handleClose()" (closeByButton1)="finalStep()"
+           (closeByButton2)="handleCloseByButton2()" (closeByIcon)="handleCloseByIcon()"
+           (closeByBackdrop)="handleCloseByBackdrop()" (close)="showFinalModal = false"></app-alert>
