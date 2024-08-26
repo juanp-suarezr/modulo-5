@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { PaginatorComponent } from '../paginator/paginator.component';
 import { CommonModule, formatDate } from '@angular/common';
+import { AuthService } from '../../services/auth/auth.service';
 
 @Component({
   selector: 'app-table',
@@ -13,6 +14,11 @@ export class TableComponent {
 
   @Input() headers: any = [];
   @Input() data: any = [];
+  user:any;
+
+  constructor(private authService: AuthService) {
+    this.user = this.authService.currentUser; // Obtener el usuario actual
+  }
   
   
   get info(): string[] {
@@ -21,6 +27,8 @@ export class TableComponent {
 
   formatField(value: any): string {
     // Si el valor es una fecha válida, formatearlo
+
+
     if (this.isDateTime(value)) {
       return formatDate(value, 'dd/MM/yyyy', 'en-US');
     }
@@ -30,6 +38,11 @@ export class TableComponent {
   isDateTime(value: any): boolean {
     // Verifica si el valor es una fecha válida
     return !isNaN(Date.parse(value));
+  }
+
+  hasRole(name: string): boolean {
+    
+    return this.user.roles.some((role: any) => role.roleName.includes(name));
   }
 
 }

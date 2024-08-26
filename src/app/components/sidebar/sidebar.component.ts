@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { AuthService } from '../../services/auth/auth.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -14,17 +15,7 @@ export class SidebarComponent {
   isSmallScreen: boolean = false;
   isSidebarOpen = true;
   activeItem: string | null = null;
-
-  constructor(private breakpointObserver: BreakpointObserver) {}
-
-  ngOnInit(): void {
-    this.breakpointObserver.observe(['(max-width: 639px)']).subscribe(result => {
-      this.isSmallScreen = result.matches;
-      if (this.isSmallScreen) {
-        this.isSidebarOpen = false;
-      }
-    });
-  }
+  user:any;
 
   // Define the menu items
   items: any[] = [
@@ -41,6 +32,29 @@ export class SidebarComponent {
       ],
     },
   ];
+
+  constructor(private breakpointObserver: BreakpointObserver, private authService: AuthService) {}
+
+
+  ngOnInit(): void {
+    this.breakpointObserver.observe(['(max-width: 639px)']).subscribe(result => {
+      this.isSmallScreen = result.matches;
+      if (this.isSmallScreen) {
+        this.isSidebarOpen = false;
+      }
+    });
+    this.user = this.authService.currentUser;
+
+    if(this.user.roles.some((role: any) => role.roleName.includes('ROLE_ESCRITURA_GESDOC'))) {
+    
+      this.items = [
+        { label: 'Inicio', route: '/dashboard' }
+      ];
+
+    };
+
+  }
+
 
   toggleSidebar() {
     this.isSidebarOpen = !this.isSidebarOpen;

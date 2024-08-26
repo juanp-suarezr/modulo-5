@@ -1,70 +1,79 @@
 <div class="mt-6 w-full mb-4 hidden sm:block">
-  
-    <div class="flex flex-col overflow-x-auto">
-      <div class="inline-block shadow">
-        <div class="inline-block min-w-full py-2">
-          <div class="overflow-x-auto">
-            <table class="min-w-full whitespace-no-wrap border-2 border-secondary1">
-              <thead>
-                <tr class="border-b bg-secondary1 text-left font-semibold tracking-wide text-primary2">
-                  
-                  <th *ngFor="let header of headers" class="px-5 py-3 font-semibold tracking-wider">
-                    <span [innerHTML]="header.titulo"></span>
-                  </th>
 
-                </tr>
-              </thead>
-              <tbody>
-                
-                <tr class="text-primary3 border-b-2 border-secondary1 bg-white" *ngFor="let item of data.data">
+  <div class="flex flex-col overflow-x-auto">
+    <div class="inline-block shadow">
+      <div class="inline-block min-w-full py-2">
+        <div class="overflow-x-auto">
+          <table class="min-w-full whitespace-no-wrap border-2 border-secondary1">
+            <thead>
+              <tr class="border-b bg-secondary1 text-left font-semibold tracking-wide text-primary2">
 
-                  <td *ngFor="let key of info" class="px-5 py-5">
-                    <p class="whitespace-no-wrap">{{ formatField(item[key]) }}</p>
-                  </td>                  
-                </tr>
-                
-              </tbody>
-            </table>
-          </div>
+                <th *ngFor="let header of headers" class="px-5 py-3 font-semibold tracking-wider">
+                  <span [innerHTML]="header.titulo"></span>
+                </th>
+
+              </tr>
+            </thead>
+            <tbody>
+
+              <tr class="text-primary3 border-b-2 border-secondary1 bg-white" *ngFor="let item of data.data">
+
+                <td *ngFor="let key of info" class="px-5 py-5">
+                  <!-- datos con rol de escritura territorial -->
+                  <p *ngIf="hasRole('ROLE_ESCRITURA_MIN')" class="whitespace-no-wrap">{{
+                    formatField(item[key]) }} </p>
+                    <!-- id con rol de escritura gestion doc -->
+                  <a *ngIf="key === 'id' && hasRole('ROLE_ESCRITURA_GESDOC')"  class="underline text-primary2 font-semibold cursor-pointer">
+                    {{ formatField(item[key]) }}
+                  </a>
+                  <!-- datos con rol de escritura gestion doc -->
+                  <p *ngIf="key !== 'id' && hasRole('ROLE_ESCRITURA_GESDOC')" class="whitespace-no-wrap">{{
+                    formatField(item[key]) }}</p>
+                </td>
+              </tr>
+
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
-    <div class="flex flex-col items-center border-t bg-white px-5 py-5 xs:flex-row xs:justify-between">
-      <!-- PAGINACION -->
-       <app-paginator *ngIf="data.links"  [links]="data.links" ></app-paginator>
-    </div>
-
+  </div>
+  <div class="flex flex-col items-center border-t bg-white px-5 py-5 xs:flex-row xs:justify-between">
+    <!-- PAGINACION -->
+    <app-paginator *ngIf="data.links" [links]="data.links"></app-paginator>
   </div>
 
-  <div class="mt-6 w-full mb-4 sm:hidden">
+</div>
 
-    <div class="space-y-6" *ngFor="let item of data.data">
-      <div class="border-2 bg-white border-secondary1 py-4 px-4">
-        <div class="flex">
-          <div class="w-1/2 font-semibold text-primary2 p-2">ID</div>
-          <div class="w-1/2 p-2">{{ item.id }}</div>
-        </div>
-        <div class="flex">
-          <div class="w-1/2 font-semibold text-primary2 p-2">Fecha solicitud (dd/mm/aaaa)</div>
-          <div class="w-1/2 p-2">{{ item.fecha }}</div>
-        </div>
-        <div class="flex">
-          <div class="w-1/2 font-semibold text-primary2 p-2">Nombre de la empresa que realiza solicitud</div>
-          <div class="w-1/2 p-2">{{ item.empresa }}</div>
-        </div>
-        <div class="flex">
-          <div class="w-1/2 font-semibold text-primary2 p-2">Territorial que emitió la solicitud</div>
-          <div class="w-1/2 p-2">{{ item.territorial }}</div>
-        </div>
-        <div class="flex">
-          <div class="w-1/2 font-semibold text-primary2 p-2">Categoría de solicitud</div>
-          <div class="w-1/2 p-2">{{ item.categoria }}</div>
-        </div>
+<div class="mt-6 w-full mb-4 sm:hidden">
+
+  <div class="space-y-6" *ngFor="let item of data.data">
+    <div class="border-2 bg-white border-secondary1 py-4 px-4">
+      <div class="flex">
+        <div class="w-1/2 font-semibold text-primary2 p-2">ID</div>
+        <div class="w-1/2 p-2">{{ item.id }}</div>
+      </div>
+      <div class="flex">
+        <div class="w-1/2 font-semibold text-primary2 p-2">Fecha solicitud (dd/mm/aaaa)</div>
+        <div class="w-1/2 p-2">{{ item.fecha }}</div>
+      </div>
+      <div class="flex">
+        <div class="w-1/2 font-semibold text-primary2 p-2">Nombre de la empresa que realiza solicitud</div>
+        <div class="w-1/2 p-2">{{ item.empresa }}</div>
+      </div>
+      <div class="flex">
+        <div class="w-1/2 font-semibold text-primary2 p-2">Territorial que emitió la solicitud</div>
+        <div class="w-1/2 p-2">{{ item.territorial }}</div>
+      </div>
+      <div class="flex">
+        <div class="w-1/2 font-semibold text-primary2 p-2">Categoría de solicitud</div>
+        <div class="w-1/2 p-2">{{ item.categoria }}</div>
       </div>
     </div>
-    <div class="flex flex-col items-center border-t bg-white px-5 py-5 xs:flex-row xs:justify-between">
-      <!-- PAGINACION -->
-       <app-paginator *ngIf="data.links" [links]="data.links" [isResponsive]="true" ></app-paginator>
-    </div>
-
   </div>
+  <div class="flex flex-col items-center border-t bg-white px-5 py-5 xs:flex-row xs:justify-between">
+    <!-- PAGINACION -->
+    <app-paginator *ngIf="data.links" [links]="data.links" [isResponsive]="true"></app-paginator>
+  </div>
+
+</div>
