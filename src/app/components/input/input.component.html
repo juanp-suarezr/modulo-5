@@ -1,16 +1,19 @@
 <div>
     <div class="relative">
         <input [type]="input.type" [name]="input.name" [placeholder]="input.placeholder" [required]="input.required"
-            [(ngModel)]="input.value" (input)="onInputChange($event)"
-            class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] bg-transparent border border-secondary2 focus:outline-none focus:border-primary1" />
+            [(ngModel)]="input.value" (input)="onInputChange($event)" [disabled]="disabled" [ngClass]="{'!text-error': error === true}"
+            class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] bg-transparent border border-secondary2 focus:outline-none focus:border-primary1 disabled:bg-secondary3 disabled:border-secondary2 disabled:text-secondary2" />
         <span class="absolute inset-y-0 right-0 flex items-center pr-[10px]">
-            <span class="pi pi-exclamation-circle text-error text-[24px] hidden" [ngClass]="{'!block': error === true}"
+            <span class="pi pi-exclamation-circle text-error text-[24px] hidden" [ngClass]="{'!block': error === true && input.type != 'date'}"
                 [id]="'errorIcon-' + input.name"></span>
         </span>
         <span class="absolute inset-y-0 right-0 flex items-center pr-[10px]">
-            <span class="pi pi-check-circle text-success text-[24px] hidden" [ngClass]="{'!block': error === false}" [id]="'goodIcon-' + input.name"></span>
+            <span class="pi pi-check-circle text-success text-[24px] hidden" [ngClass]="{'!block': error === false && input.type != 'date'}"
+                [id]="'goodIcon-' + input.name"></span>
         </span>
     </div>
-    <span class="text-sm text-success hidden" [ngClass]="{'!block': error === false}" [id]="'good-' + index">{{ input.good }}</span>
-    <span class="text-sm text-error hidden" [ngClass]="{'!block': error === true}" [id]="'error-' + index">{{ input.error }}</span>
+    <span class="text-sm text-success hidden" [ngClass]="{'!block': error === false}" [id]="'good-' + index">{{
+        input.good }}</span>
+    <span class="text-sm text-error hidden" [ngClass]="{'!block': error === true}" [id]="'error-' + index">{{
+        input.error }}</span>
 </div>

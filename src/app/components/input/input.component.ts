@@ -13,6 +13,7 @@ export class InputText {
   @Input() input: any;
   @Input() index: number = 0;
   @Input() error: boolean = false;
+  @Input() disabled: boolean = false;
   @Output() inputChange = new EventEmitter<{ index: number; event: Event }>();
 
   constructor(private cd: ChangeDetectorRef) {}
