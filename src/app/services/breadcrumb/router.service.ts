@@ -68,6 +68,25 @@ export class RouterService {
           { name: 'Ruta no reconocida', route: 'NA' },
         ]);
       }
+      //rol ROLE_SUPERTRANSPORTE
+    } else if (this.user.roles[0].roleName == 'ROLE_SUPERTRANSPORTE') {
+      if (url.includes('dashboard')) {
+        this.breadcrumbSubject.next([
+          { name: 'Solicitudes', route: 'NA' },
+        ]);
+      } else if (url.includes('newurl')) {
+        this.breadcrumbSubject.next([
+          { name: 'Solicitudes', route: 'NA' },
+          {
+            name: 'Solicitud',
+            route: 'newurl',
+          },
+        ]);
+      } else {
+        this.breadcrumbSubject.next([
+          { name: 'Ruta no reconocida', route: 'NA' },
+        ]);
+      }
     }
   }
 }

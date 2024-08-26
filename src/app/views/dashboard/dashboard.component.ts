@@ -1,3 +1,4 @@
+import { AuthService } from './../../services/auth/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
@@ -24,9 +25,8 @@ import { ApiService } from '../../services/api/api.service';
   styleUrl: './dashboard.component.css',
 })
 export default class DashboardComponent {
-  constructor(private apiService: ApiService) {}
-
   response: any;
+  user: any;
 
   headers = [
     { id: 1, titulo: 'ID' },
@@ -35,6 +35,13 @@ export default class DashboardComponent {
     { id: 4, titulo: 'Territorial que <br> emitió la solicitud' },
     { id: 5, titulo: 'Categoría de <br> solicitud' },
   ];
+
+  constructor(
+    private apiService: ApiService,
+    private authService: AuthService
+  ) {
+    this.user = this.authService.currentUser;
+  }
 
   ngOnInit(): void {
     //traer los datos de la consulta
@@ -46,6 +53,33 @@ export default class DashboardComponent {
         console.error('Error fetching user data', error);
       }
     );
+
+    if (
+      this.user.roles.some((role: any) =>
+        role.roleName.includes('ROLE_SUPERTRANSPORTE')
+      )
+    ) {
+
+      this.headers = [
+        { id: 1, titulo: 'ID' },
+        { id: 2, titulo: 'Fecha solicitud <br> (dd/mm/aaaa)' },
+        { id: 3, titulo: 'Nombre de la empresa <br> que realiza solicitud' },
+        { id: 4, titulo: 'Territorial que <br> emitió la solicitud' },
+        { id: 6, titulo: 'Estado <br> solicitud' },
+        { id: 7, titulo: 'Categoría de<br> solicitud' },
+        { id: 8, titulo: 'Semáforo <br> alerta' },
+        { id: 9, titulo: 'Número<br> radicado' },
+      ];
+
+      this.apiService.getSolicitudesTransporte2().subscribe(
+        (response) => {
+          this.response = response;
+        },
+        (error) => {
+          console.error('Error fetching user data', error);
+        }
+      );
+    }
   }
 
   //ejemplo uso update

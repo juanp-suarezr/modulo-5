@@ -2,11 +2,12 @@ import { Component, Input } from '@angular/core';
 import { PaginatorComponent } from '../paginator/paginator.component';
 import { CommonModule, formatDate } from '@angular/common';
 import { AuthService } from '../../services/auth/auth.service';
+import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
   selector: 'app-table',
   standalone: true,
-  imports: [PaginatorComponent, CommonModule],
+  imports: [PaginatorComponent, CommonModule, TooltipModule,],
   templateUrl: './table.component.html',
   styleUrl: './table.component.css'
 })

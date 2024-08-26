@@ -22,12 +22,15 @@
                   <!-- datos con rol de escritura territorial -->
                   <p *ngIf="hasRole('ROLE_ESCRITURA_MIN')" class="whitespace-no-wrap">{{
                     formatField(item[key]) }} </p>
-                    <!-- id con rol de escritura gestion doc -->
-                  <a *ngIf="key === 'id' && hasRole('ROLE_ESCRITURA_GESDOC')"  class="underline text-primary2 font-semibold cursor-pointer">
+                  <!-- id con rol de escritura gestion doc -->
+                  <a *ngIf="key === 'id' && (hasRole('ROLE_ESCRITURA_GESDOC') || hasRole('ROLE_SUPERTRANSPORTE'))"
+                    class="underline text-primary2 font-semibold cursor-pointer" pTooltip="clic para abrir"
+                    tooltipPosition="right">
                     {{ formatField(item[key]) }}
                   </a>
                   <!-- datos con rol de escritura gestion doc -->
-                  <p *ngIf="key !== 'id' && hasRole('ROLE_ESCRITURA_GESDOC')" class="whitespace-no-wrap">{{
+                  <p *ngIf="key !== 'id' && (hasRole('ROLE_ESCRITURA_GESDOC') || hasRole('ROLE_SUPERTRANSPORTE'))"
+                    class="whitespace-no-wrap">{{
                     formatField(item[key]) }}</p>
                 </td>
               </tr>
