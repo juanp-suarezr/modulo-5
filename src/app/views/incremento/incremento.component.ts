@@ -1,6 +1,11 @@
 import {Component} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators
+} from "@angular/forms";
 import {FileUploadComponent} from "../../components/file-upload/file-upload.component";
 import {InputText} from "../../components/input/input.component";
 import {LeftNavComponent} from "../../components/left-nav/left-nav.component";
@@ -11,7 +16,6 @@ import {ActiveNumStepperService} from "../../services/stepper/active-num.service
 import {ApiService} from "../../services/api/api.service";
 import {ErrorService} from "../../services/error/error.service";
 import {SelectComponent} from "../../components/select/select.component";
-
 
 @Component({
   selector: 'app-incremento',
@@ -62,6 +66,9 @@ export default class IncrementoComponent {
   //Respuesta de user activo y rol
   user: any;
 
+  //Propiedad para almacenar el porcentaje seleccionado
+  selectedPercentage: string = '';
+
   //Menu left
   infoMenu = [
     {
@@ -107,10 +114,21 @@ export default class IncrementoComponent {
       name: 'SelectPropiedadEmpresa',
       required: true,
       placeholder: 'Seleccione',
-      value: '', // Valor seleccionado
-      options: this.generateOptions(15),
+      value: '',
+      options: [
+        {value: 7, label: '7%'},
+        {value: 10, label: '10%'},
+      ],
       good: 'Selección valida',
       error: 'Propiedad de la empresa es requerido',
+    },
+    {
+      name: 'resultado',
+      type: 'number',
+      placeholder: 'Resultado',
+      label: 'Resultado',
+      required: false,
+      value: '',
     },
     {
       name: 'capital_social',
@@ -171,7 +189,7 @@ export default class IncrementoComponent {
       3: [null, Validators.required],
       4: [null, Validators.required],
       5: [null, Validators.required],
-      6: [null, Validators.required],
+      6: [null, Validators.required]
     });
 
     this.formGroup2 = this.fb.group({
@@ -181,33 +199,23 @@ export default class IncrementoComponent {
       10: [null, Validators.required],
       11: [null, Validators.required],
       0: ['', Validators.required],
-      1: ['', Validators.required],
+      1: ['', Validators.required]
     });
 
     this.formGroup3 = this.fb.group({
-      2: ['', Validators.required],
+      12: [null, Validators.required],
       3: ['', Validators.required],
-      4: ['', Validators.required],
+      4: ['', Validators.required]
     });
 
     this.formGroup4 = this.fb.group({
-      5: ['', Validators.required],
-      6: ['', Validators.required],
-      7: ['', Validators.required],
+
     });
 
     //Suscribirse al servicio de manejo de errores
     this.errorService.errorStates$.subscribe((errorStates) => {
       this.errorStates = errorStates;
     });
-  }
-
-  //Generar opciones para los selects
-  generateOptions(max: number) {
-    return Array.from({length: max}, (_, i) => ({
-      value: i + 1,
-      label: i + 1,
-    }));
   }
 
   //Metodo para cambiar el valor del menuleft
@@ -264,6 +272,15 @@ export default class IncrementoComponent {
     return isValid;
   }
 
+  //Vadador perzonalizado del input
+  validateInput(event: KeyboardEvent) {
+    const invalidChars = ['e', 'E', '+', '-'];
+
+    if (invalidChars.includes(event.key)) {
+      event.preventDefault();
+    }
+  }
+
   //Metodo para guardar el archivo seleccionado
   onFileSelected(file: File[], formControlName: number) {
     const formControlMap: { [key: number]: FormGroup } = {
@@ -278,6 +295,7 @@ export default class IncrementoComponent {
       9: this.formGroup2,
       10: this.formGroup2,
       11: this.formGroup2,
+      12: this.formGroup3,
     };
 
     const formGroup = formControlMap[formControlName];
@@ -289,18 +307,43 @@ export default class IncrementoComponent {
   //Metodo para guardar el valor del input y select
   onInputChange(index: number, event: any) {
     let value = null;
+
     if (event.target) {
-      console.log('input normal');
       const inputElement = event.target as HTMLInputElement;
-      value = inputElement?.value ?? ''; //Maneja valores nulos
+      value = inputElement?.value ?? ''; // Maneja valores nulos
+
+      if (index === 0) { // Asumiendo que el `input-text` está en el índice 0
+        // Asegúrate de que el valor no sea negativo
+        value = Math.max(0, parseFloat(value) || 0);
+        // Asegura que el campo de entrada refleje el valor ajustado
+        // @ts-ignore
+        inputElement.value = value;
+      }
     } else {
-      value = event?.value ?? ''; //Maneja valores nulos
+      value = event?.value ?? ''; // Maneja valores nulos
     }
 
-    console.log(value);
+    // Actualiza el valor en el array de inputs
     this.inputs[index].value = value;
-    this.formGroup2.patchValue({[index]: value});
-    this.formGroup3.patchValue({[index]: value});
+
+    // Actualiza los valores en los formularios reactivos
+    this.formGroup2.patchValue({ [index]: value });
+    this.formGroup3.patchValue({ [index]: value });
+
+    // Si el índice es 1 (select), actualiza el porcentaje seleccionado
+    if (index === 1) {
+      this.selectedPercentage = value ? `${value}%` : '';
+    }
+
+    // Si ya tienes ambos valores, realiza la multiplicación
+    const numeroVehiculos = this.inputs[0].value ? parseFloat(this.inputs[0].value) : 0;
+    const porcentaje = this.inputs[1].value ? parseFloat(this.inputs[1].value) : 0;
+
+    if (numeroVehiculos && porcentaje) {
+      const resultado = (numeroVehiculos * porcentaje) / 100;
+      this.inputs[2].value = resultado.toFixed(2);
+      this.formGroup2.patchValue({ 2: resultado.toFixed(2) });
+    }
   }
 
   //Metodo para enviar los formularios
