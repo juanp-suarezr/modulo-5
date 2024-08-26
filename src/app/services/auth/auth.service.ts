@@ -40,6 +40,23 @@ export class AuthService {
       createdAt: '2024-08-16T08:30:00Z',
       lastLogin: '2024-08-15T18:45:00Z',
     },
+    {
+      id: 3,
+      username: 'SuperiTransporte',
+      fullName: 'Rol (Lectura y escritura) de la Superintendencia de Transporte',
+      email: 'supertransporte@example.com',
+      password: '123456',
+      roles: [
+        {
+          id: 101,
+          roleName: 'ROLE_SUPERTRANSPORTE',
+          description: 'Rol escritura y lectura Superintendencia de Transporte',
+        },
+      ],
+      isActive: true,
+      createdAt: '2024-08-16T08:30:00Z',
+      lastLogin: '2024-08-15T18:45:00Z',
+    },
   ];
   currentUser: any = null;
 
