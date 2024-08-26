@@ -44,7 +44,15 @@ export class RouterService {
             route: 'fijacioncapacidadtransportadora',
           },
         ]);
-      } else {
+      } else if (url.includes('incrementocapacidadtransportadora')) {
+        this.breadcrumbSubject.next([
+          {name: 'Tramitar solicitud', route: 'NA'},
+          {
+            name: 'Incremento de Capacidad Transportadora',
+            route: 'incrementocapacidadtransportadora',
+          },
+        ]);
+      }else {
         this.breadcrumbSubject.next([
           { name: 'Ruta no reconocida', route: 'NA' },
         ]);
