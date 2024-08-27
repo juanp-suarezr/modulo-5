@@ -6,7 +6,7 @@ import { Observable, of } from 'rxjs';
   providedIn: 'root',
 })
 export class ApiService {
-  private baseUrl = 'https://api.example.com';
+  private baseUrl = 'http://localhost:8080';
 
   constructor(private http: HttpClient) {}
 
@@ -173,6 +173,17 @@ export class ApiService {
 
     return of(response);
   }
+
+  //departamentos
+  getDeparts(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/departamentos`);
+  }
+
+  //clase vehiculo
+  getClaseVehiculo(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/catalogos/ClaseVehiculo`);
+  }
+
   
   
 }
