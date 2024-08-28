@@ -276,7 +276,7 @@ export default class FijacionComponent {
 
     this.formGroup4 = this.fb.group(
       {
-        cantidad_contratos: ['', Validators.required],
+        cantidad_contratos: [{ value: '', disabled: false }, Validators.required],
         contrato: ['', Validators.required],
         contratante: ['', Validators.required],
         fecha_inicio: ['', Validators.required],
@@ -539,6 +539,8 @@ export default class FijacionComponent {
           }
 
           // Si el índice NO es 0, reseteamos el control
+          this.submitted = false;
+          this.formGroup4.get('cantidad_contratos')?.disable();
           this.formGroup4.controls[key].reset();
           this.formGroup4.controls[key].markAsPristine();
           this.formGroup4.controls[key].markAsUntouched();
@@ -548,7 +550,6 @@ export default class FijacionComponent {
       // Forzamos la detección de cambios
       this.cdr.detectChanges();
 
-      console.log(this.inputs);
     } else {
       console.log('Formulario de contrato no válido');
     }
@@ -556,7 +557,7 @@ export default class FijacionComponent {
 
   // Método para enviar todos los contratos al servidor
   sendAllContracts() {
-    if (this.totalContracts == 1) {
+    if (this.totalContracts == 1 || this.totalContracts == this.currentContractIteration) {
       this.contractDataArray.push(this.formGroup4.value);
     }
 
