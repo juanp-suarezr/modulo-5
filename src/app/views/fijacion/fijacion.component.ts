@@ -17,10 +17,13 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { SelectComponent } from '../../components/select/select.component';
-import { DEPARTAMENTOS } from '../../shared/data/departamentos';
+import { MESES } from '../../shared/data/meses';
 import { AlertComponent } from '../../components/alert/alert.component';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Router } from '@angular/router';
+import { minLengthNumericValidator } from '../../validator/numeric.validator';
+import { dateRangeValidator } from '../../validator/date.validator';
+import { HORAS } from '../../shared/data/horas';
 
 @Component({
   selector: 'app-fijacion',
@@ -41,6 +44,14 @@ import { Router } from '@angular/router';
 })
 export default class FijacionComponent {
   parseInt: any;
+  departs: any = [];
+  ClaseVehiculo: any = [];
+  meses: { value: string; label: string }[] = [];
+  formaPago: any = [];
+  horas: any = [];
+
+  submitted: boolean = false;
+
   constructor(
     private stateService: ActiveNumService,
     private stepperService: ActiveNumStepperService,
@@ -97,6 +108,71 @@ export default class FijacionComponent {
       info: 'Digitar información',
     },
   ];
+
+  //info selects
+  selects = [
+    //cantidad vehiculos
+    {
+      name: 'cantidad_contratos',
+      required: true,
+      placeholder: 'Lista desplegable de números',
+      value: '', // Valor seleccionado
+      options: this.generateOptions(15),
+      good: 'Selección correcta',
+      errorMessage: 'Cantidad de vehículos es requerido',
+      isDropdownOpen: false,
+    },
+    //select meses
+    {
+      name: 'duracion',
+      required: true,
+      placeholder: 'Seleccione',
+      value: '', // Valor seleccionado
+      good: 'Selección correcta',
+      errorMessage: 'Duración en meses es requerido',
+      isDropdownOpen: false,
+    },
+    //select clases vehiculos
+    {
+      name: 'ClaseVehiculo',
+      required: true,
+      placeholder: 'Seleccione',
+      value: '', // Valor seleccionado
+      selectedOption: '',
+      errorMessage: 'Clase de vehículo es requerido',
+      isDropdownOpen: false,
+    },
+    //select frecuencia pago
+    {
+      name: 'forma_pago',
+      required: true,
+      placeholder: 'Seleccione',
+      value: '', // Valor seleccionado
+      good: 'Selección correcta',
+      errorMessage: 'Forma de pago es requerido',
+      isDropdownOpen: false,
+    },
+    //select depart
+    {
+      name: 'area_operacion',
+      required: true,
+      value: '', // Valor seleccionado
+      good: 'Selección correcta',
+      errorMessage: 'Áreas de Operación es requerido',
+      isDropdownOpen: false,
+    },
+    //select tienpo estimado
+    {
+      name: 'disponibilidad',
+      required: true,
+      placeholder: 'Seleccione',
+      value: '', // Valor seleccionado
+      good: 'Selección correcta',
+      errorMessage: 'Tiempos estimados es requerido',
+      isDropdownOpen: false,
+    },
+  ];
+
   //info inputs tipo num, string o date
   inputs = [
     {
@@ -118,206 +194,6 @@ export default class FijacionComponent {
       value: '',
       error: 'Patrimonio Líquido en SMLV es obligatorio',
       good: 'Dato correcto',
-    },
-
-    //select
-    {
-      name: 'mySelect1',
-      required: true,
-      placeholder: 'Lista desplegable de números',
-      value: '', // Valor seleccionado
-      options: this.generateOptions(15),
-      good: 'Selection is valid',
-      error: 'Cantidad de vehículos es requerido',
-    },
-
-    //input
-    {
-      name: 'Cantidad de contratos',
-      type: 'number',
-      placeholder: '#',
-      label: 'Cantidad de contratos*',
-      required: true,
-      value: '0',
-      error: 'Cantidad de contratos es obligatorio',
-      good: 'Dato correcto',
-    },
-    //input
-    {
-      name: 'N° de contrato',
-      type: 'number',
-      placeholder: '#',
-      label: 'N° de contrato*',
-      required: true,
-      value: '',
-      error: 'N° de contrato es obligatorio',
-      good: 'Dato correcto',
-    },
-    //input
-    {
-      name: 'Contratante',
-      type: 'string',
-      placeholder: 'Nombre de empresa contratante',
-      label: 'Contratante*',
-      required: true,
-      value: '',
-      error: 'Contratante es obligatorio',
-      good: 'Dato correcto',
-    },
-    {
-      name: 'Fecha de inicio',
-      type: 'date',
-      placeholder: 'dd/mm/aaaa',
-      label: 'Fecha de inicio*',
-      required: true,
-      value: '',
-      error: 'Fecha de inicio es obligatorio',
-      good: 'Dato correcto',
-    },
-    {
-      name: 'Fecha de terminacion',
-      type: 'date',
-      placeholder: 'dd/mm/aaaa',
-      label: 'Fecha de terminación*',
-      required: true,
-      value: '',
-      error: 'Fecha de terminación es obligatorio',
-      good: 'Dato correcto',
-    },
-    //select3
-    {
-      name: 'mySelect3',
-      required: true,
-      placeholder: 'Seleccione',
-      value: '', // Valor seleccionado
-      options: [
-        { value: '1 mes', label: '1 mes' },
-        { value: '2 meses', label: '2 meses' },
-        { value: '3 meses', label: '3 meses' },
-        { value: '4 meses', label: '4 meses' },
-        { value: '5 meses', label: '5 meses' },
-        { value: '6 meses', label: '6 meses' },
-        { value: '7 meses', label: '7 meses' },
-        { value: '8 meses', label: '8 meses' },
-        { value: '9 meses', label: '9 meses' },
-        { value: '10 meses', label: '10 meses' },
-        { value: '11 meses', label: '11 meses' },
-        { value: '12 meses', label: '12 meses' },
-        { value: '13 meses', label: '13 meses' },
-        { value: '14 meses', label: '14 meses' },
-        { value: '15 meses', label: '15 meses' },
-        { value: '16 meses', label: '16 meses' },
-        { value: '17 meses', label: '17 meses' },
-        { value: '18 meses', label: '18 meses' },
-        { value: '19 meses', label: '19 meses' },
-        { value: '20 meses', label: '20 meses' },
-        { value: '21 meses', label: '21 meses' },
-        { value: '22 meses', label: '22 meses' },
-        { value: '23 meses', label: '23 meses' },
-        { value: '24 meses', label: '24 meses' },
-        { value: 'Contrato indefinido', label: 'Contrato indefinido' },
-      ],
-      good: 'Selection is valid',
-      error: 'Duración en meses es requerido',
-    },
-    //input
-    {
-      name: 'N° de Vehículos / Contrato',
-      type: 'number',
-      placeholder: '10',
-      label: 'N° de Vehículos / Contrato*',
-      required: true,
-      value: '',
-      error: 'N° de Vehículos / Contrato es obligatorio',
-      good: 'Dato correcto',
-    },
-    //select
-    {
-      name: 'mySelect4',
-      required: true,
-      placeholder: 'Seleccione',
-      value: '', // Valor seleccionado
-      options: [
-        { value: 'Bus', label: 'Bus' },
-        { value: 'Microbus', label: 'Microbus' },
-        { value: 'Buseta', label: 'Buseta' },
-        { value: 'Camioneta DC', label: 'Camioneta DC' },
-        { value: 'Camioneta SW', label: 'Camioneta SW' },
-        { value: 'Automóvil', label: 'Automóvil' },
-        { value: 'Camioneta de platón', label: 'Camioneta de platón' },
-      ],
-      good: 'Selection is valid',
-      error: 'Clase de vehículo es requerido',
-    },
-    //input
-    {
-      name: 'Valor del Contrato',
-      type: 'number',
-      placeholder: '$',
-      label: 'Valor del Contrato*',
-      required: true,
-      value: '',
-      error: 'Valor del Contrato es obligatorio',
-      good: 'Dato correcto',
-    },
-    //select
-    {
-      name: 'mySelect5',
-      required: true,
-      placeholder: 'Seleccione',
-      value: '', // Valor seleccionado
-      options: [
-        { value: 'Diario', label: 'Diario' },
-        { value: 'Mensual', label: 'Mensual' },
-        { value: 'Anual', label: 'Anual' },
-      ],
-      good: 'Selection is valid',
-      error: 'Forma de pago es requerido',
-    },
-    //select depart
-    {
-      name: 'mySelect6',
-      required: true,
-      placeholder: 'Seleccione',
-      value: '', // Valor seleccionado
-      options: DEPARTAMENTOS,
-      good: 'Selection is valid',
-      error: 'Áreas de Operación es requerido',
-    },
-    //select tienpo estimado
-    {
-      name: 'mySelect6',
-      required: true,
-      placeholder: 'Seleccione',
-      value: '', // Valor seleccionado
-      options: [
-        { value: '1 hora', label: '1 hora' },
-        { value: '2 horas', label: '2 horas' },
-        { value: '3 horas', label: '3 horas' },
-        { value: '4 horas', label: '4 horas' },
-        { value: '5 horas', label: '5 horas' },
-        { value: '6 horas', label: '6 horas' },
-        { value: '7 horas', label: '7 horas' },
-        { value: '8 horas', label: '8 horas' },
-        { value: '9 horas', label: '9 horas' },
-        { value: '10 horas', label: '10 horas' },
-        { value: '11 horas', label: '11 horas' },
-        { value: '12 horas', label: '12 horas' },
-        { value: '13 horas', label: '13 horas' },
-        { value: '14 horas', label: '14 horas' },
-        { value: '15 horas', label: '15 horas' },
-        { value: '16 horas', label: '16 horas' },
-        { value: '17 horas', label: '17 horas' },
-        { value: '18 horas', label: '18 horas' },
-        { value: '19 horas', label: '19 horas' },
-        { value: '20 horas', label: '20 horas' },
-        { value: '21 horas', label: '21 horas' },
-        { value: '22 horas', label: '22 horas' },
-        { value: '23 horas', label: '23 horas' },
-        { value: '24 horas', label: '24 horas' },
-      ],
-      good: 'Selection is valid',
-      error: 'Tiempos estimados es requerido',
     },
 
     // Agrega más inputs según sea necesario
@@ -350,6 +226,30 @@ export default class FijacionComponent {
       }
     );
 
+    //datos selects
+    this.meses = MESES;
+    this.formaPago = [
+      { value: 'Diario', label: 'Diario' },
+      { value: 'Mensual', label: 'Mensual' },
+      { value: 'Anual', label: 'Anual' },
+    ];
+    this.horas = HORAS;
+
+    this.initializeForm();
+    // Configuración inicial del FormGroup
+
+    //suscribirse al servicio de manejo de errores
+    this.errorService.errorStates$.subscribe((errorStates) => {
+      this.errorStates = errorStates;
+    });
+  }
+
+  ngAfterViewInit() {
+    this.loadOptions();
+  }
+
+  initializeForm() {
+    // Aquí defines tu formulario
     //validaciones segun form
     this.formGroup1 = this.fb.group({
       1: [null, Validators.required],
@@ -369,33 +269,69 @@ export default class FijacionComponent {
     });
 
     this.formGroup3 = this.fb.group({
-      0: ['', Validators.required],
-      1: ['', Validators.required],
-      2: ['', Validators.required],
+      capital_social: ['', Validators.required],
+      patrimonio_liquido: ['', Validators.required],
+      vehiculos_requeridos: ['', Validators.required],
     });
 
-    this.formGroup4 = this.fb.group({
-      3: ['', Validators.required],
-      4: ['', Validators.required],
-      5: ['', Validators.required],
-      6: ['', Validators.required],
-      7: ['', Validators.required],
-      8: ['', Validators.required],
-      9: ['', Validators.required],
-      10: ['', Validators.required],
-      11: ['', Validators.required],
-      12: ['', Validators.required],
-      13: ['', Validators.required],
-      14: ['', Validators.required],
-    });
-
-    //suscribirse al servicio de manejo de errores
-    this.errorService.errorStates$.subscribe((errorStates) => {
-      this.errorStates = errorStates;
-    });
+    this.formGroup4 = this.fb.group(
+      {
+        cantidad_contratos: [{ value: '', disabled: false }, Validators.required],
+        contrato: ['', Validators.required],
+        contratante: ['', Validators.required],
+        fecha_inicio: ['', Validators.required],
+        fecha_terminacion: ['', Validators.required],
+        duracion: ['', Validators.required],
+        num_vehiculos: ['', Validators.required],
+        ClaseVehiculo: ['', Validators.required],
+        val_contrato: ['', Validators.required],
+        forma_pago: ['', Validators.required],
+        area_operacion: ['', Validators.required],
+        disponibilidad: ['', Validators.required],
+      },
+      { validators: dateRangeValidator }
+    );
   }
 
-  // Generar opciones para los selects
+  toggleDropdown(index: number) {
+    this.selects[index].isDropdownOpen = !this.selects[index].isDropdownOpen;
+  }
+
+  selectOption(index: number, option: any, name: string) {
+    this.selects[index].value = option;
+    this.selects[index].isDropdownOpen = false;
+    this.formGroup3.get(name)?.setValue(option);
+    this.formGroup4.get(name)?.setValue(option);
+  }
+
+  loadOptions() {
+    //clases vehiculos
+    this.apiService.getClaseVehiculo().subscribe(
+      (response) => {
+        this.ClaseVehiculo = response.detalle.map((clase: any) => ({
+          value: clase.id,
+          label: clase.descripcion,
+        }));
+      },
+      (error) => {
+        console.error('Error fetching user data', error);
+      }
+    );
+    //departamentos
+    this.apiService.getDeparts().subscribe(
+      (response) => {
+        this.departs = response.map((departamento: any) => ({
+          value: departamento.id,
+          label: departamento.descripcion,
+        }));
+      },
+      (error) => {
+        console.error('Error fetching user data', error);
+      }
+    );
+  }
+
+  // Generar opciones de numeros para los selects
   generateOptions(max: number) {
     return Array.from({ length: max }, (_, i) => ({
       value: i + 1,
@@ -406,7 +342,7 @@ export default class FijacionComponent {
   //formatear texto a int
   convertToNumber(value: string) {
     const textValue = parseInt(value, 10);
-    
+
     if (isNaN(textValue)) {
       return 0;
     } else {
@@ -434,9 +370,12 @@ export default class FijacionComponent {
         }
         break;
       case 4:
-        if (this.validateFormGroup(this.formGroup3, this.errorStates)) {
+        if (this.formGroup3.valid) {
           this.changeActiveNum('1');
           this.stepperService.setActiveNum(3);
+        } else {
+          this.submitted = true;
+          this.formGroup3.markAllAsTouched();
         }
 
         break;
@@ -491,26 +430,15 @@ export default class FijacionComponent {
     }
   }
 
-  //metodo para guardar el valor del input y select
-  onInputChange(index: number, event: any) {
-    let value = null;
-    if (event.target) {
-      const inputElement = event.target as HTMLInputElement;
-      value = inputElement?.value ?? ''; // Maneja valores nulos
-    } else {
-      value = event?.value ?? ''; // Maneja valores nulos
-    }
-
-    this.inputs[index].value = value;
-    this.formGroup3.patchValue({ [index]: value });
-    this.formGroup4.patchValue({ [index]: value });
-  }
-
   // Método para enviar los formularios
   onSubmitAllForms() {
     // Obtener el valor de input[3] para determinar la cantidad de contratos
+
     if (this.currentContractIteration == 0) {
-      this.totalContracts = parseInt(this.inputs[3].value, 10); // Valor de cantidad de contratos
+      this.totalContracts = parseInt(
+        this.formGroup4.get('cantidad_contratos')?.value,
+        10
+      ); // Valor de cantidad de contratos
     }
 
     if (
@@ -521,16 +449,20 @@ export default class FijacionComponent {
     ) {
       //si el numero de contratos es mayor a 0
       if (this.totalContracts > 0) {
-        console.log(this.totalContracts);
-        //si el form esta lleno con todos los datos
-        if (this.validateFormGroup(this.formGroup4, this.errorStates)) {
+        this.submitted = true;
+        this.formGroup4.markAllAsTouched();
+
+        if (this.formGroup4.valid) {
+          console.log('entro');
+
           this.currentContractIteration += 1;
           // Lógica para múltiples contratos
           this.showModal = true; // Mostrar modal para cada contrato
         }
       } else {
         //cuando ya llego al tope
-        this.validateFormGroup(this.formGroup4, this.errorStates);
+        this.submitted = true;
+        this.formGroup4.markAllAsTouched();
       }
     } else {
       this.changeActiveNum('0');
@@ -587,16 +519,28 @@ export default class FijacionComponent {
 
       this.contractDataArray.push(this.formGroup4.value);
       console.log(this.contractDataArray);
-      this.inputs[3].value = (
-        parseInt(this.inputs[3].value, 10) - 1
+      this.selects[1].value = (
+        parseInt(this.formGroup4.get('cantidad_contratos')?.value, 10) - 1
       ).toString();
 
-      
+      this.formGroup4
+        .get('cantidad_contratos')
+        ?.setValue(this.selects[1].value);
       // Reiniciar el formulario para la siguiente iteración
       Object.keys(this.formGroup4.controls).forEach((key, index) => {
         if (index !== 0) {
-          this.inputs[parseInt(key, 10)].value = '';
+          console.log(key);
+
+          const selectItem = this.selects.find((item) => item.name == key);
+          if (selectItem) {
+            selectItem.value = '';
+          } else {
+            console.error(`No se encontró un elemento con name ${key}`);
+          }
+
           // Si el índice NO es 0, reseteamos el control
+          this.submitted = false;
+          this.formGroup4.get('cantidad_contratos')?.disable();
           this.formGroup4.controls[key].reset();
           this.formGroup4.controls[key].markAsPristine();
           this.formGroup4.controls[key].markAsUntouched();
@@ -606,7 +550,6 @@ export default class FijacionComponent {
       // Forzamos la detección de cambios
       this.cdr.detectChanges();
 
-      console.log(this.inputs);
     } else {
       console.log('Formulario de contrato no válido');
     }
@@ -614,8 +557,7 @@ export default class FijacionComponent {
 
   // Método para enviar todos los contratos al servidor
   sendAllContracts() {
-
-    if (this.totalContracts == 1) {
+    if (this.totalContracts == 1 || this.totalContracts == this.currentContractIteration) {
       this.contractDataArray.push(this.formGroup4.value);
     }
 
