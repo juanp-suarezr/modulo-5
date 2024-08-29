@@ -1,50 +1,47 @@
-import { ErrorService } from './../../services/error/error.service';
-import { PrimaryButtonComponent } from './../../components/primary-button/primary-button.component';
-import { ActiveNumService } from '../../services/left-nav/active-num.service';
-import { ActiveNumStepperService } from '../../services/stepper/active-num.service';
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
-import { LeftNavComponent } from '../../components/left-nav/left-nav.component';
-import { SttepperComponent } from '../../components/sttepper/sttepper.component';
-import { FileUploadComponent } from '../../components/file-upload/file-upload.component';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-//servicios de consultas api
-import { ApiService } from '../../services/api/api.service';
-import { InputText } from '../../components/input/input.component';
 import {
   FormBuilder,
   FormGroup,
-  Validators,
   ReactiveFormsModule,
+  Validators,
 } from '@angular/forms';
-import { SelectComponent } from '../../components/select/select.component';
-import { MESES } from '../../shared/data/meses';
-import { AlertComponent } from '../../components/alert/alert.component';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { FileUploadComponent } from '../../../components/file-upload/file-upload.component';
+import { InputText } from '../../../components/input/input.component';
+import { LeftNavComponent } from '../../../components/left-nav/left-nav.component';
+import { PrimaryButtonComponent } from '../../../components/primary-button/primary-button.component';
+import { SttepperComponent } from '../../../components/sttepper/sttepper.component';
+import { ActiveNumService } from '../../../services/left-nav/active-num.service';
+import { ActiveNumStepperService } from '../../../services/stepper/active-num.service';
+import { ApiService } from '../../../services/api/api.service';
+import { ErrorService } from '../../../services/error/error.service';
+import { SelectComponent } from '../../../components/select/select.component';
+import { AlertComponent } from '../../../components/alert/alert.component';
 import { Router } from '@angular/router';
-import { minLengthNumericValidator } from '../../validator/numeric.validator';
-import { dateRangeValidator } from '../../validator/date.validator';
-import { HORAS } from '../../shared/data/horas';
-import { NoNegativeGlobal } from '../../validator/noNegative.validator';
+import { MESES } from '../../../shared/data/meses';
+import { FORMAPAGO } from '../../../shared/data/formapago';
+import { HORAS } from '../../../shared/data/horas';
+import { dateRangeValidator } from '../../../validator/date.validator';
+import { NoNegativeGlobal } from '../../../validator/noNegative.validator';
 
 @Component({
-  selector: 'app-fijacion',
+  selector: 'app-incremento',
   standalone: true,
   imports: [
+    CommonModule,
+    FileUploadComponent,
+    InputText,
     LeftNavComponent,
     PrimaryButtonComponent,
-    SttepperComponent,
-    FileUploadComponent,
-    CommonModule,
-    InputText,
     ReactiveFormsModule,
+    SttepperComponent,
     SelectComponent,
     AlertComponent,
   ],
-  templateUrl: './fijacion.component.html',
-  styleUrl: './fijacion.component.css',
+  templateUrl: './incremento.component.html',
+  styleUrl: './incremento.component.css',
 })
-export default class FijacionComponent {
-  parseInt: any;
+export default class IncrementoComponent {
   departs: any = [];
   ClaseVehiculo: any = [];
   meses: { value: string; label: string }[] = [];
@@ -62,28 +59,42 @@ export default class FijacionComponent {
     private cdr: ChangeDetectorRef,
     private router: Router
   ) {}
-  //objeto para manejar los active num del left menu y stepper.
-  activeNum: string = '0'; //left menu
-  activeStep: number = 1; //stteper
-  //forms
+
+  //Objeto para manejar los active num del left menu y stepper.
+  activeNum: string = '0'; //Left menu
+  activeStep: number = 1; //Stteper
+
+  //Formularios
   formGroup1!: FormGroup;
   formGroup2!: FormGroup;
   formGroup3!: FormGroup;
   formGroup4!: FormGroup;
-  //fin forms
 
-  contractDataArray: any[] = []; // Array para almacenar la información de cada iteración
-  currentContractIteration: number = 0; // Contador para las iteraciones
-  totalContracts: number = 0; // Número total de contratos
+  //Array para almacenar la información de cada iteración
+  contractDataArray: any[] = [];
 
-  showModal: boolean = false; // Control para mostrar el modal intermedio
-  showFinalModal: boolean = false; // Control para mostrar el modal final
+  //Contador para las iteraciones
+  currentContractIteration: number = 0;
 
-  //objeto para manejo de errores
+  //Número total de contratos
+  totalContracts: number = 0;
+
+  //Control para mostrar el modal intermedio
+  showModal: boolean = false;
+
+  //Control para mostrar el modal final
+  showFinalModal: boolean = false;
+
+  //Objeto para manejar errores
   errorStates: { [key: number]: boolean } = {};
-  //respuesta de user activo y rol
+
+  //Respuesta de user activo y rol
   user: any;
-  //info menu left
+
+  //Propiedad para almacenar el porcentaje seleccionado
+  selectedPercentage: string = '';
+
+  //Menu left
   infoMenu = [
     {
       num: '0',
@@ -94,7 +105,8 @@ export default class FijacionComponent {
       name: 'Operativo',
     },
   ];
-  //info stepper
+
+  //Menu stepper
   infoStepper = [
     {
       num: 1,
@@ -112,17 +124,7 @@ export default class FijacionComponent {
 
   //info selects
   selects = [
-    //cantidad vehiculos
-    {
-      name: 'vehiculos_requeridos',
-      required: true,
-      placeholder: 'Lista desplegable de números',
-      value: '', // Valor seleccionado
-      options: this.generateOptions(15),
-      good: 'Selección correcta',
-      errorMessage: 'Cantidad de vehículos es requerido',
-      isDropdownOpen: false,
-    },
+
     //select meses
     {
       name: 'duracion',
@@ -174,25 +176,88 @@ export default class FijacionComponent {
     },
   ];
 
-  //props o datos para input upload
+  //Inputs
+  inputs = [
+    //Formulario 2 Solicitud
+    //Input 1
+    {
+      name: 'numero_vehicular',
+      type: 'number',
+      placeholder: 'Número de vehículos',
+      label: 'Numero vehiculos',
+      required: true,
+      value: '',
+      error: 'Número de vehículos es obligatorio',
+      good: 'Dato correcto',
+    },
+    //Select 1 -> Numero de array = 1
+    {
+      name: 'SelectPropiedadEmpresa',
+      required: true,
+      placeholder: 'Seleccione',
+      value: '',
+      options: [
+        { value: 7, label: '7%' },
+        { value: 10, label: '10%' },
+      ],
+      good: 'Selección valida',
+      error: 'Propiedad de la empresa es requerido',
+    },
+    //Input 2
+    {
+      name: 'resultado',
+      type: 'number',
+      placeholder: 'Resultado',
+      label: 'Resultado',
+      required: false,
+      value: '',
+    },
+
+    //Formulario 3 Solicitud
+    //Input 3
+    {
+      name: 'capital_social',
+      type: 'number',
+      placeholder: '$100.000',
+      label: 'Capital social',
+      required: true,
+      value: '',
+      error: 'Capital social es obligatorio',
+      good: 'Dato correcto',
+    },
+    //Input 4
+    {
+      name: 'Patrimonio_liquido',
+      type: 'number',
+      placeholder: '$100.000',
+      label: 'Patrimonio Líquido en SMLV',
+      required: true,
+      value: '',
+      error: 'Patrimonio Líquido en SMLV es obligatorio',
+      good: 'Dato correcto',
+    },
+
+  ];
+
+  //Props o datos para input upload
   dataClass = {
     textSize: 'xs',
     textInfo: 'Archivo PDF. Peso máximo: 2MB',
   };
 
   ngOnInit(): void {
-    // Suscribirse al observable para obtener los cambios reactivos del menuleft
+    //Suscribirse al observable para obtener los cambios reactivos del menuleft
     this.stateService.activeNum$.subscribe((num) => {
       this.activeNum = num;
     });
 
-    // Suscribirse al observable del servicio de stepper
+    //Suscribirse al observable del servicio de stepper
     this.stepperService.activeStep$.subscribe((step) => {
       this.activeStep = step;
       console.log('Active step:', step);
     });
 
-    //traer los datos de la consulta, para roles
+    //Traer los datos de la consulta, para roles
     this.apiService.getAuthUserAndRoles().subscribe(
       (response) => {
         this.user = response.user;
@@ -214,7 +279,7 @@ export default class FijacionComponent {
     this.initializeForm();
     // Configuración inicial del FormGroup
 
-    //suscribirse al servicio de manejo de errores
+    //Suscribirse al servicio de manejo de errores
     this.errorService.errorStates$.subscribe((errorStates) => {
       this.errorStates = errorStates;
     });
@@ -224,9 +289,9 @@ export default class FijacionComponent {
     this.loadOptions();
   }
 
+  // Aquí defines tu formulario
   initializeForm() {
-    // Aquí defines tu formulario
-    //validaciones segun form
+    //Validaciones segun el formulario
     this.formGroup1 = this.fb.group({
       1: [null, Validators.required],
       2: [null, Validators.required],
@@ -242,17 +307,22 @@ export default class FijacionComponent {
       9: [null, Validators.required],
       10: [null, Validators.required],
       11: [null, Validators.required],
+      0: ['', Validators.required],
+      1: ['', Validators.required],
     });
 
     this.formGroup3 = this.fb.group({
+      12: [null, Validators.required],
       capital_social: ['', [Validators.required, NoNegativeGlobal]],
       patrimonio_liquido: ['', [Validators.required, NoNegativeGlobal]],
-      vehiculos_requeridos: ['', Validators.required],
     });
 
     this.formGroup4 = this.fb.group(
       {
-        cantidad_contratos: [{ value: '', disabled: false }, Validators.required],
+        cantidad_contratos: [
+          { value: '', disabled: false },
+          Validators.required,
+        ],
         contrato: ['', Validators.required],
         contratante: ['', Validators.required],
         fecha_inicio: ['', Validators.required],
@@ -267,6 +337,11 @@ export default class FijacionComponent {
       },
       { validators: [dateRangeValidator, NoNegativeGlobal] }
     );
+  }
+
+  //Metodo para cambiar el valor del menuleft
+  changeActiveNum(newValue: string) {
+    this.stateService.setActiveNum(newValue);
   }
 
   toggleDropdown(index: number) {
@@ -306,31 +381,7 @@ export default class FijacionComponent {
       }
     );
   }
-
-  // Generar opciones de numeros para los selects
-  generateOptions(max: number) {
-    return Array.from({ length: max }, (_, i) => ({
-      value: i + 1,
-      label: i + 1,
-    }));
-  }
-
-  //formatear texto a int
-  convertToNumber(value: string) {
-    const textValue = parseInt(value, 10);
-
-    if (isNaN(textValue)) {
-      return 0;
-    } else {
-      return textValue;
-    }
-  }
-  // Método para cambiar el valor del menuleft
-  changeActiveNum(newValue: string) {
-    this.stateService.setActiveNum(newValue);
-  }
-
-  // Método para cambiar el valor del stepper
+  //Metodo para cambiar el valor del stepper
   changeActiveStep(newValue: number) {
     switch (newValue) {
       case 1:
@@ -346,16 +397,13 @@ export default class FijacionComponent {
         }
         break;
       case 4:
-      console.log("entro");
-      
-        if (this.formGroup3.valid) {
+        console.log("entro");
+
+        if (this.validateFormGroup(this.formGroup3, this.errorStates)) {
+          console.log("entro1");
           this.changeActiveNum('1');
           this.stepperService.setActiveNum(3);
-        } else {
-          this.submitted = true;
-          this.formGroup3.markAllAsTouched();
         }
-
         break;
 
       default:
@@ -365,7 +413,7 @@ export default class FijacionComponent {
     console.log(this.errorStates);
   }
 
-  //validate error
+  //Validador error
   validateFormGroup(
     formGroup: FormGroup,
     errorStates: { [key: number]: boolean }
@@ -374,8 +422,10 @@ export default class FijacionComponent {
     for (const key in formGroup.controls) {
       if (formGroup.controls.hasOwnProperty(key)) {
         const control = formGroup.controls[key];
+        console.log(key);
+
         if (!control.value || control.invalid) {
-          const errorKey = parseInt(key, 10); // Convierte la clave a número
+          const errorKey = parseInt(key, 10); //Convierte la clave a número
           errorStates[errorKey] = true;
           isValid = false;
         }
@@ -385,7 +435,7 @@ export default class FijacionComponent {
     return isValid;
   }
 
-  //metodo para guardar el archivo seleccionado
+  //Metodo para guardar el archivo seleccionado
   onFileSelected(file: File[], formControlName: number) {
     const formControlMap: { [key: number]: FormGroup } = {
       1: this.formGroup1,
@@ -399,7 +449,7 @@ export default class FijacionComponent {
       9: this.formGroup2,
       10: this.formGroup2,
       11: this.formGroup2,
-      // Y así sucesivamente
+      12: this.formGroup3,
     };
 
     const formGroup = formControlMap[formControlName];
@@ -408,10 +458,64 @@ export default class FijacionComponent {
     }
   }
 
-  // Método para enviar los formularios
-  onSubmitAllForms() {
-    // Obtener el valor de input[3] para determinar la cantidad de contratos
+  //Metodo para guardar el valor del input y select de incremento formula
+  onInputChange(index: number, event: any) {
+    let value = null;
 
+    if (event.target) {
+      const inputElement = event.target as HTMLInputElement;
+      value = inputElement?.value ?? ''; // Maneja valores nulos
+
+      //Asumiendo que el `input-text` está en el índice 0
+      if (
+        index === 0 ||
+        index === 3 ||
+        index === 4 ||
+        index === 5 ||
+        index === 6 ||
+        index === 13
+      ) {
+        //El valor no sea negativo
+        value = Math.max(0, parseFloat(value) || 0);
+        //El campo de entrada refleje el valor ajustado
+        // @ts-ignore
+        inputElement.value = value;
+      }
+    } else {
+      // Maneja valores nulos
+      value = event?.value ?? '';
+    }
+
+    // Actualiza el valor en el array de inputs
+    this.inputs[index].value = value;
+
+    // Actualiza los valores en los formularios reactivos
+    this.formGroup2.patchValue({ [index]: value });
+
+
+    // Si el índice es 1 (select), actualiza el porcentaje seleccionado
+    if (index === 1) {
+      this.selectedPercentage = value ? `${value}%` : '';
+    }
+
+    // Si ya tienes ambos valores, realiza la multiplicación
+    const numeroVehiculos = this.inputs[0].value
+      ? parseFloat(this.inputs[0].value)
+      : 0;
+    const porcentaje = this.inputs[1].value
+      ? parseFloat(this.inputs[1].value)
+      : 0;
+
+    if (numeroVehiculos && porcentaje) {
+      const resultado = (numeroVehiculos * porcentaje) / 100;
+      this.inputs[2].value = resultado.toFixed(2);
+      this.formGroup2.patchValue({ 2: resultado.toFixed(2) });
+    }
+  }
+
+  //Metodo para enviar los formularios
+  onSubmitAllForms() {
+    //Obtener el valor de input para determinar la cantidad de contratos
     if (this.currentContractIteration == 0) {
       this.totalContracts = parseInt(
         this.formGroup4.get('cantidad_contratos')?.value,
@@ -425,16 +529,15 @@ export default class FijacionComponent {
       // this.formGroup3.valid
       true
     ) {
-      //si el numero de contratos es mayor a 0
+      //Si el numero de contratos es mayor a 0
       if (this.totalContracts > 0) {
         this.submitted = true;
         this.formGroup4.markAllAsTouched();
 
+        //Si el form esta lleno con todos los datos
         if (this.formGroup4.valid) {
-          console.log('entro');
-
           this.currentContractIteration += 1;
-          // Lógica para múltiples contratos
+          //Lógica para múltiples contratos
           this.showModal = true; // Mostrar modal para cada contrato
         }
       } else {
@@ -446,7 +549,6 @@ export default class FijacionComponent {
       this.changeActiveNum('0');
       if (!this.validateFormGroup(this.formGroup1, this.errorStates)) {
         console.log('entro');
-
         this.stepperService.setActiveNum(1);
       } else if (!this.validateFormGroup(this.formGroup2, this.errorStates)) {
         console.log('entro1');
@@ -458,8 +560,7 @@ export default class FijacionComponent {
     }
   }
 
-  // modal
-
+  //Metodos Primer Modal
   handleClose() {
     console.log('Modal closed');
   }
@@ -488,7 +589,7 @@ export default class FijacionComponent {
     });
   }
 
-  //fin MODAL
+  //Metodo Modal Final
 
   // Procesar cada iteración de contratos
   processContractIteration() {
@@ -533,7 +634,7 @@ export default class FijacionComponent {
     }
   }
 
-  // Método para enviar todos los contratos al servidor
+  //Metodo para enviar todos los contratos al servidor
   sendAllContracts() {
     if (this.totalContracts == 1 || this.totalContracts == this.currentContractIteration) {
       this.contractDataArray.push(this.formGroup4.value);
@@ -548,13 +649,5 @@ export default class FijacionComponent {
 
     console.log(allFormsData);
     this.showFinalModal = true;
-
-    // this.apiService.sendContractForms(allFormsData).subscribe(
-    //   (response) => {
-    //     console.log('Formularios enviados exitosamente');
-    //     // Realizar acciones adicionales si es necesario
-    //   },
-    //   (error) => console.error('Error enviando los formularios', error)
-    // );
   }
 }

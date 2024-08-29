@@ -49,7 +49,7 @@ export class ApiService {
       },
     };
 
-    // Retornamos los datos como un Observable simulando la respuesta de un API
+    //Retornamos los datos como un Observable simulando la respuesta de un API
     return of(response);
   }
 
@@ -167,7 +167,7 @@ export class ApiService {
           label: '1',
           active: true,
         },
-        
+
       ],
     };
 
@@ -184,6 +184,8 @@ export class ApiService {
     return this.http.get(`${this.baseUrl}/catalogos/ClaseVehiculo`);
   }
 
-  
-  
+
+
+
+
 }
