@@ -1,7 +1,7 @@
 <div class="sm:grid sm:grid-cols-10 gap-4" *ngIf="user.roles[0].roleName == 'ROLE_ESCRITURA_MIN'"
-     xmlns="http://www.w3.org/1999/html">
+  xmlns="http://www.w3.org/1999/html">
 
-  <div class="md:col-span-2 sm:col-span-3 w-auto sm:mt-16 mt-12">
+  <div class="md:col-span-2 sm:col-span-3 w-auto sm:mt-16 mt-12 mb-12">
     <app-left-nav [data]="infoMenu" active="{{activeNum}}"></app-left-nav>
   </div>
   <!-- solicitud contenido -->
@@ -28,29 +28,27 @@
         <!-- cargue 1 -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
 
-          <p class="text-primary3 font-semibold"
-             [ngClass]="{'!text-error !font-normal': errorStates[1]}">
+          <p class="text-primary3 font-semibold" [ngClass]="{'!text-error !font-normal': errorStates[1]}">
             Copia de los contratos de servicio especial, que esté
             ejecutando y de los nuevos que requiere atender con la
             nueva capacidad*
           </p>
 
           <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" [maxFiles]="1" mimes=".pdf"
-                           [error]="errorStates[1]" (fileSelected)="onFileSelected($event, 1)"></app-file-upload>
+            [error]="errorStates[1]" (fileSelected)="onFileSelected($event, 1)"></app-file-upload>
         </div>
 
         <!-- cargue 2 -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
 
-          <p class="text-primary3 font-semibold"
-             [ngClass]="{'!text-error !font-normal': errorStates[2]}">
+          <p class="text-primary3 font-semibold" [ngClass]="{'!text-error !font-normal': errorStates[2]}">
             Plan de rodamiento, donde demuestre la utilización
             de vehículos autorizados y de los que solicitan con el
             aumento, aclarando cuales son los vehículos nuevos*
           </p>
 
           <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" [maxFiles]="1" mimes=".pdf"
-                           [error]="errorStates[2]" (fileSelected)="onFileSelected($event, 2)"></app-file-upload>
+            [error]="errorStates[2]" (fileSelected)="onFileSelected($event, 2)"></app-file-upload>
         </div>
 
       </div>
@@ -61,27 +59,25 @@
         <!-- cargue 3 -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
 
-          <p class="text-primary3 font-semibold"
-             [ngClass]="{'!text-error !font-normal': errorStates[3]}">
+          <p class="text-primary3 font-semibold" [ngClass]="{'!text-error !font-normal': errorStates[3]}">
             Estructura de costos de las operaciones que tienen
             contratadas y las tarifas establecidas por el servicio*
           </p>
 
           <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" [maxFiles]="1" mimes=".pdf"
-                           [error]="errorStates[3]" (fileSelected)="onFileSelected($event, 3)"></app-file-upload>
+            [error]="errorStates[3]" (fileSelected)="onFileSelected($event, 3)"></app-file-upload>
         </div>
 
         <!-- cargue 4 -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
 
-          <p class="text-primary3 font-semibold"
-             [ngClass]="{'!text-error !font-normal': errorStates[4]}">
+          <p class="text-primary3 font-semibold" [ngClass]="{'!text-error !font-normal': errorStates[4]}">
             Certificado de cumplimiento del 10% de flota de la
             empresa*
           </p><br>
 
           <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" [maxFiles]="1" mimes=".pdf"
-                           [error]="errorStates[4]" (fileSelected)="onFileSelected($event, 4)"></app-file-upload>
+            [error]="errorStates[4]" (fileSelected)="onFileSelected($event, 4)"></app-file-upload>
         </div>
 
       </div>
@@ -92,26 +88,24 @@
         <!-- cargue 5 -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
 
-          <p class="text-primary3 font-semibold"
-             [ngClass]="{'!text-error !font-normal': errorStates[5]}">
+          <p class="text-primary3 font-semibold" [ngClass]="{'!text-error !font-normal': errorStates[5]}">
             Certificado de Existencia y Representación legal no
             menos a 30 días*
           </p>
 
           <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" [maxFiles]="1" mimes=".pdf"
-                           [error]="errorStates[5]" (fileSelected)="onFileSelected($event, 5)"></app-file-upload>
+            [error]="errorStates[5]" (fileSelected)="onFileSelected($event, 5)"></app-file-upload>
         </div>
 
         <!-- cargue 6 -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
 
-          <p class="text-primary3 font-semibold"
-             [ngClass]="{'!text-error !font-normal': errorStates[6]}">
+          <p class="text-primary3 font-semibold" [ngClass]="{'!text-error !font-normal': errorStates[6]}">
             Registro Único Tributario*
           </p>
 
           <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" [maxFiles]="1" mimes=".pdf"
-                           [error]="errorStates[6]" (fileSelected)="onFileSelected($event, 6)"></app-file-upload>
+            [error]="errorStates[6]" (fileSelected)="onFileSelected($event, 6)"></app-file-upload>
         </div>
 
       </div>
@@ -136,25 +130,23 @@
         <!-- cargue 7 -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
 
-          <p class="text-primary3 font-semibold"
-             [ngClass]="{'!text-error !font-normal': errorStates[7]}">
+          <p class="text-primary3 font-semibold" [ngClass]="{'!text-error !font-normal': errorStates[7]}">
             Resolución de habilitación*
           </p>
 
           <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" mimes=".pdf" [maxFiles]="1"
-                           [error]="errorStates[7]" (fileSelected)="onFileSelected($event, 7)"></app-file-upload>
+            [error]="errorStates[7]" (fileSelected)="onFileSelected($event, 7)"></app-file-upload>
         </div>
 
         <!-- cargue 8 -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
 
-          <p class="text-primary3 font-semibold"
-             [ngClass]="{'!text-error !font-normal': errorStates[8]}">
+          <p class="text-primary3 font-semibold" [ngClass]="{'!text-error !font-normal': errorStates[8]}">
             Cédula de Ciudadanía del Representante Legal*
           </p>
 
           <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" mimes=".pdf" [maxFiles]="1"
-                           [error]="errorStates[8]" (fileSelected)="onFileSelected($event, 8)"></app-file-upload>
+            [error]="errorStates[8]" (fileSelected)="onFileSelected($event, 8)"></app-file-upload>
         </div>
       </div>
 
@@ -164,25 +156,23 @@
         <!-- cargue 9 -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
 
-          <p class="text-primary3 font-semibold"
-             [ngClass]="{'!text-error !font-normal': errorStates[9]}">
+          <p class="text-primary3 font-semibold" [ngClass]="{'!text-error !font-normal': errorStates[9]}">
             Estados financieros de la empresa*
           </p>
 
           <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" mimes=".pdf" [maxFiles]="1"
-                           [error]="errorStates[9]" (fileSelected)="onFileSelected($event, 9)"></app-file-upload>
+            [error]="errorStates[9]" (fileSelected)="onFileSelected($event, 9)"></app-file-upload>
         </div>
 
         <!-- cargue 10 -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
 
-          <p class="text-primary3 font-semibold"
-             [ngClass]="{'!text-error !font-normal': errorStates[10]}">
+          <p class="text-primary3 font-semibold" [ngClass]="{'!text-error !font-normal': errorStates[10]}">
             Cédula del contador que firma los estados financieros*
           </p>
 
           <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" mimes=".pdf" [maxFiles]="1"
-                           [error]="errorStates[10]" (fileSelected)="onFileSelected($event, 10)"></app-file-upload>
+            [error]="errorStates[10]" (fileSelected)="onFileSelected($event, 10)"></app-file-upload>
         </div>
       </div>
 
@@ -192,47 +182,44 @@
         <!-- cargue 11 -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
 
-          <p class="text-primary3 font-semibold"
-             [ngClass]="{'!text-error !font-normal': errorStates[11]}">
+          <p class="text-primary3 font-semibold" [ngClass]="{'!text-error !font-normal': errorStates[11]}">
             Tarjeta profesional contador que firma estados financieros*
           </p>
 
           <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" mimes=".pdf" [maxFiles]="1"
-                           [error]="errorStates[11]" (fileSelected)="onFileSelected($event, 11)"></app-file-upload>
+            [error]="errorStates[11]" (fileSelected)="onFileSelected($event, 11)"></app-file-upload>
         </div>
 
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
 
           <!-- Titulos -->
           <div class="w-full flex flex-row justify-center items-start pt-6 my-auto">
-            <p class="text-primary3 font-semibold"
-               [ngClass]="{'!text-error !font-normal': errorStates[0]}">
+            <p class="text-primary3 font-semibold" [ngClass]="{'!text-error !font-normal': errorStates[0]}">
               Cantidad vehículos que está
               requiriendo incrementar*
             </p>
 
-            <p class="text-primary3 font-semibold"
-               [ngClass]="{'!text-error !font-normal': errorStates[1]}">
+            <p class="text-primary3 font-semibold" [ngClass]="{'!text-error !font-normal': errorStates[1]}">
               {{ selectedPercentage }} de propiedad de la empresa*
             </p>
           </div>
 
           <div class="flex flex-row justify-center items-start pt-6 my-auto">
-            <input-text class="w-full mt-2 cursor-pointer" [input]="inputs[0]" [index]="0"
-                        [error]="errorStates[0]" (inputChange)="onInputChange($event.index, $event.event)"></input-text>
+            <input-text class="w-full mt-2 cursor-pointer" [input]="inputs[0]" [index]="0" [error]="errorStates[0]"
+              (inputChange)="onInputChange($event.index, $event.event)"></input-text>
 
-            <app-select class="w-full mt-2 cursor-pointer" [input]="inputs[1]" [index]="1"
-                        [error]="errorStates[1]" (inputChange)="onInputChange($event.index, $event.event)"></app-select>
+            <app-select class="w-full mt-2 cursor-pointer" [input]="inputs[1]" [index]="1" [error]="errorStates[1]"
+              (inputChange)="onInputChange($event.index, $event.event)"></app-select>
 
-            <input-text class="w-full mt-2" [input]="inputs[2]" [index]="2"
-                        [error]="errorStates[2]" [disabled]="true"></input-text>
+            <input-text class="w-full mt-2" [input]="inputs[2]" [index]="2" [error]="errorStates[2]"
+              [disabled]="true"></input-text>
           </div>
 
           <!-- texto informativo -->
           <div class="flex inline-flex md:gap-3 gap-2 h-full w-full mt-2">
-                        <span class="lg:w-[12%] sm:w-[12%] w-[10%] h-full flex justify-center lg:px-1 m-auto">
-                            <img class="w-full m-auto" src="assets/iconoInfo.svg">
-                        </span>
+            <span class="lg:w-[12%] sm:w-[12%] w-[10%] h-full flex justify-center lg:px-1 m-auto">
+              <img class="w-full m-auto" src="assets/iconoInfo.svg">
+            </span>
             <p class="text-primary1 work-sans text-[11px] mt-2 w-auto">
               Este porcentaje se calcula cuando se digite la cantidad de vehículos
               requerida por el % correspondiente y se debe cargar el certificado
@@ -262,31 +249,29 @@
 
         <!-- cargue 12 -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
-          <p class="text-primary3 font-semibold"
-             [ngClass]="{'!text-error !font-normal': errorStates[12]}">
+          <p class="text-primary3 font-semibold" [ngClass]="{'!text-error !font-normal': errorStates[12]}">
             Certificado del 10% de propiedad de la empresa*
           </p>
           <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" mimes=".pdf" [maxFiles]="1"
-                           [error]="errorStates[12]" (fileSelected)="onFileSelected($event, 12)"></app-file-upload>
+            [error]="errorStates[12]" (fileSelected)="onFileSelected($event, 12)"></app-file-upload>
         </div>
 
         <!-- input 1 -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
 
-          <p class="text-primary3 font-semibold h-full"
-             [ngClass]="{'!text-error !font-normal': errorStates[3]}">
+          <p class="text-primary3 font-semibold h-full" [ngClass]="{'!text-error !font-normal': errorStates[3]}">
             Capital Social en SMLV*
           </p>
 
-          <input-text class="w-full mt-2 cursor-pointer" [input]="inputs[3]" [index]="3"
-                      [error]="errorStates[3]" (inputChange)="onInputChange($event.index, $event.event)"></input-text>
+          <input-text class="w-full mt-2 cursor-pointer" [input]="inputs[3]" [index]="3" [error]="errorStates[3]"
+            (inputChange)="onInputChange($event.index, $event.event)"></input-text>
 
           <!-- texto informativo -->
           <div class="flex inline-flex md:gap-3 gap-2 h-full w-full mt-2">
 
-                        <span class="lg:w-[12%] sm:w-[12%] w-[10%] h-full flex justify-center lg:px-1 m-auto">
-                            <img class="w-full m-auto" src="assets/iconoInfo.svg">
-                        </span>
+            <span class="lg:w-[12%] sm:w-[12%] w-[10%] h-full flex justify-center lg:px-1 m-auto">
+              <img class="w-full m-auto" src="assets/iconoInfo.svg">
+            </span>
             <p class="text-primary1 work-sans text-[11px] mt-2 w-auto">
               Empresa con capacidad transportadora operacional autorizada de
               hasta 51 y 300 vehículos: Capital pagado mínimo: 400 SMLMV –
@@ -304,19 +289,18 @@
 
         <!-- input 2 -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
-          <p class="text-primary3 font-semibold h-full"
-             [ngClass]="{'!text-error !font-normal': errorStates[4]}">
+          <p class="text-primary3 font-semibold h-full" [ngClass]="{'!text-error !font-normal': errorStates[4]}">
             Patrimonio Líquido en SMLV*
           </p>
 
-          <input-text class="w-full mt-2 cursor-pointer" [input]="inputs[4]" [index]="4"
-                      [error]="errorStates[4]" (inputChange)="onInputChange($event.index, $event.event)"></input-text>
+          <input-text class="w-full mt-2 cursor-pointer" [input]="inputs[4]" [index]="4" [error]="errorStates[4]"
+            (inputChange)="onInputChange($event.index, $event.event)"></input-text>
 
           <!-- texto informativo -->
           <div class="flex inline-flex md:gap-3 gap-2 h-full w-full mt-2">
-                        <span class="lg:w-[12%] sm:w-[12%] w-[10%] h-full flex justify-center lg:px-1 m-auto">
-                            <img class="w-full m-auto" src="assets/iconoInfo.svg">
-                        </span>
+            <span class="lg:w-[12%] sm:w-[12%] w-[10%] h-full flex justify-center lg:px-1 m-auto">
+              <img class="w-full m-auto" src="assets/iconoInfo.svg">
+            </span>
             <p class="text-primary1 work-sans text-[11px] mt-2 w-auto">
               Empresa con capacidad transportadora operacional autorizada de
               hasta 51 y 300 vehículos: Capital pagado mínimo: 400 SMLMV –
@@ -341,7 +325,7 @@
     <h3 class="text-primary1 !font-bold">Incremento de Capacidad Transportadora</h3>
 
     <!--formulario 4 -->
-    <form [formGroup]="formGroup4" class="px-4 md:pl-16 md:pe-16 mt-6 active1 mb-6">
+    <form [formGroup]="formGroup4" class="px-4 md:pl-16 md:pe-16 mt-6 active1 mb-16" (ngSubmit)="onSubmitAllForms()">
       <div class="col-span-2">
         <p class="font-bold">Digitar los siguientes campos*</p>
         <p class="text-primary4 font-[500] pt-4">Los campos marcados con * son obligatorios</p>
@@ -349,9 +333,9 @@
         <!-- texto informativo -->
         <div class="md:w-4/6 flex inline-flex md:gap-3 gap-2 h-full w-full mt-2">
 
-                    <span class="lg:w-[7%] sm:w-[8%] w-[10%] h-full flex justify-center lg:px-1 m-auto">
-                        <img class="w-full m-auto" src="assets/iconoInfo.svg">
-                    </span>
+          <span class="lg:w-[7%] sm:w-[8%] w-[10%] h-full flex justify-center lg:px-1 m-auto">
+            <img class="w-full m-auto" src="assets/iconoInfo.svg">
+          </span>
           <p class="text-primary1 work-sans text-[11px] mt-2 w-auto">
             Con el fin de identificar cuantas veces tiene que digitar la siguiente información, teniendo en
             cuenta que esta información se debe diligenciar por cada uno de los contratos.
@@ -366,39 +350,112 @@
         <!--input 1 -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
 
-          <p class="text-primary3 font-semibold h-full"
-             [ngClass]="{'!text-error !font-normal': errorStates[5]}">
+          <p class="text-primary3 font-semibold h-full">
             Cantidad de contratos*
           </p>
 
-          <input-text class="w-full mt-2 cursor-pointer" [input]="inputs[5]" [index]="5"
-                      [disabled]="currentContractIteration != 0"
-                      [error]="errorStates[5]" (inputChange)="onInputChange($event.index, $event.event)"></input-text>
+          <!-- input -->
+          <div class="mt-2 relative w-full">
+            <input
+              class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent disabled:bg-secondary3 disabled:border-secondary2 disabled:text-secondary2"
+              type="number" formControlName="cantidad_contratos" required placeholder="Ingrese número">
+            <div class="w-full relative">
+              <!-- Icono de error (rojo) -->
+              <span
+                *ngIf="formGroup4.get('cantidad_contratos')?.invalid && (formGroup4.get('cantidad_contratos')?.touched || submitted)"
+                class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
+                <span class="pi pi-exclamation-circle text-error text-[24px]"></span>
+              </span>
+
+              <!-- Icono de éxito (verde) -->
+              <span
+                *ngIf="formGroup4.get('cantidad_contratos')?.valid && (formGroup4.get('cantidad_contratos')?.touched || submitted)"
+                class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
+                <span class="pi pi-check-circle text-success text-[24px]"></span>
+              </span>
+            </div>
+            <span *ngIf="submitted && formGroup4.get('cantidad_contratos')?.errors?.['required']" class="text-error">
+              Cantidad de contratos es obligatorio
+            </span>
+            <span
+              *ngIf="formGroup4.get('cantidad_contratos')?.hasError('negativeNumber') && (formGroup4.get('cantidad_contratos')?.touched || submitted)"
+              class="text-error">
+              El numeró no puede ser negativo
+            </span>
+          </div>
 
         </div>
 
         <!-- input 2 -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
 
-          <p class="text-primary3 font-semibold h-full"
-             [ngClass]="{'!text-error !font-normal': errorStates[6]}">
+          <p class="text-primary3 font-semibold h-full">
             N° de contrato*
           </p>
 
-          <input-text class="w-full mt-2 cursor-pointer" [input]="inputs[6]" [index]="6"
-                      [error]="errorStates[6]" (inputChange)="onInputChange($event.index, $event.event)"></input-text>
+          <!-- input -->
+          <div class="mt-2 w-full relative">
+            <input
+              class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent"
+              type="number" formControlName="contrato" required placeholder="Ingrese número">
+            <div class="w-full relative">
+              <!-- Icono de error (rojo) -->
+              <span *ngIf="formGroup4.get('contrato')?.invalid && (formGroup4.get('contrato')?.touched || submitted)"
+                class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
+                <span class="pi pi-exclamation-circle text-error text-[24px]"></span>
+              </span>
+
+              <!-- Icono de éxito (verde) -->
+              <span *ngIf="formGroup4.get('contrato')?.valid && (formGroup4.get('contrato')?.touched || submitted)"
+                class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
+                <span class="pi pi-check-circle text-success text-[24px]"></span>
+              </span>
+            </div>
+            <span *ngIf="submitted && formGroup4.get('contrato')?.errors?.['required']" class="text-error">
+              El numero de contrato es obligatorio
+            </span>
+            <span *ngIf="formGroup4.get('contrato')?.hasError('negativeNumber') && (formGroup4.get('contrato')?.touched || submitted)"
+              class="text-error">
+              El numeró no puede ser negativo
+            </span>
+          </div>
         </div>
 
         <!-- input 3 -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
 
-          <p class="text-primary3 font-semibold h-full"
-             [ngClass]="{'!text-error !font-normal': errorStates[7]}">
+          <p class="text-primary3 font-semibold h-full">
             Contratante*
           </p>
 
-          <input-text class="w-full mt-2 cursor-pointer" [input]="inputs[7]" [index]="7"
-                      [error]="errorStates[7]" (inputChange)="onInputChange($event.index, $event.event)"></input-text>
+          <!-- input -->
+          <div class="mt-2 relative w-full">
+            <input
+              class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent"
+              type="text" formControlName="contratante" required placeholder="Nombre de empresa contratante">
+            <div class="w-full relative">
+              <!-- Icono de error (rojo) -->
+              <span
+                *ngIf="formGroup4.get('contratante')?.invalid && (formGroup4.get('contratante')?.touched || submitted)"
+                class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
+                <span class="pi pi-exclamation-circle text-error text-[24px]"></span>
+              </span>
+
+              <!-- Icono de éxito (verde) -->
+              <span
+                *ngIf="formGroup4.get('contratante')?.valid && (formGroup4.get('contratante')?.touched || submitted)"
+                class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
+                <span class="pi pi-check-circle text-success text-[24px]"></span>
+              </span>
+            </div>
+            <span *ngIf="submitted && formGroup4.get('contratante')?.errors?.['required']" class="text-error">
+              El Contratante es obligatorio
+            </span>
+            <span *ngIf="formGroup4.get('contratante')?.hasError('negativeNumber') && (formGroup4.get('contratante')?.touched || submitted)"
+              class="text-error">
+              El numeró no puede ser negativo
+            </span>
+          </div>
 
         </div>
       </div>
@@ -409,38 +466,86 @@
         <!-- input 4 -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
 
-          <p class="text-primary3 font-semibold h-full"
-             [ngClass]="{'!text-error !font-normal': errorStates[8]}">
+          <p class="text-primary3 font-semibold h-full">
             Fecha de inicio*
           </p>
 
-          <input-text class="w-full mt-2 cursor-pointer" [input]="inputs[8]" [index]="8"
-                      [error]="errorStates[8]" (inputChange)="onInputChange($event.index, $event.event)"></input-text>
+          <div class="mt-2 relative w-full">
+            <input
+              class="shadow-sm rounded-md w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent"
+              type="date" formControlName="fecha_inicio" required placeholder="dd/mm/aaaa">
+
+            <span *ngIf="submitted && formGroup4.get('fecha_inicio')?.errors?.['required']" class="text-error">
+              Fecha de inicio es obligatorio
+            </span>
+          </div>
         </div>
 
         <!-- input 5 -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
 
-          <p class="text-primary3 font-semibold h-full"
-             [ngClass]="{'!text-error !font-normal': errorStates[9]}">
+          <p class="text-primary3 font-semibold h-full">
             Fecha de terminación*
           </p>
 
-          <input-text class="w-full mt-2 cursor-pointer" [input]="inputs[9]" [index]="9"
-                      [error]="errorStates[9]" (inputChange)="onInputChange($event.index, $event.event)"></input-text>
+          <!-- input -->
+          <div class="mt-2 relative w-full">
+            <input
+              class="shadow-sm rounded-md w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent"
+              type="date" formControlName="fecha_terminacion" required placeholder="dd/mm/aaaa">
+
+            <span *ngIf="submitted && formGroup4.get('fecha_terminacion')?.errors?.['required']" class="text-error">
+              Fecha de terminación es obligatorio
+            </span>
+            <span
+              *ngIf="formGroup4.hasError('dateRangeInvalid') && (formGroup4.get('fecha_terminacion')?.touched || submitted)"
+              class="text-error">
+              La fecha de terminación no puede ser anterior a la fecha de inicio.
+            </span>
+          </div>
 
         </div>
 
         <!-- select 1 -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
 
-          <p class="text-primary3 font-semibold h-full"
-             [ngClass]="{'!text-error !font-normal': errorStates[10]}">
+          <p class="text-primary3 font-semibold h-full">
             Duración en meses*
           </p>
 
-          <app-select class="w-full m-auto cursor-pointer mt-2" [input]="inputs[10]" [index]="10"
-                      [error]="errorStates[10]" (inputChange)="onInputChange($event.index, $event.event)"></app-select>
+          <!-- select -->
+          <div class="w-full relative mt-2">
+
+            <div (click)="toggleDropdown(1)"
+              [ngClass]="{'text-error !border border-error': formGroup4.get('duracion')?.invalid && (formGroup4.get('duracion')?.touched || formGroup4.get('duracion')?.dirty)}"
+              class="cursor-pointer shadow-sm min-w-[160px] w-full p-[10px] h-[40px] bg-transparent border-2 border-secondary1 focus:outline-none focus:border-primary1 flex justify-between items-center">
+              <span *ngIf="!selects[1].value" class="font-[500] text-xs">Seleccione</span>
+              <span *ngIf="selects[1].value" class="text-normal">{{
+                formGroup4.get('duracion')?.value.label
+                }}</span>
+
+              <i class="pi pi-chevron-down text-primary2 text-xs"
+                [ngClass]="{'!text-error': formGroup4.get('duracion')?.invalid && (formGroup4.get('duracion')?.touched || formGroup4.get('duracion')?.dirty)}"></i>
+            </div>
+
+            <ul *ngIf="selects[1].isDropdownOpen"
+              class="absolute z-20 bg-secondary4 border border-primary1 shadow-md rounded-bl-md rounded-br-md w-full mt-1 max-h-48 overflow-y-auto">
+              <li *ngFor="let option of meses" (click)="selectOption(1, option, 'duracion')"
+                class="cursor-pointer px-4 py-2 hover:bg-primary1 hover:text-white">
+                {{ option.label }}
+              </li>
+            </ul>
+            <!-- Mensajes de validación -->
+            <span class="text-sm text-success"
+              *ngIf="formGroup4.get('duracion')?.valid && formGroup4.get('duracion')?.touched">
+              Selección válida
+            </span>
+            <span class="text-sm text-error"
+              *ngIf="formGroup4.get('duracion')?.invalid && (formGroup4.get('duracion')?.touched || formGroup4.get('duracion')?.dirty)">
+              {{ selects[1].errorMessage }}
+            </span>
+
+          </div>
 
         </div>
       </div>
@@ -448,43 +553,124 @@
       <!-- contenido 3 -->
       <div class="content1 md:grid sm:grid-cols-2 md:grid-cols-3 md:gap-x-24 md:flex items-center h-full">
 
-        <!-- select 2 -->
+        <!-- input num vehiculos -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
 
-          <p class="text-primary3 font-semibold h-full"
-             [ngClass]="{'!text-error !font-normal': errorStates[11]}">
+          <p class="text-primary3 font-semibold h-full">
             N° de Vehículos / Contrato*
           </p>
 
-          <app-select class="w-full m-auto cursor-pointer mt-2" [input]="inputs[11]" [index]="11"
-                      [error]="errorStates[11]" (inputChange)="onInputChange($event.index, $event.event)"></app-select>
+          <!-- input -->
+          <div class="mt-2 relative w-full">
+            <input
+              class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent"
+              type="number" formControlName="num_vehiculos" required placeholder="N° de Vehículos / Contrato">
+            <div class="w-full relative">
+              <!-- Icono de error (rojo) -->
+              <span
+                *ngIf="formGroup4.get('num_vehiculos')?.invalid && (formGroup4.get('num_vehiculos')?.touched || submitted)"
+                class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
+                <span class="pi pi-exclamation-circle text-error text-[24px]"></span>
+              </span>
+
+              <!-- Icono de éxito (verde) -->
+              <span
+                *ngIf="formGroup4.get('num_vehiculos')?.valid && (formGroup4.get('num_vehiculos')?.touched || submitted)"
+                class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
+                <span class="pi pi-check-circle text-success text-[24px]"></span>
+              </span>
+            </div>
+            <span *ngIf="submitted && formGroup4.get('num_vehiculos')?.errors?.['required']" class="text-error">
+              N° de Vehículos / Contrato es obligatorio
+            </span>
+            <span
+              *ngIf="formGroup4.get('num_vehiculos')?.hasError('negativeNumber') && (formGroup4.get('num_vehiculos')?.touched || submitted)"
+              class="text-error">
+              El numeró no puede ser negativo
+            </span>
+          </div>
 
         </div>
 
         <!-- select 3 -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
 
-          <p class="text-primary3 font-semibold h-full"
-             [ngClass]="{'!text-error !font-normal': errorStates[12]}">
+          <p class="text-primary3 font-semibold h-full" [ngClass]="{'!text-error !font-normal': errorStates[12]}">
             Clase de vehículo*
           </p>
 
-          <app-select class="w-full m-auto cursor-pointer mt-2" [input]="inputs[12]" [index]="12"
-                      [error]="errorStates[12]"
-                      (inputChange)="onInputChange($event.index, $event.event)"></app-select>
+          <!-- select -->
+          <div class="w-full relative mt-2">
+
+            <div (click)="toggleDropdown(2)"
+              [ngClass]="{'text-error !border border-error': formGroup4.get('ClaseVehiculo')?.invalid && (formGroup4.get('ClaseVehiculo')?.touched || formGroup4.get('ClaseVehiculo')?.dirty)}"
+              class="cursor-pointer shadow-sm min-w-[160px] w-full p-[10px] h-[40px] bg-transparent border-2 border-secondary1 focus:outline-none focus:border-primary1 flex justify-between items-center">
+              <span *ngIf="!selects[2].value" class="font-[500] text-xs">Seleccione</span>
+              <span *ngIf="selects[2].value" class="text-normal">{{
+                formGroup4.get('ClaseVehiculo')?.value.label
+                }}</span>
+
+              <i class="pi pi-chevron-down text-primary2 text-xs"
+                [ngClass]="{'!text-error': formGroup4.get('ClaseVehiculo')?.invalid && (formGroup4.get('ClaseVehiculo')?.touched || formGroup4.get('ClaseVehiculo')?.dirty)}"></i>
+            </div>
+
+            <ul *ngIf="selects[2].isDropdownOpen"
+              class="absolute z-20 bg-secondary4 border border-primary1 shadow-md rounded-bl-md rounded-br-md w-full mt-1 max-h-48 overflow-y-auto">
+              <li *ngFor="let option of ClaseVehiculo" (click)="selectOption(2, option, 'ClaseVehiculo')"
+                class="cursor-pointer px-4 py-2 hover:bg-primary1 hover:text-white">
+                {{ option.label }}
+              </li>
+            </ul>
+            <!-- Mensajes de validación -->
+            <span class="text-sm text-success"
+              *ngIf="formGroup4.get('ClaseVehiculo')?.valid && formGroup4.get('ClaseVehiculo')?.touched">
+              Selección válida
+            </span>
+            <span class="text-sm text-error"
+              *ngIf="formGroup4.get('ClaseVehiculo')?.invalid && (formGroup4.get('ClaseVehiculo')?.touched || formGroup4.get('ClaseVehiculo')?.dirty)">
+              {{ selects[2].errorMessage }}
+            </span>
+
+          </div>
 
         </div>
 
         <!-- input 6 -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
 
-          <p class="text-primary3 font-semibold h-full"
-             [ngClass]="{'!text-error !font-normal': errorStates[13]}">
+          <p class="text-primary3 font-semibold h-full" [ngClass]="{'!text-error !font-normal': errorStates[13]}">
             Valor del Contrato*
           </p>
 
-          <input-text class="w-full mt-2 cursor-pointer" [input]="inputs[13]" [index]="13"
-                      [error]="errorStates[13]" (inputChange)="onInputChange($event.index, $event.event)"></input-text>
+          <!-- input -->
+          <div class="mt-2 relative w-full">
+            <input
+              class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent"
+              type="number" formControlName="val_contrato" required placeholder="$">
+            <div class="w-full relative">
+              <!-- Icono de error (rojo) -->
+              <span
+                *ngIf="formGroup4.get('val_contrato')?.invalid && (formGroup4.get('val_contrato')?.touched || submitted)"
+                class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
+                <span class="pi pi-exclamation-circle text-error text-[24px]"></span>
+              </span>
+
+              <!-- Icono de éxito (verde) -->
+              <span
+                *ngIf="formGroup4.get('val_contrato')?.valid && (formGroup4.get('val_contrato')?.touched || submitted)"
+                class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
+                <span class="pi pi-check-circle text-success text-[24px]"></span>
+              </span>
+            </div>
+            <span *ngIf="submitted && formGroup4.get('val_contrato')?.errors?.['required']" class="text-error">
+              Valor del Contrato es obligatorio
+            </span>
+            <span
+              *ngIf="formGroup4.get('val_contrato')?.hasError('negativeNumber') && (formGroup4.get('val_contrato')?.touched || submitted)"
+              class="text-error">
+              El numeró no puede ser negativo
+            </span>
+          </div>
         </div>
       </div>
 
@@ -494,45 +680,135 @@
         <!-- select 4 -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
 
-          <p class="text-primary3 font-semibold h-full"
-             [ngClass]="{'!text-error !font-normal': errorStates[14]}">
+          <p class="text-primary3 font-semibold h-full" [ngClass]="{'!text-error !font-normal': errorStates[14]}">
             Forma de pago*
           </p>
 
-          <app-select class="w-full m-auto cursor-pointer mt-2" [input]="inputs[14]" [index]="14"
-                      [error]="errorStates[14]" (inputChange)="onInputChange($event.index, $event.event)"></app-select>
+          <!-- select -->
+          <div class="w-full relative mt-2">
+
+            <div (click)="toggleDropdown(3)"
+              [ngClass]="{'text-error !border border-error': formGroup4.get('forma_pago')?.invalid && (formGroup4.get('forma_pago')?.touched || formGroup4.get('forma_pago')?.dirty)}"
+              class="cursor-pointer shadow-sm min-w-[160px] w-full p-[10px] h-[40px] bg-transparent border-2 border-secondary1 focus:outline-none focus:border-primary1 flex justify-between items-center">
+              <span *ngIf="!selects[3].value" class="font-[500] text-xs">Seleccione</span>
+              <span *ngIf="selects[3].value" class="text-normal">{{
+                formGroup4.get('forma_pago')?.value.label
+                }}</span>
+
+              <i class="pi pi-chevron-down text-primary2 text-xs"
+                [ngClass]="{'!text-error': formGroup4.get('forma_pago')?.invalid && (formGroup4.get('forma_pago')?.touched || formGroup4.get('forma_pago')?.dirty)}"></i>
+            </div>
+
+            <ul *ngIf="selects[3].isDropdownOpen"
+              class="absolute z-20 bg-secondary4 border border-primary1 shadow-md rounded-bl-md rounded-br-md w-full mt-1 max-h-48 overflow-y-auto">
+              <li *ngFor="let option of formaPago" (click)="selectOption(3, option, 'forma_pago')"
+                class="cursor-pointer px-4 py-2 hover:bg-primary1 hover:text-white">
+                {{ option.label }}
+              </li>
+            </ul>
+            <!-- Mensajes de validación -->
+            <span class="text-sm text-success"
+              *ngIf="formGroup4.get('forma_pago')?.valid && formGroup4.get('forma_pago')?.touched">
+              Selección válida
+            </span>
+            <span class="text-sm text-error"
+              *ngIf="formGroup4.get('forma_pago')?.invalid && (formGroup4.get('forma_pago')?.touched || formGroup4.get('ClaseVehiculo')?.dirty)">
+              {{ selects[3].errorMessage }}
+            </span>
+
+          </div>
 
         </div>
 
         <!-- select 5 -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
 
-          <p class="text-primary3 font-semibold h-full"
-             [ngClass]="{'!text-error !font-normal': errorStates[15]}">
+          <p class="text-primary3 font-semibold h-full" [ngClass]="{'!text-error !font-normal': errorStates[15]}">
             Áreas de Operación*
           </p>
 
-          <app-select class="w-full m-auto cursor-pointer mt-2" [input]="inputs[15]" [index]="15"
-                      [error]="errorStates[15]" (inputChange)="onInputChange($event.index, $event.event)"></app-select>
+          <!-- select -->
+          <div class="w-full relative mt-2">
+
+            <div (click)="toggleDropdown(4)"
+              [ngClass]="{'text-error !border border-error': formGroup4.get('area_operacion')?.invalid && (formGroup4.get('area_operacion')?.touched || formGroup4.get('area_operacion')?.dirty)}"
+              class="cursor-pointer shadow-sm min-w-[160px] w-full p-[10px] h-[40px] bg-transparent border-2 border-secondary1 focus:outline-none focus:border-primary1 flex justify-between items-center">
+              <span *ngIf="!selects[4].value" class="font-[500] text-xs">Seleccione</span>
+              <span *ngIf="selects[4].value" class="text-normal">{{
+                formGroup4.get('area_operacion')?.value.label
+                }}</span>
+
+              <i class="pi pi-chevron-down text-primary2 text-xs"
+                [ngClass]="{'!text-error': formGroup4.get('area_operacion')?.invalid && (formGroup4.get('area_operacion')?.touched || formGroup4.get('area_operacion')?.dirty)}"></i>
+            </div>
+
+            <ul *ngIf="selects[4].isDropdownOpen"
+              class="absolute z-20 bg-secondary4 border border-primary1 shadow-md rounded-bl-md rounded-br-md w-full mt-1 max-h-48 overflow-y-auto">
+              <li *ngFor="let option of departs" (click)="selectOption(4, option, 'area_operacion')"
+                class="cursor-pointer px-4 py-2 hover:bg-primary1 hover:text-white">
+                {{ option.label }}
+              </li>
+            </ul>
+            <!-- Mensajes de validación -->
+            <span class="text-sm text-success"
+              *ngIf="formGroup4.get('area_operacion')?.valid && formGroup4.get('area_operacion')?.touched">
+              Selección válida
+            </span>
+            <span class="text-sm text-error"
+              *ngIf="formGroup4.get('area_operacion')?.invalid && (formGroup4.get('area_operacion')?.touched || formGroup4.get('area_operacion')?.dirty)">
+              {{ selects[4].errorMessage }}
+            </span>
+
+          </div>
 
         </div>
 
         <!-- select 6 -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
 
-          <p class="text-primary3 font-semibold h-full"
-             [ngClass]="{'!text-error !font-normal': errorStates[16]}">
+          <p class="text-primary3 font-semibold h-full" [ngClass]="{'!text-error !font-normal': errorStates[16]}">
             Tiempos estimados (En horas) - Disponibilidad de Vehículos*
           </p>
 
-          <app-select class="w-full m-auto cursor-pointer mt-2" [input]="inputs[16]" [index]="16"
-                      [error]="errorStates[16]" (inputChange)="onInputChange($event.index, $event.event)"></app-select>
+          <!-- select -->
+          <div class="w-full relative mt-2">
+
+            <div (click)="toggleDropdown(5)"
+              [ngClass]="{'text-error !border border-error': formGroup4.get('disponibilidad')?.invalid && (formGroup4.get('disponibilidad')?.touched || formGroup4.get('disponibilidad')?.dirty)}"
+              class="cursor-pointer shadow-sm min-w-[160px] w-full p-[10px] h-[40px] bg-transparent border-2 border-secondary1 focus:outline-none focus:border-primary1 flex justify-between items-center">
+              <span *ngIf="!selects[5].value" class="font-[500] text-xs">Seleccione</span>
+              <span *ngIf="selects[5].value" class="text-normal">{{
+                formGroup4.get('disponibilidad')?.value.label
+                }}</span>
+
+              <i class="pi pi-chevron-down text-primary2 text-xs"
+                [ngClass]="{'!text-error': formGroup4.get('disponibilidad')?.invalid && (formGroup4.get('disponibilidad')?.touched || formGroup4.get('disponibilidad')?.dirty)}"></i>
+            </div>
+
+            <ul *ngIf="selects[5].isDropdownOpen"
+              class="absolute z-20 bg-secondary4 border border-primary1 shadow-md rounded-bl-md rounded-br-md w-full mt-1 max-h-48 overflow-y-auto">
+              <li *ngFor="let option of horas" (click)="selectOption(5, option, 'disponibilidad')"
+                class="cursor-pointer px-4 py-2 hover:bg-primary1 hover:text-white">
+                {{ option.label }}
+              </li>
+            </ul>
+            <!-- Mensajes de validación -->
+            <span class="text-sm text-success"
+              *ngIf="formGroup4.get('disponibilidad')?.valid && formGroup4.get('disponibilidad')?.touched">
+              Selección válida
+            </span>
+            <span class="text-sm text-error"
+              *ngIf="formGroup4.get('disponibilidad')?.invalid && (formGroup4.get('disponibilidad')?.touched || formGroup4.get('ClaseVehiculo')?.dirty)">
+              {{ selects[5].errorMessage }}
+            </span>
+
+          </div>
 
         </div>
       </div>
 
-      <div class="mt-6 w-full flex justify-center">
-        <app-primary-button class="" (click)="onSubmitAllForms()">Enviar</app-primary-button>
+      <div class="mt-8 w-full flex justify-center">
+        <app-primary-button class="">Enviar</app-primary-button>
       </div>
 
     </form>
@@ -543,16 +819,16 @@
 
 <!-- Primer Modal -->
 <app-alert [showModal]="showModal" title="¿Está seguro de enviar?" subtitle="¿Está seguro de enviar?"
-           [showSubtitle]="false" [message]="'Una vez enviado, no podrá cambiar la información.'" buttonText="Enviar"
-           [showFirstButton]="true" cancelButtonText="Cancelar" [showCancelButton]="true" TypeAlert="success"
-           (close)="handleClose()" (closeByButton1)="currentContractIteration == totalContracts ? sendAllContracts() : handleCloseByButton1()" (closeByButton2)="handleCloseByButton2()"
-           (closeByIcon)="handleCloseByIcon()" (closeByBackdrop)="handleCloseByBackdrop()"
-           (close)="showModal = false"></app-alert>
+  [showSubtitle]="false" [message]="'Una vez enviado, no podrá cambiar la información.'" buttonText="Enviar"
+  [showFirstButton]="true" cancelButtonText="Cancelar" [showCancelButton]="true" TypeAlert="success"
+  (close)="handleClose()"
+  (closeByButton1)="currentContractIteration == totalContracts ? sendAllContracts() : handleCloseByButton1()"
+  (closeByButton2)="handleCloseByButton2()" (closeByIcon)="handleCloseByIcon()"
+  (closeByBackdrop)="handleCloseByBackdrop()" (close)="showModal = false"></app-alert>
 
 <!-- Final Modal -->
 <app-alert [showModal]="showFinalModal" title="Envío exitoso" textColor="text-success" [showSubtitle]="false"
-           [message]="'Su solicitud ha sido enviada exitosamente, se le asignará un radicado para su trámite'"
-           buttonText="Continuar" [showFirstButton]="true" [showCancelButton]="false"
-           TypeAlert="success" (close)="handleClose()" (closeByButton1)="finalStep()"
-           (closeByButton2)="handleCloseByButton2()" (closeByIcon)="handleCloseByIcon()"
-           (closeByBackdrop)="handleCloseByBackdrop()" (close)="showFinalModal = false"></app-alert>
+  [message]="'Su solicitud ha sido enviada exitosamente, se le asignará un radicado para su trámite'"
+  buttonText="Continuar" [showFirstButton]="true" [showCancelButton]="false" TypeAlert="success" (close)="handleClose()"
+  (closeByButton1)="finalStep()" (closeByButton2)="handleCloseByButton2()" (closeByIcon)="handleCloseByIcon()"
+  (closeByBackdrop)="handleCloseByBackdrop()" (close)="showFinalModal = false"></app-alert>

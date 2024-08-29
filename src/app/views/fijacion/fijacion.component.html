@@ -212,7 +212,12 @@
                         </div>
                         <span *ngIf="submitted && formGroup3.get('capital_social')?.errors?.['required']"
                             class="text-error">
-                            Cantidad de contratos es obligatorio
+                            Capital social es obligatorio
+                        </span>
+                        <span
+                            *ngIf="formGroup3.get('patrimonio_liquido')?.hasError('negativeNumber') && (formGroup3.get('capital_social')?.touched || submitted)"
+                            class="text-error">
+                            El numeró no puede ser negativo
                         </span>
                     </div>
                     <div class="flex inline-flex md:gap-3 gap-2 h-full w-full mt-2">
@@ -257,6 +262,11 @@
                         <span *ngIf="submitted && formGroup3.get('patrimonio_liquido')?.errors?.['required']"
                             class="text-error">
                             Patrimonio Líquido es obligatorio
+                        </span>
+                        <span
+                            *ngIf="formGroup3.get('patrimonio_liquido')?.hasError('negativeNumber') && (formGroup3.get('patrimonio_liquido')?.touched || submitted)"
+                            class="text-error">
+                            El numeró no puede ser negativo
                         </span>
                     </div>
                     <!-- texto informativo -->
@@ -382,6 +392,11 @@
                             class="text-error">
                             Cantidad de contratos es obligatorio
                         </span>
+                        <span
+                            *ngIf="formGroup4.get('cantidad_contratos')?.hasError('negativeNumber') && (formGroup4.get('cantidad_contratos')?.touched || submitted)"
+                            class="text-error">
+                            El numeró no puede ser negativo
+                        </span>
                     </div>
 
                 </div>
@@ -413,6 +428,11 @@
                         </div>
                         <span *ngIf="submitted && formGroup4.get('contrato')?.errors?.['required']" class="text-error">
                             El numero de contrato es obligatorio
+                        </span>
+                        <span
+                            *ngIf="formGroup4.get('contrato')?.hasError('negativeNumber') && (formGroup4.get('contrato')?.touched || submitted)"
+                            class="text-error">
+                            El numeró no puede ser negativo
                         </span>
                     </div>
 
@@ -447,6 +467,11 @@
                         <span *ngIf="submitted && formGroup4.get('contratante')?.errors?.['required']"
                             class="text-error">
                             El Contratante es obligatorio
+                        </span>
+                        <span
+                            *ngIf="formGroup4.get('contratante')?.hasError('negativeNumber') && (formGroup4.get('contratante')?.touched || submitted)"
+                            class="text-error">
+                            El numeró no puede ser negativo
                         </span>
                     </div>
 
@@ -541,7 +566,7 @@
 
             <!-- content 3 -->
             <div class="content1 md:grid sm:grid-cols-2 md:grid-cols-3 md:gap-x-24 md:flex items-center h-full">
-                <!-- select2 N° de Vehículos / Contrato* -->
+                <!-- input N° de Vehículos / Contrato* -->
                 <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
                     <p class="text-primary3 font-semibold h-full">
                         N° de Vehículos / Contrato*
@@ -570,6 +595,11 @@
                         <span *ngIf="submitted && formGroup4.get('num_vehiculos')?.errors?.['required']"
                             class="text-error">
                             N° de Vehículos / Contrato es obligatorio
+                        </span>
+                        <span
+                            *ngIf="formGroup4.get('num_vehiculos')?.hasError('negativeNumber') && (formGroup4.get('num_vehiculos')?.touched || submitted)"
+                            class="text-error">
+                            El numeró no puede ser negativo
                         </span>
                     </div>
 
@@ -644,6 +674,11 @@
                         <span *ngIf="submitted && formGroup4.get('val_contrato')?.errors?.['required']"
                             class="text-error">
                             Valor del Contrato es obligatorio
+                        </span>
+                        <span
+                            *ngIf="formGroup4.get('val_contrato')?.hasError('negativeNumber') && (formGroup4.get('val_contrato')?.touched || submitted)"
+                            class="text-error">
+                            El numeró no puede ser negativo
                         </span>
                     </div>
                 </div>

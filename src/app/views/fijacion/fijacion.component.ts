@@ -24,6 +24,7 @@ import { Router } from '@angular/router';
 import { minLengthNumericValidator } from '../../validator/numeric.validator';
 import { dateRangeValidator } from '../../validator/date.validator';
 import { HORAS } from '../../shared/data/horas';
+import { NoNegativeGlobal } from '../../validator/noNegative.validator';
 
 @Component({
   selector: 'app-fijacion',
@@ -173,31 +174,6 @@ export default class FijacionComponent {
     },
   ];
 
-  //info inputs tipo num, string o date
-  inputs = [
-    {
-      name: 'capital_social',
-      type: 'number',
-      placeholder: '$100.000',
-      label: 'Capital social*',
-      required: true,
-      value: '',
-      error: 'Capital social es obligatorio',
-      good: 'Dato correcto',
-    },
-    {
-      name: 'Patrimonio_liquido',
-      type: 'number',
-      placeholder: '$100.000',
-      label: 'Patrimonio Líquido en SMLV*',
-      required: true,
-      value: '',
-      error: 'Patrimonio Líquido en SMLV es obligatorio',
-      good: 'Dato correcto',
-    },
-
-    // Agrega más inputs según sea necesario
-  ];
   //props o datos para input upload
   dataClass = {
     textSize: 'xs',
@@ -269,8 +245,8 @@ export default class FijacionComponent {
     });
 
     this.formGroup3 = this.fb.group({
-      capital_social: ['', Validators.required],
-      patrimonio_liquido: ['', Validators.required],
+      capital_social: ['', Validators.required, NoNegativeGlobal],
+      patrimonio_liquido: ['', Validators.required, NoNegativeGlobal],
       vehiculos_requeridos: ['', Validators.required],
     });
 
@@ -289,7 +265,7 @@ export default class FijacionComponent {
         area_operacion: ['', Validators.required],
         disponibilidad: ['', Validators.required],
       },
-      { validators: dateRangeValidator }
+      { validators: [dateRangeValidator, NoNegativeGlobal] }
     );
   }
 
