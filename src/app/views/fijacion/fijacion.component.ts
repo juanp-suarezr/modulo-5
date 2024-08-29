@@ -114,7 +114,7 @@ export default class FijacionComponent {
   selects = [
     //cantidad vehiculos
     {
-      name: 'cantidad_contratos',
+      name: 'vehiculos_requeridos',
       required: true,
       placeholder: 'Lista desplegable de números',
       value: '', // Valor seleccionado
@@ -245,8 +245,8 @@ export default class FijacionComponent {
     });
 
     this.formGroup3 = this.fb.group({
-      capital_social: ['', Validators.required, NoNegativeGlobal],
-      patrimonio_liquido: ['', Validators.required, NoNegativeGlobal],
+      capital_social: ['', [Validators.required, NoNegativeGlobal]],
+      patrimonio_liquido: ['', [Validators.required, NoNegativeGlobal]],
       vehiculos_requeridos: ['', Validators.required],
     });
 
@@ -346,6 +346,8 @@ export default class FijacionComponent {
         }
         break;
       case 4:
+      console.log("entro");
+      
         if (this.formGroup3.valid) {
           this.changeActiveNum('1');
           this.stepperService.setActiveNum(3);
@@ -495,13 +497,13 @@ export default class FijacionComponent {
 
       this.contractDataArray.push(this.formGroup4.value);
       console.log(this.contractDataArray);
-      this.selects[1].value = (
+      let cantidad_din_contratos = (
         parseInt(this.formGroup4.get('cantidad_contratos')?.value, 10) - 1
       ).toString();
 
       this.formGroup4
         .get('cantidad_contratos')
-        ?.setValue(this.selects[1].value);
+        ?.setValue(cantidad_din_contratos);
       // Reiniciar el formulario para la siguiente iteración
       Object.keys(this.formGroup4.controls).forEach((key, index) => {
         if (index !== 0) {

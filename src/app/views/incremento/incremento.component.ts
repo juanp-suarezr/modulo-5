@@ -124,17 +124,7 @@ export default class IncrementoComponent {
 
   //info selects
   selects = [
-    //cantidad vehiculos
-    {
-      name: 'cantidad_contratos',
-      required: true,
-      placeholder: 'Lista desplegable de números',
-      value: '', // Valor seleccionado
-      options: '',
-      good: 'Selección correcta',
-      errorMessage: 'Cantidad de vehículos es requerido',
-      isDropdownOpen: false,
-    },
+    
     //select meses
     {
       name: 'duracion',
@@ -246,144 +236,7 @@ export default class IncrementoComponent {
       error: 'Patrimonio Líquido en SMLV es obligatorio',
       good: 'Dato correcto',
     },
-
-    //Formulario 4 Operativo
-    //Contenido 1
-    //Input 5
-    {
-      name: 'Cantidad de contratos',
-      type: 'number',
-      placeholder: '#',
-      label: 'Cantidad de contratos*',
-      required: true,
-      value: '0',
-      error: 'Cantidad de contratos es obligatorio',
-      good: 'Dato correcto',
-    },
-    //Input 6
-    {
-      name: 'N° de contrato',
-      type: 'number',
-      placeholder: '#',
-      label: 'N° de contrato*',
-      required: true,
-      value: '',
-      error: 'N° de contrato es obligatorio',
-      good: 'Dato correcto',
-    },
-    //Input 7
-    {
-      name: 'Contratante',
-      type: 'string',
-      placeholder: 'Nombre de empresa contratante',
-      label: 'Contratante*',
-      required: true,
-      value: '',
-      error: 'Contratante es obligatorio',
-      good: 'Dato correcto',
-    },
-
-    //Contenido 2
-    //Input 8
-    {
-      name: 'Fecha de inicio',
-      type: 'date',
-      placeholder: 'dd/mm/aaaa',
-      label: 'Fecha de inicio*',
-      required: true,
-      value: '',
-      error: 'Fecha de inicio es obligatorio',
-      good: 'Dato correcto',
-    },
-    //Input 9
-    {
-      name: 'Fecha de terminacion',
-      type: 'date',
-      placeholder: 'dd/mm/aaaa',
-      label: 'Fecha de terminación*',
-      required: true,
-      value: '',
-      error: 'Fecha de terminación es obligatorio',
-      good: 'Dato correcto',
-    },
-    //Select 2 - Numero de array = 10
-    {
-      name: 'SelectMeses',
-      required: true,
-      placeholder: 'Seleccione',
-      value: '',
-      options: MESES,
-      good: 'Selección valida',
-      error: 'Duración en meses es requerido',
-    },
-
-    //Contenido 3
-    //Select 3 - Numero de array = 11
-    {
-      name: 'SelectNumeroVehiculosContrato',
-      required: true,
-      placeholder: 'Seleccione',
-      value: '',
-      options: [
-        { value: '1', label: '1' },
-        { value: '2', label: '2' },
-        { value: '3', label: '3' },
-      ],
-      good: 'Selección valida',
-      error: 'Numero de vehiculo / contrato es requerido',
-    },
-    //Select 4 - Numero de array = 12
-    {
-      name: 'SelectClaseVehiculo',
-      required: true,
-      placeholder: 'Seleccione',
-      value: '',
-      options: '',
-      good: 'Selección valida',
-      error: 'Clase de vehículo es requerido',
-    },
-    //Input 10
-    {
-      name: 'Valor del Contrato',
-      type: 'number',
-      placeholder: '$',
-      label: 'Valor del Contrato*',
-      required: true,
-      value: '',
-      error: 'Valor del Contrato es obligatorio',
-      good: 'Dato correcto',
-    },
-    //Contenido 4
-    //Select 5 - Numero de array = 14
-    {
-      name: 'SelectFormaPago',
-      required: true,
-      placeholder: 'Seleccione',
-      value: '',
-      options: FORMAPAGO,
-      good: 'Selección valida',
-      error: 'Forma de pago es requerido',
-    },
-    //Select 6 - Numero de array = 15
-    {
-      name: 'SelectDepartamentos',
-      required: true,
-      placeholder: 'Seleccione',
-      value: '',
-      options: '',
-      good: 'Selección valida',
-      error: 'Áreas de Operación es requerido',
-    },
-    //Select 7 - Numero de array = 16
-    {
-      name: 'SelectTiemposEstimados',
-      required: true,
-      placeholder: 'Seleccione',
-      value: '',
-      options: '',
-      good: 'Selección valida',
-      error: 'Tiempos estimados es requerido',
-    },
+    
   ];
 
   //Props o datos para input upload
@@ -460,8 +313,8 @@ export default class IncrementoComponent {
 
     this.formGroup3 = this.fb.group({
       12: [null, Validators.required],
-      3: ['', Validators.required],
-      4: ['', Validators.required],
+      capital_social: ['', [Validators.required, NoNegativeGlobal]],
+      patrimonio_liquido: ['', [Validators.required, NoNegativeGlobal]],
     });
 
     this.formGroup4 = this.fb.group(
@@ -544,7 +397,10 @@ export default class IncrementoComponent {
         }
         break;
       case 4:
+        console.log("entro");
+        
         if (this.validateFormGroup(this.formGroup3, this.errorStates)) {
+          console.log("entro1");
           this.changeActiveNum('1');
           this.stepperService.setActiveNum(3);
         }
@@ -566,6 +422,8 @@ export default class IncrementoComponent {
     for (const key in formGroup.controls) {
       if (formGroup.controls.hasOwnProperty(key)) {
         const control = formGroup.controls[key];
+        console.log(key);
+        
         if (!control.value || control.invalid) {
           const errorKey = parseInt(key, 10); //Convierte la clave a número
           errorStates[errorKey] = true;
@@ -740,15 +598,14 @@ export default class IncrementoComponent {
 
       this.contractDataArray.push(this.formGroup4.value);
       console.log(this.contractDataArray);
-      this.selects[1].value = (
+      let cantidad_din_contratos = (
         parseInt(this.formGroup4.get('cantidad_contratos')?.value, 10) - 1
       ).toString();
 
       this.formGroup4
         .get('cantidad_contratos')
-        ?.setValue(this.selects[1].value);
+        ?.setValue(cantidad_din_contratos);
       // Reiniciar el formulario para la siguiente iteración
-
       Object.keys(this.formGroup4.controls).forEach((key, index) => {
         if (index !== 0) {
           console.log(key);

@@ -61,11 +61,16 @@ export class AuthService {
   currentUser: any = null;
 
   constructor() {
-    const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      this.currentUser = JSON.parse(storedUser); // Restaura el usuario autenticado
+    if (typeof localStorage !== 'undefined') {
+      const storedUser = localStorage.getItem('user');
+      if (storedUser) {
+        this.currentUser = JSON.parse(storedUser); // Restaura el usuario autenticado
+      }
+    } else {
+      console.warn('localStorage is not available');
     }
   }
+  
 
   login(email: string, password: string): Observable<any> {
     const user = this.users.find(

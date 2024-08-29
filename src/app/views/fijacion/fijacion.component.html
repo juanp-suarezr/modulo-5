@@ -309,7 +309,7 @@
 
                         <ul *ngIf="selects[0].isDropdownOpen"
                             class="absolute z-20 bg-secondary4 border border-primary1 shadow-md rounded-bl-md rounded-br-md w-full mt-1 max-h-48 overflow-y-auto">
-                            <li *ngFor="let option of meses" (click)="selectOption(0, option, 'duracion')"
+                            <li *ngFor="let option of generateOptions(15)" (click)="selectOption(0, option, 'vehiculos_requeridos')"
                                 class="cursor-pointer px-4 py-2 hover:bg-primary1 hover:text-white">
                                 {{ option.label }}
                             </li>
@@ -332,7 +332,7 @@
 
 
             <div class="mt-6 w-full flex justify-end">
-                <app-primary-button type="button" class="" (click)="changeActiveStep(4)">continuar</app-primary-button>
+                <app-primary-button type="submit" class="">continuar</app-primary-button>
             </div>
 
         </form>
