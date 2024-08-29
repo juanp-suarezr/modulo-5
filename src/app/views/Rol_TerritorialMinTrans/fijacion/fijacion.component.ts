@@ -1,38 +1,45 @@
-import {ChangeDetectorRef, Component} from '@angular/core';
-import {CommonModule} from '@angular/common';
+import { ErrorService } from '../../../services/error/error.service';
+import { PrimaryButtonComponent } from '../../../components/primary-button/primary-button.component';
+import { ActiveNumService } from '../../../services/left-nav/active-num.service';
+import { ActiveNumStepperService } from '../../../services/stepper/active-num.service';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { LeftNavComponent } from '../../../components/left-nav/left-nav.component';
+import { SttepperComponent } from '../../../components/sttepper/sttepper.component';
+import { FileUploadComponent } from '../../../components/file-upload/file-upload.component';
+import { CommonModule } from '@angular/common';
+//servicios de consultas api
+import { ApiService } from '../../../services/api/api.service';
+import { InputText } from '../../../components/input/input.component';
 import {
   FormBuilder,
   FormGroup,
+  Validators,
   ReactiveFormsModule,
-  Validators
-} from "@angular/forms";
-import {FileUploadComponent} from "../../components/file-upload/file-upload.component";
-import {InputText} from "../../components/input/input.component";
-import {LeftNavComponent} from "../../components/left-nav/left-nav.component";
-import {PrimaryButtonComponent} from "../../components/primary-button/primary-button.component";
-import {SttepperComponent} from "../../components/sttepper/sttepper.component";
-import {ActiveNumService} from "../../services/left-nav/active-num.service";
-import {ActiveNumStepperService} from "../../services/stepper/active-num.service";
-import {ApiService} from "../../services/api/api.service";
-import {ErrorService} from "../../services/error/error.service";
-import {SelectComponent} from "../../components/select/select.component";
-import {AlertComponent} from "../../components/alert/alert.component";
-import {Router} from "@angular/router";
-import {DEPARTAMENTOS} from '../../shared/data/departamentos';
-import {NUMEROSMESES} from '../../shared/data/numerosmeses';
-import {CLASEVEHICULOS} from "../../shared/data/clasevehiculos";
-import {FORMAPAGO} from "../../shared/data/formapago";
-import {TIEMPOSESTIMADOS} from "../../shared/data/tiemposestimados";
+} from '@angular/forms';
+import { SelectComponent } from '../../../components/select/select.component';
+import { DEPARTAMENTOS } from '../../../shared/data/departamentos';
+import { AlertComponent } from '../../../components/alert/alert.component';
+import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-incremento',
+  selector: 'app-fijacion',
   standalone: true,
-  imports: [CommonModule, FileUploadComponent, InputText, LeftNavComponent, PrimaryButtonComponent, ReactiveFormsModule, SttepperComponent, SelectComponent, AlertComponent],
-  templateUrl: './incremento.component.html',
-  styleUrl: './incremento.component.css'
+  imports: [
+    LeftNavComponent,
+    PrimaryButtonComponent,
+    SttepperComponent,
+    FileUploadComponent,
+    CommonModule,
+    InputText,
+    ReactiveFormsModule,
+    SelectComponent,
+    AlertComponent,
+  ],
+  templateUrl: './fijacion.component.html',
+  styleUrl: './fijacion.component.css',
 })
-export default class IncrementoComponent {
-
+export default class FijacionComponent {
+  parseInt: any;
   constructor(
     private stateService: ActiveNumService,
     private stepperService: ActiveNumStepperService,
@@ -41,44 +48,29 @@ export default class IncrementoComponent {
     private errorService: ErrorService,
     private cdr: ChangeDetectorRef,
     private router: Router
-  ) {
-  }
-
-  //Objeto para manejar los active num del left menu y stepper.
-  activeNum: string = '0'; //Left menu
-  activeStep: number = 1; //Stteper
-
-  //Formularios
+  ) {}
+  //objeto para manejar los active num del left menu y stepper.
+  activeNum: string = '0'; //left menu
+  activeStep: number = 1; //stteper
+  //forms
   formGroup1!: FormGroup;
   formGroup2!: FormGroup;
   formGroup3!: FormGroup;
   formGroup4!: FormGroup;
+  //fin forms
 
-  //Array para almacenar la información de cada iteración
-  contractDataArray: any[] = [];
+  contractDataArray: any[] = []; // Array para almacenar la información de cada iteración
+  currentContractIteration: number = 0; // Contador para las iteraciones
+  totalContracts: number = 0; // Número total de contratos
 
-  //Contador para las iteraciones
-  currentContractIteration: number = 0;
+  showModal: boolean = false; // Control para mostrar el modal intermedio
+  showFinalModal: boolean = false; // Control para mostrar el modal final
 
-  //Número total de contratos
-  totalContracts: number = 0;
-
-  //Control para mostrar el modal intermedio
-  showModal: boolean = false;
-
-  //Control para mostrar el modal final
-  showFinalModal: boolean = false;
-
-  //Objeto para manejar errores
+  //objeto para manejo de errores
   errorStates: { [key: number]: boolean } = {};
-
-  //Respuesta de user activo y rol
+  //respuesta de user activo y rol
   user: any;
-
-  //Propiedad para almacenar el porcentaje seleccionado
-  selectedPercentage: string = '';
-
-  //Menu left
+  //info menu left
   infoMenu = [
     {
       num: '0',
@@ -89,8 +81,7 @@ export default class IncrementoComponent {
       name: 'Operativo',
     },
   ];
-
-  //Menu stepper
+  //info stepper
   infoStepper = [
     {
       num: 1,
@@ -105,72 +96,41 @@ export default class IncrementoComponent {
       info: 'Digitar información',
     },
   ];
-
-  //Inputs
+  //info inputs tipo num, string o date
   inputs = [
-
-    //Formulario 2 Solicitud
-    //Input 1
-    {
-      name: 'numero_vehicular',
-      type: 'number',
-      placeholder: 'Número de vehículos',
-      label: 'Numero vehiculos',
-      required: true,
-      value: '',
-      error: 'Número de vehículos es obligatorio',
-      good: 'Dato correcto',
-    },
-    //Select 1 -> Numero de array = 1
-    {
-      name: 'SelectPropiedadEmpresa',
-      required: true,
-      placeholder: 'Seleccione',
-      value: '',
-      options: [
-        {value: 7, label: '7%'},
-        {value: 10, label: '10%'},
-      ],
-      good: 'Selección valida',
-      error: 'Propiedad de la empresa es requerido',
-    },
-    //Input 2
-    {
-      name: 'resultado',
-      type: 'number',
-      placeholder: 'Resultado',
-      label: 'Resultado',
-      required: false,
-      value: '',
-    },
-
-    //Formulario 3 Solicitud
-    //Input 3
     {
       name: 'capital_social',
       type: 'number',
       placeholder: '$100.000',
-      label: 'Capital social',
+      label: 'Capital social*',
       required: true,
       value: '',
       error: 'Capital social es obligatorio',
       good: 'Dato correcto',
     },
-    //Input 4
     {
       name: 'Patrimonio_liquido',
       type: 'number',
       placeholder: '$100.000',
-      label: 'Patrimonio Líquido en SMLV',
+      label: 'Patrimonio Líquido en SMLV*',
       required: true,
       value: '',
       error: 'Patrimonio Líquido en SMLV es obligatorio',
       good: 'Dato correcto',
     },
 
-    //Formulario 4 Operativo
-    //Contenido 1
-    //Input 5
+    //select
+    {
+      name: 'mySelect1',
+      required: true,
+      placeholder: 'Lista desplegable de números',
+      value: '', // Valor seleccionado
+      options: this.generateOptions(15),
+      good: 'Selection is valid',
+      error: 'Cantidad de vehículos es requerido',
+    },
+
+    //input
     {
       name: 'Cantidad de contratos',
       type: 'number',
@@ -181,7 +141,7 @@ export default class IncrementoComponent {
       error: 'Cantidad de contratos es obligatorio',
       good: 'Dato correcto',
     },
-    //Input 6
+    //input
     {
       name: 'N° de contrato',
       type: 'number',
@@ -192,7 +152,7 @@ export default class IncrementoComponent {
       error: 'N° de contrato es obligatorio',
       good: 'Dato correcto',
     },
-    //Input 7
+    //input
     {
       name: 'Contratante',
       type: 'string',
@@ -203,9 +163,6 @@ export default class IncrementoComponent {
       error: 'Contratante es obligatorio',
       good: 'Dato correcto',
     },
-
-    //Contenido 2
-    //Input 8
     {
       name: 'Fecha de inicio',
       type: 'date',
@@ -216,7 +173,6 @@ export default class IncrementoComponent {
       error: 'Fecha de inicio es obligatorio',
       good: 'Dato correcto',
     },
-    //Input 9
     {
       name: 'Fecha de terminacion',
       type: 'date',
@@ -227,43 +183,72 @@ export default class IncrementoComponent {
       error: 'Fecha de terminación es obligatorio',
       good: 'Dato correcto',
     },
-    //Select 2 - Numero de array = 10
+    //select3
     {
-      name: 'SelectMeses',
+      name: 'mySelect3',
       required: true,
       placeholder: 'Seleccione',
-      value: '',
-      options: NUMEROSMESES,
-      good: 'Selección valida',
+      value: '', // Valor seleccionado
+      options: [
+        { value: '1 mes', label: '1 mes' },
+        { value: '2 meses', label: '2 meses' },
+        { value: '3 meses', label: '3 meses' },
+        { value: '4 meses', label: '4 meses' },
+        { value: '5 meses', label: '5 meses' },
+        { value: '6 meses', label: '6 meses' },
+        { value: '7 meses', label: '7 meses' },
+        { value: '8 meses', label: '8 meses' },
+        { value: '9 meses', label: '9 meses' },
+        { value: '10 meses', label: '10 meses' },
+        { value: '11 meses', label: '11 meses' },
+        { value: '12 meses', label: '12 meses' },
+        { value: '13 meses', label: '13 meses' },
+        { value: '14 meses', label: '14 meses' },
+        { value: '15 meses', label: '15 meses' },
+        { value: '16 meses', label: '16 meses' },
+        { value: '17 meses', label: '17 meses' },
+        { value: '18 meses', label: '18 meses' },
+        { value: '19 meses', label: '19 meses' },
+        { value: '20 meses', label: '20 meses' },
+        { value: '21 meses', label: '21 meses' },
+        { value: '22 meses', label: '22 meses' },
+        { value: '23 meses', label: '23 meses' },
+        { value: '24 meses', label: '24 meses' },
+        { value: 'Contrato indefinido', label: 'Contrato indefinido' },
+      ],
+      good: 'Selection is valid',
       error: 'Duración en meses es requerido',
     },
-
-    //Contenido 3
-    //Select 3 - Numero de array = 11
+    //input
     {
-      name: 'SelectNumeroVehiculosContrato',
+      name: 'N° de Vehículos / Contrato',
+      type: 'number',
+      placeholder: '10',
+      label: 'N° de Vehículos / Contrato*',
       required: true,
-      placeholder: 'Seleccione',
       value: '',
-      options: [
-        {value: '1', label: '1'},
-        {value: '2', label: '2'},
-        {value: '3', label: '3'},
-      ],
-      good: 'Selección valida',
-      error: 'Numero de vehiculo / contrato es requerido',
+      error: 'N° de Vehículos / Contrato es obligatorio',
+      good: 'Dato correcto',
     },
-    //Select 4 - Numero de array = 12
+    //select
     {
-      name: 'SelectClaseVehiculo',
+      name: 'mySelect4',
       required: true,
       placeholder: 'Seleccione',
-      value: '',
-      options: CLASEVEHICULOS,
-      good: 'Selección valida',
+      value: '', // Valor seleccionado
+      options: [
+        { value: 'Bus', label: 'Bus' },
+        { value: 'Microbus', label: 'Microbus' },
+        { value: 'Buseta', label: 'Buseta' },
+        { value: 'Camioneta DC', label: 'Camioneta DC' },
+        { value: 'Camioneta SW', label: 'Camioneta SW' },
+        { value: 'Automóvil', label: 'Automóvil' },
+        { value: 'Camioneta de platón', label: 'Camioneta de platón' },
+      ],
+      good: 'Selection is valid',
       error: 'Clase de vehículo es requerido',
     },
-    //Input 10
+    //input
     {
       name: 'Valor del Contrato',
       type: 'number',
@@ -274,59 +259,87 @@ export default class IncrementoComponent {
       error: 'Valor del Contrato es obligatorio',
       good: 'Dato correcto',
     },
-    //Contenido 4
-    //Select 5 - Numero de array = 14
+    //select
     {
-      name: 'SelectFormaPago',
+      name: 'mySelect5',
       required: true,
       placeholder: 'Seleccione',
-      value: '',
-      options: FORMAPAGO,
-      good: 'Selección valida',
+      value: '', // Valor seleccionado
+      options: [
+        { value: 'Diario', label: 'Diario' },
+        { value: 'Mensual', label: 'Mensual' },
+        { value: 'Anual', label: 'Anual' },
+      ],
+      good: 'Selection is valid',
       error: 'Forma de pago es requerido',
     },
-    //Select 6 - Numero de array = 15
+    //select depart
     {
-      name: 'SelectDepartamentos',
+      name: 'mySelect6',
       required: true,
       placeholder: 'Seleccione',
-      value: '',
+      value: '', // Valor seleccionado
       options: DEPARTAMENTOS,
-      good: 'Selección valida',
+      good: 'Selection is valid',
       error: 'Áreas de Operación es requerido',
     },
-    //Select 7 - Numero de array = 16
+    //select tienpo estimado
     {
-      name: 'SelectTiemposEstimados',
+      name: 'mySelect6',
       required: true,
       placeholder: 'Seleccione',
-      value: '',
-      options: TIEMPOSESTIMADOS,
-      good: 'Selección valida',
+      value: '', // Valor seleccionado
+      options: [
+        { value: '1 hora', label: '1 hora' },
+        { value: '2 horas', label: '2 horas' },
+        { value: '3 horas', label: '3 horas' },
+        { value: '4 horas', label: '4 horas' },
+        { value: '5 horas', label: '5 horas' },
+        { value: '6 horas', label: '6 horas' },
+        { value: '7 horas', label: '7 horas' },
+        { value: '8 horas', label: '8 horas' },
+        { value: '9 horas', label: '9 horas' },
+        { value: '10 horas', label: '10 horas' },
+        { value: '11 horas', label: '11 horas' },
+        { value: '12 horas', label: '12 horas' },
+        { value: '13 horas', label: '13 horas' },
+        { value: '14 horas', label: '14 horas' },
+        { value: '15 horas', label: '15 horas' },
+        { value: '16 horas', label: '16 horas' },
+        { value: '17 horas', label: '17 horas' },
+        { value: '18 horas', label: '18 horas' },
+        { value: '19 horas', label: '19 horas' },
+        { value: '20 horas', label: '20 horas' },
+        { value: '21 horas', label: '21 horas' },
+        { value: '22 horas', label: '22 horas' },
+        { value: '23 horas', label: '23 horas' },
+        { value: '24 horas', label: '24 horas' },
+      ],
+      good: 'Selection is valid',
       error: 'Tiempos estimados es requerido',
     },
-  ];
 
-  //Props o datos para input upload
+    // Agrega más inputs según sea necesario
+  ];
+  //props o datos para input upload
   dataClass = {
     textSize: 'xs',
     textInfo: 'Archivo PDF. Peso máximo: 2MB',
   };
 
   ngOnInit(): void {
-
-    //Suscribirse al observable para obtener los cambios reactivos del menuleft
+    // Suscribirse al observable para obtener los cambios reactivos del menuleft
     this.stateService.activeNum$.subscribe((num) => {
       this.activeNum = num;
     });
 
-    //Suscribirse al observable del servicio de stepper
+    // Suscribirse al observable del servicio de stepper
     this.stepperService.activeStep$.subscribe((step) => {
       this.activeStep = step;
       console.log('Active step:', step);
     });
 
-    //Traer los datos de la consulta, para roles
+    //traer los datos de la consulta, para roles
     this.apiService.getAuthUserAndRoles().subscribe(
       (response) => {
         this.user = response.user;
@@ -336,14 +349,14 @@ export default class IncrementoComponent {
       }
     );
 
-    //Validaciones segun el formulario
+    //validaciones segun form
     this.formGroup1 = this.fb.group({
       1: [null, Validators.required],
       2: [null, Validators.required],
       3: [null, Validators.required],
       4: [null, Validators.required],
       5: [null, Validators.required],
-      6: [null, Validators.required]
+      6: [null, Validators.required],
     });
 
     this.formGroup2 = this.fb.group({
@@ -352,17 +365,17 @@ export default class IncrementoComponent {
       9: [null, Validators.required],
       10: [null, Validators.required],
       11: [null, Validators.required],
-      0: ['', Validators.required],
-      1: ['', Validators.required]
     });
 
     this.formGroup3 = this.fb.group({
-      12: [null, Validators.required],
-      3: ['', Validators.required],
-      4: ['', Validators.required]
+      0: ['', Validators.required],
+      1: ['', Validators.required],
+      2: ['', Validators.required],
     });
 
     this.formGroup4 = this.fb.group({
+      3: ['', Validators.required],
+      4: ['', Validators.required],
       5: ['', Validators.required],
       6: ['', Validators.required],
       7: ['', Validators.required],
@@ -373,22 +386,38 @@ export default class IncrementoComponent {
       12: ['', Validators.required],
       13: ['', Validators.required],
       14: ['', Validators.required],
-      15: ['', Validators.required],
-      16: ['', Validators.required],
     });
 
-    //Suscribirse al servicio de manejo de errores
+    //suscribirse al servicio de manejo de errores
     this.errorService.errorStates$.subscribe((errorStates) => {
       this.errorStates = errorStates;
     });
   }
 
-  //Metodo para cambiar el valor del menuleft
+  // Generar opciones para los selects
+  generateOptions(max: number) {
+    return Array.from({ length: max }, (_, i) => ({
+      value: i + 1,
+      label: i + 1,
+    }));
+  }
+
+  //formatear texto a int
+  convertToNumber(value: string) {
+    const textValue = parseInt(value, 10);
+
+    if (isNaN(textValue)) {
+      return 0;
+    } else {
+      return textValue;
+    }
+  }
+  // Método para cambiar el valor del menuleft
   changeActiveNum(newValue: string) {
     this.stateService.setActiveNum(newValue);
   }
 
-  //Metodo para cambiar el valor del stepper
+  // Método para cambiar el valor del stepper
   changeActiveStep(newValue: number) {
     switch (newValue) {
       case 1:
@@ -408,6 +437,7 @@ export default class IncrementoComponent {
           this.changeActiveNum('1');
           this.stepperService.setActiveNum(3);
         }
+
         break;
 
       default:
@@ -417,7 +447,7 @@ export default class IncrementoComponent {
     console.log(this.errorStates);
   }
 
-  //Validador error
+  //validate error
   validateFormGroup(
     formGroup: FormGroup,
     errorStates: { [key: number]: boolean }
@@ -427,7 +457,7 @@ export default class IncrementoComponent {
       if (formGroup.controls.hasOwnProperty(key)) {
         const control = formGroup.controls[key];
         if (!control.value || control.invalid) {
-          const errorKey = parseInt(key, 10); //Convierte la clave a número
+          const errorKey = parseInt(key, 10); // Convierte la clave a número
           errorStates[errorKey] = true;
           isValid = false;
         }
@@ -437,7 +467,7 @@ export default class IncrementoComponent {
     return isValid;
   }
 
-  //Metodo para guardar el archivo seleccionado
+  //metodo para guardar el archivo seleccionado
   onFileSelected(file: File[], formControlName: number) {
     const formControlMap: { [key: number]: FormGroup } = {
       1: this.formGroup1,
@@ -451,66 +481,35 @@ export default class IncrementoComponent {
       9: this.formGroup2,
       10: this.formGroup2,
       11: this.formGroup2,
-      12: this.formGroup3,
+      // Y así sucesivamente
     };
 
     const formGroup = formControlMap[formControlName];
     if (formGroup) {
-      formGroup.patchValue({[formControlName]: file});
+      formGroup.patchValue({ [formControlName]: file });
     }
   }
 
-  //Metodo para guardar el valor del input y select
+  //metodo para guardar el valor del input y select
   onInputChange(index: number, event: any) {
     let value = null;
-
     if (event.target) {
       const inputElement = event.target as HTMLInputElement;
       value = inputElement?.value ?? ''; // Maneja valores nulos
-
-      //Asumiendo que el `input-text` está en el índice 0
-      if (index === 0 || index === 3 || index === 4 || index === 5 || index === 6 || index === 13) {
-        //El valor no sea negativo
-        value = Math.max(0, parseFloat(value) || 0);
-        //El campo de entrada refleje el valor ajustado
-        // @ts-ignore
-        inputElement.value = value;
-      }
     } else {
-      // Maneja valores nulos
-      value = event?.value ?? '';
+      value = event?.value ?? ''; // Maneja valores nulos
     }
 
-    // Actualiza el valor en el array de inputs
     this.inputs[index].value = value;
-
-    // Actualiza los valores en los formularios reactivos
-    this.formGroup2.patchValue({[index]: value});
-    this.formGroup3.patchValue({[index]: value});
-    this.formGroup4.patchValue({[index]: value});
-
-    // Si el índice es 1 (select), actualiza el porcentaje seleccionado
-    if (index === 1) {
-      this.selectedPercentage = value ? `${value}%` : '';
-    }
-
-    // Si ya tienes ambos valores, realiza la multiplicación
-    const numeroVehiculos = this.inputs[0].value ? parseFloat(this.inputs[0].value) : 0;
-    const porcentaje = this.inputs[1].value ? parseFloat(this.inputs[1].value) : 0;
-
-    if (numeroVehiculos && porcentaje) {
-      const resultado = (numeroVehiculos * porcentaje) / 100;
-      this.inputs[2].value = resultado.toFixed(2);
-      this.formGroup2.patchValue({2: resultado.toFixed(2)});
-    }
+    this.formGroup3.patchValue({ [index]: value });
+    this.formGroup4.patchValue({ [index]: value });
   }
 
-  //Metodo para enviar los formularios
+  // Método para enviar los formularios
   onSubmitAllForms() {
-    //Obtener el valor de input para determinar la cantidad de contratos
+    // Obtener el valor de input[3] para determinar la cantidad de contratos
     if (this.currentContractIteration == 0) {
-      //Valor de cantidad de contratos
-      this.totalContracts = parseInt(this.inputs[5].value, 10);
+      this.totalContracts = parseInt(this.inputs[3].value, 10); // Valor de cantidad de contratos
     }
 
     if (
@@ -519,23 +518,24 @@ export default class IncrementoComponent {
       // this.formGroup3.valid
       true
     ) {
-      //Si el numero de contratos es mayor a 0
+      //si el numero de contratos es mayor a 0
       if (this.totalContracts > 0) {
         console.log(this.totalContracts);
-        //Si el form esta lleno con todos los datos
+        //si el form esta lleno con todos los datos
         if (this.validateFormGroup(this.formGroup4, this.errorStates)) {
           this.currentContractIteration += 1;
-          //Lógica para múltiples contratos
+          // Lógica para múltiples contratos
           this.showModal = true; // Mostrar modal para cada contrato
         }
       } else {
-        //Cuando ya llego al tope
+        //cuando ya llego al tope
         this.validateFormGroup(this.formGroup4, this.errorStates);
       }
     } else {
       this.changeActiveNum('0');
       if (!this.validateFormGroup(this.formGroup1, this.errorStates)) {
         console.log('entro');
+
         this.stepperService.setActiveNum(1);
       } else if (!this.validateFormGroup(this.formGroup2, this.errorStates)) {
         console.log('entro1');
@@ -547,7 +547,8 @@ export default class IncrementoComponent {
     }
   }
 
-  //Metodos Primer Modal
+  // modal
+
   handleClose() {
     console.log('Modal closed');
   }
@@ -576,7 +577,7 @@ export default class IncrementoComponent {
     });
   }
 
-  //Metodo Modal Final
+  //fin MODAL
 
   // Procesar cada iteración de contratos
   processContractIteration() {
@@ -610,7 +611,7 @@ export default class IncrementoComponent {
     }
   }
 
-  //Metodo para enviar todos los contratos al servidor
+  // Método para enviar todos los contratos al servidor
   sendAllContracts() {
 
     if (this.totalContracts == 1) {
@@ -626,5 +627,13 @@ export default class IncrementoComponent {
 
     console.log(allFormsData);
     this.showFinalModal = true;
+
+    // this.apiService.sendContractForms(allFormsData).subscribe(
+    //   (response) => {
+    //     console.log('Formularios enviados exitosamente');
+    //     // Realizar acciones adicionales si es necesario
+    //   },
+    //   (error) => console.error('Error enviando los formularios', error)
+    // );
   }
 }

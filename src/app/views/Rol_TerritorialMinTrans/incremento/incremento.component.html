@@ -273,12 +273,12 @@
         <!-- input 1 -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
 
-          <p class="text-primary3 font-semibold h-full"
+          <p class="text-primary3 font-semibold"
              [ngClass]="{'!text-error !font-normal': errorStates[3]}">
             Capital Social en SMLV*
           </p>
 
-          <input-text class="w-full mt-2 cursor-pointer" [input]="inputs[3]" [index]="3"
+          <input-text class="w-full mt-2 cursor-pointer h-full" [input]="inputs[3]" [index]="3"
                       [error]="errorStates[3]" (inputChange)="onInputChange($event.index, $event.event)"></input-text>
 
           <!-- texto informativo -->
@@ -304,12 +304,12 @@
 
         <!-- input 2 -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
-          <p class="text-primary3 font-semibold h-full"
+          <p class="text-primary3 font-semibold"
              [ngClass]="{'!text-error !font-normal': errorStates[4]}">
             Patrimonio Líquido en SMLV*
           </p>
 
-          <input-text class="w-full mt-2 cursor-pointer" [input]="inputs[4]" [index]="4"
+          <input-text class="w-full mt-2 cursor-pointer h-full" [input]="inputs[4]" [index]="4"
                       [error]="errorStates[4]" (inputChange)="onInputChange($event.index, $event.event)"></input-text>
 
           <!-- texto informativo -->
@@ -336,6 +336,7 @@
     </form>
 
   </div>
+
   <!-- contenido operativo -->
   <div class="md:col-span-8 sm:col-span-7 w-auto sm:mt-10 mt-4 md:px-8 px-2" *ngIf="activeNum == '1'">
     <h3 class="text-primary1 !font-bold">Incremento de Capacidad Transportadora</h3>
@@ -366,12 +367,12 @@
         <!--input 1 -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
 
-          <p class="text-primary3 font-semibold h-full"
+          <p class="text-primary3 font-semibold"
              [ngClass]="{'!text-error !font-normal': errorStates[5]}">
             Cantidad de contratos*
           </p>
 
-          <input-text class="w-full mt-2 cursor-pointer" [input]="inputs[5]" [index]="5"
+          <input-text class="w-full mt-2 cursor-pointer h-full" [input]="inputs[5]" [index]="5"
                       [disabled]="currentContractIteration != 0"
                       [error]="errorStates[5]" (inputChange)="onInputChange($event.index, $event.event)"></input-text>
 
@@ -380,24 +381,24 @@
         <!-- input 2 -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
 
-          <p class="text-primary3 font-semibold h-full"
+          <p class="text-primary3 font-semibold"
              [ngClass]="{'!text-error !font-normal': errorStates[6]}">
             N° de contrato*
           </p>
 
-          <input-text class="w-full mt-2 cursor-pointer" [input]="inputs[6]" [index]="6"
+          <input-text class="w-full mt-2 cursor-pointer h-full" [input]="inputs[6]" [index]="6"
                       [error]="errorStates[6]" (inputChange)="onInputChange($event.index, $event.event)"></input-text>
         </div>
 
         <!-- input 3 -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
 
-          <p class="text-primary3 font-semibold h-full"
+          <p class="text-primary3 font-semibold"
              [ngClass]="{'!text-error !font-normal': errorStates[7]}">
             Contratante*
           </p>
 
-          <input-text class="w-full mt-2 cursor-pointer" [input]="inputs[7]" [index]="7"
+          <input-text class="w-full mt-2 cursor-pointer h-full" [input]="inputs[7]" [index]="7"
                       [error]="errorStates[7]" (inputChange)="onInputChange($event.index, $event.event)"></input-text>
 
         </div>
@@ -409,24 +410,24 @@
         <!-- input 4 -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
 
-          <p class="text-primary3 font-semibold h-full"
+          <p class="text-primary3 font-semibold"
              [ngClass]="{'!text-error !font-normal': errorStates[8]}">
             Fecha de inicio*
           </p>
 
-          <input-text class="w-full mt-2 cursor-pointer" [input]="inputs[8]" [index]="8"
+          <input-text class="w-full mt-2 cursor-pointer h-full" [input]="inputs[8]" [index]="8"
                       [error]="errorStates[8]" (inputChange)="onInputChange($event.index, $event.event)"></input-text>
         </div>
 
         <!-- input 5 -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
 
-          <p class="text-primary3 font-semibold h-full"
+          <p class="text-primary3 font-semibold"
              [ngClass]="{'!text-error !font-normal': errorStates[9]}">
             Fecha de terminación*
           </p>
 
-          <input-text class="w-full mt-2 cursor-pointer" [input]="inputs[9]" [index]="9"
+          <input-text class="w-full mt-2 cursor-pointer h-full" [input]="inputs[9]" [index]="9"
                       [error]="errorStates[9]" (inputChange)="onInputChange($event.index, $event.event)"></input-text>
 
         </div>
@@ -434,12 +435,12 @@
         <!-- select 1 -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
 
-          <p class="text-primary3 font-semibold h-full"
+          <p class="text-primary3 font-semibold"
              [ngClass]="{'!text-error !font-normal': errorStates[10]}">
             Duración en meses*
           </p>
 
-          <app-select class="w-full m-auto cursor-pointer mt-2" [input]="inputs[10]" [index]="10"
+          <app-select class="w-full m-auto cursor-pointer mt-2 h-full" [input]="inputs[10]" [index]="10"
                       [error]="errorStates[10]" (inputChange)="onInputChange($event.index, $event.event)"></app-select>
 
         </div>
@@ -451,12 +452,12 @@
         <!-- select 2 -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
 
-          <p class="text-primary3 font-semibold h-full"
+          <p class="text-primary3 font-semibold"
              [ngClass]="{'!text-error !font-normal': errorStates[11]}">
             N° de Vehículos / Contrato*
           </p>
 
-          <app-select class="w-full m-auto cursor-pointer mt-2" [input]="inputs[11]" [index]="11"
+          <app-select class="w-full m-auto cursor-pointer mt-2 h-full" [input]="inputs[11]" [index]="11"
                       [error]="errorStates[11]" (inputChange)="onInputChange($event.index, $event.event)"></app-select>
 
         </div>
@@ -464,12 +465,12 @@
         <!-- select 3 -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
 
-          <p class="text-primary3 font-semibold h-full"
+          <p class="text-primary3 font-semibold"
              [ngClass]="{'!text-error !font-normal': errorStates[12]}">
             Clase de vehículo*
           </p>
 
-          <app-select class="w-full m-auto cursor-pointer mt-2" [input]="inputs[12]" [index]="12"
+          <app-select class="w-full m-auto cursor-pointer mt-2 h-full" [input]="inputs[12]" [index]="12"
                       [error]="errorStates[12]"
                       (inputChange)="onInputChange($event.index, $event.event)"></app-select>
 
@@ -478,12 +479,12 @@
         <!-- input 6 -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
 
-          <p class="text-primary3 font-semibold h-full"
+          <p class="text-primary3 font-semibold"
              [ngClass]="{'!text-error !font-normal': errorStates[13]}">
             Valor del Contrato*
           </p>
 
-          <input-text class="w-full mt-2 cursor-pointer" [input]="inputs[13]" [index]="13"
+          <input-text class="w-full mt-2 cursor-pointer h-full" [input]="inputs[13]" [index]="13"
                       [error]="errorStates[13]" (inputChange)="onInputChange($event.index, $event.event)"></input-text>
         </div>
       </div>
@@ -494,12 +495,12 @@
         <!-- select 4 -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
 
-          <p class="text-primary3 font-semibold h-full"
+          <p class="text-primary3 font-semibold"
              [ngClass]="{'!text-error !font-normal': errorStates[14]}">
             Forma de pago*
           </p>
 
-          <app-select class="w-full m-auto cursor-pointer mt-2" [input]="inputs[14]" [index]="14"
+          <app-select class="w-full m-auto cursor-pointer mt-2 h-full" [input]="inputs[14]" [index]="14"
                       [error]="errorStates[14]" (inputChange)="onInputChange($event.index, $event.event)"></app-select>
 
         </div>
@@ -507,12 +508,12 @@
         <!-- select 5 -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
 
-          <p class="text-primary3 font-semibold h-full"
+          <p class="text-primary3 font-semibold"
              [ngClass]="{'!text-error !font-normal': errorStates[15]}">
             Áreas de Operación*
           </p>
 
-          <app-select class="w-full m-auto cursor-pointer mt-2" [input]="inputs[15]" [index]="15"
+          <app-select class="w-full m-auto cursor-pointer mt-2 h-full" [input]="inputs[15]" [index]="15"
                       [error]="errorStates[15]" (inputChange)="onInputChange($event.index, $event.event)"></app-select>
 
         </div>
@@ -520,12 +521,12 @@
         <!-- select 6 -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
 
-          <p class="text-primary3 font-semibold h-full"
+          <p class="text-primary3 font-semibold"
              [ngClass]="{'!text-error !font-normal': errorStates[16]}">
             Tiempos estimados (En horas) - Disponibilidad de Vehículos*
           </p>
 
-          <app-select class="w-full m-auto cursor-pointer mt-2" [input]="inputs[16]" [index]="16"
+          <app-select class="w-full m-auto cursor-pointer mt-2 h-full" [input]="inputs[16]" [index]="16"
                       [error]="errorStates[16]" (inputChange)="onInputChange($event.index, $event.event)"></app-select>
 
         </div>
