@@ -1,4 +1,4 @@
-export const TIEMPOSESTIMADOS = [
+export const HORAS = [
   { value: '1 hora', label: '1 hora' },
   { value: '2 horas', label: '2 horas' },
   { value: '3 horas', label: '3 horas' },
