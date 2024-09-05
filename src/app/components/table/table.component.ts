@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import { PaginatorComponent } from '../paginator/paginator.component';
 import { CommonModule, formatDate } from '@angular/common';
 import { AuthService } from '../../services/auth/auth.service';
@@ -15,13 +15,14 @@ export class TableComponent {
 
   @Input() headers: any = [];
   @Input() data: any = [];
+  @Output() idClicked: EventEmitter<number> = new EventEmitter<number>();
   user:any;
 
   constructor(private authService: AuthService) {
     this.user = this.authService.currentUser; // Obtener el usuario actual
   }
-  
-  
+
+
   get info(): string[] {
     return this.data.data.length > 0 ? Object.keys(this.data.data[0]) : [];
   }
@@ -42,8 +43,12 @@ export class TableComponent {
   }
 
   hasRole(name: string): boolean {
-    
     return this.user.roles.some((role: any) => role.roleName.includes(name));
+  }
+
+  //Metodo para darle click al id
+  onIdClick(id: number) {
+    this.idClicked.emit(id);
   }
 
 }

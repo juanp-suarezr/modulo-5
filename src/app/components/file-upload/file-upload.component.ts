@@ -31,6 +31,8 @@ export class FileUploadComponent implements OnInit, AfterViewInit {
   fileName: string = '';
   isFileUpdate: boolean | null = null;
   islimit: boolean | false = false;
+  currentIndex = 0;
+  maxVisibleFiles = 2;
 
   constructor(private cd: ChangeDetectorRef) {}
 
@@ -110,4 +112,21 @@ export class FileUploadComponent implements OnInit, AfterViewInit {
     const truncated = fileName.substring(0, maxLength - 3) + '...';
     return truncated;
   }
+
+  get visibleFiles(): File[] {
+    return this.files.slice(this.currentIndex, this.currentIndex + this.maxVisibleFiles);
+  }
+
+  moveLeft(): void {
+    if (this.currentIndex > 0) {
+      this.currentIndex--;
+    }
+  }
+
+  moveRight(): void {
+    if (this.currentIndex < this.files.length - this.maxVisibleFiles) {
+      this.currentIndex++;
+    }
+  }
+
 }

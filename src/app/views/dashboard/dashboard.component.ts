@@ -1,13 +1,14 @@
-import { AuthService } from './../../services/auth/auth.service';
-import { Component, OnInit } from '@angular/core';
-import { ButtonModule } from 'primeng/button';
-import { RippleModule } from 'primeng/ripple';
-import { CommonModule } from '@angular/common';
-import { AccordionModule } from 'primeng/accordion';
-import { BadgeModule } from 'primeng/badge';
-import { PaginatorComponent } from '../../components/paginator/paginator.component';
-import { TableComponent } from '../../components/table/table.component';
-import { ApiService } from '../../services/api/api.service';
+import {AuthService} from './../../services/auth/auth.service';
+import {Component} from '@angular/core';
+import {ButtonModule} from 'primeng/button';
+import {RippleModule} from 'primeng/ripple';
+import {CommonModule} from '@angular/common';
+import {AccordionModule} from 'primeng/accordion';
+import {BadgeModule} from 'primeng/badge';
+import {PaginatorComponent} from '../../components/paginator/paginator.component';
+import {TableComponent} from '../../components/table/table.component';
+import {ApiService} from '../../services/api/api.service';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-dashboard',
@@ -29,16 +30,17 @@ export default class DashboardComponent {
   user: any;
 
   headers = [
-    { id: 1, titulo: 'ID' },
-    { id: 2, titulo: 'Fecha solicitud <br> (dd/mm/aaaa)' },
-    { id: 3, titulo: 'Nombre de la empresa <br> que realiza solicitud' },
-    { id: 4, titulo: 'Territorial que <br> emitió la solicitud' },
-    { id: 5, titulo: 'Categoría de <br> solicitud' },
+    {id: 1, titulo: 'ID'},
+    {id: 2, titulo: 'Fecha solicitud <br> (dd/mm/aaaa)'},
+    {id: 3, titulo: 'Nombre de la empresa <br> que realiza solicitud'},
+    {id: 4, titulo: 'Territorial que <br> emitió la solicitud'},
+    {id: 5, titulo: 'Categoría de <br> solicitud'},
   ];
 
   constructor(
     private apiService: ApiService,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) {
     this.user = this.authService.currentUser;
   }
@@ -61,14 +63,14 @@ export default class DashboardComponent {
     ) {
 
       this.headers = [
-        { id: 1, titulo: 'ID' },
-        { id: 2, titulo: 'Fecha solicitud <br> (dd/mm/aaaa)' },
-        { id: 3, titulo: 'Nombre de la empresa <br> que realiza solicitud' },
-        { id: 4, titulo: 'Territorial que <br> emitió la solicitud' },
-        { id: 6, titulo: 'Estado <br> solicitud' },
-        { id: 7, titulo: 'Categoría de<br> solicitud' },
-        { id: 8, titulo: 'Semáforo <br> alerta' },
-        { id: 9, titulo: 'Número<br> radicado' },
+        {id: 1, titulo: 'ID'},
+        {id: 2, titulo: 'Fecha solicitud <br> (dd/mm/aaaa)'},
+        {id: 3, titulo: 'Nombre de la empresa <br> que realiza solicitud'},
+        {id: 4, titulo: 'Territorial que <br> emitió la solicitud'},
+        {id: 6, titulo: 'Estado <br> solicitud'},
+        {id: 7, titulo: 'Categoría de<br> solicitud'},
+        {id: 8, titulo: 'Semáforo <br> alerta'},
+        {id: 9, titulo: 'Número<br> radicado'},
       ];
 
       this.apiService.getSolicitudesTransporte2().subscribe(
@@ -92,5 +94,10 @@ export default class DashboardComponent {
         console.error('Error updating item', error);
       }
     );
+  }
+
+  //Metodo para redirigir el id a la vista solicitud
+  onIdClicked(id: number): void {
+    this.router.navigate(['/solicitud', id]);
   }
 }
