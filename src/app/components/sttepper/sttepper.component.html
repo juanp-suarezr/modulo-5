@@ -1,21 +1,78 @@
-<div class="relative w-full mb-4">
-    <!-- Barra de progreso -->
-    <div class="absolute top-0 left-0 h-[3px] bg-secondary2 w-full"></div>
-    <div class="absolute top-0 left-0 h-[3px] bg-primary1"
-        [ngStyle]="{ width: (active / (dataStep.length)) * 100 + '%' }"></div>
-</div>
-<ol class="items-center w-full sm:flex sm:space-x-8 sm:space-y-0 rtl:space-x-reverse">
-    <li *ngFor="let item of dataStep" class="flex items-center text-[15px] space-x-2.5 rtl:space-x-reverse">
-        <span
-            class="work-sans text-primary2 flex items-center justify-center w-8 h-8 border-2 border-primary2 rounded-full shrink-0 font-semibold"
-            [ngClass]="{'!bg-primary1 !border-primary1 text-blanco': active === item.num, '!text-white !bg-primary3 !border-primary3': active > item.num}">
-            {{item.num}}
-        </span>
-        <span>
-            <p class="work-sans text-primary2 leading-tight font-normal"
-                [ngClass]="{'!text-primary1 font-semibold': active === item.num, 'text-primary3': active > item.num}">
-                {{item.info}}</p>
-        </span>
-    </li>
+<div class="w-full sm:flex flex-col items-center justify-center hidden">
 
-</ol>
+    <div class="relative progress-bar inline-flex items-center flex justify-center mb-4">
+        <!-- Barra de progreso -->
+        <div class="absolute top-0 left-0 h-[3px] bg-secondary2 w-full"></div>
+        <div class="absolute top-0 left-0 h-[3px] bg-primary1"
+            [ngStyle]="{ width: (active / (dataStep.length)) * 100 + '%' }"></div>
+    </div>
+    <!-- list stteper -->
+    <ol #stepperOl class="items-center w-auto inline-flex sm:flex hidden sm:space-x-8 sm:space-y-0 rtl:space-x-reverse">
+        <li *ngFor="let item of dataStep" class="flex items-center text-[15px] space-x-2.5 rtl:space-x-reverse">
+            <span
+                class="work-sans text-primary2 flex items-center justify-center w-8 h-8 border-2 border-primary2 rounded-full shrink-0 font-semibold"
+                [ngClass]="{'!bg-primary1 !border-primary1 text-blanco': active === item.num, '!text-white !bg-primary3 !border-primary3': active > item.num}">
+                {{item.num}}
+            </span>
+            <span>
+                <p class="work-sans text-primary2 leading-tight font-normal"
+                    [ngClass]="{'!text-primary1 font-semibold': active === item.num, 'text-primary3': active > item.num}">
+                    {{item.info}}</p>
+            </span>
+        </li>
+
+    </ol>
+
+    <!-- Template del contenido entre pasos -->
+    <div class="" *ngFor="let item of dataStep; let i = index">
+
+        <ng-container *ngIf="i < contentTemplates.length">
+            <ng-container *ngTemplateOutlet="contentTemplates[i]"></ng-container>
+        </ng-container>
+
+    </div>
+</div>
+
+
+<!-- Movil -->
+<div class="sm:hidden my-4 flex justify-center">
+    <div class="relative w-full h-full flex flex-col items-center">
+        <!-- Barra de progreso vertical -->
+        <div class="absolute top-0 left-0 transform -translate-x-0 w-[2px] h-full bg-secondary2"></div>
+        <div class="absolute top-0 left-0 transform -translate-x-0 w-[2px] bg-primary1"
+            [ngStyle]="{ height: (active / (dataStep.length)) * 100 + '%' }"></div>
+
+        <ol class="flex flex-col w-full rtl:space-x-reverse ml-6">
+            <li *ngFor="let item of dataStep; let i = index"
+                class="relative flex flex-col items-start text-[15px] mb-8">
+                <!-- Número de paso -->
+                <div class="flex items-center space-x-2.5 rtl:space-x-reverse mb-2">
+                    <span
+                        class="work-sans text-primary2 flex items-center justify-center w-7 h-7 border-2 border-primary2 rounded-full shrink-0 font-semibold"
+                        [ngClass]="{
+                    '!bg-primary1 !border-primary1 text-blanco': active === item.num,
+                    '!text-white !bg-primary3 !border-primary3': active > item.num
+                  }">
+                        {{item.num}}
+                    </span>
+                    <span class="ml-4">
+                        <p class="work-sans text-primary2 leading-tight font-normal" [ngClass]="{
+                   '!text-primary1 font-semibold': active === item.num,
+                   'text-primary3': active > item.num
+                 }">
+                            {{item.info}}
+                        </p>
+                    </span>
+                </div>
+
+                <!-- Template del contenido entre pasos -->
+
+                <ng-container *ngIf="i < contentTemplates.length">
+                    <ng-container *ngTemplateOutlet="contentTemplates[i]"></ng-container>
+                </ng-container>
+
+
+            </li>
+        </ol>
+    </div>
+</div>
