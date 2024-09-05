@@ -23,9 +23,9 @@
                 <p class="text-primary4 font-[500]">Los campos marcados con * son obligatorios</p>
             </div>
             <!-- content 1 -->
-            <div class="content1 md:grid sm:grid-cols-2 md:gap-x-36 md:flex items-center h-full">
+            <div class="content1 lg:grid lg:grid-cols-2 md:gap-x-24 lg:gap-x-36 md:flex md:flex-wrap items-center h-full">
                 <!-- cargue 1 solicitud fijacion -->
-                <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+                <div class="w-full flex flex-col justify-center items-start pt-6 my-auto mb-2 h-full">
                     <p class="text-primary3 font-semibold" [ngClass]="{'!text-error !font-normal': errorStates[1]}">
                         Solicitud de fijación de capacidad transportadora*
                     </p>
@@ -34,7 +34,7 @@
                 </div>
 
                 <!-- cargue 2 contrato prestacion del servicio de transporte -->
-                <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+                <div class="w-full flex flex-col justify-center items-start pt-6 my-auto mb-2 h-full">
                     <p class="text-primary3 font-semibold" [ngClass]="{'!text-error !font-normal': errorStates[2]}">
                         Contratos de prestación del servicio de transporte
                         terrestre automotor especial suscritos por la empresa
@@ -46,23 +46,24 @@
             </div>
 
             <!-- content 2 -->
-            <div class="content2 md:grid sm:grid-cols-2 md:gap-x-36 md:flex items-center h-full pt-6">
+            <div class="content2 lg:grid lg:grid-cols-2 md:gap-x-24 lg:gap-x-36 md:flex md:flex-wrap items-center h-full pt-6">
                 <!-- cargue 3 Plan de Rodamiento -->
-                <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+                <div class="w-full flex flex-col justify-center items-start pt-6 my-auto mb-2 h-full">
                     <p class="text-primary3 font-semibold" [ngClass]="{'!text-error !font-normal': errorStates[3]}">
                         Plan de Rodamiento*
                     </p>
                     <!-- texto informativo -->
-                    <div class="flex inline-flex md:gap-3 gap-2 h-full w-full">
+                    <div class="flex inline-flex gap-2 h-full w-full">
 
-                        <span class="lg:w-[12%] sm:w-[12%] w-[10%] h-full flex justify-center lg:px-1 m-auto">
-                            <img class="w-full m-auto" src="assets/iconoInfo.svg">
+                        <span class="lg:w-[11%] md:w-[8%] sm:w-[8%] w-[6%] h-full flex flex-initial justify-center md:px-2 m-auto">
+                            <img class="w-full m-auto flex" src="assets/iconoInfo.svg">
                         </span>
-                        <p class="text-primary1 work-sans text-[11px] mt-2 w-auto">
+                        <p class="text-primary1 work-sans text-[11px] m-auto w-full flex-1">
                             Con cuadro detallado de cantidad de pasajeros movilizados por
                             tipología vehicular
                         </p>
                     </div>
+                    
 
                     <app-file-upload class="mt-2 h-full"
                         [dataClass]="{textSize: 'xs', textInfo: 'Archivo PDF o .xlsx. Peso máximo: 2MB'}"
@@ -71,7 +72,7 @@
                 </div>
 
                 <!-- cargue 4 Estructura costos básicos contratante y contratista -->
-                <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+                <div class="w-full flex flex-col justify-center items-start pt-6 my-auto mb-2 h-full">
                     <p class="text-primary3 font-semibold" [ngClass]="{'!text-error !font-normal': errorStates[4]}">
                         Estructura costos básicos contratante y contratista*
                     </p>
@@ -81,9 +82,9 @@
             </div>
 
             <!-- content 3 -->
-            <div class="content1 md:grid sm:grid-cols-2 md:gap-x-36 md:flex items-center h-full pt-6">
+            <div class="content1 lg:grid lg:grid-cols-2 md:gap-x-24 lg:gap-x-36 md:flex md:flex-wrap items-center h-full pt-6">
                 <!-- cargue 5 certificado de existencia -->
-                <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+                <div class="w-full flex flex-col justify-center items-start pt-6 my-auto mb-2 h-full">
                     <p class="text-primary3 font-semibold" [ngClass]="{'!text-error !font-normal': errorStates[5]}">
                         Certificado de Existencia y Representación legal no
                         menos a 30 días*
@@ -93,7 +94,7 @@
                 </div>
 
                 <!-- cargue 6 Registro Único Tributario -->
-                <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+                <div class="w-full flex flex-col justify-center items-start pt-6 my-auto mb-2 h-full">
                     <p class="text-primary3 font-semibold" [ngClass]="{'!text-error !font-normal': errorStates[6]}">
                         Registro Único Tributario*
                     </p>
@@ -115,9 +116,9 @@
                 <p class="text-primary4 font-[500]">Los campos marcados con * son obligatorios</p>
             </div>
             <!-- content 1 -->
-            <div class="content1 md:grid sm:grid-cols-2 md:gap-x-36 md:flex items-center h-full">
+            <div class="content1 lg:grid lg:grid-cols-2 md:gap-x-24 lg:gap-x-36 md:flex md:flex-wrap items-center h-full">
                 <!-- cargue 7 Resolución de habilitación* -->
-                <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+                <div class="w-full flex flex-col justify-center items-start pt-6 my-auto mb-2 h-full">
                     <p class="text-primary3 font-semibold" [ngClass]="{'!text-error !font-normal': errorStates[7]}">
                         Resolución de habilitación*
                     </p>
@@ -126,7 +127,7 @@
                 </div>
 
                 <!-- cargue 8 Cédula de Ciudadanía del Representante Legal* -->
-                <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+                <div class="w-full flex flex-col justify-center items-start pt-6 my-auto mb-2 h-full">
                     <p class="text-primary3 font-semibold" [ngClass]="{'!text-error !font-normal': errorStates[8]}">
                         Cédula de Ciudadanía del Representante Legal*
                     </p>
@@ -136,9 +137,9 @@
             </div>
 
             <!-- content 2 -->
-            <div class="content2 md:grid sm:grid-cols-2 md:gap-x-36 md:flex items-center h-full pt-6">
+            <div class="content2 lg:grid lg:grid-cols-2 md:gap-x-24 lg:gap-x-36 md:flex md:flex-wrap items-center h-full pt-6">
                 <!-- cargue 9 Estados financieros de la empresa* -->
-                <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+                <div class="w-full flex flex-col justify-center items-start pt-6 my-auto mb-2 h-full">
                     <p class="text-primary3 font-semibold" [ngClass]="{'!text-error !font-normal': errorStates[9]}">
                         Estados financieros de la empresa*
                     </p>
@@ -148,7 +149,7 @@
                 </div>
 
                 <!-- cargue 10 Cédula del contador que firma los estados financieros -->
-                <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+                <div class="w-full flex flex-col justify-center items-start pt-6 my-auto mb-2 h-full">
                     <p class="text-primary3 font-semibold" [ngClass]="{'!text-error !font-normal': errorStates[10]}">
                         Cédula del contador que firma los estados financieros*
                     </p>
@@ -158,7 +159,7 @@
             </div>
 
             <!-- content 3 -->
-            <div class="content1 md:gap-x-36 md:flex items-center h-full pt-6">
+            <div class="content3 md:gap-x-36 md:flex items-center h-full pt-6">
                 <!-- cargue 11 Tarjeta profesional contador que firma estados financieros* -->
                 <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
                     <p class="text-primary3 font-semibold" [ngClass]="{'!text-error !font-normal': errorStates[11]}">
