@@ -10,8 +10,8 @@ import {
   SimpleChanges,
   ChangeDetectorRef,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { PrimaryButtonComponent } from '../primary-button/primary-button.component';
+import {CommonModule} from '@angular/common';
+import {PrimaryButtonComponent} from '../primary-button/primary-button.component';
 
 @Component({
   selector: 'app-file-upload',
@@ -31,8 +31,11 @@ export class FileUploadComponent implements OnInit, AfterViewInit {
   fileName: string = '';
   isFileUpdate: boolean | null = null;
   islimit: boolean | false = false;
+  currentIndex = 0;
+  maxVisibleFiles = 2;
 
-  constructor(private cd: ChangeDetectorRef) {}
+  constructor(private cd: ChangeDetectorRef) {
+  }
 
   ngOnInit() {
     // Inicialización necesaria antes de que la vista esté disponible
@@ -53,24 +56,36 @@ export class FileUploadComponent implements OnInit, AfterViewInit {
   onFileSelected(event: any) {
     this.islimit = false;
     this.isFileUpdate = null;
+
+    // Convierte los archivos seleccionados en un array
     const selectedFiles = Array.from(event.target.files) as File[];
 
-    if (selectedFiles.length > this.maxFiles && this.maxFiles !== 0) {
-      this.files = [];
-      this.fileName = '';
+    // Verifica si el número de archivos supera el máximo permitido
+    if (this.files.length + selectedFiles.length > this.maxFiles && this.maxFiles !== 0) {
       this.islimit = true;
     } else {
-      this.files = selectedFiles;
+      // Agrega los nuevos archivos a la lista existente sin duplicar archivos
+      selectedFiles.forEach((file) => {
+        if (!this.files.some(f => f.name === file.name && f.size === file.size)) {
+          this.files.push(file);
+        }
+      });
+
+      // Inmediatamente mostrar los archivos sin esperar al botón "Cargar archivo"
       this.fileName = this.files.length > 0 ? this.files[0].name : '';
       this.islimit = false;
-    }
 
-    this.fileSelected.emit(this.files);
+      // Emitir la lista de archivos actualizada
+      this.fileSelected.emit(this.files);
+    }
 
     // Restablece el valor del input para permitir la selección del mismo archivo nuevamente
     if (this.fileInput) {
       this.fileInput.nativeElement.value = '';
     }
+
+    // Detectar cambios para asegurarse de que el archivo se muestre inmediatamente
+    this.cd.detectChanges();
   }
 
 
@@ -85,6 +100,11 @@ export class FileUploadComponent implements OnInit, AfterViewInit {
     if (this.files.length === 0) {
       this.isFileUpdate = null;
     }
+
+    // Ajusta el índice si el número de archivos cambia y previene que el índice sea mayor que los archivos disponibles
+    if (this.currentIndex > this.files.length - this.maxVisibleFiles) {
+      this.currentIndex = Math.max(0, this.files.length - this.maxVisibleFiles);
+    }
   }
 
   triggerFileInput() {
@@ -97,9 +117,7 @@ export class FileUploadComponent implements OnInit, AfterViewInit {
     if (this.files.length === 0) {
       this.isFileUpdate = false;
     } else {
-
       this.isFileUpdate = true;
-      // Lógica adicional para manejar la carga del archivo
     }
   }
 
@@ -110,4 +128,21 @@ export class FileUploadComponent implements OnInit, AfterViewInit {
     const truncated = fileName.substring(0, maxLength - 3) + '...';
     return truncated;
   }
+
+  get visibleFiles(): File[] {
+    return this.files.slice(this.currentIndex, this.currentIndex + this.maxVisibleFiles);
+  }
+
+  moveLeft(): void {
+    if (this.currentIndex > 0) {
+      this.currentIndex--;
+    }
+  }
+
+  moveRight(): void {
+    if (this.currentIndex < this.files.length - this.maxVisibleFiles) {
+      this.currentIndex++;
+    }
+  }
+
 }

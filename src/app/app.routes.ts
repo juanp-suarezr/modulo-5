@@ -22,8 +22,8 @@ export const routes: Routes = [
         canActivate: [AuthGuard],
       },
       {
-        path: 'solicitudid',
-        loadComponent: () => import('./views/Rol_GestionDocumental/solicitudId/solicitud.component'),
+        path: 'solicitud',
+        loadComponent: () => import('./views/Rol_GestionDocumental/solicitud/solicitud.component'),
         canActivate: [AuthGuard],
       },
       {

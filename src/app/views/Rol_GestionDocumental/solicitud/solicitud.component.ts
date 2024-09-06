@@ -13,7 +13,7 @@ import {ApiService} from "../../../services/api/api.service";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {ErrorService} from "../../../services/error/error.service";
 import {AlertComponent} from "../../../components/alert/alert.component";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-solicitud',
@@ -37,14 +37,14 @@ import {Router} from "@angular/router";
 })
 export default class SolicitudComponent {
 
-
   constructor(
     private stateService: ActiveNumService,
     private stepperService: ActiveNumStepperService,
     private apiService: ApiService,
     private fb: FormBuilder,
     private errorService: ErrorService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute,
   ) {
   }
 
@@ -71,6 +71,9 @@ export default class SolicitudComponent {
   pdfUrl: string = 'https://www.orimi.com/pdf-test.pdf';
   fileName: string = 'archivo-prueba.pdf';
   fileSizeInKB: number = 123.45;
+
+  //Variable de id de la vista dashboard
+  id: number | undefined;
 
   //Menu left
   infoMenu = [
@@ -348,6 +351,10 @@ export default class SolicitudComponent {
       this.errorStates = errorStates;
     });
 
+    //Servicio para conectar id con esta vista
+    this.route.paramMap.subscribe(params => {
+      this.id = Number(params.get('id'));
+    });
   }
 
   //Validador de formularios
@@ -408,7 +415,7 @@ export default class SolicitudComponent {
   //Metodo para guardar el archivo seleccionado
   onFileSelected(file: File[], formControlName: number) {
     const formControlMap: { [key: number]: FormGroup } = {
-      9: this.formGroup3,
+      9: this.formGroup4,
     };
 
     const formGroup = formControlMap[formControlName];
@@ -428,7 +435,7 @@ export default class SolicitudComponent {
 
   //Metodo para descargar pdf
   downloadPdf() {
-    fetch(this.pdfUrl, { mode: 'no-cors' })
+    fetch(this.pdfUrl, {mode: 'no-cors'})
       .then(response => response.blob())
       .then(blob => {
         const link = document.createElement('a');
@@ -473,9 +480,8 @@ export default class SolicitudComponent {
   onSubmitAllForms() {
     if (this.validateFormGroup(this.formGroup4, this.errorStates)) {
       this.showModal = true; // Mostrar modal
-    }
-    else {
-      this.validateFormGroup(this.formGroup4, this.errorStates);
+    } else {
+      this.validateFormGroup(this.formGroup4, this.errorStates)
     }
   }
 
