@@ -4,29 +4,27 @@
     Solicitudes
   </h3>
 
-  <div class="card">
+  <div class="card mt-6 pb-4" *ngIf="loading">
+    <table class="min-w-full whitespace-no-wrap border-2 border-secondary1">
+      <thead>
+        <tr class="border-b bg-secondary1 text-left font-semibold tracking-wide text-primary2">
 
+          <th *ngFor="let header of headers" class="px-5 py-3 font-semibold tracking-wider">
+            <span [innerHTML]="header.titulo"></span>
+          </th>
+
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let num of [1,2,3]">
+          <td *ngFor="let header of headers" class="p-2"><p-skeleton /></td>
+
+        </tr>
+      </tbody>
+    </table>
   </div>
 
-  <table class="min-w-full whitespace-no-wrap border-2 border-secondary1">
-    <thead>
-      <tr class="border-b bg-secondary1 text-left font-semibold tracking-wide text-primary2">
-
-        <th *ngFor="let header of headers" class="px-5 py-3 font-semibold tracking-wider">
-          <span [innerHTML]="header.titulo"></span>
-        </th>
-
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td *ngFor="let header of headers"><p-skeleton /></td>
-
-      </tr>
-    </tbody>
-  </table>
-
-  <div class="">
+  <div class="" *ngIf="!loading">
     <app-table [data]="response" [headers]="headers"></app-table>
   </div>
 
