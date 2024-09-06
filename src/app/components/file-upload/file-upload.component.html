@@ -2,7 +2,7 @@
 <div class="containerUpload w-full">
 
   <!-- input file -->
-  <div class="inputFile w-full md:pe-2 m-auto">
+  <div class="inputFile w-full md:pe-2 m-auto sm:mb-0 mb-2">
     <div class="flex items-center border border-secondary2 focus:border-primary4 focus:border-2 rounded-lg">
       <label (click)="triggerFileInput()"
              class="cursor-pointer block z-10 h-[42px] border border-primary4 shadow-sm rounded-l-lg focus:border-primary4 focus:border-2 focus:bg-primary2 focus:ring-primary4 work-sans text-[14px] disabled:opacity-50 disabled:pointer-events-none bg-primary1 hover:bg-primary2 text-white px-4 flex justify-center items-center"
@@ -13,10 +13,8 @@
       <span id="file-name"
             class="ml-4 text-secondary2 work-sans text-[14px] font-medium focus:border-primary4 focus:ring-primary4 !cursor-none"
             [ngClass]="'text-' + dataClass.textSize">
-        {{
-          fileName != "" ? "Archivo seleccionado" : "Sin archivo seleccionado"
-        }}
-      </span>
+      {{ files.length > 0 ? files.length + ' archivo(s) seleccionado(s)' : "Sin archivo seleccionado" }}
+    </span>
     </div>
   </div>
 

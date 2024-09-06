@@ -34,7 +34,7 @@
             nueva capacidad*
           </p>
 
-          <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" [maxFiles]="1" mimes=".pdf"
+          <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" mimes=".pdf"
             [error]="errorStates[1]" (fileSelected)="onFileSelected($event, 1)"></app-file-upload>
         </div>
 
@@ -286,7 +286,7 @@
         <!-- cargue 12 -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto mb-2 h-full">
           <p class="text-primary3 font-semibold" [ngClass]="{'!text-error !font-normal': errorStates[12]}">
-            Certificado del 10% de propiedad de la empresa*
+            Certificado del {{ selectedPercentage }} de propiedad de la empresa*
           </p>
           <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" mimes=".pdf" [maxFiles]="1"
             [error]="errorStates[12]" (fileSelected)="onFileSelected($event, 12)"></app-file-upload>
