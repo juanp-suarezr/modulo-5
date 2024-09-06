@@ -1,4 +1,11 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  QueryList,
+  ViewChildren,
+  AfterViewInit,
+  TemplateRef,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormBuilder,
@@ -41,7 +48,7 @@ import { NoNegativeGlobal } from '../../../validator/noNegative.validator';
   templateUrl: './incremento.component.html',
   styleUrl: './incremento.component.css',
 })
-export default class IncrementoComponent {
+export default class IncrementoComponent implements AfterViewInit {
   departs: any = [];
   ClaseVehiculo: any = [];
   meses: { value: string; label: string }[] = [];
@@ -49,6 +56,12 @@ export default class IncrementoComponent {
   horas: any = [];
 
   submitted: boolean = false;
+
+  @ViewChildren('content1, content2, content3') templates!: QueryList<
+    TemplateRef<any>
+  >;
+
+  stepContents: TemplateRef<any>[] = [];
 
   constructor(
     private stateService: ActiveNumService,
@@ -124,7 +137,6 @@ export default class IncrementoComponent {
 
   //info selects
   selects = [
-
     //select meses
     {
       name: 'duracion',
@@ -236,7 +248,6 @@ export default class IncrementoComponent {
       error: 'Patrimonio Líquido en SMLV es obligatorio',
       good: 'Dato correcto',
     },
-
   ];
 
   //Props o datos para input upload
@@ -285,8 +296,13 @@ export default class IncrementoComponent {
     });
   }
 
-  ngAfterViewInit() {
-    this.loadOptions();
+  ngAfterViewInit(): void {
+    // Utiliza setTimeout para permitir que Angular complete la detección de cambios
+    setTimeout(() => {
+      this.stepContents = this.templates.toArray();
+      this.loadOptions();
+      this.cdr.detectChanges(); // Forzar detección de cambios
+    });
   }
 
   // Aquí defines tu formulario
@@ -397,10 +413,10 @@ export default class IncrementoComponent {
         }
         break;
       case 4:
-        console.log("entro");
+        console.log('entro');
 
         if (this.validateFormGroup(this.formGroup3, this.errorStates)) {
-          console.log("entro1");
+          console.log('entro1');
           this.changeActiveNum('1');
           this.stepperService.setActiveNum(3);
         }
@@ -491,7 +507,6 @@ export default class IncrementoComponent {
 
     // Actualiza los valores en los formularios reactivos
     this.formGroup2.patchValue({ [index]: value });
-
 
     // Si el índice es 1 (select), actualiza el porcentaje seleccionado
     if (index === 1) {
@@ -628,7 +643,6 @@ export default class IncrementoComponent {
 
       // Forzamos la detección de cambios
       this.cdr.detectChanges();
-
     } else {
       console.log('Formulario de contrato no válido');
     }
@@ -636,7 +650,10 @@ export default class IncrementoComponent {
 
   //Metodo para enviar todos los contratos al servidor
   sendAllContracts() {
-    if (this.totalContracts == 1 || this.totalContracts == this.currentContractIteration) {
+    if (
+      this.totalContracts == 1 ||
+      this.totalContracts == this.currentContractIteration
+    ) {
       this.contractDataArray.push(this.formGroup4.value);
     }
 
