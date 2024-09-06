@@ -24,7 +24,7 @@ export class TableComponent {
 
 
   get info(): string[] {
-    return this.data.data.length > 0 ? Object.keys(this.data.data[0]) : [];
+    return this.data.length > 0 ? Object.keys(this.data[0]) : [];
   }
 
   formatField(value: any): string {

@@ -53,70 +53,6 @@ export class ApiService {
     return of(response);
   }
 
-  //obtener solicitudes indicadores gestion
-  getSolicitudesTransporte(): Observable<any> {
-    const response = {
-      data: [
-        {
-          id: '1.586',
-          fecha: '2024-07-11T05:00:00',
-          empresa: 'Transdep Especial Colombia S.A.S',
-          territorial: 'Dirección Territorial Magdalena',
-          categoria: 'Fijación de Capacidad Transportadora',
-        },
-        {
-          id: '1.587',
-          fecha: '2024-08-11T05:00:00',
-          empresa: 'Transdep Especial Colombia S.A.S',
-          territorial: 'Dirección Territorial Magdalena',
-          categoria: 'Fijación de Capacidad Transportadora',
-        },
-        {
-          id: '1.588',
-          fecha: '2024-09-11T05:00:00',
-          empresa: 'Transdep Especial Colombia S.A.S',
-          territorial: 'Dirección Territorial Magdalena',
-          categoria: 'Fijación de Capacidad Transportadora',
-        },
-      ],
-      current_page: 1,
-      per_page: 3,
-      total: 10,
-      total_pages: 4,
-      next_page_url: 'https://api.example.com/data?page=2',
-      prev_page_url: null,
-      links: [
-        { url: null, label: 'Anterior', active: false },
-        {
-          url: 'https://api.example.com/data?page=1',
-          label: '1',
-          active: true,
-        },
-        {
-          url: 'https://api.example.com/data?page=2',
-          label: '2',
-          active: false,
-        },
-        {
-          url: 'https://api.example.com/data?page=3',
-          label: '3',
-          active: false,
-        },
-        {
-          url: 'https://api.example.com/data?page=4',
-          label: '4',
-          active: false,
-        },
-        {
-          url: 'https://api.example.com/data?page=2',
-          label: 'Siguiente',
-          active: false,
-        },
-      ],
-    };
-
-    return of(response);
-  }
 
   //obtener solicitudes indicadores gestion
   getSolicitudesTransporte2(): Observable<any> {
@@ -182,6 +118,11 @@ export class ApiService {
   //clase vehiculo
   getClaseVehiculo(): Observable<any> {
     return this.http.get(`${this.baseUrl}/catalogos/ClaseVehiculo`);
+  }
+
+  //clase vehiculo
+  getCategorias(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/catalogos/categoriasolicitud`);
   }
 
 
