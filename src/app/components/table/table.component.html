@@ -16,17 +16,22 @@
             </thead>
             <tbody>
 
-              <tr class="text-primary3 border-b-2 border-secondary1 bg-white" *ngFor="let item of data.data">
+              <tr class="text-primary3 border-b-2 border-secondary1 bg-white" *ngFor="let item of data">
 
                 <td *ngFor="let key of info" class="px-5 py-5">
                   <!-- datos con rol de escritura territorial -->
-                  <p *ngIf="hasRole('ROLE_ESCRITURA_MIN')" class="whitespace-no-wrap">{{
+                  <p *ngIf="key !== 'id' && hasRole('ROLE_ESCRITURA_MIN')" class="whitespace-no-wrap">{{
                     formatField(item[key]) }} </p>
+                  <!-- id con rol de escritura gestion doc -->
+                  <p *ngIf="key === 'id' && (hasRole('ROLE_ESCRITURA_MIN'))"
+                    class="whitespace-no-wrap">{{
+                    item[key] }}</p>
+
                   <!-- id con rol de escritura gestion doc -->
                   <a *ngIf="key === 'id' && (hasRole('ROLE_ESCRITURA_GESDOC') || hasRole('ROLE_SUPERTRANSPORTE'))"
                     class="underline text-primary2 font-semibold cursor-pointer" pTooltip="clic para abrir"
                     tooltipPosition="right">
-                    {{ formatField(item[key]) }}
+                    {{ item[key] }}
                   </a>
                   <!-- datos con rol de escritura gestion doc -->
                   <p *ngIf="key !== 'id' && (hasRole('ROLE_ESCRITURA_GESDOC') || hasRole('ROLE_SUPERTRANSPORTE'))"
@@ -43,14 +48,14 @@
   </div>
   <div class="flex flex-col items-center border-t bg-white px-5 py-5 xs:flex-row xs:justify-between">
     <!-- PAGINACION -->
-    <app-paginator *ngIf="data.links" [links]="data.links"></app-paginator>
+    <!-- <app-paginator *ngIf="data.links" [links]="data.links"></app-paginator> -->
   </div>
 
 </div>
 
 <div class="mt-6 w-full mb-4 sm:hidden">
 
-  <div class="space-y-6" *ngFor="let item of data.data">
+  <div class="space-y-6" *ngFor="let item of data">
     <div class="border-2 bg-white border-secondary1 py-4 px-4">
       <div class="flex">
         <div class="w-1/2 font-semibold text-primary2 p-2">ID</div>
@@ -76,7 +81,7 @@
   </div>
   <div class="flex flex-col items-center border-t bg-white px-5 py-5 xs:flex-row xs:justify-between">
     <!-- PAGINACION -->
-    <app-paginator *ngIf="data.links" [links]="data.links" [isResponsive]="true"></app-paginator>
+    <!-- <app-paginator *ngIf="data.links" [links]="data.links" [isResponsive]="true"></app-paginator> -->
   </div>
 
 </div>
