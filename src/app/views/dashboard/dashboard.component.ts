@@ -32,7 +32,7 @@ export default class DashboardComponent {
   response: any;
   apiResponse: any;
   user: any;
-  loading: boolean = false; // Estado de carga
+  loading: boolean = true; // Estado de carga
 
   headers = [
     {id: 1, titulo: 'ID'},
@@ -66,58 +66,62 @@ export default class DashboardComponent {
   //obtener solicitudes
   getSolicitudes(res: any) {
     this.loading = true; // Comienza la carga de datos
-    //traer los datos de la consulta
+  
+    // traer los datos de la consulta
     this.apiSFService.getSolicitudes().subscribe(
       (response) => {
-        this.apiResponse = response;
-        this.loading = false; // Termina la carga de datos
-        console.log(response);
+        
+        // Validar roles y generar headers después de cargar los datos
+        if (
+          this.user.roles.some((role: any) =>
+            role.roleName.includes('ROLE_SUPERTRANSPORTE')
+          )
+        ) {
+          this.headers = [
+            { id: 1, titulo: 'ID' },
+            { id: 2, titulo: 'Fecha solicitud <br> (dd/mm/aaaa)' },
+            { id: 3, titulo: 'Nombre de la empresa <br> que realiza solicitud' },
+            { id: 4, titulo: 'Territorial que <br> emitió la solicitud' },
+            { id: 6, titulo: 'Estado <br> solicitud' },
+            { id: 7, titulo: 'Categoría de<br> solicitud' },
+            { id: 8, titulo: 'Semáforo <br> alerta' },
+            { id: 9, titulo: 'Número<br> radicado' },
+          ];
+  
+          this.response = response.map((clase: any) => ({
+            id: clase.id,
+            fecha: clase.fechaSolicitud,
+            empresa: clase.nombreEmpresa,
+            territorial: clase.territorial,
+            estado: clase.estado,
+            categoria: clase.idCategoriaSolicitud,
+            semaforo: clase.idCategoriaSolicitud,
+            radicado: clase.idCategoriaSolicitud,
+          }));
+
+          this.loading = false; // Termina la carga de datos
+
+        } else {
+          console.log(response);
+          this.response = response.map((clase: any) => ({
+            id: clase.id,
+            fecha: clase.fechaSolicitud,
+            empresa: clase.nombreEmpresa,
+            territorial: clase.territorial,
+            categoria: clase.idCategoriaSolicitud,
+          }));
+
+          this.loading = false; // Termina la carga de datos
+
+        }
       },
       (error) => {
-        this.loading = false; // Termina la carga de datos
+        this.loading = false; // Termina la carga de datos en caso de error
         console.error('Error fetching user data', error);
       }
     );
-
-    if (this.apiResponse.length > 0) {
-      if (
-        this.user.roles.some((role: any) =>
-          role.roleName.includes('ROLE_SUPERTRANSPORTE')
-        )
-      ) {
-        this.headers = [
-          { id: 1, titulo: 'ID' },
-          { id: 2, titulo: 'Fecha solicitud <br> (dd/mm/aaaa)' },
-          { id: 3, titulo: 'Nombre de la empresa <br> que realiza solicitud' },
-          { id: 4, titulo: 'Territorial que <br> emitió la solicitud' },
-          { id: 6, titulo: 'Estado <br> solicitud' },
-          { id: 7, titulo: 'Categoría de<br> solicitud' },
-          { id: 8, titulo: 'Semáforo <br> alerta' },
-          { id: 9, titulo: 'Número<br> radicado' },
-        ];
-
-        this.response = this.apiResponse.map((clase: any) => ({
-          id: clase.id,
-          fecha: clase.fechaSolicitud,
-          empresa: clase.nombreEmpresa,
-          territorial: clase.territorial,
-          estado: clase.estado,
-          categoria: clase.idCategoriaSolicitud,
-          semaforo: clase.idCategoriaSolicitud,
-          radicado: clase.idCategoriaSolicitud,
-        }));
-      } else {
-        console.log(this.apiResponse);
-        this.response = this.apiResponse.map((clase: any) => ({
-          id: clase.id,
-          fecha: clase.fechaSolicitud,
-          empresa: clase.nombreEmpresa,
-          territorial: clase.territorial,
-          categoria: clase.idCategoriaSolicitud,
-        }));
-      }
-    }
   }
+  
 
   //ejemplo uso update
   updateItem(id: number, data: any): void {
