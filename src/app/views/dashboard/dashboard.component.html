@@ -4,7 +4,7 @@
     Solicitudes
   </h3>
   
-  <div class="card mt-6 pb-4" *ngIf="loading">
+  <div class="card mt-6 pb-4 mb-4 hidden sm:block" *ngIf="loading">
     <table class="min-w-full whitespace-no-wrap border-2 border-secondary1">
       <thead>
         <tr class="border-b bg-secondary1 text-left font-semibold tracking-wide text-primary2">
@@ -24,7 +24,30 @@
     </table>
   </div>
 
-  <div class="" *ngIf="loading == false">
+  <div class="card mt-6 w-full mb-4 sm:hidden" *ngIf="loading">
+    <div class="border-2 bg-white border-secondary1 max-h-96 overflow-y-auto"> <!-- Contenedor general con scroll -->
+      <div class="flex flex-col space-y-6" *ngFor="let num of [1,2,3]">
+        <div class="border-2 bg-white border-secondary1 py-4 px-4">
+          <div class="flex flex-col space-y-4">
+            <!-- Recorremos los headers y mostramos las filas correspondientes -->
+            <div class="flex justify-between" *ngFor="let header of headers; let i = index">
+              <div class="w-1/2 font-semibold text-primary2 p-2" [innerHTML]="header.titulo"></div>
+  
+              <!-- Condicionales de visualización aplicados -->
+              <div class="w-1/2 p-2">
+                <!-- Condición: datos con rol de escritura territorial -->
+                <p *ngFor="let header of headers" class="p-2"><p-skeleton /></p>
+    
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+  <div class="mb-4" *ngIf="loading == false">
     <app-table [data]="response" [headers]="headers" (idClicked)="onIdClicked($event)"></app-table>
   </div>
 

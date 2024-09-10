@@ -1,87 +1,88 @@
-<div class="mt-6 w-full mb-4 hidden sm:block">
-
-  <div class="flex flex-col overflow-x-auto">
+<div class="mt-6 w-full mb-6 hidden sm:block">
+  <div class="flex flex-col">
     <div class="inline-block shadow">
       <div class="inline-block min-w-full py-2">
         <div class="overflow-x-auto">
-          <table class="min-w-full whitespace-no-wrap border-2 border-secondary1">
-            <thead>
-              <tr class="border-b bg-secondary1 text-left font-semibold tracking-wide text-primary2">
-
-                <th *ngFor="let header of headers" class="px-5 py-3 font-semibold tracking-wider">
-                  <span [innerHTML]="header.titulo"></span>
-                </th>
-
-              </tr>
-            </thead>
-            <tbody>
-
-              <tr class="text-primary3 border-b-2 border-secondary1 bg-white" *ngFor="let item of data">
-
-                <td *ngFor="let key of info" class="px-5 py-5">
-                  <!-- datos con rol de escritura territorial -->
-                  <p *ngIf="key !== 'id' && hasRole('ROLE_ESCRITURA_MIN')" class="whitespace-no-wrap">{{
-                    formatField(item[key]) }} </p>
-                  <!-- id con rol de escritura gestion doc -->
-                  <p *ngIf="key === 'id' && (hasRole('ROLE_ESCRITURA_MIN'))"
-                    class="whitespace-no-wrap">{{
-                    item[key] }}</p>
-
-                  <!-- id con rol de escritura gestion doc -->
-                  <a *ngIf="key === 'id' && (hasRole('ROLE_ESCRITURA_GESDOC') || hasRole('ROLE_SUPERTRANSPORTE'))"
-                     class="underline text-primary2 font-semibold cursor-pointer" pTooltip="clic para abrir"
-                     tooltipPosition="right" (click)="onIdClick(item[key])">
-                    {{item[key]}}
-                  </a>
-                  <!-- datos con rol de escritura gestion doc -->
-                  <p *ngIf="key !== 'id' && (hasRole('ROLE_ESCRITURA_GESDOC') || hasRole('ROLE_SUPERTRANSPORTE'))"
-                    class="whitespace-no-wrap">{{
-                    formatField(item[key]) }}</p>
-                </td>
-              </tr>
-
-            </tbody>
-          </table>
+          <div class="max-h-80 overflow-y-auto">
+            <table class="min-w-full table-fixed border-2 border-secondary1">
+              <thead class="bg-secondary1 sticky top-0 text-left font-semibold tracking-wide text-primary2">
+                <tr class="border-b">
+                  <th *ngFor="let header of headers" class="px-5 py-3 font-semibold tracking-wider">
+                    <span [innerHTML]="header.titulo"></span>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="text-primary3 border-b-2 border-secondary1 bg-white" *ngFor="let item of data">
+                  <td *ngFor="let key of info" class="px-5 py-5">
+                    <!-- datos con rol de escritura territorial -->
+                    <p *ngIf="key !== 'id' && hasRole('ROLE_ESCRITURA_MIN')" class="whitespace-no-wrap">
+                      {{ formatField(item[key]) }}
+                    </p>
+                    <!-- id con rol de escritura gestion doc -->
+                    <p *ngIf="key === 'id' && hasRole('ROLE_ESCRITURA_MIN')" class="whitespace-no-wrap">
+                      {{ item[key] }}
+                    </p>
+                    <!-- id con rol de escritura gestion doc -->
+                    <a *ngIf="key === 'id' && (hasRole('ROLE_ESCRITURA_GESDOC') || hasRole('ROLE_SUPERTRANSPORTE'))"
+                      class="underline text-primary2 font-semibold cursor-pointer" pTooltip="clic para abrir"
+                      tooltipPosition="right" (click)="onIdClick(item[key])">
+                      {{ item[key] }}
+                    </a>
+                    <!-- datos con rol de escritura gestion doc -->
+                    <p *ngIf="key !== 'id' && (hasRole('ROLE_ESCRITURA_GESDOC') || hasRole('ROLE_SUPERTRANSPORTE'))"
+                      class="whitespace-no-wrap">
+                      {{ formatField(item[key]) }}
+                    </p>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
   </div>
-  <div class="flex flex-col items-center border-t bg-white px-5 py-5 xs:flex-row xs:justify-between">
-    <!-- PAGINACION -->
-    <!-- <app-paginator *ngIf="data.links" [links]="data.links"></app-paginator> -->
-  </div>
 
 </div>
 
-<div class="mt-6 w-full mb-4 sm:hidden">
+<div class="mt-6 w-full mb-6 sm:hidden">
+  <div class="border-2 bg-white border-secondary1 max-h-[28rem] overflow-y-auto"> <!-- Contenedor general con scroll -->
+    <div class="flex flex-col space-y-6" *ngFor="let item of data">
+      <div class="border-2 bg-white border-secondary1 py-4 px-4">
+        <div class="flex flex-col space-y-4">
+          <!-- Recorremos los headers y mostramos las filas correspondientes -->
+          <div class="flex justify-between" *ngFor="let header of headers; let i = index">
+            <div class="w-1/2 font-semibold text-primary2 p-2" [innerHTML]="header.titulo"></div>
 
-  <div class="space-y-6" *ngFor="let item of data">
-    <div class="border-2 bg-white border-secondary1 py-4 px-4">
-      <div class="flex">
-        <div class="w-1/2 font-semibold text-primary2 p-2">ID</div>
-        <div class="w-1/2 p-2">{{ item.id }}</div>
-      </div>
-      <div class="flex">
-        <div class="w-1/2 font-semibold text-primary2 p-2">Fecha solicitud (dd/mm/aaaa)</div>
-        <div class="w-1/2 p-2">{{ item.fecha }}</div>
-      </div>
-      <div class="flex">
-        <div class="w-1/2 font-semibold text-primary2 p-2">Nombre de la empresa que realiza solicitud</div>
-        <div class="w-1/2 p-2">{{ item.empresa }}</div>
-      </div>
-      <div class="flex">
-        <div class="w-1/2 font-semibold text-primary2 p-2">Territorial que emitió la solicitud</div>
-        <div class="w-1/2 p-2">{{ item.territorial }}</div>
-      </div>
-      <div class="flex">
-        <div class="w-1/2 font-semibold text-primary2 p-2">Categoría de solicitud</div>
-        <div class="w-1/2 p-2">{{ item.categoria }}</div>
+            <!-- Condicionales de visualización aplicados -->
+            <div class="w-1/2 p-2">
+              <!-- Condición: datos con rol de escritura territorial -->
+              <p *ngIf="info[i] !== 'id' && hasRole('ROLE_ESCRITURA_MIN')" class="whitespace-no-wrap">
+                {{ formatField(item[info[i]]) }}
+              </p>
+
+              <!-- Condición: id con rol de escritura gestion doc -->
+              <p *ngIf="info[i] === 'id' && hasRole('ROLE_ESCRITURA_MIN')" class="whitespace-no-wrap">
+                {{ item[info[i]] }}
+              </p>
+
+              <!-- Condición: id con rol de escritura gestion doc -->
+              <a *ngIf="info[i] === 'id' && (hasRole('ROLE_ESCRITURA_GESDOC') || hasRole('ROLE_SUPERTRANSPORTE'))"
+                class="underline text-primary2 font-semibold cursor-pointer" pTooltip="clic para abrir"
+                tooltipPosition="right" (click)="onIdClick(item[info[i]])">
+                {{ item[info[i]] }}
+              </a>
+
+              <!-- Condición: datos con rol de escritura gestion doc -->
+              <p *ngIf="info[i] !== 'id' && (hasRole('ROLE_ESCRITURA_GESDOC') || hasRole('ROLE_SUPERTRANSPORTE'))"
+                class="whitespace-no-wrap">
+                {{ formatField(item[info[i]]) }}
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-  <div class="flex flex-col items-center border-t bg-white px-5 py-5 xs:flex-row xs:justify-between">
-    <!-- PAGINACION -->
-    <!-- <app-paginator *ngIf="data.links" [links]="data.links" [isResponsive]="true"></app-paginator> -->
-  </div>
-
 </div>

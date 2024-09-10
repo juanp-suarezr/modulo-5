@@ -1,5 +1,10 @@
 import { AuthService } from './../../services/auth/auth.service';
-import { Component, OnInit, ApplicationRef, ChangeDetectorRef } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ApplicationRef,
+  ChangeDetectorRef,
+} from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
 import { CommonModule } from '@angular/common';
@@ -114,7 +119,13 @@ export default class DashboardComponent {
             categoria:
               res.detalle.find(
                 (item: any) => item.id == clase.idCategoriaSolicitud
-              )?.descripcion || 'Sin categoría',
+              )?.descripcion === 'Fijación'
+                ? 'Fijación de Capacidad Transportadora'
+                : res.detalle.find(
+                    (item: any) => item.id == clase.idCategoriaSolicitud
+                  )?.descripcion === 'Incremento'
+                ? 'Incremento de Capacidad Transportadora'
+                : 'Sin categoría',
             semaforo: clase.idCategoriaSolicitud,
             radicado: clase.idCategoriaSolicitud,
           }));
@@ -131,7 +142,13 @@ export default class DashboardComponent {
             categoria:
               res.detalle.find(
                 (item: any) => item.id == clase.idCategoriaSolicitud
-              )?.descripcion || 'Sin categoría',
+              )?.descripcion === 'Fijación'
+                ? 'Fijación de Capacidad Transportadora'
+                : res.detalle.find(
+                    (item: any) => item.id == clase.idCategoriaSolicitud
+                  )?.descripcion === 'Incremento'
+                ? 'Incremento de Capacidad Transportadora'
+                : 'Sin categoría',
           }));
 
           this.loading = false; // Termina la carga de datos

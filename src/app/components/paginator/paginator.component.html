@@ -1,50 +1,49 @@
-<div *ngIf="links.length > 3">
-    <div class="flex flex-wrap -mb-1">
-        <ng-container *ngFor="let link of links; let key = index">
-            <!-- Si el enlace no tiene URL -->
-            <ng-container *ngIf="!link.url">
-                <div class="px-2 py-1 mr-1 mb-1 sm:text-[16px] text-xs text-primary3/40 work-sans underline">
-                    <ng-container *ngIf="!isResponsive">
-                        <!-- Mostrar texto normal si no es responsive -->
-                        <span [innerHTML]="link.label"></span>
-                    </ng-container>
-                    <ng-container *ngIf="isResponsive">
-                        <!-- Mostrar flechas si es responsive -->
-                        <ng-container *ngIf="link.label === 'Anterior'">
-                            <span class="pi pi-angle-right text-xs h-fit rotate-180"></span>
-                        </ng-container>
-                        <ng-container *ngIf="link.label === 'Siguiente'">
-                            <span class="pi pi-angle-right text-xs h-fit"></span>
-                        </ng-container>
-                    </ng-container>
-                </div>
-            </ng-container>
-
-            <!-- Si el enlace tiene URL -->
-            <ng-container *ngIf="link.url">
-                <a [routerLink]="link.url" class="px-3 py-1 text-primary2 sm:text-[16px] text-xs" [ngClass]="{
-               'text-white bg-primary1 rounded border': link.active,
-               'hover:bg-secondary1 hover:rounded focus:border-secondary1 focus:rounded focus:border-2 focus:border-primary3': !link.active
-             }">
-                    <ng-container *ngIf="isResponsive">
-                        <!-- Mostrar flechas si es responsive -->
-                        <ng-container *ngIf="link.label === 'Anterior'">
-                            <span class="pi pi-angle-right text-xs h-fit rotate-180"></span>
-                        </ng-container>
-                        <ng-container *ngIf="link.label === 'Siguiente'">
-                            <span class="pi pi-angle-right text-xs h-fit"></span>
-                        </ng-container>
-                        <ng-container *ngIf="!['Anterior', 'Siguiente'].includes(link.label)">
-                            <!-- Mostrar números si no es 'Anterior' o 'Siguiente' -->
-                            <span [innerHTML]="link.label"></span>
-                        </ng-container>
-                    </ng-container>
-                    <ng-container *ngIf="!isResponsive">
-                        <!-- Mostrar el texto normal si no es responsive -->
-                        <span [innerHTML]="link.label"></span>
-                    </ng-container>
-                </a>
-            </ng-container>
-        </ng-container>
+<div *ngIf="data > 0" class="w-full">
+    <!-- Mostrar el rango de datos de la página actual -->
+    <div class="p-2 border-b border-gray-300">
+      <p>Mostrando {{ paginatedData.start }} a {{ paginatedData.end }} de {{ data }} elementos</p>
     </div>
-</div>
+  
+    <!-- Paginador -->
+    <div class="flex justify-center mt-4 space-x-2">
+      <!-- Botón Anterior -->
+      <button 
+        (click)="changePage(currentPage - 1)" 
+        [disabled]="currentPage === 1"
+        class="px-4 py-2 text-sm bg-gray-200 rounded hover:bg-gray-300 disabled:bg-gray-400 disabled:cursor-not-allowed">
+        
+        <ng-container *ngIf="isResponsive">
+          <!-- Mostrar flecha en pantallas pequeñas -->
+          <span class="pi pi-angle-left block sm:hidden"></span>
+          <!-- Mostrar 'Anterior' en pantallas grandes -->
+          <span class="hidden sm:block">Anterior</span>
+        </ng-container>
+      </button>
+  
+      <!-- Páginas (solo se muestra si no es responsive) -->
+      <ng-container *ngIf="!isResponsive">
+        <span 
+          *ngFor="let page of [].constructor(totalPages); let i = index" 
+          (click)="changePage(i + 1)"
+          [ngClass]="{ 'font-bold text-primary1': currentPage === i + 1 }"
+          class="px-2 py-1 cursor-pointer">
+          {{ i + 1 }}
+        </span>
+      </ng-container>
+  
+      <!-- Botón Siguiente -->
+      <button 
+        (click)="changePage(currentPage + 1)" 
+        [disabled]="currentPage === totalPages"
+        class="px-4 py-2 text-sm bg-gray-200 rounded hover:bg-gray-300 disabled:bg-gray-400 disabled:cursor-not-allowed">
+        
+        <ng-container *ngIf="isResponsive">
+          <!-- Mostrar flecha en pantallas pequeñas -->
+          <span class="pi pi-angle-right block sm:hidden"></span>
+          <!-- Mostrar 'Siguiente' en pantallas grandes -->
+          <span class="hidden sm:block">Siguiente</span>
+        </ng-container>
+      </button>
+    </div>
+  </div>
+  
