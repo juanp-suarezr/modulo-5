@@ -36,6 +36,14 @@ export class RouterService {
         this.breadcrumbSubject.next([
           { name: 'Tramitar solicitud', route: 'NA' },
         ]);
+      } else if (url.includes('validador_nit')) {
+        this.breadcrumbSubject.next([
+          { name: 'Tramitar solicitud', route: 'NA' },
+          {
+            name: 'validador nit',
+            route: 'validador_nit',
+          },
+        ]);
       } else if (url.includes('fijacioncapacidadtransportadora')) {
         this.breadcrumbSubject.next([
           { name: 'Tramitar solicitud', route: 'NA' },
@@ -46,13 +54,13 @@ export class RouterService {
         ]);
       } else if (url.includes('incrementocapacidadtransportadora')) {
         this.breadcrumbSubject.next([
-          {name: 'Tramitar solicitud', route: 'NA'},
+          { name: 'Tramitar solicitud', route: 'NA' },
           {
             name: 'Incremento de Capacidad Transportadora',
             route: 'incrementocapacidadtransportadora',
           },
         ]);
-      }else {
+      } else {
         this.breadcrumbSubject.next([
           { name: 'Ruta no reconocida', route: 'NA' },
         ]);
@@ -79,9 +87,7 @@ export class RouterService {
       //rol ROLE_SUPERTRANSPORTE
     } else if (this.user.roles[0].roleName == 'ROLE_SUPERTRANSPORTE') {
       if (url.includes('dashboard')) {
-        this.breadcrumbSubject.next([
-          { name: 'Solicitudes', route: 'NA' },
-        ]);
+        this.breadcrumbSubject.next([{ name: 'Solicitudes', route: 'NA' }]);
       } else if (url.includes('newurl')) {
         this.breadcrumbSubject.next([
           { name: 'Solicitudes', route: 'NA' },

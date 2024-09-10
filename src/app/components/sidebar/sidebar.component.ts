@@ -26,7 +26,7 @@ export class SidebarComponent {
       subItems: [
         {
           label: 'Fijación de Capacidad Transportadora',
-          route: '/fijacioncapacidadtransportadora',
+          route: '/validador_nit',
         },
         {
           label: 'Incremento de Capacidad Transportadora',

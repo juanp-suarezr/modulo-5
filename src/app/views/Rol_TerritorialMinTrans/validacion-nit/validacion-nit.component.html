@@ -1,0 +1,102 @@
+<div class="w-full px-6 sm:px-24 md:px-36 mt-12 mb-6">
+
+    <h3 class="text-primary1 !font-bold mt-4">Fijación de Capacidad Transportadora</h3>
+
+    <!-- form 1 -->
+    <form [formGroup]="formGroup1" class="px-4 md:pl-16 md:pe-16 mt-6 active1 mb-6" (ngSubmit)="validator()">
+        <div class="col-span-2">
+            <p class="font-bold">Digitar los siguientes campos*</p>
+            <p class="text-primary4 font-[500]">Los campos marcados con * son obligatorios</p>
+        </div>
+        <!-- content 1 -->
+        <div class="content1 md:grid sm:grid-cols-2 md:gap-x-36 md:flex items-start h-full">
+            <!-- input 1 nombre empresa* -->
+            <div class="w-full flex flex-col justify-center pt-6">
+                <p class="text-primary3 font-semibold">
+                    nombre de empresa que realiza la solicitud*
+                </p>
+                <!-- input -->
+                <div class="mt-2 relative w-full">
+                    <input
+                        class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent"
+                        type="text" formControlName="nombreEmpresa" required placeholder="Nombre empresa">
+                    <div class="w-full relative">
+                        <!-- Icono de error (rojo) -->
+                        <span
+                            *ngIf="formGroup1.get('nombreEmpresa')?.invalid && (formGroup1.get('nombreEmpresa')?.touched || submitted)"
+                            class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
+                            <span class="pi pi-exclamation-circle text-error text-[24px]"></span>
+                        </span>
+
+                        <!-- Icono de éxito (verde) -->
+                        <span
+                            *ngIf="formGroup1.get('nombreEmpresa')?.valid && (formGroup1.get('nombreEmpresa')?.touched || submitted)"
+                            class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
+                            <span class="pi pi-check-circle text-success text-[24px]"></span>
+                        </span>
+                    </div>
+                    <span *ngIf="submitted && formGroup1.get('nombreEmpresa')?.errors?.['required']" class="text-error">
+                        Nombre de empresa es obligatorio
+                    </span>
+                </div>
+
+            </div>
+
+            <!-- input 2 NIT* -->
+            <div class="w-full flex flex-col justify-center pt-6">
+                <p class="text-primary3 font-semibold">
+                    NIT de empresa que realiza la solicitud*
+                </p>
+                <!-- input -->
+                <div class="mt-2 relative w-full">
+                    <input
+                        class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent"
+                        type="text" formControlName="nit" required placeholder="Ingrese NIT">
+                    <div class="w-full relative">
+                        <!-- Icono de error (rojo) -->
+                        <span *ngIf="formGroup1.get('nit')?.invalid && (formGroup1.get('nit')?.touched || submitted)"
+                            class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
+                            <span class="pi pi-exclamation-circle text-error text-[24px]"></span>
+                        </span>
+
+                        <!-- Icono de éxito (verde) -->
+                        <span *ngIf="formGroup1.get('nit')?.valid && (formGroup1.get('nit')?.touched || submitted)"
+                            class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
+                            <span class="pi pi-check-circle text-success text-[24px]"></span>
+                        </span>
+                    </div>
+                    <span *ngIf="submitted && formGroup1.get('nit')?.errors?.['required']" class="text-error">
+                        NIT de empresa es obligatorio
+                    </span>
+                </div>
+                <!-- texto informativo -->
+                <div class="flex inline-flex md:gap-3 gap-2 h-full w-full mt-2">
+
+                    <span class="lg:w-[12%] sm:w-[12%] w-[10%] h-full flex justify-center lg:px-1 m-auto">
+                        <img class="w-full m-auto" src="assets/iconoInfo.svg">
+                    </span>
+                    <p class="text-primary1 work-sans text-[11px] mt-2 w-auto">
+                        El NIT es necesario para verificar si ya existe una capacidad transportadora asignada a la
+                        empresa. En caso de que exista, no será posible asignar una nueva capacidad relacionada con la
+                        empresa.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="mt-6 w-full flex justify-end">
+            <app-primary-button type="submit" [disabled]="isProcessing" class="">continuar</app-primary-button>
+        </div>
+
+    </form>
+
+
+    <!-- modal de confirmación -->
+    <app-alert [showModal]="showModal" title="Error en la fijación de la capacidad transportadora"
+        [showSubtitle]="false"
+        [message]="'la empresa ' +this.formGroup1.get('nombreEmpresa')?.value+ ', con NIT' +this.formGroup1.get('nit')?.value+ ', ya tiene una fijación de la capacidad transportadora asignada'"
+        cancelButtonText="Cerrar" [showCancelButton]="true" [showFirstButton]="false" TypeAlert="error" (close)="showModal = false" textColor="text-error"
+        (closeByButton2)="handleCloseByButton2()"></app-alert>
+
+</div>

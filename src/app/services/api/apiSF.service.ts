@@ -32,9 +32,9 @@ export class ApiSFService {
     return this.http.get(`${this.baseUrl}/api/formulario`);
   }
 
-  //clase vehiculo
-  getClaseVehiculo(): Observable<any> {
-    return this.http.get(`${this.baseUrl}/catalogos/ClaseVehiculo`);
+  //validator nit
+  getSolicitudByNIT(nit: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}/api/formulario/verificar-nit/${nit}`);
   }
 
 

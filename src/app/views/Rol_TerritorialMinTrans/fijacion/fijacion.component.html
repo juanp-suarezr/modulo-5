@@ -197,28 +197,28 @@
                     <div class="mt-2 relative w-full">
                         <input
                             class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent"
-                            type="number" formControlName="capital_social" required placeholder="Ingrese número">
+                            type="number" formControlName="capitalSocial" required placeholder="Ingrese número">
                         <div class="w-full relative">
                             <!-- Icono de error (rojo) -->
                             <span
-                                *ngIf="formGroup3.get('capital_social')?.invalid && (formGroup3.get('capital_social')?.touched || submitted)"
+                                *ngIf="formGroup3.get('capitalSocial')?.invalid && (formGroup3.get('capitalSocial')?.touched || submitted)"
                                 class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
                                 <span class="pi pi-exclamation-circle text-error text-[24px]"></span>
                             </span>
 
                             <!-- Icono de éxito (verde) -->
                             <span
-                                *ngIf="formGroup3.get('capital_social')?.valid && (formGroup3.get('capital_social')?.touched || submitted)"
+                                *ngIf="formGroup3.get('capitalSocial')?.valid && (formGroup3.get('capitalSocial')?.touched || submitted)"
                                 class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
                                 <span class="pi pi-check-circle text-success text-[24px]"></span>
                             </span>
                         </div>
-                        <span *ngIf="submitted && formGroup3.get('capital_social')?.errors?.['required']"
+                        <span *ngIf="submitted && formGroup3.get('capitalSocial')?.errors?.['required']"
                             class="text-error">
                             Capital social es obligatorio
                         </span>
                         <span
-                            *ngIf="formGroup3.get('patrimonio_liquido')?.hasError('negativeNumber') && (formGroup3.get('capital_social')?.touched || submitted)"
+                            *ngIf="formGroup3.get('capitalSocial')?.hasError('negativeNumber') && (formGroup3.get('capitalSocial')?.touched || submitted)"
                             class="text-error">
                             El numeró no puede ser negativo
                         </span>
@@ -246,28 +246,28 @@
                     <div class="mt-2 relative w-full">
                         <input
                             class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent"
-                            type="number" formControlName="patrimonio_liquido" required placeholder="Ingrese número">
+                            type="number" formControlName="patrimonioLiquido" required placeholder="Ingrese número">
                         <div class="w-full relative">
                             <!-- Icono de error (rojo) -->
                             <span
-                                *ngIf="formGroup3.get('patrimonio_liquido')?.invalid && (formGroup3.get('patrimonio_liquido')?.touched || submitted)"
+                                *ngIf="formGroup3.get('patrimonioLiquido')?.invalid && (formGroup3.get('patrimonioLiquido')?.touched || submitted)"
                                 class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
                                 <span class="pi pi-exclamation-circle text-error text-[24px]"></span>
                             </span>
 
                             <!-- Icono de éxito (verde) -->
                             <span
-                                *ngIf="formGroup3.get('patrimonio_liquido')?.valid && (formGroup3.get('patrimonio_liquido')?.touched || submitted)"
+                                *ngIf="formGroup3.get('patrimonioLiquido')?.valid && (formGroup3.get('patrimonioLiquido')?.touched || submitted)"
                                 class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
                                 <span class="pi pi-check-circle text-success text-[24px]"></span>
                             </span>
                         </div>
-                        <span *ngIf="submitted && formGroup3.get('patrimonio_liquido')?.errors?.['required']"
+                        <span *ngIf="submitted && formGroup3.get('patrimonioLiquido')?.errors?.['required']"
                             class="text-error">
                             Patrimonio Líquido es obligatorio
                         </span>
                         <span
-                            *ngIf="formGroup3.get('patrimonio_liquido')?.hasError('negativeNumber') && (formGroup3.get('patrimonio_liquido')?.touched || submitted)"
+                            *ngIf="formGroup3.get('patrimonioLiquido')?.hasError('negativeNumber') && (formGroup3.get('patrimonioLiquido')?.touched || submitted)"
                             class="text-error">
                             El numeró no puede ser negativo
                         </span>
@@ -413,27 +413,27 @@
                     <div class="mt-2 w-full relative">
                         <input
                             class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent"
-                            type="number" formControlName="contrato" required placeholder="Ingrese número">
+                            type="number" formControlName="numeroContrato" required placeholder="Ingrese número">
                         <div class="w-full relative">
                             <!-- Icono de error (rojo) -->
                             <span
-                                *ngIf="formGroup4.get('contrato')?.invalid && (formGroup4.get('contrato')?.touched || submitted)"
+                                *ngIf="formGroup4.get('numeroContrato')?.invalid && (formGroup4.get('numeroContrato')?.touched || submitted)"
                                 class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
                                 <span class="pi pi-exclamation-circle text-error text-[24px]"></span>
                             </span>
 
                             <!-- Icono de éxito (verde) -->
                             <span
-                                *ngIf="formGroup4.get('contrato')?.valid && (formGroup4.get('contrato')?.touched || submitted)"
+                                *ngIf="formGroup4.get('numeroContrato')?.valid && (formGroup4.get('numeroContrato')?.touched || submitted)"
                                 class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
                                 <span class="pi pi-check-circle text-success text-[24px]"></span>
                             </span>
                         </div>
-                        <span *ngIf="submitted && formGroup4.get('contrato')?.errors?.['required']" class="text-error">
+                        <span *ngIf="submitted && formGroup4.get('numeroContrato')?.errors?.['required']" class="text-error">
                             El numero de contrato es obligatorio
                         </span>
                         <span
-                            *ngIf="formGroup4.get('contrato')?.hasError('negativeNumber') && (formGroup4.get('contrato')?.touched || submitted)"
+                            *ngIf="formGroup4.get('numeroContrato')?.hasError('negativeNumber') && (formGroup4.get('numeroContrato')?.touched || submitted)"
                             class="text-error">
                             El numeró no puede ser negativo
                         </span>
@@ -492,9 +492,9 @@
                     <div class="mt-2 relative w-full">
                         <input
                             class="shadow-sm rounded-md w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent"
-                            type="date" formControlName="fecha_inicio" required placeholder="dd/mm/aaaa">
+                            type="date" formControlName="fechaInicio" required placeholder="dd/mm/aaaa">
 
-                        <span *ngIf="submitted && formGroup4.get('fecha_inicio')?.errors?.['required']"
+                        <span *ngIf="submitted && formGroup4.get('fechaInicio')?.errors?.['required']"
                             class="text-error">
                             Fecha de inicio es obligatorio
                         </span>
@@ -510,14 +510,14 @@
                     <div class="mt-2 relative w-full">
                         <input
                             class="shadow-sm rounded-md w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent"
-                            type="date" formControlName="fecha_terminacion" required placeholder="dd/mm/aaaa">
+                            type="date" formControlName="fechaFin" required placeholder="dd/mm/aaaa">
 
-                        <span *ngIf="submitted && formGroup4.get('fecha_terminacion')?.errors?.['required']"
+                        <span *ngIf="submitted && formGroup4.get('fechaFin')?.errors?.['required']"
                             class="text-error">
                             Fecha de terminación es obligatorio
                         </span>
                         <span
-                            *ngIf="formGroup4.hasError('dateRangeInvalid') && (formGroup4.get('fecha_terminacion')?.touched || submitted)"
+                            *ngIf="formGroup4.hasError('dateRangeInvalid') && (formGroup4.get('fechaFin')?.touched || submitted)"
                             class="text-error">
                             La fecha de terminación no puede ser anterior a la fecha de inicio.
                         </span>
@@ -534,31 +534,31 @@
                     <div class="w-full relative mt-2">
 
                         <div (click)="toggleDropdown(1)"
-                            [ngClass]="{'text-error !border border-error': formGroup4.get('duracion')?.invalid && (formGroup4.get('duracion')?.touched || formGroup4.get('duracion')?.dirty)}"
+                            [ngClass]="{'text-error !border border-error': formGroup4.get('duracionMeses')?.invalid && (formGroup4.get('duracionMeses')?.touched || formGroup4.get('duracionMeses')?.dirty)}"
                             class="cursor-pointer shadow-sm min-w-[160px] w-full p-[10px] h-[40px] bg-transparent border-2 border-secondary1 focus:outline-none focus:border-primary1 flex justify-between items-center">
                             <span *ngIf="!selects[1].value" class="font-[500] text-xs">Seleccione</span>
                             <span *ngIf="selects[1].value" class="text-normal">{{
-                                formGroup4.get('duracion')?.value.label
+                                formGroup4.get('duracionMeses')?.value.label
                                 }}</span>
 
                             <i class="pi pi-chevron-down text-primary2 text-xs"
-                                [ngClass]="{'!text-error': formGroup4.get('duracion')?.invalid && (formGroup4.get('duracion')?.touched || formGroup4.get('duracion')?.dirty)}"></i>
+                                [ngClass]="{'!text-error': formGroup4.get('duracionMeses')?.invalid && (formGroup4.get('duracionMeses')?.touched || formGroup4.get('duracionMeses')?.dirty)}"></i>
                         </div>
 
                         <ul *ngIf="selects[1].isDropdownOpen"
                             class="absolute z-20 bg-secondary4 border border-primary1 shadow-md rounded-bl-md rounded-br-md w-full mt-1 max-h-48 overflow-y-auto">
-                            <li *ngFor="let option of meses" (click)="selectOption(1, option, 'duracion')"
+                            <li *ngFor="let option of meses" (click)="selectOption(1, option, 'duracionMeses')"
                                 class="cursor-pointer px-4 py-2 hover:bg-primary1 hover:text-white">
                                 {{ option.label }}
                             </li>
                         </ul>
                         <!-- Mensajes de validación -->
                         <span class="text-sm text-success"
-                            *ngIf="formGroup4.get('duracion')?.valid && formGroup4.get('duracion')?.touched">
+                            *ngIf="formGroup4.get('duracionMeses')?.valid && formGroup4.get('duracionMeses')?.touched">
                             Selección válida
                         </span>
                         <span class="text-sm text-error"
-                            *ngIf="formGroup4.get('duracion')?.invalid && (formGroup4.get('duracion')?.touched || formGroup4.get('duracion')?.dirty)">
+                            *ngIf="formGroup4.get('duracionMeses')?.invalid && (formGroup4.get('duracionMeses')?.touched || formGroup4.get('duracionMeses')?.dirty)">
                             {{ selects[1].errorMessage }}
                         </span>
 
@@ -578,29 +578,29 @@
                     <div class="mt-2 relative w-full">
                         <input
                             class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent"
-                            type="number" formControlName="num_vehiculos" required
+                            type="number" formControlName="numeroVehiculos" required
                             placeholder="N° de Vehículos / Contrato">
                         <div class="w-full relative">
                             <!-- Icono de error (rojo) -->
                             <span
-                                *ngIf="formGroup4.get('num_vehiculos')?.invalid && (formGroup4.get('num_vehiculos')?.touched || submitted)"
+                                *ngIf="formGroup4.get('numeroVehiculos')?.invalid && (formGroup4.get('numeroVehiculos')?.touched || submitted)"
                                 class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
                                 <span class="pi pi-exclamation-circle text-error text-[24px]"></span>
                             </span>
 
                             <!-- Icono de éxito (verde) -->
                             <span
-                                *ngIf="formGroup4.get('num_vehiculos')?.valid && (formGroup4.get('num_vehiculos')?.touched || submitted)"
+                                *ngIf="formGroup4.get('numeroVehiculos')?.valid && (formGroup4.get('numeroVehiculos')?.touched || submitted)"
                                 class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
                                 <span class="pi pi-check-circle text-success text-[24px]"></span>
                             </span>
                         </div>
-                        <span *ngIf="submitted && formGroup4.get('num_vehiculos')?.errors?.['required']"
+                        <span *ngIf="submitted && formGroup4.get('numeroVehiculos')?.errors?.['required']"
                             class="text-error">
                             N° de Vehículos / Contrato es obligatorio
                         </span>
                         <span
-                            *ngIf="formGroup4.get('num_vehiculos')?.hasError('negativeNumber') && (formGroup4.get('num_vehiculos')?.touched || submitted)"
+                            *ngIf="formGroup4.get('numeroVehiculos')?.hasError('negativeNumber') && (formGroup4.get('numeroVehiculos')?.touched || submitted)"
                             class="text-error">
                             El numeró no puede ser negativo
                         </span>
@@ -617,31 +617,31 @@
                     <div class="w-full relative mt-2">
 
                         <div (click)="toggleDropdown(2)"
-                            [ngClass]="{'text-error !border border-error': formGroup4.get('ClaseVehiculo')?.invalid && (formGroup4.get('ClaseVehiculo')?.touched || formGroup4.get('ClaseVehiculo')?.dirty)}"
+                            [ngClass]="{'text-error !border border-error': formGroup4.get('idClaseVehiculo')?.invalid && (formGroup4.get('idClaseVehiculo')?.touched || formGroup4.get('idClaseVehiculo')?.dirty)}"
                             class="cursor-pointer shadow-sm min-w-[160px] w-full p-[10px] h-[40px] bg-transparent border-2 border-secondary1 focus:outline-none focus:border-primary1 flex justify-between items-center">
                             <span *ngIf="!selects[2].value" class="font-[500] text-xs">Seleccione</span>
                             <span *ngIf="selects[2].value" class="text-normal">{{
-                                formGroup4.get('ClaseVehiculo')?.value.label
+                                formGroup4.get('idClaseVehiculo')?.value.label
                                 }}</span>
 
                             <i class="pi pi-chevron-down text-primary2 text-xs"
-                                [ngClass]="{'!text-error': formGroup4.get('ClaseVehiculo')?.invalid && (formGroup4.get('ClaseVehiculo')?.touched || formGroup4.get('ClaseVehiculo')?.dirty)}"></i>
+                                [ngClass]="{'!text-error': formGroup4.get('idClaseVehiculo')?.invalid && (formGroup4.get('idClaseVehiculo')?.touched || formGroup4.get('idClaseVehiculo')?.dirty)}"></i>
                         </div>
 
                         <ul *ngIf="selects[2].isDropdownOpen"
                             class="absolute z-20 bg-secondary4 border border-primary1 shadow-md rounded-bl-md rounded-br-md w-full mt-1 max-h-48 overflow-y-auto">
-                            <li *ngFor="let option of ClaseVehiculo" (click)="selectOption(2, option, 'ClaseVehiculo')"
+                            <li *ngFor="let option of ClaseVehiculo" (click)="selectOption(2, option, 'idClaseVehiculo')"
                                 class="cursor-pointer px-4 py-2 hover:bg-primary1 hover:text-white">
                                 {{ option.label }}
                             </li>
                         </ul>
                         <!-- Mensajes de validación -->
                         <span class="text-sm text-success"
-                            *ngIf="formGroup4.get('ClaseVehiculo')?.valid && formGroup4.get('ClaseVehiculo')?.touched">
+                            *ngIf="formGroup4.get('idClaseVehiculo')?.valid && formGroup4.get('idClaseVehiculo')?.touched">
                             Selección válida
                         </span>
                         <span class="text-sm text-error"
-                            *ngIf="formGroup4.get('ClaseVehiculo')?.invalid && (formGroup4.get('ClaseVehiculo')?.touched || formGroup4.get('ClaseVehiculo')?.dirty)">
+                            *ngIf="formGroup4.get('idClaseVehiculo')?.invalid && (formGroup4.get('idClaseVehiculo')?.touched || formGroup4.get('idClaseVehiculo')?.dirty)">
                             {{ selects[2].errorMessage }}
                         </span>
 
@@ -658,28 +658,28 @@
                     <div class="mt-2 relative w-full">
                         <input
                             class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent"
-                            type="number" formControlName="val_contrato" required placeholder="$">
+                            type="number" formControlName="valorContrato" required placeholder="$">
                         <div class="w-full relative">
                             <!-- Icono de error (rojo) -->
                             <span
-                                *ngIf="formGroup4.get('val_contrato')?.invalid && (formGroup4.get('val_contrato')?.touched || submitted)"
+                                *ngIf="formGroup4.get('valorContrato')?.invalid && (formGroup4.get('valorContrato')?.touched || submitted)"
                                 class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
                                 <span class="pi pi-exclamation-circle text-error text-[24px]"></span>
                             </span>
 
                             <!-- Icono de éxito (verde) -->
                             <span
-                                *ngIf="formGroup4.get('val_contrato')?.valid && (formGroup4.get('val_contrato')?.touched || submitted)"
+                                *ngIf="formGroup4.get('valorContrato')?.valid && (formGroup4.get('valorContrato')?.touched || submitted)"
                                 class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
                                 <span class="pi pi-check-circle text-success text-[24px]"></span>
                             </span>
                         </div>
-                        <span *ngIf="submitted && formGroup4.get('val_contrato')?.errors?.['required']"
+                        <span *ngIf="submitted && formGroup4.get('valorContrato')?.errors?.['required']"
                             class="text-error">
                             Valor del Contrato es obligatorio
                         </span>
                         <span
-                            *ngIf="formGroup4.get('val_contrato')?.hasError('negativeNumber') && (formGroup4.get('val_contrato')?.touched || submitted)"
+                            *ngIf="formGroup4.get('valorContrato')?.hasError('negativeNumber') && (formGroup4.get('valorContrato')?.touched || submitted)"
                             class="text-error">
                             El numeró no puede ser negativo
                         </span>
@@ -698,31 +698,31 @@
                     <div class="w-full relative mt-2">
 
                         <div (click)="toggleDropdown(3)"
-                            [ngClass]="{'text-error !border border-error': formGroup4.get('forma_pago')?.invalid && (formGroup4.get('forma_pago')?.touched || formGroup4.get('forma_pago')?.dirty)}"
+                            [ngClass]="{'text-error !border border-error': formGroup4.get('idFormaPago')?.invalid && (formGroup4.get('idFormaPago')?.touched || formGroup4.get('idFormaPago')?.dirty)}"
                             class="cursor-pointer shadow-sm min-w-[160px] w-full p-[10px] h-[40px] bg-transparent border-2 border-secondary1 focus:outline-none focus:border-primary1 flex justify-between items-center">
                             <span *ngIf="!selects[3].value" class="font-[500] text-xs">Seleccione</span>
                             <span *ngIf="selects[3].value" class="text-normal">{{
-                                formGroup4.get('forma_pago')?.value.label
+                                formGroup4.get('idFormaPago')?.value.label
                                 }}</span>
 
                             <i class="pi pi-chevron-down text-primary2 text-xs"
-                                [ngClass]="{'!text-error': formGroup4.get('forma_pago')?.invalid && (formGroup4.get('forma_pago')?.touched || formGroup4.get('forma_pago')?.dirty)}"></i>
+                                [ngClass]="{'!text-error': formGroup4.get('idFormaPago')?.invalid && (formGroup4.get('idFormaPago')?.touched || formGroup4.get('idFormaPago')?.dirty)}"></i>
                         </div>
 
                         <ul *ngIf="selects[3].isDropdownOpen"
                             class="absolute z-20 bg-secondary4 border border-primary1 shadow-md rounded-bl-md rounded-br-md w-full mt-1 max-h-48 overflow-y-auto">
-                            <li *ngFor="let option of formaPago" (click)="selectOption(3, option, 'forma_pago')"
+                            <li *ngFor="let option of formaPago" (click)="selectOption(3, option, 'idFormaPago')"
                                 class="cursor-pointer px-4 py-2 hover:bg-primary1 hover:text-white">
                                 {{ option.label }}
                             </li>
                         </ul>
                         <!-- Mensajes de validación -->
                         <span class="text-sm text-success"
-                            *ngIf="formGroup4.get('forma_pago')?.valid && formGroup4.get('forma_pago')?.touched">
+                            *ngIf="formGroup4.get('idFormaPago')?.valid && formGroup4.get('idFormaPago')?.touched">
                             Selección válida
                         </span>
                         <span class="text-sm text-error"
-                            *ngIf="formGroup4.get('forma_pago')?.invalid && (formGroup4.get('forma_pago')?.touched || formGroup4.get('ClaseVehiculo')?.dirty)">
+                            *ngIf="formGroup4.get('idFormaPago')?.invalid && (formGroup4.get('idFormaPago')?.touched || formGroup4.get('idFormaPago')?.dirty)">
                             {{ selects[3].errorMessage }}
                         </span>
 
@@ -740,31 +740,31 @@
                     <div class="w-full relative mt-2">
 
                         <div (click)="toggleDropdown(4)"
-                            [ngClass]="{'text-error !border border-error': formGroup4.get('area_operacion')?.invalid && (formGroup4.get('area_operacion')?.touched || formGroup4.get('area_operacion')?.dirty)}"
+                            [ngClass]="{'text-error !border border-error': formGroup4.get('idAreaOperacion')?.invalid && (formGroup4.get('idAreaOperacion')?.touched || formGroup4.get('idAreaOperacion')?.dirty)}"
                             class="cursor-pointer shadow-sm min-w-[160px] w-full p-[10px] h-[40px] bg-transparent border-2 border-secondary1 focus:outline-none focus:border-primary1 flex justify-between items-center">
                             <span *ngIf="!selects[4].value" class="font-[500] text-xs">Seleccione</span>
                             <span *ngIf="selects[4].value" class="text-normal">{{
-                                formGroup4.get('area_operacion')?.value.label
+                                formGroup4.get('idAreaOperacion')?.value.label
                                 }}</span>
 
                             <i class="pi pi-chevron-down text-primary2 text-xs"
-                                [ngClass]="{'!text-error': formGroup4.get('area_operacion')?.invalid && (formGroup4.get('area_operacion')?.touched || formGroup4.get('area_operacion')?.dirty)}"></i>
+                                [ngClass]="{'!text-error': formGroup4.get('idAreaOperacion')?.invalid && (formGroup4.get('idAreaOperacion')?.touched || formGroup4.get('idAreaOperacion')?.dirty)}"></i>
                         </div>
 
                         <ul *ngIf="selects[4].isDropdownOpen"
                             class="absolute z-20 bg-secondary4 border border-primary1 shadow-md rounded-bl-md rounded-br-md w-full mt-1 max-h-48 overflow-y-auto">
-                            <li *ngFor="let option of departs" (click)="selectOption(4, option, 'area_operacion')"
+                            <li *ngFor="let option of departs" (click)="selectOption(4, option, 'idAreaOperacion')"
                                 class="cursor-pointer px-4 py-2 hover:bg-primary1 hover:text-white">
                                 {{ option.label }}
                             </li>
                         </ul>
                         <!-- Mensajes de validación -->
                         <span class="text-sm text-success"
-                            *ngIf="formGroup4.get('area_operacion')?.valid && formGroup4.get('area_operacion')?.touched">
+                            *ngIf="formGroup4.get('idAreaOperacion')?.valid && formGroup4.get('idAreaOperacion')?.touched">
                             Selección válida
                         </span>
                         <span class="text-sm text-error"
-                            *ngIf="formGroup4.get('area_operacion')?.invalid && (formGroup4.get('area_operacion')?.touched || formGroup4.get('area_operacion')?.dirty)">
+                            *ngIf="formGroup4.get('idAreaOperacion')?.invalid && (formGroup4.get('idAreaOperacion')?.touched || formGroup4.get('idAreaOperacion')?.dirty)">
                             {{ selects[4].errorMessage }}
                         </span>
 
@@ -780,31 +780,31 @@
                     <div class="w-full relative mt-2">
 
                         <div (click)="toggleDropdown(5)"
-                            [ngClass]="{'text-error !border border-error': formGroup4.get('disponibilidad')?.invalid && (formGroup4.get('disponibilidad')?.touched || formGroup4.get('disponibilidad')?.dirty)}"
+                            [ngClass]="{'text-error !border border-error': formGroup4.get('disponibilidadVehiculosEstimada')?.invalid && (formGroup4.get('disponibilidadVehiculosEstimada')?.touched || formGroup4.get('disponibilidadVehiculosEstimada')?.dirty)}"
                             class="cursor-pointer shadow-sm min-w-[160px] w-full p-[10px] h-[40px] bg-transparent border-2 border-secondary1 focus:outline-none focus:border-primary1 flex justify-between items-center">
                             <span *ngIf="!selects[5].value" class="font-[500] text-xs">Seleccione</span>
                             <span *ngIf="selects[5].value" class="text-normal">{{
-                                formGroup4.get('disponibilidad')?.value.label
+                                formGroup4.get('disponibilidadVehiculosEstimada')?.value.label
                                 }}</span>
 
                             <i class="pi pi-chevron-down text-primary2 text-xs"
-                                [ngClass]="{'!text-error': formGroup4.get('disponibilidad')?.invalid && (formGroup4.get('disponibilidad')?.touched || formGroup4.get('disponibilidad')?.dirty)}"></i>
+                                [ngClass]="{'!text-error': formGroup4.get('disponibilidadVehiculosEstimada')?.invalid && (formGroup4.get('disponibilidadVehiculosEstimada')?.touched || formGroup4.get('disponibilidadVehiculosEstimada')?.dirty)}"></i>
                         </div>
 
                         <ul *ngIf="selects[5].isDropdownOpen"
                             class="absolute z-20 bg-secondary4 border border-primary1 shadow-md rounded-bl-md rounded-br-md w-full mt-1 max-h-48 overflow-y-auto">
-                            <li *ngFor="let option of horas" (click)="selectOption(5, option, 'disponibilidad')"
+                            <li *ngFor="let option of horas" (click)="selectOption(5, option, 'disponibilidadVehiculosEstimada')"
                                 class="cursor-pointer px-4 py-2 hover:bg-primary1 hover:text-white">
                                 {{ option.label }}
                             </li>
                         </ul>
                         <!-- Mensajes de validación -->
                         <span class="text-sm text-success"
-                            *ngIf="formGroup4.get('disponibilidad')?.valid && formGroup4.get('disponibilidad')?.touched">
+                            *ngIf="formGroup4.get('disponibilidadVehiculosEstimada')?.valid && formGroup4.get('disponibilidadVehiculosEstimada')?.touched">
                             Selección válida
                         </span>
                         <span class="text-sm text-error"
-                            *ngIf="formGroup4.get('disponibilidad')?.invalid && (formGroup4.get('disponibilidad')?.touched || formGroup4.get('ClaseVehiculo')?.dirty)">
+                            *ngIf="formGroup4.get('disponibilidadVehiculosEstimada')?.invalid && (formGroup4.get('disponibilidadVehiculosEstimada')?.touched || formGroup4.get('disponibilidadVehiculosEstimada')?.dirty)">
                             {{ selects[5].errorMessage }}
                         </span>
 

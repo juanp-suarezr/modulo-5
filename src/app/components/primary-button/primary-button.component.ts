@@ -10,5 +10,5 @@ import { Component, Input } from '@angular/core';
 export class PrimaryButtonComponent {
 
   @Input() type: string = 'submit';
-
+  @Input() disabled: boolean = false;
 }

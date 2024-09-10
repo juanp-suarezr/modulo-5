@@ -12,6 +12,11 @@ export const routes: Routes = [
         canActivate: [AuthGuard],
       },
       {
+        path: 'validador_nit',
+        loadComponent: () => import('./views/Rol_TerritorialMinTrans/validacion-nit/validacion-nit.component'),
+        canActivate: [AuthGuard],
+      },
+      {
         path: 'fijacioncapacidadtransportadora',
         loadComponent: () => import('./views/Rol_TerritorialMinTrans/fijacion/fijacion.component'),
         canActivate: [AuthGuard],

@@ -59,7 +59,21 @@ export default class FijacionComponent {
     private errorService: ErrorService,
     private cdr: ChangeDetectorRef,
     private router: Router
-  ) {}
+  ) {
+    const navigation = this.router.getCurrentNavigation();
+    const state = navigation?.extras.state as {
+      nit: string;
+      nombreEmpresa: string;
+    };
+
+    if (state) {
+      const nit = state.nit;
+      const nombreEmpresa = state.nombreEmpresa;
+
+      console.log('NIT:', nit);
+      console.log('Nombre de Empresa:', nombreEmpresa);
+    }
+  }
   //objeto para manejar los active num del left menu y stepper.
   activeNum: string = '0'; //left menu
   activeStep: number = 1; //stteper
@@ -112,7 +126,7 @@ export default class FijacionComponent {
   selects = [
     //cantidad vehiculos
     {
-      name: 'vehiculos_requeridos',
+      name: 'cantidadVehiculos',
       required: true,
       placeholder: 'Lista desplegable de números',
       value: '', // Valor seleccionado
@@ -123,7 +137,7 @@ export default class FijacionComponent {
     },
     //select meses
     {
-      name: 'duracion',
+      name: 'duracionMeses',
       required: true,
       placeholder: 'Seleccione',
       value: '', // Valor seleccionado
@@ -133,7 +147,7 @@ export default class FijacionComponent {
     },
     //select clases vehiculos
     {
-      name: 'ClaseVehiculo',
+      name: 'idClaseVehiculo',
       required: true,
       placeholder: 'Seleccione',
       value: '', // Valor seleccionado
@@ -143,7 +157,7 @@ export default class FijacionComponent {
     },
     //select frecuencia pago
     {
-      name: 'forma_pago',
+      name: 'idFormaPago',
       required: true,
       placeholder: 'Seleccione',
       value: '', // Valor seleccionado
@@ -153,7 +167,7 @@ export default class FijacionComponent {
     },
     //select depart
     {
-      name: 'area_operacion',
+      name: 'idAreaOperacion',
       required: true,
       value: '', // Valor seleccionado
       good: 'Selección correcta',
@@ -162,7 +176,7 @@ export default class FijacionComponent {
     },
     //select tienpo estimado
     {
-      name: 'disponibilidad',
+      name: 'disponibilidadVehiculosEstimada',
       required: true,
       placeholder: 'Seleccione',
       value: '', // Valor seleccionado
@@ -243,25 +257,28 @@ export default class FijacionComponent {
     });
 
     this.formGroup3 = this.fb.group({
-      capital_social: ['', [Validators.required, NoNegativeGlobal]],
-      patrimonio_liquido: ['', [Validators.required, NoNegativeGlobal]],
-      vehiculos_requeridos: ['', Validators.required],
+      capitalSocial: ['', [Validators.required, NoNegativeGlobal]],
+      patrimonioLiquido: ['', [Validators.required, NoNegativeGlobal]],
+      cantidadVehiculos: ['', Validators.required],
     });
 
     this.formGroup4 = this.fb.group(
       {
-        cantidad_contratos: [{ value: '', disabled: false }, Validators.required],
-        contrato: ['', Validators.required],
+        cantidad_contratos: [
+          { value: '', disabled: false },
+          Validators.required,
+        ],
+        numeroContrato: ['', Validators.required],
         contratante: ['', Validators.required],
-        fecha_inicio: ['', Validators.required],
-        fecha_terminacion: ['', Validators.required],
-        duracion: ['', Validators.required],
-        num_vehiculos: ['', Validators.required],
-        ClaseVehiculo: ['', Validators.required],
-        val_contrato: ['', Validators.required],
-        forma_pago: ['', Validators.required],
-        area_operacion: ['', Validators.required],
-        disponibilidad: ['', Validators.required],
+        fechaInicio: ['', Validators.required],
+        fechaFin: ['', Validators.required],
+        duracionMeses: ['', Validators.required],
+        numeroVehiculos: ['', Validators.required],
+        idClaseVehiculo: ['', Validators.required],
+        valorContrato: ['', Validators.required],
+        idFormaPago: ['', Validators.required],
+        idAreaOperacion: ['', Validators.required],
+        disponibilidadVehiculosEstimada: ['', Validators.required],
       },
       { validators: [dateRangeValidator, NoNegativeGlobal] }
     );
@@ -344,7 +361,7 @@ export default class FijacionComponent {
         }
         break;
       case 4:
-      console.log("entro");
+        console.log('entro');
 
         if (this.formGroup3.valid) {
           this.changeActiveNum('1');
@@ -525,7 +542,6 @@ export default class FijacionComponent {
 
       // Forzamos la detección de cambios
       this.cdr.detectChanges();
-
     } else {
       console.log('Formulario de contrato no válido');
     }
@@ -533,7 +549,10 @@ export default class FijacionComponent {
 
   // Método para enviar todos los contratos al servidor
   sendAllContracts() {
-    if (this.totalContracts == 1 || this.totalContracts == this.currentContractIteration) {
+    if (
+      this.totalContracts == 1 ||
+      this.totalContracts == this.currentContractIteration
+    ) {
       this.contractDataArray.push(this.formGroup4.value);
     }
 
