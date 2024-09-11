@@ -37,6 +37,11 @@ export class ApiSFService {
     return this.http.get(`${this.baseUrl}/api/formulario/verificar-nit/${nit}`);
   }
 
+  // POST fijar capacidad transportadora
+  createSolicitud(data: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}/api/formulario-contrato`, data);
+  }
+  
 
 
 

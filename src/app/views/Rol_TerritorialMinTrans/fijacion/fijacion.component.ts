@@ -23,6 +23,7 @@ import { Router } from '@angular/router';
 import { dateRangeValidator } from '../../../validator/date.validator';
 import { HORAS } from '../../../shared/data/horas';
 import { NoNegativeGlobal } from '../../../validator/noNegative.validator';
+import { ApiSFService } from '../../../services/api/apiSF.service';
 
 @Component({
   selector: 'app-fijacion',
@@ -51,10 +52,15 @@ export default class FijacionComponent {
 
   submitted: boolean = false;
 
+  //Capturar objetos del navigation
+  nit: string = '';
+  nombreEmpresa: string = '';
+
   constructor(
     private stateService: ActiveNumService,
     private stepperService: ActiveNumStepperService,
     private apiService: ApiService,
+    private apiSFService: ApiSFService,
     private fb: FormBuilder,
     private errorService: ErrorService,
     private cdr: ChangeDetectorRef,
@@ -67,11 +73,15 @@ export default class FijacionComponent {
     };
 
     if (state) {
-      const nit = state.nit;
-      const nombreEmpresa = state.nombreEmpresa;
+      this.nit = state.nit;
+      this.nombreEmpresa = state.nombreEmpresa;
 
-      console.log('NIT:', nit);
-      console.log('Nombre de Empresa:', nombreEmpresa);
+      localStorage.setItem('nit', this.nit);
+      localStorage.setItem('nombreEmpresa', this.nombreEmpresa);
+    } else {
+      // Recuperar de localStorage si está disponible
+      this.nit = localStorage.getItem('nit') || '';
+      this.nombreEmpresa = localStorage.getItem('nombreEmpresa') || '';
     }
   }
   //objeto para manejar los active num del left menu y stepper.
@@ -216,11 +226,6 @@ export default class FijacionComponent {
 
     //datos selects
     this.meses = MESES;
-    this.formaPago = [
-      { value: 'Diario', label: 'Diario' },
-      { value: 'Mensual', label: 'Mensual' },
-      { value: 'Anual', label: 'Anual' },
-    ];
     this.horas = HORAS;
 
     this.initializeForm();
@@ -320,6 +325,18 @@ export default class FijacionComponent {
         console.error('Error fetching user data', error);
       }
     );
+
+    this.apiService.getFormasPago().subscribe(
+      (response) => {
+        this.formaPago = response.detalle.map((formas: any) => ({
+          value: formas.id,
+          label: formas.descripcion,
+        }));
+      },
+      (error) => {
+        console.error('Error fetching user data', error);
+      }
+    );
   }
 
   // Generar opciones de numeros para los selects
@@ -351,6 +368,7 @@ export default class FijacionComponent {
       case 1:
         break;
       case 2:
+        console.log(`el nit es ${this.nit}`);
         if (this.validateFormGroup(this.formGroup1, this.errorStates)) {
           this.stepperService.setActiveNum(newValue);
         }
@@ -396,31 +414,65 @@ export default class FijacionComponent {
         }
       }
     }
+
     this.errorService.updateErrorStates(errorStates);
     return isValid;
   }
 
+  convertFilesToBase64(files: File[]): Promise<string[]> {
+    return new Promise((resolve, reject) => {
+      const base64Array: string[] = [];
+
+      files.forEach((file, index) => {
+        const reader = new FileReader();
+
+        reader.onload = (event: any) => {
+          base64Array.push(event.target.result);
+
+          // Si ya hemos procesado todos los archivos, resolvemos la promesa
+          if (base64Array.length === files.length) {
+            resolve(base64Array);
+          }
+        };
+
+        reader.onerror = () => {
+          reject(
+            new Error(`Error al convertir el archivo ${file.name} a base64.`)
+          );
+        };
+
+        reader.readAsDataURL(file);
+      });
+    });
+  }
+
   //metodo para guardar el archivo seleccionado
   onFileSelected(file: File[], formControlName: number) {
-    const formControlMap: { [key: number]: FormGroup } = {
-      1: this.formGroup1,
-      2: this.formGroup1,
-      3: this.formGroup1,
-      4: this.formGroup1,
-      5: this.formGroup1,
-      6: this.formGroup1,
-      7: this.formGroup2,
-      8: this.formGroup2,
-      9: this.formGroup2,
-      10: this.formGroup2,
-      11: this.formGroup2,
-      // Y así sucesivamente
-    };
+    this.convertFilesToBase64(file)
+      .then((base64Array) => {
+        const formControlMap: { [key: number]: FormGroup } = {
+          1: this.formGroup1,
+          2: this.formGroup1,
+          3: this.formGroup1,
+          4: this.formGroup1,
+          5: this.formGroup1,
+          6: this.formGroup1,
+          7: this.formGroup2,
+          8: this.formGroup2,
+          9: this.formGroup2,
+          10: this.formGroup2,
+          11: this.formGroup2,
+        };
 
-    const formGroup = formControlMap[formControlName];
-    if (formGroup) {
-      formGroup.patchValue({ [formControlName]: file });
-    }
+        const formGroup = formControlMap[formControlName];
+        if (formGroup) {
+          // Parchamos el form con los archivos en base64
+          formGroup.patchValue({ [formControlName]: base64Array });
+        }
+      })
+      .catch((error) => {
+        console.error('Error al convertir los archivos:', error);
+      });
   }
 
   // Método para enviar los formularios
@@ -556,22 +608,97 @@ export default class FijacionComponent {
       this.contractDataArray.push(this.formGroup4.value);
     }
 
+    // Inicializar contratos como un array vacío
+    let contratos: Array<{
+      consecutivo: number;
+      numeroContrato: any;
+      contratante: any;
+      fechaInicio: any;
+      fechaFin: any;
+      duracionMeses: any;
+      numeroVehiculos: any;
+      idClaseVehiculo: any;
+      valorContrato: any;
+      idFormaPago: any;
+      idAreaOperacion: any;
+      disponibilidadVehiculosEstimada: any;
+      estado: boolean;
+    }> = [];
+
+    // Inicializar contratos como un array vacío
+    let documentos: Array<{
+      nit: string;
+      documento: string;
+    }> = [];
+
+    this.contractDataArray.forEach((item, index) => {
+      contratos.push({
+        consecutivo: index,
+        numeroContrato: item.numeroContrato,
+        contratante: item.contratante,
+        fechaInicio: item.fechaInicio,
+        fechaFin: item.fechaFin,
+        duracionMeses: item.duracionMeses.value,
+        numeroVehiculos: item.numeroVehiculos,
+        idClaseVehiculo: item.idClaseVehiculo.value,
+        valorContrato: item.valorContrato,
+        idFormaPago: item.idFormaPago.value,
+        idAreaOperacion: item.idAreaOperacion.value,
+        disponibilidadVehiculosEstimada: item.disponibilidadVehiculosEstimada.value,
+        estado: true,
+      });
+    });
+
+    // Rellenar el array documentos
+    this.formGroup1.value[2].forEach((item: any) => {
+      documentos.push({
+        nit: this.nit,
+        documento: item,
+      });
+    });
+
     const allFormsData = {
-      form1: this.formGroup1.value,
-      form2: this.formGroup2.value,
-      form3: this.formGroup3.value,
-      form4: this.contractDataArray,
+      fechaSolicitud: new Date(),
+      nombreEmpresa: this.nombreEmpresa,
+      nit: this.nit,
+      territorial: 'Bogota',
+      idEstadoSolicitud: 123,
+      idCategoriaSolicitud: 149,
+      excelModeloTransporte: '',
+      radicadoEntrada: '',
+      certificadoCumplimiento: '',
+      cumplimiento: '',
+      estado: true,
+      solicitudFijacionCapacidad: this.formGroup1.value[1][0],
+      planRodamiento: this.formGroup1.value[3][0],
+      estructuraCostosBasicos: this.formGroup1.value[4][0],
+      certificadoExistencia: this.formGroup1.value[5][0],
+      registroUnicoTributario: this.formGroup1.value[6][0],
+      resolucionHabilitacion: this.formGroup2.value[7][0],
+      cedulaRepresentante: this.formGroup2.value[8][0],
+      estadosFinancieros: this.formGroup2.value[9][0],
+      cedulaContador: this.formGroup2.value[10][0],
+      tarjetaProfesionalContador: this.formGroup2.value[11][0],
+      capitalSocial: this.formGroup3.get('capitalSocial')?.value,
+      patrimonioLiquido: this.formGroup3.get('patrimonioLiquido')?.value,
+      cantidadVehiculos: this.formGroup3.get('cantidadVehiculos')?.value.value,
+      contratos: contratos,
+      documentos: documentos,
     };
 
     console.log(allFormsData);
-    this.showFinalModal = true;
+    this.apiSFService.createSolicitud(allFormsData).subscribe(
+      (response) => {
+        // Aquí puedes manejar la respuesta, por ejemplo:
+        this.showFinalModal = true;
+        console.log('Datos enviados exitosamente:', response);
+      },
+      (error) => {
+        // Manejo del error
+        console.error('Error al enviar los datos:', error);
+      }
+    );
+    
 
-    // this.apiService.sendContractForms(allFormsData).subscribe(
-    //   (response) => {
-    //     console.log('Formularios enviados exitosamente');
-    //     // Realizar acciones adicionales si es necesario
-    //   },
-    //   (error) => console.error('Error enviando los formularios', error)
-    // );
   }
 }

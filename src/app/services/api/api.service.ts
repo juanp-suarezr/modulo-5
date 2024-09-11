@@ -125,6 +125,11 @@ export class ApiService {
     return this.http.get(`${this.baseUrl}/catalogos/categoriasolicitud`);
   }
 
+  //clase vehiculo
+  getFormasPago(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/catalogos/Forma%20de%20Pago`);
+  }
+
 
 
 
