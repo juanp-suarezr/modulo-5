@@ -422,29 +422,32 @@ export default class FijacionComponent {
   convertFilesToBase64(files: File[]): Promise<string[]> {
     return new Promise((resolve, reject) => {
       const base64Array: string[] = [];
-
+  
       files.forEach((file, index) => {
         const reader = new FileReader();
-
+  
         reader.onload = (event: any) => {
-          base64Array.push(event.target.result);
-
+          // Extraer solo la parte del código base64 sin el prefijo 'data:application/pdf;base64,'
+          const base64String = event.target.result.split(',')[1];
+          base64Array.push(base64String);
+  
           // Si ya hemos procesado todos los archivos, resolvemos la promesa
           if (base64Array.length === files.length) {
             resolve(base64Array);
           }
         };
-
+  
         reader.onerror = () => {
           reject(
             new Error(`Error al convertir el archivo ${file.name} a base64.`)
           );
         };
-
+  
         reader.readAsDataURL(file);
       });
     });
   }
+  
 
   //metodo para guardar el archivo seleccionado
   onFileSelected(file: File[], formControlName: number) {
