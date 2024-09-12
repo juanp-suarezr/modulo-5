@@ -43,18 +43,6 @@ import { ApiSFService } from '../../../services/api/apiSF.service';
   styleUrl: './fijacion.component.css',
 })
 export default class FijacionComponent {
-  parseInt: any;
-  departs: any = [];
-  ClaseVehiculo: any = [];
-  meses: { value: string; label: string }[] = [];
-  formaPago: any = [];
-  horas: any = [];
-
-  submitted: boolean = false;
-
-  //Capturar objetos del navigation
-  nit: string = '';
-  nombreEmpresa: string = '';
 
   constructor(
     private stateService: ActiveNumService,
@@ -84,6 +72,19 @@ export default class FijacionComponent {
       this.nombreEmpresa = localStorage.getItem('nombreEmpresa') || '';
     }
   }
+
+  parseInt: any;
+  departs: any = [];
+  ClaseVehiculo: any = [];
+  formaPago: any = [];
+  horas: any = [];
+
+  submitted: boolean = false;
+
+  //Capturar objetos del navigation
+  nit: string = '';
+  nombreEmpresa: string = '';
+
   //objeto para manejar los active num del left menu y stepper.
   activeNum: string = '0'; //left menu
   activeStep: number = 1; //stteper
@@ -99,6 +100,7 @@ export default class FijacionComponent {
   totalContracts: number = 0; // Número total de contratos
 
   showModal: boolean = false; // Control para mostrar el modal intermedio
+  ShowLoadingModal: boolean = false; // Control para mostrar el modal loading
   showFinalModal: boolean = false; // Control para mostrar el modal final
 
   //objeto para manejo de errores
@@ -225,7 +227,6 @@ export default class FijacionComponent {
     );
 
     //datos selects
-    this.meses = MESES;
     this.horas = HORAS;
 
     this.initializeForm();
@@ -239,6 +240,15 @@ export default class FijacionComponent {
 
   ngAfterViewInit() {
     this.loadOptions();
+
+    // Escuchar cambios en los campos 'fechaInicio' y 'fechaFin'
+    this.formGroup4.get('fechaInicio')?.valueChanges.subscribe(() => {
+      this.updateDuration();
+    });
+
+    this.formGroup4.get('fechaFin')?.valueChanges.subscribe(() => {
+      this.updateDuration();
+    });
   }
 
   initializeForm() {
@@ -368,9 +378,14 @@ export default class FijacionComponent {
       case 1:
         break;
       case 2:
-        console.log(`el nit es ${this.nit}`);
+        console.log(this.formGroup1.value);
         if (this.validateFormGroup(this.formGroup1, this.errorStates)) {
           this.stepperService.setActiveNum(newValue);
+          this.formGroup4.get('cantidad_contratos')?.disable();
+          this.formGroup4.get('duracionMeses')?.disable();
+          this.formGroup4
+            .get('cantidad_contratos')
+            ?.setValue(this.formGroup1.value[2].length);
         }
         break;
       case 3:
@@ -422,32 +437,31 @@ export default class FijacionComponent {
   convertFilesToBase64(files: File[]): Promise<string[]> {
     return new Promise((resolve, reject) => {
       const base64Array: string[] = [];
-  
+
       files.forEach((file, index) => {
         const reader = new FileReader();
-  
+
         reader.onload = (event: any) => {
           // Extraer solo la parte del código base64 sin el prefijo 'data:application/pdf;base64,'
           const base64String = event.target.result.split(',')[1];
           base64Array.push(base64String);
-  
+
           // Si ya hemos procesado todos los archivos, resolvemos la promesa
           if (base64Array.length === files.length) {
             resolve(base64Array);
           }
         };
-  
+
         reader.onerror = () => {
           reject(
             new Error(`Error al convertir el archivo ${file.name} a base64.`)
           );
         };
-  
+
         reader.readAsDataURL(file);
       });
     });
   }
-  
 
   //metodo para guardar el archivo seleccionado
   onFileSelected(file: File[], formControlName: number) {
@@ -478,15 +492,41 @@ export default class FijacionComponent {
       });
   }
 
+  //calcular duracion en meses
+  updateDuration(): void {
+    const fechaInicio = this.formGroup4.get('fechaInicio')?.value;
+    const fechaFin = this.formGroup4.get('fechaFin')?.value;
+
+    if (fechaInicio && fechaFin) {
+      const duracionMeses = this.calculateMonthsDifference(
+        new Date(fechaInicio),
+        new Date(fechaFin)
+      );
+      this.formGroup4.get('duracionMeses')?.setValue(duracionMeses);
+    }
+  }
+
+  //calcular duracion en meses
+  calculateMonthsDifference(startDate: Date, endDate: Date): number {
+    if (startDate && endDate) {
+      const start = new Date(startDate);
+      const end = new Date(endDate);
+
+      const yearDiff = end.getFullYear() - start.getFullYear();
+      const monthDiff = end.getMonth() - start.getMonth();
+
+      // Calcular la diferencia total en meses
+      return yearDiff * 12 + monthDiff;
+    }
+    return 0;
+  }
+
   // Método para enviar los formularios
   onSubmitAllForms() {
     // Obtener el valor de input[3] para determinar la cantidad de contratos
 
     if (this.currentContractIteration == 0) {
-      this.totalContracts = parseInt(
-        this.formGroup4.get('cantidad_contratos')?.value,
-        10
-      ); // Valor de cantidad de contratos
+      this.totalContracts = this.formGroup1.value[2].length; // Valor de cantidad de contratos
     }
 
     if (
@@ -564,11 +604,11 @@ export default class FijacionComponent {
   processContractIteration() {
     if (this.formGroup4.valid) {
       // Guardar los datos del formulario en el array
-
+      this.formGroup4.get('duracionMeses')?.enable();
       this.contractDataArray.push(this.formGroup4.value);
       console.log(this.contractDataArray);
       let cantidad_din_contratos = (
-        parseInt(this.formGroup4.get('cantidad_contratos')?.value, 10) - 1
+        this.formGroup1.value[2].length - 1
       ).toString();
 
       this.formGroup4
@@ -588,10 +628,10 @@ export default class FijacionComponent {
 
           // Si el índice NO es 0, reseteamos el control
           this.submitted = false;
-          this.formGroup4.get('cantidad_contratos')?.disable();
           this.formGroup4.controls[key].reset();
           this.formGroup4.controls[key].markAsPristine();
           this.formGroup4.controls[key].markAsUntouched();
+          this.formGroup4.get('duracionMeses')?.disable();
         }
       });
 
@@ -604,10 +644,12 @@ export default class FijacionComponent {
 
   // Método para enviar todos los contratos al servidor
   sendAllContracts() {
+    this.ShowLoadingModal = true;
     if (
       this.totalContracts == 1 ||
       this.totalContracts == this.currentContractIteration
     ) {
+      this.formGroup4.get('duracionMeses')?.enable();
       this.contractDataArray.push(this.formGroup4.value);
     }
 
@@ -641,13 +683,14 @@ export default class FijacionComponent {
         contratante: item.contratante,
         fechaInicio: item.fechaInicio,
         fechaFin: item.fechaFin,
-        duracionMeses: item.duracionMeses.value,
+        duracionMeses: item.duracionMeses,
         numeroVehiculos: item.numeroVehiculos,
         idClaseVehiculo: item.idClaseVehiculo.value,
         valorContrato: item.valorContrato,
         idFormaPago: item.idFormaPago.value,
         idAreaOperacion: item.idAreaOperacion.value,
-        disponibilidadVehiculosEstimada: item.disponibilidadVehiculosEstimada.value,
+        disponibilidadVehiculosEstimada:
+          item.disponibilidadVehiculosEstimada.value,
         estado: true,
       });
     });
@@ -693,15 +736,15 @@ export default class FijacionComponent {
     this.apiSFService.createSolicitud(allFormsData).subscribe(
       (response) => {
         // Aquí puedes manejar la respuesta, por ejemplo:
+        this.ShowLoadingModal = false;
         this.showFinalModal = true;
         console.log('Datos enviados exitosamente:', response);
       },
       (error) => {
+        this.ShowLoadingModal = false;
         // Manejo del error
         console.error('Error al enviar los datos:', error);
       }
     );
-    
-
   }
 }

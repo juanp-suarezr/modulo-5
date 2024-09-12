@@ -1,5 +1,3 @@
-
-
 <div class="sm:grid sm:grid-cols-10 gap-4 h-full mb-6">
 
     <div class="md:col-span-2 sm:col-span-3 w-auto sm:mt-16 mt-12 mb-12">
@@ -25,7 +23,8 @@
                 <p class="text-primary4 font-[500]">Los campos marcados con * son obligatorios</p>
             </div>
             <!-- content 1 -->
-            <div class="content1 lg:grid lg:grid-cols-2 md:gap-x-24 lg:gap-x-36 md:flex md:flex-wrap items-center h-full">
+            <div
+                class="content1 lg:grid lg:grid-cols-2 md:gap-x-24 lg:gap-x-36 md:flex md:flex-wrap items-center h-full">
                 <!-- cargue 1 solicitud fijacion -->
                 <div class="w-full flex flex-col justify-center items-start pt-6 my-auto mb-2 h-full">
                     <p class="text-primary3 font-semibold" [ngClass]="{'!text-error !font-normal': errorStates[1]}">
@@ -48,7 +47,8 @@
             </div>
 
             <!-- content 2 -->
-            <div class="content2 lg:grid lg:grid-cols-2 md:gap-x-24 lg:gap-x-36 md:flex md:flex-wrap items-center h-full pt-6">
+            <div
+                class="content2 lg:grid lg:grid-cols-2 md:gap-x-24 lg:gap-x-36 md:flex md:flex-wrap items-center h-full pt-6">
                 <!-- cargue 3 Plan de Rodamiento -->
                 <div class="w-full flex flex-col justify-center items-start pt-6 my-auto mb-2 h-full">
                     <p class="text-primary3 font-semibold" [ngClass]="{'!text-error !font-normal': errorStates[3]}">
@@ -57,7 +57,8 @@
                     <!-- texto informativo -->
                     <div class="flex inline-flex gap-2 h-full w-full">
 
-                        <span class="lg:w-[11%] md:w-[8%] sm:w-[8%] w-[6%] h-full flex flex-initial justify-center md:px-2 m-auto">
+                        <span
+                            class="lg:w-[11%] md:w-[8%] sm:w-[8%] w-[6%] h-full flex flex-initial justify-center md:px-2 m-auto">
                             <img class="w-full m-auto flex" src="assets/iconoInfo.svg">
                         </span>
                         <p class="text-primary1 work-sans text-[11px] m-auto w-full flex-1">
@@ -84,7 +85,8 @@
             </div>
 
             <!-- content 3 -->
-            <div class="content1 lg:grid lg:grid-cols-2 md:gap-x-24 lg:gap-x-36 md:flex md:flex-wrap items-center h-full pt-6">
+            <div
+                class="content1 lg:grid lg:grid-cols-2 md:gap-x-24 lg:gap-x-36 md:flex md:flex-wrap items-center h-full pt-6">
                 <!-- cargue 5 certificado de existencia -->
                 <div class="w-full flex flex-col justify-center items-start pt-6 my-auto mb-2 h-full">
                     <p class="text-primary3 font-semibold" [ngClass]="{'!text-error !font-normal': errorStates[5]}">
@@ -118,7 +120,8 @@
                 <p class="text-primary4 font-[500]">Los campos marcados con * son obligatorios</p>
             </div>
             <!-- content 1 -->
-            <div class="content1 lg:grid lg:grid-cols-2 md:gap-x-24 lg:gap-x-36 md:flex md:flex-wrap items-center h-full">
+            <div
+                class="content1 lg:grid lg:grid-cols-2 md:gap-x-24 lg:gap-x-36 md:flex md:flex-wrap items-center h-full">
                 <!-- cargue 7 Resolución de habilitación* -->
                 <div class="w-full flex flex-col justify-center items-start pt-6 my-auto mb-2 h-full">
                     <p class="text-primary3 font-semibold" [ngClass]="{'!text-error !font-normal': errorStates[7]}">
@@ -139,7 +142,8 @@
             </div>
 
             <!-- content 2 -->
-            <div class="content2 lg:grid lg:grid-cols-2 md:gap-x-24 lg:gap-x-36 md:flex md:flex-wrap items-center h-full pt-6">
+            <div
+                class="content2 lg:grid lg:grid-cols-2 md:gap-x-24 lg:gap-x-36 md:flex md:flex-wrap items-center h-full pt-6">
                 <!-- cargue 9 Estados financieros de la empresa* -->
                 <div class="w-full flex flex-col justify-center items-start pt-6 my-auto mb-2 h-full">
                     <p class="text-primary3 font-semibold" [ngClass]="{'!text-error !font-normal': errorStates[9]}">
@@ -312,7 +316,8 @@
 
                         <ul *ngIf="selects[0].isDropdownOpen"
                             class="absolute z-20 bg-secondary4 border border-primary1 shadow-md rounded-bl-md rounded-br-md w-full mt-1 max-h-48 overflow-y-auto">
-                            <li *ngFor="let option of generateOptions(15)" (click)="selectOption(0, option, 'cantidadVehiculos')"
+                            <li *ngFor="let option of generateOptions(15)"
+                                (click)="selectOption(0, option, 'cantidadVehiculos')"
                                 class="cursor-pointer px-4 py-2 hover:bg-primary1 hover:text-white">
                                 {{ option.label }}
                             </li>
@@ -375,7 +380,7 @@
                     <div class="mt-2 relative w-full">
                         <input
                             class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent disabled:bg-secondary3 disabled:border-secondary2 disabled:text-secondary2"
-                            type="number" formControlName="cantidad_contratos" required placeholder="Ingrese número">
+                            type="number" formControlName="cantidad_contratos" placeholder="Ingrese número">
                         <div class="w-full relative">
                             <!-- Icono de error (rojo) -->
                             <span
@@ -429,7 +434,8 @@
                                 <span class="pi pi-check-circle text-success text-[24px]"></span>
                             </span>
                         </div>
-                        <span *ngIf="submitted && formGroup4.get('numeroContrato')?.errors?.['required']" class="text-error">
+                        <span *ngIf="submitted && formGroup4.get('numeroContrato')?.errors?.['required']"
+                            class="text-error">
                             El numero de contrato es obligatorio
                         </span>
                         <span
@@ -512,8 +518,7 @@
                             class="shadow-sm rounded-md w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent"
                             type="date" formControlName="fechaFin" required placeholder="dd/mm/aaaa">
 
-                        <span *ngIf="submitted && formGroup4.get('fechaFin')?.errors?.['required']"
-                            class="text-error">
+                        <span *ngIf="submitted && formGroup4.get('fechaFin')?.errors?.['required']" class="text-error">
                             Fecha de terminación es obligatorio
                         </span>
                         <span
@@ -530,41 +535,18 @@
                         Duración en meses*
                     </p>
 
-                    <!-- select -->
+                    <!-- input que muestra la duración -->
                     <div class="w-full relative mt-2">
+                        <input
+                            class="shadow-sm rounded-md w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent disabled:bg-secondary3 disabled:border-secondary2 disabled:text-secondary2"
+                            type="number" formControlName="duracionMeses" placeholder="Duración en meses">
 
-                        <div (click)="toggleDropdown(1)"
-                            [ngClass]="{'text-error !border border-error': formGroup4.get('duracionMeses')?.invalid && (formGroup4.get('duracionMeses')?.touched || formGroup4.get('duracionMeses')?.dirty)}"
-                            class="cursor-pointer shadow-sm min-w-[160px] w-full p-[10px] h-[40px] bg-transparent border-2 border-secondary1 focus:outline-none focus:border-primary1 flex justify-between items-center">
-                            <span *ngIf="!selects[1].value" class="font-[500] text-xs">Seleccione</span>
-                            <span *ngIf="selects[1].value" class="text-normal">{{
-                                formGroup4.get('duracionMeses')?.value.label
-                                }}</span>
-
-                            <i class="pi pi-chevron-down text-primary2 text-xs"
-                                [ngClass]="{'!text-error': formGroup4.get('duracionMeses')?.invalid && (formGroup4.get('duracionMeses')?.touched || formGroup4.get('duracionMeses')?.dirty)}"></i>
-                        </div>
-
-                        <ul *ngIf="selects[1].isDropdownOpen"
-                            class="absolute z-20 bg-secondary4 border border-primary1 shadow-md rounded-bl-md rounded-br-md w-full mt-1 max-h-48 overflow-y-auto">
-                            <li *ngFor="let option of meses" (click)="selectOption(1, option, 'duracionMeses')"
-                                class="cursor-pointer px-4 py-2 hover:bg-primary1 hover:text-white">
-                                {{ option.label }}
-                            </li>
-                        </ul>
-                        <!-- Mensajes de validación -->
-                        <span class="text-sm text-success"
-                            *ngIf="formGroup4.get('duracionMeses')?.valid && formGroup4.get('duracionMeses')?.touched">
-                            Selección válida
+                        <span class="lg:text-xs sm:text-[10px] text-success">
+                            Duración calculada automáticamente.
                         </span>
-                        <span class="text-sm text-error"
-                            *ngIf="formGroup4.get('duracionMeses')?.invalid && (formGroup4.get('duracionMeses')?.touched || formGroup4.get('duracionMeses')?.dirty)">
-                            {{ selects[1].errorMessage }}
-                        </span>
-
                     </div>
-
                 </div>
+
             </div>
 
             <!-- content 3 -->
@@ -630,7 +612,8 @@
 
                         <ul *ngIf="selects[2].isDropdownOpen"
                             class="absolute z-20 bg-secondary4 border border-primary1 shadow-md rounded-bl-md rounded-br-md w-full mt-1 max-h-48 overflow-y-auto">
-                            <li *ngFor="let option of ClaseVehiculo" (click)="selectOption(2, option, 'idClaseVehiculo')"
+                            <li *ngFor="let option of ClaseVehiculo"
+                                (click)="selectOption(2, option, 'idClaseVehiculo')"
                                 class="cursor-pointer px-4 py-2 hover:bg-primary1 hover:text-white">
                                 {{ option.label }}
                             </li>
@@ -793,7 +776,8 @@
 
                         <ul *ngIf="selects[5].isDropdownOpen"
                             class="absolute z-20 bg-secondary4 border border-primary1 shadow-md rounded-bl-md rounded-br-md w-full mt-1 max-h-48 overflow-y-auto">
-                            <li *ngFor="let option of horas" (click)="selectOption(5, option, 'disponibilidadVehiculosEstimada')"
+                            <li *ngFor="let option of horas"
+                                (click)="selectOption(5, option, 'disponibilidadVehiculosEstimada')"
                                 class="cursor-pointer px-4 py-2 hover:bg-primary1 hover:text-white">
                                 {{ option.label }}
                             </li>
@@ -832,6 +816,13 @@
     (closeByButton1)="currentContractIteration == totalContracts ? sendAllContracts() : handleCloseByButton1()"
     (closeByButton2)="handleCloseByButton2()" (closeByIcon)="handleCloseByIcon()"
     (closeByBackdrop)="handleCloseByBackdrop()" (close)="showModal = false"></app-alert>
+
+
+    <!-- modal de loading -->
+<app-alert [showModal]="ShowLoadingModal" title="Cargando..."
+[showSubtitle]="false"
+TypeAlert="loader"></app-alert>
+
 
 <!-- modal final -->
 <app-alert [showModal]="showFinalModal" title="Envío exitoso" textColor="text-success" [showSubtitle]="false"
