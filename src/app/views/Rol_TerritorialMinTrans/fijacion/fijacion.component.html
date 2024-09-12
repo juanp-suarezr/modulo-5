@@ -79,7 +79,7 @@
                     <p class="text-primary3 font-semibold" [ngClass]="{'!text-error !font-normal': errorStates[4]}">
                         Estructura costos básicos contratante y contratista*
                     </p>
-                    <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" mimes=".pdf" [error]="errorStates[4]"
+                    <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" [maxFiles]="1" mimes=".pdf" [error]="errorStates[4]"
                         (fileSelected)="onFileSelected($event, 4)"></app-file-upload>
                 </div>
             </div>
@@ -136,7 +136,7 @@
                     <p class="text-primary3 font-semibold" [ngClass]="{'!text-error !font-normal': errorStates[8]}">
                         Cédula de Ciudadanía del Representante Legal*
                     </p>
-                    <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" mimes=".pdf" [error]="errorStates[8]"
+                    <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" mimes=".pdf" [error]="errorStates[8]" [maxFiles]="1"
                         (fileSelected)="onFileSelected($event, 8)"></app-file-upload>
                 </div>
             </div>
@@ -150,7 +150,7 @@
                         Estados financieros de la empresa*
                     </p>
 
-                    <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" mimes=".pdf" [error]="errorStates[9]"
+                    <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" mimes=".pdf" [error]="errorStates[9]" [maxFiles]="1"
                         (fileSelected)="onFileSelected($event, 9)"></app-file-upload>
                 </div>
 
@@ -171,7 +171,7 @@
                     <p class="text-primary3 font-semibold" [ngClass]="{'!text-error !font-normal': errorStates[11]}">
                         Tarjeta profesional contador que firma estados financieros*
                     </p>
-                    <app-file-upload class="mt-2 h-full" [maxFiles]="1" [dataClass]="dataClass" mimes=".pdf"
+                    <app-file-upload class="mt-2 h-full" [maxFiles]="1" [dataClass]="dataClass" mimes=".pdf" 
                         [error]="errorStates[11]" (fileSelected)="onFileSelected($event, 11)"></app-file-upload>
                 </div>
 
@@ -808,6 +808,12 @@
 
 </div>
 
+<!-- APP ALERT REQUISITO CAPITAL SOCIAL Y PATRIMONIO -->
+<app-alert [showModal]="showModalRequisito" title="No verificado" subtitle=""
+message="Estamos experimentando inconvenientes técnicos con la validación del nit. Por favor, vuelva a intentarlo más tarde"
+cancelButtonText="Cerrar" [showCancelButton]="true" [showFirstButton]="false"
+(close)="showModalRequisito = false" textColor="text-waring" TypeAlert="warning"></app-alert>
+
 <!-- modal de confirmación -->
 <app-alert [showModal]="showModal" title="¿Está seguro de enviar?" subtitle="¿Está seguro de enviar?"
     [showSubtitle]="false" [message]="'Una vez enviado, no podrá cambiar la información.'" buttonText="Enviar"
@@ -818,10 +824,10 @@
     (closeByBackdrop)="handleCloseByBackdrop()" (close)="showModal = false"></app-alert>
 
 
-    <!-- modal de loading -->
-<app-alert [showModal]="ShowLoadingModal" title="Cargando..."
-[showSubtitle]="false"
-TypeAlert="loader"></app-alert>
+<!-- modal de loading -->
+<app-alert [showModal]="ShowLoadingModal" title="Verificando datos" subtitle="Un momento por favor."
+    message="Se está guardando los datos enviados" [showFirstButton]="false" [showCancelButton]="false"
+    TypeAlert="loader"></app-alert>
 
 
 <!-- modal final -->
@@ -831,3 +837,11 @@ TypeAlert="loader"></app-alert>
     (close)="handleClose()" (closeByButton1)="finalStep()" (closeByButton2)="handleCloseByButton2()"
     (closeByIcon)="handleCloseByIcon()" (closeByBackdrop)="handleCloseByBackdrop()"
     (close)="showFinalModal = false"></app-alert>
+
+<!-- modal error -->
+<app-alert [showModal]="showErrorModal" title="Error en el envió de datos" textColor="text-error" [showSubtitle]="false"
+    [message]="'Estamos experimentando inconvenientes técnicos con el envió de la solicitud, por favor intente más tarde'"
+    buttonText="Continuar" [showFirstButton]="true" [showCancelButton]="false" TypeAlert="error"
+    (close)="handleClose()" (closeByButton1)="showErrorModal = false" (closeByButton2)="handleCloseByButton2()"
+    (closeByIcon)="handleCloseByIcon()" (closeByBackdrop)="handleCloseByBackdrop()"
+    (close)="showErrorModal = false"></app-alert>

@@ -96,7 +96,18 @@
     <app-alert [showModal]="showModal" title="Error en la fijación de la capacidad transportadora"
         [showSubtitle]="false"
         [message]="'la empresa ' +this.formGroup1.get('nombreEmpresa')?.value+ ', con NIT' +this.formGroup1.get('nit')?.value+ ', ya tiene una fijación de la capacidad transportadora asignada'"
-        cancelButtonText="Cerrar" [showCancelButton]="true" [showFirstButton]="false" TypeAlert="error" (close)="showModal = false" textColor="text-error"
-        (closeByButton2)="handleCloseByButton2()"></app-alert>
+        cancelButtonText="Cerrar" [showCancelButton]="true" [showFirstButton]="false" TypeAlert="error"
+        (close)="showModal = false" textColor="text-error" (closeByButton2)="handleCloseByButton2()"></app-alert>
+
+    <!-- modal de loading -->
+    <app-alert [showModal]="ShowLoadingModal" title="Verificando datos" subtitle="Un momento por favor."
+        message="Se está realizando la consulta del nit" [showFirstButton]="false" [showCancelButton]="false"
+        TypeAlert="loader"></app-alert>
+
+    <!-- modal de error en data -->
+    <app-alert [showModal]="showModalWarning" title="No verificado" subtitle=""
+        message="Estamos experimentando inconvenientes técnicos con la validación del nit. Por favor, vuelva a intentarlo más tarde"
+        cancelButtonText="Cerrar" [showCancelButton]="true" [showFirstButton]="false"
+        (close)="showModalWarning = false" textColor="text-waring" TypeAlert="warning"></app-alert>
 
 </div>

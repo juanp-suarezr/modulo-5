@@ -35,6 +35,8 @@ export default class ValidacionNitComponent {
   submitted: boolean = false;
   formGroup1!: FormGroup;
   showModal: boolean = false; // Control para mostrar el modal de error
+  ShowLoadingModal: boolean = false; //loading
+  showModalWarning: boolean = false; //warning fallo en consulta
   isProcessing: boolean = false; // Control para deshabilitar el botón
 
   ngOnInit(): void {
@@ -52,12 +54,14 @@ export default class ValidacionNitComponent {
   validator() {
     if (this.formGroup1.valid) {
       this.isProcessing = true; // Deshabilita el botón
+      this.ShowLoadingModal = true;
       this.apiSFService
         .getSolicitudByNIT(this.formGroup1.get('nit')?.value)
         .subscribe(
           (response) => {
             console.log(response.registrado); // Muestra la respuesta en la consola
             this.isProcessing = false; // Habilita el botón de nuevo
+            this.ShowLoadingModal = false;
             if (response.registrado) {
               this.showModal = true;
             } else {
@@ -72,6 +76,9 @@ export default class ValidacionNitComponent {
           (error) => {
             console.error('Error fetching user data', error); // Maneja el error si ocurre
             this.isProcessing = false; // Habilita el botón de nuevo
+            this.ShowLoadingModal = false;
+            this.showModalWarning = true;
+
           }
         );
     } else {
