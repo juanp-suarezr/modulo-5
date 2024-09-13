@@ -234,8 +234,8 @@
                         </span>
                         <p class="text-primary1 work-sans text-[11px] mt-2 w-auto">
                             Empresa con capacidad transportadora operacional autorizada de
-                            hasta 51 y 300 vehículos: Capital pagado mínimo: 400 SMLMV –
-                            Patrimonio líquido mínimo > 280 SMLMV
+                            hasta 51 y 300 vehículos: Capital pagado mínimo: 300 SMLMV –
+                            Patrimonio líquido mínimo > 180 SMLMV
                         </p>
                     </div>
 
@@ -284,8 +284,8 @@
                         </span>
                         <p class="text-primary1 work-sans text-[11px] mt-2 w-auto">
                             Empresa con capacidad transportadora operacional autorizada de
-                            hasta 51 y 300 vehículos: Capital pagado mínimo: 400 SMLMV –
-                            Patrimonio líquido mínimo > 280 SMLMV
+                            hasta 51 y 300 vehículos: Capital pagado mínimo: 300 SMLMV –
+                            Patrimonio líquido mínimo > 180 SMLMV
                         </p>
                     </div>
 
@@ -809,8 +809,8 @@
 </div>
 
 <!-- APP ALERT REQUISITO CAPITAL SOCIAL Y PATRIMONIO -->
-<app-alert [showModal]="showModalRequisito" title="No verificado" subtitle=""
-message="Estamos experimentando inconvenientes técnicos con la validación del nit. Por favor, vuelva a intentarlo más tarde"
+<app-alert [showModal]="showModalRequisito" title="No cumple requisito" subtitle=""
+message="No se cumple con el requisito mínimo de capital social (300 SMLMV) o patrimonio liquido (180 SMLMV)"
 cancelButtonText="Cerrar" [showCancelButton]="true" [showFirstButton]="false"
 (close)="showModalRequisito = false" textColor="text-waring" TypeAlert="warning"></app-alert>
 
