@@ -39,7 +39,7 @@ export class ApiSFService {
 
   // POST fijar capacidad transportadora
   createSolicitud(data: any): Observable<any> {
-    return this.http.post(`${this.baseUrl}/api/formulario-contrato`, data);
+    return this.http.post(`${this.baseUrl}/api/formulario-contrato`, data, { responseType: 'text' });
   }
   
 

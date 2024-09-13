@@ -99,8 +99,13 @@ export default class FijacionComponent {
   currentContractIteration: number = 0; // Contador para las iteraciones
   totalContracts: number = 0; // Número total de contratos
 
+  //estado requerimiento
+  smlmmv: number = 1300000;
+
+  showModalRequisito: boolean = false; //control para mostrar modal de alerta requerimiento de patrimonio y capital
   showModal: boolean = false; // Control para mostrar el modal intermedio
   ShowLoadingModal: boolean = false; // Control para mostrar el modal loading
+  showErrorModal: boolean = false; // Control para mostrar el modal error
   showFinalModal: boolean = false; // Control para mostrar el modal final
 
   //objeto para manejo de errores
@@ -397,8 +402,19 @@ export default class FijacionComponent {
         console.log('entro');
 
         if (this.formGroup3.valid) {
-          this.changeActiveNum('1');
+
+          const valid1 = this.formGroup3.get('capitalSocial')?.value >= (300*this.smlmmv);
+          const valid2 = this.formGroup3.get('patrimonioLiquido')?.value >= (180*this.smlmmv);
+
+          if (valid1 && valid2) {
+            
+            this.changeActiveNum('1');
           this.stepperService.setActiveNum(3);
+          }
+
+          
+
+          
         } else {
           this.submitted = true;
           this.formGroup3.markAllAsTouched();
