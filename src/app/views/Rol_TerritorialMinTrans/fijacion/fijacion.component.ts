@@ -1,3 +1,4 @@
+import { OnlyNumberGlobal } from './../../../validator/onlyNumber.validator';
 import { ErrorService } from '../../../services/error/error.service';
 import { PrimaryButtonComponent } from '../../../components/primary-button/primary-button.component';
 import { ActiveNumService } from '../../../services/left-nav/active-num.service';
@@ -277,8 +278,8 @@ export default class FijacionComponent {
     });
 
     this.formGroup3 = this.fb.group({
-      capitalSocial: ['', [Validators.required, NoNegativeGlobal]],
-      patrimonioLiquido: ['', [Validators.required, NoNegativeGlobal]],
+      capitalSocial: ['', [Validators.required, NoNegativeGlobal, OnlyNumberGlobal]],
+      patrimonioLiquido: ['', [Validators.required, NoNegativeGlobal, OnlyNumberGlobal]],
       cantidadVehiculos: ['', Validators.required],
     });
 
@@ -300,7 +301,7 @@ export default class FijacionComponent {
         idAreaOperacion: ['', Validators.required],
         disponibilidadVehiculosEstimada: ['', Validators.required],
       },
-      { validators: [dateRangeValidator, NoNegativeGlobal] }
+      { validators: [dateRangeValidator, NoNegativeGlobal, OnlyNumberGlobal] }
     );
   }
 
@@ -404,12 +405,17 @@ export default class FijacionComponent {
         if (this.formGroup3.valid) {
 
           const valid1 = this.formGroup3.get('capitalSocial')?.value >= (300*this.smlmmv);
-          const valid2 = this.formGroup3.get('patrimonioLiquido')?.value >= (180*this.smlmmv);
+          const valid2 = this.formGroup3.get('patrimonioLiquido')?.value < (180*this.smlmmv);
 
           if (valid1 && valid2) {
             
             this.changeActiveNum('1');
           this.stepperService.setActiveNum(3);
+          } else {
+
+            console.log("no validado");
+            this.showModalRequisito = true;            
+
           }
 
           
