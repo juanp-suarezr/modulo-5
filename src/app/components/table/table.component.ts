@@ -29,7 +29,7 @@ export class TableComponent {
     // Si el valor es una fecha válida, formatearlo
 
     if (this.isDateTime(value)) {
-      return formatDate(value, 'dd/MM/yyyy', 'en-US');
+      return formatDate(value, 'dd/MM/yyyy', 'en-US', 'UTC');
     }
     return value;
   }

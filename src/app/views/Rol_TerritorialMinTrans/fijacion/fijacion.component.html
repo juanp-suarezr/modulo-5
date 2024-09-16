@@ -79,8 +79,8 @@
                     <p class="text-primary3 font-semibold" [ngClass]="{'!text-error !font-normal': errorStates[4]}">
                         Estructura costos básicos contratante y contratista*
                     </p>
-                    <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" [maxFiles]="1" mimes=".pdf" [error]="errorStates[4]"
-                        (fileSelected)="onFileSelected($event, 4)"></app-file-upload>
+                    <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" [maxFiles]="1" mimes=".pdf"
+                        [error]="errorStates[4]" (fileSelected)="onFileSelected($event, 4)"></app-file-upload>
                 </div>
             </div>
 
@@ -136,8 +136,8 @@
                     <p class="text-primary3 font-semibold" [ngClass]="{'!text-error !font-normal': errorStates[8]}">
                         Cédula de Ciudadanía del Representante Legal*
                     </p>
-                    <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" mimes=".pdf" [error]="errorStates[8]" [maxFiles]="1"
-                        (fileSelected)="onFileSelected($event, 8)"></app-file-upload>
+                    <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" mimes=".pdf" [error]="errorStates[8]"
+                        [maxFiles]="1" (fileSelected)="onFileSelected($event, 8)"></app-file-upload>
                 </div>
             </div>
 
@@ -150,8 +150,8 @@
                         Estados financieros de la empresa*
                     </p>
 
-                    <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" mimes=".pdf" [error]="errorStates[9]" [maxFiles]="1"
-                        (fileSelected)="onFileSelected($event, 9)"></app-file-upload>
+                    <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" mimes=".pdf" [error]="errorStates[9]"
+                        [maxFiles]="1" (fileSelected)="onFileSelected($event, 9)"></app-file-upload>
                 </div>
 
                 <!-- cargue 10 Cédula del contador que firma los estados financieros -->
@@ -171,7 +171,7 @@
                     <p class="text-primary3 font-semibold" [ngClass]="{'!text-error !font-normal': errorStates[11]}">
                         Tarjeta profesional contador que firma estados financieros*
                     </p>
-                    <app-file-upload class="mt-2 h-full" [maxFiles]="1" [dataClass]="dataClass" mimes=".pdf" 
+                    <app-file-upload class="mt-2 h-full" [maxFiles]="1" [dataClass]="dataClass" mimes=".pdf"
                         [error]="errorStates[11]" (fileSelected)="onFileSelected($event, 11)"></app-file-upload>
                 </div>
 
@@ -201,7 +201,10 @@
                     <div class="mt-2 relative w-full">
                         <input
                             class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent"
-                            type="number" formControlName="capitalSocial" required placeholder="Ingrese número">
+                            type="text" formControlName="capitalSocial" required placeholder="Ingrese número"
+                            (input)="onCurrencyInput($event, 'capitalSocial')"
+                            (blur)="onCurrencyBlur($event, 'capitalSocial', formGroup3)" (focus)="onCurrencyFocus($event)" />
+
                         <div class="w-full relative">
                             <!-- Icono de error (rojo) -->
                             <span
@@ -234,7 +237,8 @@
                         </span>
                         <p class="text-primary1 work-sans text-[11px] mt-2 w-auto">
                             Empresa con capacidad transportadora operacional autorizada de
-                            hasta 51 y 300 vehículos: Capital pagado mínimo: 300 SMLMV –
+                            {{ formGroup3.get('cantidadVehiculos')?.value }} vehículos: Capital pagado mínimo: 300 SMLMV
+                            –
                             Patrimonio líquido mínimo > 180 SMLMV
                         </p>
                     </div>
@@ -250,7 +254,9 @@
                     <div class="mt-2 relative w-full">
                         <input
                             class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent"
-                            type="number" formControlName="patrimonioLiquido" required placeholder="Ingrese número">
+                            type="text" formControlName="patrimonioLiquido" required placeholder="Ingrese número"
+                            (input)="onCurrencyInput($event, 'patrimonioLiquido')"
+                            (blur)="onCurrencyBlur($event, 'patrimonioLiquido', formGroup3)" (focus)="onCurrencyFocus($event)" />
                         <div class="w-full relative">
                             <!-- Icono de error (rojo) -->
                             <span
@@ -284,7 +290,8 @@
                         </span>
                         <p class="text-primary1 work-sans text-[11px] mt-2 w-auto">
                             Empresa con capacidad transportadora operacional autorizada de
-                            hasta 51 y 300 vehículos: Capital pagado mínimo: 300 SMLMV –
+                            {{ formGroup3.get('cantidadVehiculos')?.value }} vehículos: Capital pagado mínimo: 300 SMLMV
+                            –
                             Patrimonio líquido mínimo > 180 SMLMV
                         </p>
                     </div>
@@ -302,34 +309,32 @@
                     <!-- select -->
                     <div class="w-full relative mt-2">
 
-                        <div (click)="toggleDropdown(0)"
-                            [ngClass]="{'text-error !border border-error': formGroup3.get('cantidadVehiculos')?.invalid && (formGroup3.get('cantidadVehiculos')?.touched || formGroup3.get('cantidadVehiculos')?.dirty)}"
-                            class="cursor-pointer shadow-sm min-w-[160px] w-full p-[10px] h-[40px] bg-transparent border-2 border-secondary1 focus:outline-none focus:border-primary1 flex justify-between items-center">
-                            <span *ngIf="!selects[0].value" class="font-[500] text-xs">Seleccione</span>
-                            <span *ngIf="selects[0].value" class="text-normal">{{
-                                formGroup3.get('cantidadVehiculos')?.value.label
-                                }}</span>
+                        <input
+                            class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent"
+                            type="number" formControlName="cantidadVehiculos" required placeholder="Ingrese número">
+                        <div class="w-full relative">
+                            <!-- Icono de error (rojo) -->
+                            <span
+                                *ngIf="formGroup3.get('cantidadVehiculos')?.invalid && (formGroup3.get('cantidadVehiculos')?.touched || submitted)"
+                                class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
+                                <span class="pi pi-exclamation-circle text-error text-[24px]"></span>
+                            </span>
 
-                            <i class="pi pi-chevron-down text-primary2 text-xs"
-                                [ngClass]="{'!text-error': formGroup3.get('cantidadVehiculos')?.invalid && (formGroup3.get('cantidadVehiculos')?.touched || formGroup3.get('cantidadVehiculos')?.dirty)}"></i>
+                            <!-- Icono de éxito (verde) -->
+                            <span
+                                *ngIf="formGroup3.get('cantidadVehiculos')?.valid && (formGroup3.get('cantidadVehiculos')?.touched || submitted)"
+                                class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
+                                <span class="pi pi-check-circle text-success text-[24px]"></span>
+                            </span>
                         </div>
-
-                        <ul *ngIf="selects[0].isDropdownOpen"
-                            class="absolute z-20 bg-secondary4 border border-primary1 shadow-md rounded-bl-md rounded-br-md w-full mt-1 max-h-48 overflow-y-auto">
-                            <li *ngFor="let option of generateOptions(15)"
-                                (click)="selectOption(0, option, 'cantidadVehiculos')"
-                                class="cursor-pointer px-4 py-2 hover:bg-primary1 hover:text-white">
-                                {{ option.label }}
-                            </li>
-                        </ul>
-                        <!-- Mensajes de validación -->
-                        <span class="text-sm text-success"
-                            *ngIf="formGroup3.get('cantidadVehiculos')?.valid && formGroup3.get('cantidadVehiculos')?.touched">
-                            Selección válida
+                        <span *ngIf="submitted && formGroup3.get('cantidadVehiculos')?.errors?.['required']"
+                            class="text-error">
+                            Cantidad de vehículos es obligatorio
                         </span>
-                        <span class="text-sm text-error"
-                            *ngIf="formGroup3.get('cantidadVehiculos')?.invalid && (formGroup3.get('cantidadVehiculos')?.touched || formGroup3.get('cantidadVehiculos')?.dirty)">
-                            {{ selects[0].errorMessage }}
+                        <span
+                            *ngIf="formGroup3.get('cantidadVehiculos')?.hasError('negativeNumber') && (formGroup3.get('cantidadVehiculos')?.touched || submitted)"
+                            class="text-error">
+                            El numeró no puede ser negativo
                         </span>
 
                     </div>
@@ -418,7 +423,7 @@
                     <div class="mt-2 w-full relative">
                         <input
                             class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent"
-                            type="number" formControlName="numeroContrato" required placeholder="Ingrese número">
+                            type="text" formControlName="numeroContrato" required placeholder="Ingrese número contrato">
                         <div class="w-full relative">
                             <!-- Icono de error (rojo) -->
                             <span
@@ -438,11 +443,7 @@
                             class="text-error">
                             El numero de contrato es obligatorio
                         </span>
-                        <span
-                            *ngIf="formGroup4.get('numeroContrato')?.hasError('negativeNumber') && (formGroup4.get('numeroContrato')?.touched || submitted)"
-                            class="text-error">
-                            El numeró no puede ser negativo
-                        </span>
+                        
                     </div>
 
                 </div>
@@ -598,11 +599,11 @@
                     <!-- select -->
                     <div class="w-full relative mt-2">
 
-                        <div (click)="toggleDropdown(2)"
+                        <div (click)="toggleDropdown(0)"
                             [ngClass]="{'text-error !border border-error': formGroup4.get('idClaseVehiculo')?.invalid && (formGroup4.get('idClaseVehiculo')?.touched || formGroup4.get('idClaseVehiculo')?.dirty)}"
                             class="cursor-pointer shadow-sm min-w-[160px] w-full p-[10px] h-[40px] bg-transparent border-2 border-secondary1 focus:outline-none focus:border-primary1 flex justify-between items-center">
-                            <span *ngIf="!selects[2].value" class="font-[500] text-xs">Seleccione</span>
-                            <span *ngIf="selects[2].value" class="text-normal">{{
+                            <span *ngIf="!selects[0].value" class="font-[500] text-xs">Seleccione</span>
+                            <span *ngIf="selects[0].value" class="text-normal">{{
                                 formGroup4.get('idClaseVehiculo')?.value.label
                                 }}</span>
 
@@ -610,10 +611,10 @@
                                 [ngClass]="{'!text-error': formGroup4.get('idClaseVehiculo')?.invalid && (formGroup4.get('idClaseVehiculo')?.touched || formGroup4.get('idClaseVehiculo')?.dirty)}"></i>
                         </div>
 
-                        <ul *ngIf="selects[2].isDropdownOpen"
+                        <ul *ngIf="selects[0].isDropdownOpen"
                             class="absolute z-20 bg-secondary4 border border-primary1 shadow-md rounded-bl-md rounded-br-md w-full mt-1 max-h-48 overflow-y-auto">
                             <li *ngFor="let option of ClaseVehiculo"
-                                (click)="selectOption(2, option, 'idClaseVehiculo')"
+                                (click)="selectOption(0, option, 'idClaseVehiculo')"
                                 class="cursor-pointer px-4 py-2 hover:bg-primary1 hover:text-white">
                                 {{ option.label }}
                             </li>
@@ -625,7 +626,7 @@
                         </span>
                         <span class="text-sm text-error"
                             *ngIf="formGroup4.get('idClaseVehiculo')?.invalid && (formGroup4.get('idClaseVehiculo')?.touched || formGroup4.get('idClaseVehiculo')?.dirty)">
-                            {{ selects[2].errorMessage }}
+                            {{ selects[0].errorMessage }}
                         </span>
 
                     </div>
@@ -641,7 +642,9 @@
                     <div class="mt-2 relative w-full">
                         <input
                             class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent"
-                            type="number" formControlName="valorContrato" required placeholder="$">
+                            type="text" formControlName="valorContrato" required placeholder="$"
+                            (input)="onCurrencyInput($event, 'valorContrato')"
+                            (blur)="onCurrencyBlur($event, 'valorContrato', formGroup4)" (focus)="onCurrencyFocus($event)" />
                         <div class="w-full relative">
                             <!-- Icono de error (rojo) -->
                             <span
@@ -680,11 +683,11 @@
                     <!-- select -->
                     <div class="w-full relative mt-2">
 
-                        <div (click)="toggleDropdown(3)"
+                        <div (click)="toggleDropdown(1)"
                             [ngClass]="{'text-error !border border-error': formGroup4.get('idFormaPago')?.invalid && (formGroup4.get('idFormaPago')?.touched || formGroup4.get('idFormaPago')?.dirty)}"
                             class="cursor-pointer shadow-sm min-w-[160px] w-full p-[10px] h-[40px] bg-transparent border-2 border-secondary1 focus:outline-none focus:border-primary1 flex justify-between items-center">
-                            <span *ngIf="!selects[3].value" class="font-[500] text-xs">Seleccione</span>
-                            <span *ngIf="selects[3].value" class="text-normal">{{
+                            <span *ngIf="!selects[1].value" class="font-[500] text-xs">Seleccione</span>
+                            <span *ngIf="selects[1].value" class="text-normal">{{
                                 formGroup4.get('idFormaPago')?.value.label
                                 }}</span>
 
@@ -692,9 +695,9 @@
                                 [ngClass]="{'!text-error': formGroup4.get('idFormaPago')?.invalid && (formGroup4.get('idFormaPago')?.touched || formGroup4.get('idFormaPago')?.dirty)}"></i>
                         </div>
 
-                        <ul *ngIf="selects[3].isDropdownOpen"
+                        <ul *ngIf="selects[1].isDropdownOpen"
                             class="absolute z-20 bg-secondary4 border border-primary1 shadow-md rounded-bl-md rounded-br-md w-full mt-1 max-h-48 overflow-y-auto">
-                            <li *ngFor="let option of formaPago" (click)="selectOption(3, option, 'idFormaPago')"
+                            <li *ngFor="let option of formaPago" (click)="selectOption(1, option, 'idFormaPago')"
                                 class="cursor-pointer px-4 py-2 hover:bg-primary1 hover:text-white">
                                 {{ option.label }}
                             </li>
@@ -706,7 +709,7 @@
                         </span>
                         <span class="text-sm text-error"
                             *ngIf="formGroup4.get('idFormaPago')?.invalid && (formGroup4.get('idFormaPago')?.touched || formGroup4.get('idFormaPago')?.dirty)">
-                            {{ selects[3].errorMessage }}
+                            {{ selects[1].errorMessage }}
                         </span>
 
                     </div>
@@ -722,11 +725,11 @@
                     <!-- select -->
                     <div class="w-full relative mt-2">
 
-                        <div (click)="toggleDropdown(4)"
+                        <div (click)="toggleDropdown(2)"
                             [ngClass]="{'text-error !border border-error': formGroup4.get('idAreaOperacion')?.invalid && (formGroup4.get('idAreaOperacion')?.touched || formGroup4.get('idAreaOperacion')?.dirty)}"
                             class="cursor-pointer shadow-sm min-w-[160px] w-full p-[10px] h-[40px] bg-transparent border-2 border-secondary1 focus:outline-none focus:border-primary1 flex justify-between items-center">
-                            <span *ngIf="!selects[4].value" class="font-[500] text-xs">Seleccione</span>
-                            <span *ngIf="selects[4].value" class="text-normal">{{
+                            <span *ngIf="!selects[2].value" class="font-[500] text-xs">Seleccione</span>
+                            <span *ngIf="selects[2].value" class="text-normal">{{
                                 formGroup4.get('idAreaOperacion')?.value.label
                                 }}</span>
 
@@ -734,9 +737,9 @@
                                 [ngClass]="{'!text-error': formGroup4.get('idAreaOperacion')?.invalid && (formGroup4.get('idAreaOperacion')?.touched || formGroup4.get('idAreaOperacion')?.dirty)}"></i>
                         </div>
 
-                        <ul *ngIf="selects[4].isDropdownOpen"
+                        <ul *ngIf="selects[2].isDropdownOpen"
                             class="absolute z-20 bg-secondary4 border border-primary1 shadow-md rounded-bl-md rounded-br-md w-full mt-1 max-h-48 overflow-y-auto">
-                            <li *ngFor="let option of departs" (click)="selectOption(4, option, 'idAreaOperacion')"
+                            <li *ngFor="let option of departs" (click)="selectOption(2, option, 'idAreaOperacion')"
                                 class="cursor-pointer px-4 py-2 hover:bg-primary1 hover:text-white">
                                 {{ option.label }}
                             </li>
@@ -748,7 +751,7 @@
                         </span>
                         <span class="text-sm text-error"
                             *ngIf="formGroup4.get('idAreaOperacion')?.invalid && (formGroup4.get('idAreaOperacion')?.touched || formGroup4.get('idAreaOperacion')?.dirty)">
-                            {{ selects[4].errorMessage }}
+                            {{ selects[2].errorMessage }}
                         </span>
 
                     </div>
@@ -762,11 +765,11 @@
                     <!-- select -->
                     <div class="w-full relative mt-2">
 
-                        <div (click)="toggleDropdown(5)"
+                        <div (click)="toggleDropdown(3)"
                             [ngClass]="{'text-error !border border-error': formGroup4.get('disponibilidadVehiculosEstimada')?.invalid && (formGroup4.get('disponibilidadVehiculosEstimada')?.touched || formGroup4.get('disponibilidadVehiculosEstimada')?.dirty)}"
                             class="cursor-pointer shadow-sm min-w-[160px] w-full p-[10px] h-[40px] bg-transparent border-2 border-secondary1 focus:outline-none focus:border-primary1 flex justify-between items-center">
-                            <span *ngIf="!selects[5].value" class="font-[500] text-xs">Seleccione</span>
-                            <span *ngIf="selects[5].value" class="text-normal">{{
+                            <span *ngIf="!selects[3].value" class="font-[500] text-xs">Seleccione</span>
+                            <span *ngIf="selects[3].value" class="text-normal">{{
                                 formGroup4.get('disponibilidadVehiculosEstimada')?.value.label
                                 }}</span>
 
@@ -774,10 +777,10 @@
                                 [ngClass]="{'!text-error': formGroup4.get('disponibilidadVehiculosEstimada')?.invalid && (formGroup4.get('disponibilidadVehiculosEstimada')?.touched || formGroup4.get('disponibilidadVehiculosEstimada')?.dirty)}"></i>
                         </div>
 
-                        <ul *ngIf="selects[5].isDropdownOpen"
+                        <ul *ngIf="selects[3].isDropdownOpen"
                             class="absolute z-20 bg-secondary4 border border-primary1 shadow-md rounded-bl-md rounded-br-md w-full mt-1 max-h-48 overflow-y-auto">
                             <li *ngFor="let option of horas"
-                                (click)="selectOption(5, option, 'disponibilidadVehiculosEstimada')"
+                                (click)="selectOption(3, option, 'disponibilidadVehiculosEstimada')"
                                 class="cursor-pointer px-4 py-2 hover:bg-primary1 hover:text-white">
                                 {{ option.label }}
                             </li>
@@ -789,7 +792,7 @@
                         </span>
                         <span class="text-sm text-error"
                             *ngIf="formGroup4.get('disponibilidadVehiculosEstimada')?.invalid && (formGroup4.get('disponibilidadVehiculosEstimada')?.touched || formGroup4.get('disponibilidadVehiculosEstimada')?.dirty)">
-                            {{ selects[5].errorMessage }}
+                            {{ selects[3].errorMessage }}
                         </span>
 
                     </div>
@@ -810,9 +813,9 @@
 
 <!-- APP ALERT REQUISITO CAPITAL SOCIAL Y PATRIMONIO -->
 <app-alert [showModal]="showModalRequisito" title="No cumple requisito" subtitle=""
-message="No se cumple con el requisito mínimo de capital social (300 SMLMV) o patrimonio liquido (180 SMLMV)"
-cancelButtonText="Cerrar" [showCancelButton]="true" [showFirstButton]="false"
-(close)="showModalRequisito = false" textColor="text-waring" TypeAlert="warning"></app-alert>
+    message="{{ valid1 ? 'No se cumple con el requisito mínimo de patrimonio liquido (menor a 180 SMLMV)' :valid2 ? 'No se cumple con el requisito mínimo de capital social (300 SMLMV)' : 'No se cumple con el requisito mínimo de capital social (300 SMLMV) o patrimonio liquido (180 SMLMV)'  }}"
+    cancelButtonText="Cerrar" [showCancelButton]="true" [showFirstButton]="false" (close)="showModalRequisito = false"
+    textColor="text-waring" TypeAlert="warning"></app-alert>
 
 <!-- modal de confirmación -->
 <app-alert [showModal]="showModal" title="¿Está seguro de enviar?" subtitle="¿Está seguro de enviar?"
@@ -841,7 +844,7 @@ cancelButtonText="Cerrar" [showCancelButton]="true" [showFirstButton]="false"
 <!-- modal error -->
 <app-alert [showModal]="showErrorModal" title="Error en el envió de datos" textColor="text-error" [showSubtitle]="false"
     [message]="'Estamos experimentando inconvenientes técnicos con el envió de la solicitud, por favor intente más tarde'"
-    buttonText="Continuar" [showFirstButton]="true" [showCancelButton]="false" TypeAlert="error"
-    (close)="handleClose()" (closeByButton1)="showErrorModal = false" (closeByButton2)="handleCloseByButton2()"
+    buttonText="Continuar" [showFirstButton]="true" [showCancelButton]="false" TypeAlert="error" (close)="handleClose()"
+    (closeByButton1)="showErrorModal = false" (closeByButton2)="handleCloseByButton2()"
     (closeByIcon)="handleCloseByIcon()" (closeByBackdrop)="handleCloseByBackdrop()"
     (close)="showErrorModal = false"></app-alert>
