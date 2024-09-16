@@ -7,16 +7,14 @@ export const NoNegativeGlobal: ValidatorFn = (control: AbstractControl): Validat
 
     Object.keys(controls).forEach(key => {
       const ctrl = controls[key];
-      
+
       if (ctrl.value && !isNaN(ctrl.value)) {
         const value = parseFloat(ctrl.value);
 
         if (value < 0) {
-          // Establecer el error solo en este control
           ctrl.setErrors({ negativeNumber: true });
           hasError = true;
         } else {
-          // Eliminar el error 'negativeNumber' si el valor es positivo
           if (ctrl.hasError('negativeNumber')) {
             const errors = { ...ctrl.errors };
             delete errors['negativeNumber'];
@@ -26,8 +24,7 @@ export const NoNegativeGlobal: ValidatorFn = (control: AbstractControl): Validat
       }
     });
 
-    // El validador del grupo en sí no necesita devolver un error global
-    return null;
+    return hasError ? { negativeNumber: true } : null;  // Devolver error global si alguno de los controles tiene error
   }
 
   return null;
