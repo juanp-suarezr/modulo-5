@@ -107,6 +107,9 @@ export default class IncrementoComponent implements AfterViewInit {
   //Propiedad para almacenar el porcentaje seleccionado
   selectedPercentage: string = '';
 
+  //Propiedad para almacenar el texto dinamico
+  dynamicText: string = "";
+
   //Menu left
   infoMenu = [
     {
@@ -331,6 +334,8 @@ export default class IncrementoComponent implements AfterViewInit {
       12: [null, Validators.required],
       capital_social: ['', [Validators.required, NoNegativeGlobal]],
       patrimonio_liquido: ['', [Validators.required, NoNegativeGlobal]],
+      nombreEmpresa: ['', [Validators.required, NoNegativeGlobal]],
+      nit: ['', [Validators.required, NoNegativeGlobal]],
     });
 
     this.formGroup4 = this.fb.group(
@@ -526,6 +531,20 @@ export default class IncrementoComponent implements AfterViewInit {
       this.inputs[2].value = resultado.toFixed(2);
       this.formGroup2.patchValue({ 2: resultado.toFixed(2) });
     }
+
+    //Lógica para cambiar el texto dinámico
+    if (index === 0) {
+      if (numeroVehiculos <= 50) {
+        this.dynamicText = "Empresa con capacidad transportadora operacional autorizada de hasta 50 vehículos: Capital pagado mínimo: 300 SMLMV – Patrimonio líquido mínimo > 180 SMLMV";
+      } else if (numeroVehiculos >= 51 && numeroVehiculos <= 300) {
+        this.dynamicText = "Empresa con capacidad transportadora operacional autorizada de hasta 51 y 300 vehículos: Capital pagado mínimo: 400 SMLMV – Patrimonio líquido mínimo > 280 SMLMV";
+      } else if (numeroVehiculos >= 301 && numeroVehiculos <= 600) {
+        this.dynamicText = "Empresa con capacidad transportadora operacional autorizada de hasta 301 y 600 vehículos: Capital pagado mínimo: 700 SMLMV – Patrimonio líquido mínimo > 500 SMLMV";
+      } else if (numeroVehiculos >= 601) {
+        this.dynamicText = "Empresa con capacidad transportadora operacional autorizada de más 600 vehículos: Capital pagado mínimo: 1000 SMLMV – Patrimonio líquido mínimo > 700 SMLMV";
+      }
+    }
+
   }
 
   //Metodo para enviar los formularios
