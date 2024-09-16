@@ -201,9 +201,9 @@
                     <div class="mt-2 relative w-full">
                         <input
                             class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent"
-                            type="text" formControlName="capitalSocial" required placeholder="Ingrese número"
-                            (input)="onCurrencyInput($event, 'capitalSocial')"
-                            (blur)="onCurrencyBlur($event, 'capitalSocial', formGroup3)" (focus)="onCurrencyFocus($event)" />
+                            type="text" formControlName="capitalSocial" placeholder="Ingrese numero"
+                            (input)="onCurrencyInput($event, 'capitalSocial', formGroup3)"
+                            (focus)="onCurrencyFocus($event)" />
 
                         <div class="w-full relative">
                             <!-- Icono de error (rojo) -->
@@ -254,9 +254,9 @@
                     <div class="mt-2 relative w-full">
                         <input
                             class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent"
-                            type="text" formControlName="patrimonioLiquido" required placeholder="Ingrese número"
-                            (input)="onCurrencyInput($event, 'patrimonioLiquido')"
-                            (blur)="onCurrencyBlur($event, 'patrimonioLiquido', formGroup3)" (focus)="onCurrencyFocus($event)" />
+                            type="text" formControlName="patrimonioLiquido" placeholder="ingrese numero"
+                            (input)="onCurrencyInput($event, 'patrimonioLiquido', formGroup3)"
+                            (focus)="onCurrencyFocus($event)" />
                         <div class="w-full relative">
                             <!-- Icono de error (rojo) -->
                             <span
@@ -443,7 +443,7 @@
                             class="text-error">
                             El numero de contrato es obligatorio
                         </span>
-                        
+
                     </div>
 
                 </div>
@@ -642,9 +642,9 @@
                     <div class="mt-2 relative w-full">
                         <input
                             class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent"
-                            type="text" formControlName="valorContrato" required placeholder="$"
-                            (input)="onCurrencyInput($event, 'valorContrato')"
-                            (blur)="onCurrencyBlur($event, 'valorContrato', formGroup4)" (focus)="onCurrencyFocus($event)" />
+                            type="text" formControlName="valorContrato" placeholder="$"
+                            (input)="onCurrencyInput($event, 'valorContrato', formGroup3)"
+                            (focus)="onCurrencyFocus($event)" />
                         <div class="w-full relative">
                             <!-- Icono de error (rojo) -->
                             <span
@@ -813,7 +813,7 @@
 
 <!-- APP ALERT REQUISITO CAPITAL SOCIAL Y PATRIMONIO -->
 <app-alert [showModal]="showModalRequisito" title="No cumple requisito" subtitle=""
-    message="{{ valid1 ? 'No se cumple con el requisito mínimo de patrimonio liquido (menor a 180 SMLMV)' :valid2 ? 'No se cumple con el requisito mínimo de capital social (300 SMLMV)' : 'No se cumple con el requisito mínimo de capital social (300 SMLMV) o patrimonio liquido (180 SMLMV)'  }}"
+    message="{{ valid1 ? 'No se cumple con el requisito mínimo de patrimonio liquido (menor a 180 SMLMV)' :valid2 ? 'No se cumple con el requisito mínimo de capital social (300 SMLMV)' : 'No se cumple con el requisito mínimo de capital social (300 SMLMV) y patrimonio liquido (180 SMLMV)'  }}"
     cancelButtonText="Cerrar" [showCancelButton]="true" [showFirstButton]="false" (close)="showModalRequisito = false"
     textColor="text-waring" TypeAlert="warning"></app-alert>
 
