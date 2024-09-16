@@ -26,9 +26,11 @@ import { HORAS } from '../../../shared/data/horas';
 import { NoNegativeGlobal } from '../../../validator/noNegative.validator';
 import { ApiSFService } from '../../../services/api/apiSF.service';
 
+
 @Component({
   selector: 'app-fijacion',
   standalone: true,
+
   imports: [
     LeftNavComponent,
     PrimaryButtonComponent,
@@ -44,7 +46,6 @@ import { ApiSFService } from '../../../services/api/apiSF.service';
   styleUrl: './fijacion.component.css',
 })
 export default class FijacionComponent {
-
   constructor(
     private stateService: ActiveNumService,
     private stepperService: ActiveNumStepperService,
@@ -102,6 +103,9 @@ export default class FijacionComponent {
 
   //estado requerimiento
   smlmmv: number = 1300000;
+  //validaciones requerimientos capita y patrimonio
+  valid1: boolean = false;
+  valid2: boolean = false;
 
   showModalRequisito: boolean = false; //control para mostrar modal de alerta requerimiento de patrimonio y capital
   showModal: boolean = false; // Control para mostrar el modal intermedio
@@ -142,27 +146,6 @@ export default class FijacionComponent {
 
   //info selects
   selects = [
-    //cantidad vehiculos
-    {
-      name: 'cantidadVehiculos',
-      required: true,
-      placeholder: 'Lista desplegable de números',
-      value: '', // Valor seleccionado
-      options: this.generateOptions(15),
-      good: 'Selección correcta',
-      errorMessage: 'Cantidad de vehículos es requerido',
-      isDropdownOpen: false,
-    },
-    //select meses
-    {
-      name: 'duracionMeses',
-      required: true,
-      placeholder: 'Seleccione',
-      value: '', // Valor seleccionado
-      good: 'Selección correcta',
-      errorMessage: 'Duración en meses es requerido',
-      isDropdownOpen: false,
-    },
     //select clases vehiculos
     {
       name: 'idClaseVehiculo',
@@ -277,11 +260,14 @@ export default class FijacionComponent {
       11: [null, Validators.required],
     });
 
-    this.formGroup3 = this.fb.group({
-      capitalSocial: ['', [Validators.required, NoNegativeGlobal, OnlyNumberGlobal]],
-      patrimonioLiquido: ['', [Validators.required, NoNegativeGlobal, OnlyNumberGlobal]],
-      cantidadVehiculos: ['', Validators.required],
-    });
+    this.formGroup3 = this.fb.group(
+      {
+        capitalSocial: ['', Validators.required],
+        patrimonioLiquido: ['', Validators.required],
+        cantidadVehiculos: ['', Validators.required],
+      },
+      { validators: [NoNegativeGlobal] }
+    );
 
     this.formGroup4 = this.fb.group(
       {
@@ -301,7 +287,7 @@ export default class FijacionComponent {
         idAreaOperacion: ['', Validators.required],
         disponibilidadVehiculosEstimada: ['', Validators.required],
       },
-      { validators: [dateRangeValidator, NoNegativeGlobal, OnlyNumberGlobal] }
+      { validators: [dateRangeValidator, NoNegativeGlobal] }
     );
   }
 
@@ -363,16 +349,62 @@ export default class FijacionComponent {
     }));
   }
 
-  //formatear texto a int
-  convertToNumber(value: string) {
-    const textValue = parseInt(value, 10);
+  // FORMATEAR NUMBER A MONEY TYPE
+formatCurrency(value: number): string {
+  return new Intl.NumberFormat('es-CO', {
+    style: 'currency',
+    currency: 'COP',
+    minimumFractionDigits: 0,
+  }).format(value);
+}
 
-    if (isNaN(textValue)) {
-      return 0;
-    } else {
-      return textValue;
-    }
+// Remover el formato de moneda para obtener solo el número
+parseCurrency(value: string): number {
+  return Number(value.replace(/[^0-9.-]+/g, ''));
+}
+
+// Validar que solo se ingresen números y formatear al escribir
+onCurrencyInput(event: any, controlName: string): void {
+  const input = event.target;
+  let value = input.value;
+
+  // Eliminar cualquier letra o carácter no permitido
+  value = value.replace(/[^0-9.,]/g, '');
+
+  // Actualizar el valor del formulario sin el formato de moneda
+  const numericValue = this.parseCurrency(value);
+  this.formGroup3.get(controlName)?.setValue(numericValue);
+
+  // Reflejar el valor actualizado en el input sin el formato de moneda
+  input.value = value;
+}
+
+// Manejar el formato de moneda al perder el foco
+onCurrencyBlur(event: any, controlName: string, formGroup: FormGroup): void {
+  const input = event.target;
+  let value = formGroup.get(controlName)?.value;
+
+  // Formatear y actualizar el valor del input si el valor es válido
+  if (value !== null && value !== undefined && !isNaN(value)) {
+    input.value = this.formatCurrency(value);
   }
+}
+
+
+// Limpiar el valor formateado al enfocar el input
+onCurrencyFocus(event: any): void {
+  const input = event.target;
+  
+  // Eliminar el formato de moneda al enfocar para que el usuario pueda editar el número
+  const value = this.parseCurrency(input.value);
+  
+  // Mostrar el número sin formato
+  if (!isNaN(value)) {
+    input.value = value.toString();
+  }
+}
+
+
   // Método para cambiar el valor del menuleft
   changeActiveNum(newValue: string) {
     this.stateService.setActiveNum(newValue);
@@ -403,27 +435,24 @@ export default class FijacionComponent {
         console.log('entro');
 
         if (this.formGroup3.valid) {
+          this.valid1 =
+            this.formGroup3.get('capitalSocial')?.value >= 300 * this.smlmmv;
+          this.valid2 =
+            this.formGroup3.get('patrimonioLiquido')?.value < 180 * this.smlmmv;
 
-          const valid1 = this.formGroup3.get('capitalSocial')?.value >= (300*this.smlmmv);
-          const valid2 = this.formGroup3.get('patrimonioLiquido')?.value < (180*this.smlmmv);
-
-          if (valid1 && valid2) {
-            
+          if (this.valid1 && this.valid2) {
             this.changeActiveNum('1');
-          this.stepperService.setActiveNum(3);
+            this.stepperService.setActiveNum(3);
           } else {
-
-            console.log("no validado");
-            this.showModalRequisito = true;            
-
+            console.log('no validado');
+            this.showModalRequisito = true;
           }
-
-          
-
-          
         } else {
           this.submitted = true;
           this.formGroup3.markAllAsTouched();
+          console.log(
+            this.formGroup3.get('cantidadVehiculos')?.errors?.['required']
+          );
         }
 
         break;
@@ -749,7 +778,7 @@ export default class FijacionComponent {
       tarjetaProfesionalContador: this.formGroup2.value[11][0],
       capitalSocial: this.formGroup3.get('capitalSocial')?.value,
       patrimonioLiquido: this.formGroup3.get('patrimonioLiquido')?.value,
-      cantidadVehiculos: this.formGroup3.get('cantidadVehiculos')?.value.value,
+      cantidadVehiculos: this.formGroup3.get('cantidadVehiculos')?.value,
       contratos: contratos,
       documentos: documentos,
     };
@@ -764,6 +793,7 @@ export default class FijacionComponent {
       },
       (error) => {
         this.ShowLoadingModal = false;
+        this.showErrorModal = true;
         // Manejo del error
         console.error('Error al enviar los datos:', error);
       }
