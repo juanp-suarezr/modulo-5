@@ -55,4 +55,15 @@ export class TableComponent {
   onIdClick(id: number) {
     this.idClicked.emit(id);
   }
+
+  getColorForSemaforo(dias: number): string {
+    if (dias <= 3) {
+      return '#068460'; // 1-3 días: verde
+    } else if (dias >= 4 && dias <= 7) {
+      return '#FFAB00'; // 4-7 días: amarillo
+    } else if (dias >= 8) {
+      return '#A80521'; // 8-10 días: rojo
+    }
+    return 'gray'; // Default para valores inesperados
+  }
 }

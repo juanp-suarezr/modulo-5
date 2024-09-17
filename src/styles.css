@@ -55,14 +55,14 @@ h6 {
 /* Estilo para el scrollbar */
 ::-webkit-scrollbar {
     /* Ancho del scrollbar vertical */
-    width: 8px;
-    height: 8px;
+    width: 4px;
+    height: 4px;
     /* Altura del scrollbar horizontal */
 }
 
 /* Estilo para el scrollbar thumb */
 ::-webkit-scrollbar-thumb {
-    background-color: #888;
+    background-color: #004884;
     /* Color del scrollbar thumb */
     border-radius: 6px;
     /* Radio de borde del scrollbar thumb */
@@ -70,7 +70,7 @@ h6 {
 
 /* Estilo para el scrollbar track */
 ::-webkit-scrollbar-track {
-    background-color: #f1f1f1;
+    background-color: #E6EFFD;
     /* Color del scrollbar track */
 }
 

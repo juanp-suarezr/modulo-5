@@ -204,15 +204,7 @@ export default class FijacionComponent {
       console.log('Active step:', step);
     });
 
-    //traer los datos de la consulta, para roles
-    this.apiService.getAuthUserAndRoles().subscribe(
-      (response) => {
-        this.user = response.user;
-      },
-      (error) => {
-        console.error('Error fetching user data', error);
-      }
-    );
+    
 
     //datos selects
     this.horas = HORAS;
