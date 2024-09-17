@@ -106,6 +106,7 @@ export class AuthService {
   logout(): void {
     localStorage.removeItem('user'); // Elimina el usuario de localStorage
     this.currentUser = null; // Resetea el estado del usuario autenticado
+    location.reload();
   }
 
   isAuthenticated(): boolean {

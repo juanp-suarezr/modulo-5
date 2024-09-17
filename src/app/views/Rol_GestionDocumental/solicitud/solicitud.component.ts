@@ -1,3 +1,4 @@
+import { AuthService } from './../../../services/auth/auth.service';
 import {Component} from '@angular/core';
 import {FileUploadComponent} from "../../../components/file-upload/file-upload.component";
 import {InputText} from "../../../components/input/input.component";
@@ -40,12 +41,13 @@ export default class SolicitudComponent {
   constructor(
     private stateService: ActiveNumService,
     private stepperService: ActiveNumStepperService,
-    private apiService: ApiService,
+    private authService: AuthService,
     private fb: FormBuilder,
     private errorService: ErrorService,
     private router: Router,
     private route: ActivatedRoute,
   ) {
+    this.user = this.authService.currentUser; // Almacena el usuario actual desde el servicio de autenticación
   }
 
   //Objeto para manejar los active num del left menu y stepper.
@@ -297,15 +299,7 @@ export default class SolicitudComponent {
       console.log('Active step:', step);
     });
 
-    //Traer los datos de la consulta, para roles
-    this.apiService.getAuthUserAndRoles().subscribe(
-      (response) => {
-        this.user = response.user;
-      },
-      (error) => {
-        console.error('Error fetching user data', error);
-      }
-    );
+    
 
     //Validaciones segun el formulario
     this.formGroup1 = this.fb.group({

@@ -3,7 +3,55 @@
   <h3 class="text-primary1 !font-bold">
     Solicitudes
   </h3>
-  
+
+  <div class="card mt-2" *ngIf="hasSuperTransporteRole">
+    <!-- Filtros -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 px-4">
+      <!-- Select 1 -->
+      <div class="col-span-1">
+        <label for="filter1" class="text-primary3 font-medium h-full text-xs">Filtrar por categoría</label>
+        <select id="filter1"
+          class="mt-1 shadow-sm w-full p-2 bg-transparent border-2 border-secondary1 focus:outline-none focus:border-primary1 flex justify-between items-center">
+          <option value="">todas</option>
+          <option *ngFor="let option of categorias" :value="categorias.id">{{categorias.descripcion}}</option>
+        </select>
+      </div>
+
+      <!-- Input de búsqueda -->
+      <div class="col-span-1">
+        <label for="search" class="text-primary3 font-medium h-full text-xs">Buscar</label>
+        <input
+          class="mt-1 shadow-sm rounded-md w-full p-2 border-2 border-secondary1 focus:outline-none focus:border-primary1 bg-transparent"
+          type="text" placeholder="Buscar por ID o empresa solicitante">
+      </div>
+
+      <!-- Select 2 -->
+      <div class="col-span-1">
+        <label for="filter2" class="text-primary3 font-medium h-full text-xs">Filtrar por estado</label>
+        <select id="filter2"
+          class="mt-1 shadow-sm w-full p-2 bg-transparent border-2 border-secondary1 focus:outline-none focus:border-primary1 flex justify-between items-center">
+          <option value="">todos</option>
+          <option *ngFor="let option of estadoSolicitud" :value="estadoSolicitud.id">{{estadoSolicitud.descripcion}}
+          </option>
+        </select>
+      </div>
+
+    </div>
+
+    <!-- Botones de filtros -->
+    <div class="flex justify-end p-4 space-x-4">
+      <!-- Botón Limpiar -->
+      <button
+        class="bg-secondary1 text-primary2 inline-flex items-center justify-center px-8 py-1 hover:bg-primary2 hover:text-white font-medium rounded-full text-[16px] work-sans text-center"
+        (click)="clearFilters()">
+        Limpiar Filtros
+      </button>
+      
+      <app-primary-button class="" type="button" (click)="applyFilters()">Aplicar Filtros</app-primary-button>
+    </div>
+  </div>
+
+
   <div class="card mt-6 pb-4 mb-4 hidden sm:block" *ngIf="loading">
     <table class="min-w-full whitespace-no-wrap border-2 border-secondary1">
       <thead>
@@ -32,12 +80,12 @@
             <!-- Recorremos los headers y mostramos las filas correspondientes -->
             <div class="flex justify-between" *ngFor="let header of headers; let i = index">
               <div class="w-1/2 font-semibold text-primary2 p-2" [innerHTML]="header.titulo"></div>
-  
+
               <!-- Condicionales de visualización aplicados -->
               <div class="w-1/2 p-2">
                 <!-- Condición: datos con rol de escritura territorial -->
                 <p *ngFor="let header of headers" class="p-2"><p-skeleton /></p>
-    
+
               </div>
             </div>
           </div>
@@ -45,7 +93,7 @@
       </div>
     </div>
   </div>
-  
+
 
   <div class="mb-4" *ngIf="loading == false">
     <app-table [data]="response" [headers]="headers" (idClicked)="onIdClicked($event)"></app-table>

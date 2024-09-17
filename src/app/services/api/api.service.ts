@@ -130,6 +130,11 @@ export class ApiService {
     return this.http.get(`${this.baseUrl}/catalogos/Forma%20de%20Pago`);
   }
 
+  //estados solicitud
+  getEstados(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/catalogos/Estados%20de%20Solicitud`);
+  }
+
 
 
 
