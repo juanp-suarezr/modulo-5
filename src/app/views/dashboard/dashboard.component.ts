@@ -17,6 +17,7 @@ import { ApiSFService } from '../../services/api/apiSF.service';
 import { SkeletonModule } from 'primeng/skeleton';
 import { Router } from '@angular/router';
 import { first } from 'rxjs';
+import { PrimaryButtonComponent } from "../../components/primary-button/primary-button.component";
 
 @Component({
   selector: 'app-dashboard',
@@ -30,7 +31,8 @@ import { first } from 'rxjs';
     PaginatorComponent,
     TableComponent,
     SkeletonModule,
-  ],
+    PrimaryButtonComponent
+],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css',
 })
@@ -40,6 +42,15 @@ export default class DashboardComponent {
   user: any;
   loading: boolean = true; // Estado de carga
 
+
+  //arrays 
+  categorias: any;
+  estadoSolicitud: any;
+  // Variables de filtro
+  filterCategory: string = '';
+  filterStatus: string = '';
+  searchQuery: string = '';
+
   headers = [
     { id: 1, titulo: 'ID' },
     { id: 2, titulo: 'Fecha solicitud <br> (dd/mm/aaaa)' },
@@ -47,6 +58,7 @@ export default class DashboardComponent {
     { id: 4, titulo: 'Territorial que <br> emitió la solicitud' },
     { id: 5, titulo: 'Categoría de <br> solicitud' },
   ];
+  
 
   constructor(
     private apiService: ApiService,
@@ -57,6 +69,15 @@ export default class DashboardComponent {
     private cdRef: ChangeDetectorRef // Inyecta el ChangeDetectorRef
   ) {
     this.user = this.authService.currentUser; // Almacena el usuario actual desde el servicio de autenticación
+  }
+
+  // Getter para verificar el rol
+  get hasSuperTransporteRole(): boolean {
+    return (
+      this.user?.roles?.some((role: any) =>
+        role.roleName.includes('ROLE_SUPERTRANSPORTE')
+      ) ?? false
+    );
   }
 
   ngOnInit(): void {
@@ -74,6 +95,7 @@ export default class DashboardComponent {
     this.apiService.getCategorias().subscribe(
       (response) => {
         console.log(response); // Muestra la respuesta en la consola
+        this.categorias = response.detalle;
         this.getSolicitudes(response); // Llama a otro método para manejar los datos de solicitudes
       },
       (error) => {
@@ -110,30 +132,57 @@ export default class DashboardComponent {
             { id: 9, titulo: 'Número<br> radicado' },
           ];
 
-          this.response = response.map((clase: any) => ({
-            id: clase.id,
-            fecha: clase.fechaSolicitud,
-            empresa: clase.nombreEmpresa,
-            territorial: clase.territorial,
-            estado: clase.estado,
-            categoria:
-              res.detalle.find(
-                (item: any) => item.id == clase.idCategoriaSolicitud
-              )?.descripcion === 'Fijación'
-                ? 'Fijación de Capacidad Transportadora'
-                : res.detalle.find(
-                    (item: any) => item.id == clase.idCategoriaSolicitud
-                  )?.descripcion === 'Incremento'
-                ? 'Incremento de Capacidad Transportadora'
-                : 'Sin categoría',
-            semaforo: clase.idCategoriaSolicitud,
-            radicado: clase.idCategoriaSolicitud,
-          }));
+          this.apiService.getEstados().subscribe(
+            (responseEstados) => {
+              this.estadoSolicitud = responseEstados.detalle;
+              this.response = response.map((clase: any) => {
+                // Convertir las fechas a milisegundos
+                const fechaHoy = new Date().valueOf(); // Fecha actual en milisegundos
+                const fechaSolicitud = new Date(clase.fechaSolicitud).valueOf(); // Fecha de solicitud en milisegundos
 
-          this.loading = false; // Termina la carga de datos
-          this.cdRef.detectChanges(); // Forzar la detección de cambios
+                // Calcular la diferencia en milisegundos
+                const diferenciaMilisegundos = fechaHoy - fechaSolicitud;
+
+                // Convertir la diferencia de milisegundos a días
+                const diferenciaDias = Math.floor(
+                  diferenciaMilisegundos / (1000 * 60 * 60 * 24)
+                );
+
+                return {
+                  id: clase.id,
+                  fecha: clase.fechaSolicitud,
+                  empresa: clase.nombreEmpresa,
+                  territorial: clase.territorial,
+                  estado: responseEstados.detalle.find(
+                    (item: any) => item.id == clase.idEstadoSolicitud
+                  )?.descripcion,
+                  categoria:
+                    res.detalle.find(
+                      (item: any) => item.id == clase.idCategoriaSolicitud
+                    )?.descripcion === 'Fijación'
+                      ? 'Fijación de Capacidad Transportadora'
+                      : res.detalle.find(
+                          (item: any) => item.id == clase.idCategoriaSolicitud
+                        )?.descripcion === 'Incremento'
+                      ? 'Incremento de Capacidad Transportadora'
+                      : 'Sin categoría',
+                  semaforo: diferenciaDias, // Diferencia en días entre la fecha actual y la fecha de solicitud
+                  radicado: clase.numeroRadicado,
+                };
+              });
+
+              console.log(this.response);
+
+              this.loading = false; // Termina la carga de datos
+              this.cdRef.detectChanges(); // Forzar la detección de cambios
+            },
+            (error) => {
+              this.loading = false; // Termina la carga de datos en caso de error
+              this.cdRef.detectChanges(); // Forzar la detección de cambios
+              console.error('Error fetching user data', error);
+            }
+          );
         } else {
-          console.log(response);
           this.response = response.map((clase: any) => ({
             id: clase.id,
             fecha: clase.fechaSolicitud,
@@ -164,6 +213,31 @@ export default class DashboardComponent {
     );
   }
 
+
+  // Método para aplicar filtros
+  applyFilters() {
+    console.log('Aplicando filtros:', {
+      category: this.filterCategory,
+      status: this.filterStatus,
+      searchQuery: this.searchQuery
+    });
+    // Lógica para filtrar los datos
+  }
+
+  // Método para limpiar los filtros
+  clearFilters() {
+    this.filterCategory = '';
+    this.filterStatus = '';
+    this.searchQuery = '';
+    console.log('Filtros limpiados');
+    // Lógica para reiniciar los valores en la UI
+  }
+
+  //Metodo para redirigir el id a la vista solicitud
+  onIdClicked(id: number): void {
+    this.router.navigate(['/solicitud', id]);
+  }
+
   //ejemplo uso update
   updateItem(id: number, data: any): void {
     this.apiService.updateItem(id, data).subscribe(
@@ -176,8 +250,5 @@ export default class DashboardComponent {
     );
   }
 
-  //Metodo para redirigir el id a la vista solicitud
-  onIdClicked(id: number): void {
-    this.router.navigate(['/solicitud', id]);
-  }
+  
 }

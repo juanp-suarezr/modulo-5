@@ -26,7 +26,6 @@ import { HORAS } from '../../../shared/data/horas';
 import { NoNegativeGlobal } from '../../../validator/noNegative.validator';
 import { ApiSFService } from '../../../services/api/apiSF.service';
 
-
 @Component({
   selector: 'app-fijacion',
   standalone: true,
@@ -205,15 +204,7 @@ export default class FijacionComponent {
       console.log('Active step:', step);
     });
 
-    //traer los datos de la consulta, para roles
-    this.apiService.getAuthUserAndRoles().subscribe(
-      (response) => {
-        this.user = response.user;
-      },
-      (error) => {
-        console.error('Error fetching user data', error);
-      }
-    );
+    
 
     //datos selects
     this.horas = HORAS;
@@ -349,61 +340,50 @@ export default class FijacionComponent {
     }));
   }
 
-  // FORMATEAR NUMBER A MONEY TYPE
-formatCurrency(value: number): string {
-  return new Intl.NumberFormat('es-CO', {
-    style: 'currency',
-    currency: 'COP',
-    minimumFractionDigits: 0,
-  }).format(value);
-}
+  formattedValues: { [key: string]: string } = {};
 
-// Remover el formato de moneda para obtener solo el número
-parseCurrency(value: string): number {
-  return Number(value.replace(/[^0-9.-]+/g, ''));
-}
-
-// Validar que solo se ingresen números y formatear al escribir
-onCurrencyInput(event: any, controlName: string): void {
-  const input = event.target;
-  let value = input.value;
-
-  // Eliminar cualquier letra o carácter no permitido
-  value = value.replace(/[^0-9.,]/g, '');
-
-  // Actualizar el valor del formulario sin el formato de moneda
-  const numericValue = this.parseCurrency(value);
-  this.formGroup3.get(controlName)?.setValue(numericValue);
-
-  // Reflejar el valor actualizado en el input sin el formato de moneda
-  input.value = value;
-}
-
-// Manejar el formato de moneda al perder el foco
-onCurrencyBlur(event: any, controlName: string, formGroup: FormGroup): void {
-  const input = event.target;
-  let value = formGroup.get(controlName)?.value;
-
-  // Formatear y actualizar el valor del input si el valor es válido
-  if (value !== null && value !== undefined && !isNaN(value)) {
-    input.value = this.formatCurrency(value);
+  // Formatear número como moneda en pesos colombianos
+  formatCurrency(value: number): string {
+    return new Intl.NumberFormat('es-CO', {
+      style: 'currency',
+      currency: 'COP',
+      minimumFractionDigits: 0,
+    }).format(value);
   }
-}
 
-
-// Limpiar el valor formateado al enfocar el input
-onCurrencyFocus(event: any): void {
-  const input = event.target;
-  
-  // Eliminar el formato de moneda al enfocar para que el usuario pueda editar el número
-  const value = this.parseCurrency(input.value);
-  
-  // Mostrar el número sin formato
-  if (!isNaN(value)) {
-    input.value = value.toString();
+  // Quitar el formato de moneda para obtener solo el número
+  parseCurrency(value: string): number {
+    return Number(value.replace(/[^0-9]+/g, '')); // Solo números
   }
-}
 
+  // Actualizar el valor del input mientras se escribe (con formateo instantáneo)
+  onCurrencyInput(event: any, controlName: string, formGroup: FormGroup): void {
+    const input = event.target;
+    let value = input.value;
+
+    // Eliminar cualquier carácter no permitido (solo números)
+    value = value.replace(/[^0-9]/g, '');
+
+    // Si no hay valor, establecer a vacío para permitir eliminar
+    if (!value) {
+      input.value = '';
+      formGroup.get(controlName)?.setValue(null);
+      return;
+    }
+
+    // Convertir el valor a número y actualizar en el formulario
+    const numericValue = this.parseCurrency(value);
+    formGroup.get(controlName)?.setValue(numericValue);
+
+    // Formatear y mostrar el valor instantáneamente
+    input.value = this.formatCurrency(numericValue);
+  }
+
+  // No realizar ningún cambio al enfocar, pero mantener el valor
+  onCurrencyFocus(event: any): void {
+    const input = event.target;
+    input.value = input.value; // Mantiene el valor actual al enfocar
+  }
 
   // Método para cambiar el valor del menuleft
   changeActiveNum(newValue: string) {
