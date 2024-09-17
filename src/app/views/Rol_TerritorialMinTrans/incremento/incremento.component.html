@@ -317,30 +317,33 @@
             <!-- input -->
             <div class="mt-2 relative w-full">
               <input
-                class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent disabled:bg-secondary3 disabled:border-secondary2 disabled:text-secondary2"
-                type="number" formControlName="capital_social" required placeholder="Ingrese número">
+                class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent"
+                type="text" formControlName="capital_social" placeholder="$"
+                (input)="onCurrencyInput($event, 'capital_social', formGroup3)"
+                (focus)="onCurrencyFocus($event)"/>
               <div class="w-full relative">
                 <!-- Icono de error (rojo) -->
                 <span
                   *ngIf="formGroup3.get('capital_social')?.invalid && (formGroup3.get('capital_social')?.touched || submitted)"
                   class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
-                  <span class="pi pi-exclamation-circle text-error text-[24px]"></span>
-                </span>
+                                <span class="pi pi-exclamation-circle text-error text-[24px]"></span>
+                            </span>
 
                 <!-- Icono de éxito (verde) -->
                 <span
                   *ngIf="formGroup3.get('capital_social')?.valid && (formGroup3.get('capital_social')?.touched || submitted)"
                   class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
-                  <span class="pi pi-check-circle text-success text-[24px]"></span>
-                </span>
+                                <span class="pi pi-check-circle text-success text-[24px]"></span>
+                            </span>
               </div>
-              <span *ngIf="submitted && formGroup3.get('capital_social')?.errors?.['required']" class="text-error">
-                Capital social es obligatorio
-              </span>
+              <span *ngIf="submitted && formGroup3.get('capital_social')?.errors?.['required']"
+                    class="text-error">
+                            Capital Social es obligatorio
+                        </span>
               <span
                 *ngIf="formGroup3.get('capital_social')?.hasError('negativeNumber') && (formGroup3.get('capital_social')?.touched || submitted)"
                 class="text-error">
-                El numeró no puede ser negativo
+                            El numeró no puede ser negativo
               </span>
             </div>
 
@@ -373,30 +376,33 @@
             <!-- input -->
             <div class="mt-2 relative w-full">
               <input
-                class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent disabled:bg-secondary3 disabled:border-secondary2 disabled:text-secondary2"
-                type="number" formControlName="patrimonio_liquido" required placeholder="Ingrese número">
+                class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent"
+                type="text" formControlName="patrimonio_liquido" placeholder="$"
+                (input)="onCurrencyInput($event, 'patrimonio_liquido', formGroup3)"
+                (focus)="onCurrencyFocus($event)"/>
               <div class="w-full relative">
                 <!-- Icono de error (rojo) -->
                 <span
                   *ngIf="formGroup3.get('patrimonio_liquido')?.invalid && (formGroup3.get('patrimonio_liquido')?.touched || submitted)"
                   class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
-                  <span class="pi pi-exclamation-circle text-error text-[24px]"></span>
-                </span>
+                                <span class="pi pi-exclamation-circle text-error text-[24px]"></span>
+                            </span>
 
                 <!-- Icono de éxito (verde) -->
                 <span
                   *ngIf="formGroup3.get('patrimonio_liquido')?.valid && (formGroup3.get('patrimonio_liquido')?.touched || submitted)"
                   class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
-                  <span class="pi pi-check-circle text-success text-[24px]"></span>
-                </span>
+                                <span class="pi pi-check-circle text-success text-[24px]"></span>
+                            </span>
               </div>
-              <span *ngIf="submitted && formGroup3.get('patrimonio_liquido')?.errors?.['required']" class="text-error">
-                Capital social es obligatorio
-              </span>
+              <span *ngIf="submitted && formGroup3.get('patrimonio_liquido')?.errors?.['required']"
+                    class="text-error">
+                            Patrimonio Liquido es obligatorio
+                        </span>
               <span
                 *ngIf="formGroup3.get('patrimonio_liquido')?.hasError('negativeNumber') && (formGroup3.get('patrimonio_liquido')?.touched || submitted)"
                 class="text-error">
-                El numeró no puede ser negativo
+                            El numeró no puede ser negativo
               </span>
             </div>
 
@@ -430,19 +436,19 @@
               <div class="w-full relative">
                 <!-- Icono de error (rojo) -->
                 <span
-                  *ngIf="formGroup1.get('nombreEmpresa')?.invalid && (formGroup1.get('nombreEmpresa')?.touched || submitted)"
+                  *ngIf="formGroup3.get('nombreEmpresa')?.invalid && (formGroup3.get('nombreEmpresa')?.touched || submitted)"
                   class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
                             <span class="pi pi-exclamation-circle text-error text-[24px]"></span>
                         </span>
 
                 <!-- Icono de éxito (verde) -->
                 <span
-                  *ngIf="formGroup1.get('nombreEmpresa')?.valid && (formGroup1.get('nombreEmpresa')?.touched || submitted)"
+                  *ngIf="formGroup3.get('nombreEmpresa')?.valid && (formGroup3.get('nombreEmpresa')?.touched || submitted)"
                   class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
                             <span class="pi pi-check-circle text-success text-[24px]"></span>
                         </span>
               </div>
-              <span *ngIf="submitted && formGroup1.get('nombreEmpresa')?.errors?.['required']" class="text-error">
+              <span *ngIf="submitted && formGroup3.get('nombreEmpresa')?.errors?.['required']" class="text-error">
                         Nombre de empresa es obligatorio
                     </span>
             </div>
@@ -468,34 +474,20 @@
                 type="text" formControlName="nit" required placeholder="Ingrese NIT">
               <div class="w-full relative">
                 <!-- Icono de error (rojo) -->
-                <span *ngIf="formGroup1.get('nit')?.invalid && (formGroup1.get('nit')?.touched || submitted)"
+                <span *ngIf="formGroup3.get('nit')?.invalid && (formGroup3.get('nit')?.touched || submitted)"
                       class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
                             <span class="pi pi-exclamation-circle text-error text-[24px]"></span>
                         </span>
 
                 <!-- Icono de éxito (verde) -->
-                <span *ngIf="formGroup1.get('nit')?.valid && (formGroup1.get('nit')?.touched || submitted)"
+                <span *ngIf="formGroup3.get('nit')?.valid && (formGroup3.get('nit')?.touched || submitted)"
                       class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
                             <span class="pi pi-check-circle text-success text-[24px]"></span>
                         </span>
               </div>
-              <span *ngIf="submitted && formGroup1.get('nit')?.errors?.['required']" class="text-error">
+              <span *ngIf="submitted && formGroup3.get('nit')?.errors?.['required']" class="text-error">
                         NIT de empresa es obligatorio
                     </span>
-            </div>
-            <!-- texto informativo -->
-            <div class="flex inline-flex md:gap-3 gap-2 h-full w-full mt-2">
-
-                    <span class="lg:w-[12%] sm:w-[12%] w-[10%] h-full flex justify-center lg:px-1 m-auto">
-                        <img class="w-full m-auto" src="assets/iconoInfo.svg">
-                    </span>
-
-              <p class="text-primary1 work-sans text-[11px] mt-2 w-auto">
-                El NIT es necesario para verificar si ya existe una capacidad transportadora asignada a la
-                empresa. En caso de que exista, no será posible asignar una nueva capacidad relacionada con la
-                empresa.
-              </p>
-
             </div>
 
           </div>
@@ -700,48 +692,27 @@
 
         </div>
 
-        <!-- select 1 -->
+        <!-- Select 1 -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
 
           <p class="text-primary3 font-semibold h-full">
             Duración en meses*
           </p>
 
-          <!-- select -->
+          <!-- input que muestra la duración -->
           <div class="w-full relative mt-2">
+            <input
+              class="shadow-sm rounded-md w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent disabled:bg-secondary3 disabled:border-secondary2 disabled:text-secondary2"
+              type="number" formControlName="duracionMeses" placeholder="Duración en meses">
 
-            <div (click)="toggleDropdown(0)"
-                 [ngClass]="{'text-error !border border-error': formGroup4.get('duracion')?.invalid && (formGroup4.get('duracion')?.touched || formGroup4.get('duracion')?.dirty)}"
-                 class="cursor-pointer shadow-sm min-w-[160px] w-full p-[10px] h-[40px] bg-transparent border-2 border-secondary1 focus:outline-none focus:border-primary1 flex justify-between items-center">
-              <span *ngIf="!selects[0].value" class="font-[500] text-xs">Seleccione</span>
-              <span *ngIf="selects[0].value" class="text-normal">{{
-                  formGroup4.get('duracion')?.value.label
-                }}</span>
-
-              <i class="pi pi-chevron-down text-primary2 text-xs"
-                 [ngClass]="{'!text-error': formGroup4.get('duracion')?.invalid && (formGroup4.get('duracion')?.touched || formGroup4.get('duracion')?.dirty)}"></i>
-            </div>
-
-            <ul *ngIf="selects[0].isDropdownOpen"
-                class="absolute z-20 bg-secondary4 border border-primary1 shadow-md rounded-bl-md rounded-br-md w-full mt-1 max-h-48 overflow-y-auto">
-              <li *ngFor="let option of meses" (click)="selectOption(0, option, 'duracion')"
-                  class="cursor-pointer px-4 py-2 hover:bg-primary1 hover:text-white">
-                {{ option.label }}
-              </li>
-            </ul>
-            <!-- Mensajes de validación -->
-            <span class="text-sm text-success"
-                  *ngIf="formGroup4.get('duracion')?.valid && formGroup4.get('duracion')?.touched">
-              Selección válida
-            </span>
-            <span class="text-sm text-error"
-                  *ngIf="formGroup4.get('duracion')?.invalid && (formGroup4.get('duracion')?.touched || formGroup4.get('duracion')?.dirty)">
-              {{ selects[0].errorMessage }}
+            <span class="lg:text-xs sm:text-[10px] text-success">
+              Duración calculada automáticamente.
             </span>
 
           </div>
 
         </div>
+
       </div>
 
       <!-- contenido 3 -->
@@ -840,32 +811,40 @@
           <div class="mt-2 relative w-full">
             <input
               class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent"
-              type="number" formControlName="val_contrato" required placeholder="$">
+              type="text" formControlName="valorContrato" placeholder="$"
+              (input)="onCurrencyInput($event, 'valorContrato', formGroup4)"
+              (focus)="onCurrencyFocus($event)"/>
             <div class="w-full relative">
               <!-- Icono de error (rojo) -->
               <span
-                *ngIf="formGroup4.get('val_contrato')?.invalid && (formGroup4.get('val_contrato')?.touched || submitted)"
+                *ngIf="formGroup4.get('valorContrato')?.invalid && (formGroup4.get('valorContrato')?.touched || submitted)"
                 class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
-                <span class="pi pi-exclamation-circle text-error text-[24px]"></span>
-              </span>
+                                <span class="pi pi-exclamation-circle text-error text-[24px]"></span>
+                            </span>
 
               <!-- Icono de éxito (verde) -->
               <span
-                *ngIf="formGroup4.get('val_contrato')?.valid && (formGroup4.get('val_contrato')?.touched || submitted)"
+                *ngIf="formGroup4.get('valorContrato')?.valid && (formGroup4.get('valorContrato')?.touched || submitted)"
                 class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
-                <span class="pi pi-check-circle text-success text-[24px]"></span>
-              </span>
+                                <span class="pi pi-check-circle text-success text-[24px]"></span>
+                            </span>
             </div>
-            <span *ngIf="submitted && formGroup4.get('val_contrato')?.errors?.['required']" class="text-error">
-              Valor del Contrato es obligatorio
+
+            <span *ngIf="submitted && formGroup4.get('valorContrato')?.errors?.['required']"
+                  class="text-error">
+                            Valor Contrato es obligatorio
             </span>
+
             <span
-              *ngIf="formGroup4.get('val_contrato')?.hasError('negativeNumber') && (formGroup4.get('val_contrato')?.touched || submitted)"
+              *ngIf="formGroup4.get('valorContrato')?.hasError('negativeNumber') && (formGroup4.get('valorContrato')?.touched || submitted)"
               class="text-error">
-              El numeró no puede ser negativo
+                            El numeró no puede ser negativo
             </span>
+
           </div>
+
         </div>
+
       </div>
 
       <!-- contenido 4 -->
@@ -1011,7 +990,14 @@
 
 </div>
 
-<!-- Primer Modal -->
+<!-- APP ALERT REQUISITO CAPITAL SOCIAL Y PATRIMONIO -->
+<app-alert [showModal]="showModalRequisito" title="No cumple requisito" subtitle=""
+           message="{{valid1 ? dynamicTextAlertValid2 :valid2 ? dynamicTextAlertValid1 : 'No se cumple con el requisito mínimo de capital social o patrimonio liquido '}}"
+           cancelButtonText="Cerrar" [showCancelButton]="true" [showFirstButton]="false"
+           (close)="showModalRequisito = false"
+           textColor="text-waring" TypeAlert="warning"></app-alert>
+
+<!-- modal de confirmación -->
 <app-alert [showModal]="showModal" title="¿Está seguro de enviar?" subtitle="¿Está seguro de enviar?"
            [showSubtitle]="false" [message]="'Una vez enviado, no podrá cambiar la información.'" buttonText="Enviar"
            [showFirstButton]="true" cancelButtonText="Cancelar" [showCancelButton]="true" TypeAlert="success"
@@ -1020,10 +1006,26 @@
            (closeByButton2)="handleCloseByButton2()" (closeByIcon)="handleCloseByIcon()"
            (closeByBackdrop)="handleCloseByBackdrop()" (close)="showModal = false"></app-alert>
 
-<!-- Final Modal -->
+
+<!-- modal de loading -->
+<app-alert [showModal]="ShowLoadingModal" title="Verificando datos" subtitle="Un momento por favor."
+           message="Se está guardando los datos enviados" [showFirstButton]="false" [showCancelButton]="false"
+           TypeAlert="loader"></app-alert>
+
+
+<!-- modal final -->
 <app-alert [showModal]="showFinalModal" title="Envío exitoso" textColor="text-success" [showSubtitle]="false"
            [message]="'Su solicitud ha sido enviada exitosamente, se le asignará un radicado para su trámite'"
            buttonText="Continuar" [showFirstButton]="true" [showCancelButton]="false" TypeAlert="success"
+           (close)="handleClose()" (closeByButton1)="finalStep()" (closeByButton2)="handleCloseByButton2()"
+           (closeByIcon)="handleCloseByIcon()" (closeByBackdrop)="handleCloseByBackdrop()"
+           (close)="showFinalModal = false"></app-alert>
+
+<!-- modal error -->
+<app-alert [showModal]="showErrorModal" title="Error en el envió de datos" textColor="text-error" [showSubtitle]="false"
+           [message]="'Estamos experimentando inconvenientes técnicos con el envió de la solicitud, por favor intente más tarde'"
+           buttonText="Continuar" [showFirstButton]="true" [showCancelButton]="false" TypeAlert="error"
            (close)="handleClose()"
-           (closeByButton1)="finalStep()" (closeByButton2)="handleCloseByButton2()" (closeByIcon)="handleCloseByIcon()"
-           (closeByBackdrop)="handleCloseByBackdrop()" (close)="showFinalModal = false"></app-alert>
+           (closeByButton1)="showErrorModal = false" (closeByButton2)="handleCloseByButton2()"
+           (closeByIcon)="handleCloseByIcon()" (closeByBackdrop)="handleCloseByBackdrop()"
+           (close)="showErrorModal = false"></app-alert>
