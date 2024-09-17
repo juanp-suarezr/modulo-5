@@ -1,5 +1,5 @@
 <div class="sm:grid sm:grid-cols-10 gap-4" *ngIf="user.roles[0].roleName == 'ROLE_ESCRITURA_MIN'"
-  xmlns="http://www.w3.org/1999/html">
+     xmlns="http://www.w3.org/1999/html">
 
   <div class="md:col-span-2 sm:col-span-3 w-auto sm:mt-16 mt-12 mb-12">
     <app-left-nav [data]="infoMenu" active="{{activeNum}}"></app-left-nav>
@@ -35,9 +35,9 @@
               nueva capacidad*
             </p>
 
-          <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" mimes=".pdf"
-            [error]="errorStates[1]" (fileSelected)="onFileSelected($event, 1)"></app-file-upload>
-        </div>
+            <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" mimes=".pdf"
+                             [error]="errorStates[1]" (fileSelected)="onFileSelected($event, 1)"></app-file-upload>
+          </div>
 
           <!-- cargue 2 -->
           <div class="w-full flex flex-col justify-center items-start pt-6 my-auto mb-2 h-full">
@@ -49,7 +49,7 @@
             </p>
 
             <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" [maxFiles]="1" mimes=".pdf"
-              [error]="errorStates[2]" (fileSelected)="onFileSelected($event, 2)"></app-file-upload>
+                             [error]="errorStates[2]" (fileSelected)="onFileSelected($event, 2)"></app-file-upload>
           </div>
 
         </div>
@@ -67,7 +67,7 @@
             </p>
 
             <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" [maxFiles]="1" mimes=".pdf"
-              [error]="errorStates[3]" (fileSelected)="onFileSelected($event, 3)"></app-file-upload>
+                             [error]="errorStates[3]" (fileSelected)="onFileSelected($event, 3)"></app-file-upload>
           </div>
 
           <!-- cargue 4 -->
@@ -79,7 +79,7 @@
             </p><br>
 
             <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" [maxFiles]="1" mimes=".pdf"
-              [error]="errorStates[4]" (fileSelected)="onFileSelected($event, 4)"></app-file-upload>
+                             [error]="errorStates[4]" (fileSelected)="onFileSelected($event, 4)"></app-file-upload>
           </div>
 
         </div>
@@ -97,7 +97,7 @@
             </p>
 
             <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" [maxFiles]="1" mimes=".pdf"
-              [error]="errorStates[5]" (fileSelected)="onFileSelected($event, 5)"></app-file-upload>
+                             [error]="errorStates[5]" (fileSelected)="onFileSelected($event, 5)"></app-file-upload>
           </div>
 
           <!-- cargue 6 -->
@@ -108,7 +108,7 @@
             </p>
 
             <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" [maxFiles]="1" mimes=".pdf"
-              [error]="errorStates[6]" (fileSelected)="onFileSelected($event, 6)"></app-file-upload>
+                             [error]="errorStates[6]" (fileSelected)="onFileSelected($event, 6)"></app-file-upload>
           </div>
 
         </div>
@@ -141,7 +141,7 @@
             </p>
 
             <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" mimes=".pdf" [maxFiles]="1"
-              [error]="errorStates[7]" (fileSelected)="onFileSelected($event, 7)"></app-file-upload>
+                             [error]="errorStates[7]" (fileSelected)="onFileSelected($event, 7)"></app-file-upload>
           </div>
 
           <!-- cargue 8 -->
@@ -152,7 +152,7 @@
             </p>
 
             <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" mimes=".pdf" [maxFiles]="1"
-              [error]="errorStates[8]" (fileSelected)="onFileSelected($event, 8)"></app-file-upload>
+                             [error]="errorStates[8]" (fileSelected)="onFileSelected($event, 8)"></app-file-upload>
           </div>
         </div>
 
@@ -168,7 +168,7 @@
             </p>
 
             <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" mimes=".pdf" [maxFiles]="1"
-              [error]="errorStates[9]" (fileSelected)="onFileSelected($event, 9)"></app-file-upload>
+                             [error]="errorStates[9]" (fileSelected)="onFileSelected($event, 9)"></app-file-upload>
           </div>
 
           <!-- cargue 10 -->
@@ -179,7 +179,7 @@
             </p>
 
             <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" mimes=".pdf" [maxFiles]="1"
-              [error]="errorStates[10]" (fileSelected)="onFileSelected($event, 10)"></app-file-upload>
+                             [error]="errorStates[10]" (fileSelected)="onFileSelected($event, 10)"></app-file-upload>
           </div>
         </div>
 
@@ -195,7 +195,7 @@
             </p>
 
             <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" mimes=".pdf" [maxFiles]="1"
-              [error]="errorStates[11]" (fileSelected)="onFileSelected($event, 11)"></app-file-upload>
+                             [error]="errorStates[11]" (fileSelected)="onFileSelected($event, 11)"></app-file-upload>
           </div>
           <!-- combo box lg -->
           <div class="w-full lg:flex flex-col justify-center items-start pt-6 my-auto mb-2 h-full hidden">
@@ -214,13 +214,15 @@
 
             <div class="w-full flex flex-wrap gap-2 justify-center items-start pt-6 my-auto">
               <input-text class="flex-auto w-full lg:w-1/3 mt-2 cursor-pointer" [input]="inputs[0]" [index]="0"
-                [error]="errorStates[0]" (inputChange)="onInputChange($event.index, $event.event)"></input-text>
+                          [error]="errorStates[0]"
+                          (inputChange)="onInputChange($event.index, $event.event)"></input-text>
 
               <app-select class="flex-1 w-full lg:w-1/3 mt-2 cursor-pointer" [input]="inputs[1]" [index]="1"
-                [error]="errorStates[1]" (inputChange)="onInputChange($event.index, $event.event)"></app-select>
+                          [error]="errorStates[1]"
+                          (inputChange)="onInputChange($event.index, $event.event)"></app-select>
 
               <input-text class="flex-auto w-full lg:w-1/3 mt-2" [input]="inputs[2]" [index]="2"
-                [error]="errorStates[2]" [disabled]="true"></input-text>
+                          [error]="errorStates[2]" [disabled]="true"></input-text>
             </div>
 
             <!-- texto informativo -->
@@ -249,9 +251,11 @@
               <div class="w-full flex flex-wrap gap-2 justify-center items-start pt-6 my-auto">
 
                 <input-text class="flex-1 w-full mt-2 cursor-pointer" [input]="inputs[0]" [index]="0"
-                  [error]="errorStates[0]" (inputChange)="onInputChange($event.index, $event.event)"></input-text>
+                            [error]="errorStates[0]"
+                            (inputChange)="onInputChange($event.index, $event.event)"></input-text>
                 <app-select class="flex-1 w-full mt-2 cursor-pointer" [input]="inputs[1]" [index]="1"
-                  [error]="errorStates[1]" (inputChange)="onInputChange($event.index, $event.event)"></app-select>
+                            [error]="errorStates[1]"
+                            (inputChange)="onInputChange($event.index, $event.event)"></app-select>
 
 
               </div>
@@ -260,7 +264,7 @@
                 {{ selectedPercentage }} de propiedad de la empresa*
               </p>
               <input-text class="flex-1 w-full mt-2" [input]="inputs[2]" [index]="2" [error]="errorStates[2]"
-                [disabled]="true"></input-text>
+                          [disabled]="true"></input-text>
             </div>
 
             <!-- texto informativo -->
@@ -285,7 +289,7 @@
     <!-- formulario 3 -->
     <ng-template #content3>
       <form [formGroup]="formGroup3" class="px-4 md:pl-16 md:pe-16 mt-6 active1 mb-6" *ngIf="activeStep == 3"
-        (ngSubmit)="changeActiveStep(4)">
+            (ngSubmit)="changeActiveStep(4)">
         <div class="col-span-2">
           <p class="font-bold">Digitar los siguientes campos*</p>
           <p class="text-primary4 font-[500]">Los campos marcados con * son obligatorios</p>
@@ -294,14 +298,14 @@
         <!-- contenido 1 -->
         <div class="content1 md:grid md:grid-cols-2 md:gap-x-36 md:flex items-center h-full">
 
-        <!-- cargue 12 -->
-        <div class="w-full flex flex-col justify-center items-start pt-6 my-auto mb-2 h-full">
-          <p class="text-primary3 font-semibold" [ngClass]="{'!text-error !font-normal': errorStates[12]}">
-            Certificado del {{ selectedPercentage }} de propiedad de la empresa*
-          </p>
-          <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" mimes=".pdf" [maxFiles]="1"
-            [error]="errorStates[12]" (fileSelected)="onFileSelected($event, 12)"></app-file-upload>
-        </div>
+          <!-- cargue 12 -->
+          <div class="w-full flex flex-col justify-center items-start pt-6 my-auto mb-2 h-full">
+            <p class="text-primary3 font-semibold" [ngClass]="{'!text-error !font-normal': errorStates[12]}">
+              Certificado del {{ selectedPercentage }} de propiedad de la empresa*
+            </p>
+            <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" mimes=".pdf" [maxFiles]="1"
+                             [error]="errorStates[12]" (fileSelected)="onFileSelected($event, 12)"></app-file-upload>
+          </div>
 
           <!-- input 1 -->
           <div class="w-full flex flex-col justify-center items-start pt-6 my-auto mb-2 h-full">
@@ -313,30 +317,33 @@
             <!-- input -->
             <div class="mt-2 relative w-full">
               <input
-                class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent disabled:bg-secondary3 disabled:border-secondary2 disabled:text-secondary2"
-                type="number" formControlName="capital_social" required placeholder="Ingrese número">
+                class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent"
+                type="text" formControlName="capital_social" placeholder="$"
+                (input)="onCurrencyInput($event, 'capital_social', formGroup3)"
+                (focus)="onCurrencyFocus($event)"/>
               <div class="w-full relative">
                 <!-- Icono de error (rojo) -->
                 <span
                   *ngIf="formGroup3.get('capital_social')?.invalid && (formGroup3.get('capital_social')?.touched || submitted)"
                   class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
-                  <span class="pi pi-exclamation-circle text-error text-[24px]"></span>
-                </span>
+                                <span class="pi pi-exclamation-circle text-error text-[24px]"></span>
+                            </span>
 
                 <!-- Icono de éxito (verde) -->
                 <span
                   *ngIf="formGroup3.get('capital_social')?.valid && (formGroup3.get('capital_social')?.touched || submitted)"
                   class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
-                  <span class="pi pi-check-circle text-success text-[24px]"></span>
-                </span>
+                                <span class="pi pi-check-circle text-success text-[24px]"></span>
+                            </span>
               </div>
-              <span *ngIf="submitted && formGroup3.get('capital_social')?.errors?.['required']" class="text-error">
-                Capital social es obligatorio
-              </span>
+              <span *ngIf="submitted && formGroup3.get('capital_social')?.errors?.['required']"
+                    class="text-error">
+                            Capital Social es obligatorio
+                        </span>
               <span
                 *ngIf="formGroup3.get('capital_social')?.hasError('negativeNumber') && (formGroup3.get('capital_social')?.touched || submitted)"
                 class="text-error">
-                El numeró no puede ser negativo
+                            El numeró no puede ser negativo
               </span>
             </div>
 
@@ -346,10 +353,9 @@
               <span class="lg:w-[12%] sm:w-[12%] w-[10%] h-full flex justify-center lg:px-1 m-auto">
                 <img class="w-full m-auto" src="assets/iconoInfo.svg">
               </span>
+
               <p class="text-primary1 work-sans text-[11px] mt-2 w-auto">
-                Empresa con capacidad transportadora operacional autorizada de
-                hasta 51 y 300 vehículos: Capital pagado mínimo: 400 SMLMV –
-                Patrimonio líquido mínimo > 280 SMLMV
+                {{ dynamicText }}
               </p>
 
             </div>
@@ -370,43 +376,118 @@
             <!-- input -->
             <div class="mt-2 relative w-full">
               <input
-                class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent disabled:bg-secondary3 disabled:border-secondary2 disabled:text-secondary2"
-                type="number" formControlName="patrimonio_liquido" required placeholder="Ingrese número">
+                class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent"
+                type="text" formControlName="patrimonio_liquido" placeholder="$"
+                (input)="onCurrencyInput($event, 'patrimonio_liquido', formGroup3)"
+                (focus)="onCurrencyFocus($event)"/>
               <div class="w-full relative">
                 <!-- Icono de error (rojo) -->
                 <span
                   *ngIf="formGroup3.get('patrimonio_liquido')?.invalid && (formGroup3.get('patrimonio_liquido')?.touched || submitted)"
                   class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
-                  <span class="pi pi-exclamation-circle text-error text-[24px]"></span>
-                </span>
+                                <span class="pi pi-exclamation-circle text-error text-[24px]"></span>
+                            </span>
 
                 <!-- Icono de éxito (verde) -->
                 <span
                   *ngIf="formGroup3.get('patrimonio_liquido')?.valid && (formGroup3.get('patrimonio_liquido')?.touched || submitted)"
                   class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
-                  <span class="pi pi-check-circle text-success text-[24px]"></span>
-                </span>
+                                <span class="pi pi-check-circle text-success text-[24px]"></span>
+                            </span>
               </div>
-              <span *ngIf="submitted && formGroup3.get('patrimonio_liquido')?.errors?.['required']" class="text-error">
-                Capital social es obligatorio
-              </span>
+              <span *ngIf="submitted && formGroup3.get('patrimonio_liquido')?.errors?.['required']"
+                    class="text-error">
+                            Patrimonio Liquido es obligatorio
+                        </span>
               <span
                 *ngIf="formGroup3.get('patrimonio_liquido')?.hasError('negativeNumber') && (formGroup3.get('patrimonio_liquido')?.touched || submitted)"
                 class="text-error">
-                El numeró no puede ser negativo
+                            El numeró no puede ser negativo
               </span>
             </div>
 
             <!-- texto informativo -->
             <div class="flex inline-flex md:gap-3 gap-2 h-full w-full mt-2">
+
               <span class="lg:w-[12%] sm:w-[12%] w-[10%] h-full flex justify-center lg:px-1 m-auto">
                 <img class="w-full m-auto" src="assets/iconoInfo.svg">
               </span>
+
               <p class="text-primary1 work-sans text-[11px] mt-2 w-auto">
-                Empresa con capacidad transportadora operacional autorizada de
-                hasta 51 y 300 vehículos: Capital pagado mínimo: 400 SMLMV –
-                Patrimonio líquido mínimo > 280 SMLMV
+                {{ dynamicText }}
               </p>
+
+            </div>
+
+          </div>
+
+          <!-- input 3 -->
+          <div class="w-full flex flex-col justify-center pt-6">
+
+            <p class="text-primary3 font-semibold">
+              Nombre de empresa que realiza la solicitud*
+            </p>
+
+            <!-- input -->
+            <div class="mt-2 relative w-full">
+              <input
+                class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent"
+                type="text" formControlName="nombreEmpresa" required placeholder="Nombre empresa">
+              <div class="w-full relative">
+                <!-- Icono de error (rojo) -->
+                <span
+                  *ngIf="formGroup3.get('nombreEmpresa')?.invalid && (formGroup3.get('nombreEmpresa')?.touched || submitted)"
+                  class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
+                            <span class="pi pi-exclamation-circle text-error text-[24px]"></span>
+                        </span>
+
+                <!-- Icono de éxito (verde) -->
+                <span
+                  *ngIf="formGroup3.get('nombreEmpresa')?.valid && (formGroup3.get('nombreEmpresa')?.touched || submitted)"
+                  class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
+                            <span class="pi pi-check-circle text-success text-[24px]"></span>
+                        </span>
+              </div>
+              <span *ngIf="submitted && formGroup3.get('nombreEmpresa')?.errors?.['required']" class="text-error">
+                        Nombre de empresa es obligatorio
+                    </span>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- contenido 2 -->
+        <div class="content2 md:grid sm:grid-cols-2 md:gap-x-36 md:flex items-center h-full pt-6">
+
+          <!-- input 1 -->
+          <div class="w-full flex flex-col justify-center pt-6">
+
+            <p class="text-primary3 font-semibold">
+              NIT de empresa que realiza la solicitud*
+            </p>
+
+            <!-- input -->
+            <div class="mt-2 relative w-full">
+              <input
+                class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent"
+                type="text" formControlName="nit" required placeholder="Ingrese NIT">
+              <div class="w-full relative">
+                <!-- Icono de error (rojo) -->
+                <span *ngIf="formGroup3.get('nit')?.invalid && (formGroup3.get('nit')?.touched || submitted)"
+                      class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
+                            <span class="pi pi-exclamation-circle text-error text-[24px]"></span>
+                        </span>
+
+                <!-- Icono de éxito (verde) -->
+                <span *ngIf="formGroup3.get('nit')?.valid && (formGroup3.get('nit')?.touched || submitted)"
+                      class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
+                            <span class="pi pi-check-circle text-success text-[24px]"></span>
+                        </span>
+              </div>
+              <span *ngIf="submitted && formGroup3.get('nit')?.errors?.['required']" class="text-error">
+                        NIT de empresa es obligatorio
+                    </span>
             </div>
 
           </div>
@@ -504,13 +585,13 @@
             <div class="w-full relative">
               <!-- Icono de error (rojo) -->
               <span *ngIf="formGroup4.get('contrato')?.invalid && (formGroup4.get('contrato')?.touched || submitted)"
-                class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
+                    class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
                 <span class="pi pi-exclamation-circle text-error text-[24px]"></span>
               </span>
 
               <!-- Icono de éxito (verde) -->
               <span *ngIf="formGroup4.get('contrato')?.valid && (formGroup4.get('contrato')?.touched || submitted)"
-                class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
+                    class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
                 <span class="pi pi-check-circle text-success text-[24px]"></span>
               </span>
             </div>
@@ -611,48 +692,27 @@
 
         </div>
 
-        <!-- select 1 -->
+        <!-- Select 1 -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
 
           <p class="text-primary3 font-semibold h-full">
             Duración en meses*
           </p>
 
-          <!-- select -->
+          <!-- input que muestra la duración -->
           <div class="w-full relative mt-2">
+            <input
+              class="shadow-sm rounded-md w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent disabled:bg-secondary3 disabled:border-secondary2 disabled:text-secondary2"
+              type="number" formControlName="duracionMeses" placeholder="Duración en meses">
 
-            <div (click)="toggleDropdown(0)"
-              [ngClass]="{'text-error !border border-error': formGroup4.get('duracion')?.invalid && (formGroup4.get('duracion')?.touched || formGroup4.get('duracion')?.dirty)}"
-              class="cursor-pointer shadow-sm min-w-[160px] w-full p-[10px] h-[40px] bg-transparent border-2 border-secondary1 focus:outline-none focus:border-primary1 flex justify-between items-center">
-              <span *ngIf="!selects[0].value" class="font-[500] text-xs">Seleccione</span>
-              <span *ngIf="selects[0].value" class="text-normal">{{
-                formGroup4.get('duracion')?.value.label
-                }}</span>
-
-              <i class="pi pi-chevron-down text-primary2 text-xs"
-                [ngClass]="{'!text-error': formGroup4.get('duracion')?.invalid && (formGroup4.get('duracion')?.touched || formGroup4.get('duracion')?.dirty)}"></i>
-            </div>
-
-            <ul *ngIf="selects[0].isDropdownOpen"
-              class="absolute z-20 bg-secondary4 border border-primary1 shadow-md rounded-bl-md rounded-br-md w-full mt-1 max-h-48 overflow-y-auto">
-              <li *ngFor="let option of meses" (click)="selectOption(0, option, 'duracion')"
-                class="cursor-pointer px-4 py-2 hover:bg-primary1 hover:text-white">
-                {{ option.label }}
-              </li>
-            </ul>
-            <!-- Mensajes de validación -->
-            <span class="text-sm text-success"
-              *ngIf="formGroup4.get('duracion')?.valid && formGroup4.get('duracion')?.touched">
-              Selección válida
-            </span>
-            <span class="text-sm text-error"
-              *ngIf="formGroup4.get('duracion')?.invalid && (formGroup4.get('duracion')?.touched || formGroup4.get('duracion')?.dirty)">
-              {{ selects[0].errorMessage }}
+            <span class="lg:text-xs sm:text-[10px] text-success">
+              Duración calculada automáticamente.
             </span>
 
           </div>
 
         </div>
+
       </div>
 
       <!-- contenido 3 -->
@@ -708,31 +768,31 @@
           <div class="w-full relative mt-2">
 
             <div (click)="toggleDropdown(1)"
-              [ngClass]="{'text-error !border border-error': formGroup4.get('ClaseVehiculo')?.invalid && (formGroup4.get('ClaseVehiculo')?.touched || formGroup4.get('ClaseVehiculo')?.dirty)}"
-              class="cursor-pointer shadow-sm min-w-[160px] w-full p-[10px] h-[40px] bg-transparent border-2 border-secondary1 focus:outline-none focus:border-primary1 flex justify-between items-center">
+                 [ngClass]="{'text-error !border border-error': formGroup4.get('ClaseVehiculo')?.invalid && (formGroup4.get('ClaseVehiculo')?.touched || formGroup4.get('ClaseVehiculo')?.dirty)}"
+                 class="cursor-pointer shadow-sm min-w-[160px] w-full p-[10px] h-[40px] bg-transparent border-2 border-secondary1 focus:outline-none focus:border-primary1 flex justify-between items-center">
               <span *ngIf="!selects[1].value" class="font-[500] text-xs">Seleccione</span>
               <span *ngIf="selects[1].value" class="text-normal">{{
-                formGroup4.get('ClaseVehiculo')?.value.label
+                  formGroup4.get('ClaseVehiculo')?.value.label
                 }}</span>
 
               <i class="pi pi-chevron-down text-primary2 text-xs"
-                [ngClass]="{'!text-error': formGroup4.get('ClaseVehiculo')?.invalid && (formGroup4.get('ClaseVehiculo')?.touched || formGroup4.get('ClaseVehiculo')?.dirty)}"></i>
+                 [ngClass]="{'!text-error': formGroup4.get('ClaseVehiculo')?.invalid && (formGroup4.get('ClaseVehiculo')?.touched || formGroup4.get('ClaseVehiculo')?.dirty)}"></i>
             </div>
 
             <ul *ngIf="selects[1].isDropdownOpen"
-              class="absolute z-20 bg-secondary4 border border-primary1 shadow-md rounded-bl-md rounded-br-md w-full mt-1 max-h-48 overflow-y-auto">
+                class="absolute z-20 bg-secondary4 border border-primary1 shadow-md rounded-bl-md rounded-br-md w-full mt-1 max-h-48 overflow-y-auto">
               <li *ngFor="let option of ClaseVehiculo" (click)="selectOption(1, option, 'ClaseVehiculo')"
-                class="cursor-pointer px-4 py-2 hover:bg-primary1 hover:text-white">
+                  class="cursor-pointer px-4 py-2 hover:bg-primary1 hover:text-white">
                 {{ option.label }}
               </li>
             </ul>
             <!-- Mensajes de validación -->
             <span class="text-sm text-success"
-              *ngIf="formGroup4.get('ClaseVehiculo')?.valid && formGroup4.get('ClaseVehiculo')?.touched">
+                  *ngIf="formGroup4.get('ClaseVehiculo')?.valid && formGroup4.get('ClaseVehiculo')?.touched">
               Selección válida
             </span>
             <span class="text-sm text-error"
-              *ngIf="formGroup4.get('ClaseVehiculo')?.invalid && (formGroup4.get('ClaseVehiculo')?.touched || formGroup4.get('ClaseVehiculo')?.dirty)">
+                  *ngIf="formGroup4.get('ClaseVehiculo')?.invalid && (formGroup4.get('ClaseVehiculo')?.touched || formGroup4.get('ClaseVehiculo')?.dirty)">
               {{ selects[1].errorMessage }}
             </span>
 
@@ -751,32 +811,40 @@
           <div class="mt-2 relative w-full">
             <input
               class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent"
-              type="number" formControlName="val_contrato" required placeholder="$">
+              type="text" formControlName="valorContrato" placeholder="$"
+              (input)="onCurrencyInput($event, 'valorContrato', formGroup4)"
+              (focus)="onCurrencyFocus($event)"/>
             <div class="w-full relative">
               <!-- Icono de error (rojo) -->
               <span
-                *ngIf="formGroup4.get('val_contrato')?.invalid && (formGroup4.get('val_contrato')?.touched || submitted)"
+                *ngIf="formGroup4.get('valorContrato')?.invalid && (formGroup4.get('valorContrato')?.touched || submitted)"
                 class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
-                <span class="pi pi-exclamation-circle text-error text-[24px]"></span>
-              </span>
+                                <span class="pi pi-exclamation-circle text-error text-[24px]"></span>
+                            </span>
 
               <!-- Icono de éxito (verde) -->
               <span
-                *ngIf="formGroup4.get('val_contrato')?.valid && (formGroup4.get('val_contrato')?.touched || submitted)"
+                *ngIf="formGroup4.get('valorContrato')?.valid && (formGroup4.get('valorContrato')?.touched || submitted)"
                 class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
-                <span class="pi pi-check-circle text-success text-[24px]"></span>
-              </span>
+                                <span class="pi pi-check-circle text-success text-[24px]"></span>
+                            </span>
             </div>
-            <span *ngIf="submitted && formGroup4.get('val_contrato')?.errors?.['required']" class="text-error">
-              Valor del Contrato es obligatorio
+
+            <span *ngIf="submitted && formGroup4.get('valorContrato')?.errors?.['required']"
+                  class="text-error">
+                            Valor Contrato es obligatorio
             </span>
+
             <span
-              *ngIf="formGroup4.get('val_contrato')?.hasError('negativeNumber') && (formGroup4.get('val_contrato')?.touched || submitted)"
+              *ngIf="formGroup4.get('valorContrato')?.hasError('negativeNumber') && (formGroup4.get('valorContrato')?.touched || submitted)"
               class="text-error">
-              El numeró no puede ser negativo
+                            El numeró no puede ser negativo
             </span>
+
           </div>
+
         </div>
+
       </div>
 
       <!-- contenido 4 -->
@@ -793,31 +861,31 @@
           <div class="w-full relative mt-2">
 
             <div (click)="toggleDropdown(2)"
-              [ngClass]="{'text-error !border border-error': formGroup4.get('forma_pago')?.invalid && (formGroup4.get('forma_pago')?.touched || formGroup4.get('forma_pago')?.dirty)}"
-              class="cursor-pointer shadow-sm min-w-[160px] w-full p-[10px] h-[40px] bg-transparent border-2 border-secondary1 focus:outline-none focus:border-primary1 flex justify-between items-center">
+                 [ngClass]="{'text-error !border border-error': formGroup4.get('forma_pago')?.invalid && (formGroup4.get('forma_pago')?.touched || formGroup4.get('forma_pago')?.dirty)}"
+                 class="cursor-pointer shadow-sm min-w-[160px] w-full p-[10px] h-[40px] bg-transparent border-2 border-secondary1 focus:outline-none focus:border-primary1 flex justify-between items-center">
               <span *ngIf="!selects[2].value" class="font-[500] text-xs">Seleccione</span>
               <span *ngIf="selects[2].value" class="text-normal">{{
-                formGroup4.get('forma_pago')?.value.label
+                  formGroup4.get('forma_pago')?.value.label
                 }}</span>
 
               <i class="pi pi-chevron-down text-primary2 text-xs"
-                [ngClass]="{'!text-error': formGroup4.get('forma_pago')?.invalid && (formGroup4.get('forma_pago')?.touched || formGroup4.get('forma_pago')?.dirty)}"></i>
+                 [ngClass]="{'!text-error': formGroup4.get('forma_pago')?.invalid && (formGroup4.get('forma_pago')?.touched || formGroup4.get('forma_pago')?.dirty)}"></i>
             </div>
 
             <ul *ngIf="selects[2].isDropdownOpen"
-              class="absolute z-20 bg-secondary4 border border-primary1 shadow-md rounded-bl-md rounded-br-md w-full mt-1 max-h-48 overflow-y-auto">
+                class="absolute z-20 bg-secondary4 border border-primary1 shadow-md rounded-bl-md rounded-br-md w-full mt-1 max-h-48 overflow-y-auto">
               <li *ngFor="let option of formaPago" (click)="selectOption(2, option, 'forma_pago')"
-                class="cursor-pointer px-4 py-2 hover:bg-primary1 hover:text-white">
+                  class="cursor-pointer px-4 py-2 hover:bg-primary1 hover:text-white">
                 {{ option.label }}
               </li>
             </ul>
             <!-- Mensajes de validación -->
             <span class="text-sm text-success"
-              *ngIf="formGroup4.get('forma_pago')?.valid && formGroup4.get('forma_pago')?.touched">
+                  *ngIf="formGroup4.get('forma_pago')?.valid && formGroup4.get('forma_pago')?.touched">
               Selección válida
             </span>
             <span class="text-sm text-error"
-              *ngIf="formGroup4.get('forma_pago')?.invalid && (formGroup4.get('forma_pago')?.touched || formGroup4.get('ClaseVehiculo')?.dirty)">
+                  *ngIf="formGroup4.get('forma_pago')?.invalid && (formGroup4.get('forma_pago')?.touched || formGroup4.get('ClaseVehiculo')?.dirty)">
               {{ selects[2].errorMessage }}
             </span>
 
@@ -836,31 +904,31 @@
           <div class="w-full relative mt-2">
 
             <div (click)="toggleDropdown(3)"
-              [ngClass]="{'text-error !border border-error': formGroup4.get('area_operacion')?.invalid && (formGroup4.get('area_operacion')?.touched || formGroup4.get('area_operacion')?.dirty)}"
-              class="cursor-pointer shadow-sm min-w-[160px] w-full p-[10px] h-[40px] bg-transparent border-2 border-secondary1 focus:outline-none focus:border-primary1 flex justify-between items-center">
+                 [ngClass]="{'text-error !border border-error': formGroup4.get('area_operacion')?.invalid && (formGroup4.get('area_operacion')?.touched || formGroup4.get('area_operacion')?.dirty)}"
+                 class="cursor-pointer shadow-sm min-w-[160px] w-full p-[10px] h-[40px] bg-transparent border-2 border-secondary1 focus:outline-none focus:border-primary1 flex justify-between items-center">
               <span *ngIf="!selects[3].value" class="font-[500] text-xs">Seleccione</span>
               <span *ngIf="selects[3].value" class="text-normal">{{
-                formGroup4.get('area_operacion')?.value.label
+                  formGroup4.get('area_operacion')?.value.label
                 }}</span>
 
               <i class="pi pi-chevron-down text-primary2 text-xs"
-                [ngClass]="{'!text-error': formGroup4.get('area_operacion')?.invalid && (formGroup4.get('area_operacion')?.touched || formGroup4.get('area_operacion')?.dirty)}"></i>
+                 [ngClass]="{'!text-error': formGroup4.get('area_operacion')?.invalid && (formGroup4.get('area_operacion')?.touched || formGroup4.get('area_operacion')?.dirty)}"></i>
             </div>
 
             <ul *ngIf="selects[3].isDropdownOpen"
-              class="absolute z-20 bg-secondary4 border border-primary1 shadow-md rounded-bl-md rounded-br-md w-full mt-1 max-h-48 overflow-y-auto">
+                class="absolute z-20 bg-secondary4 border border-primary1 shadow-md rounded-bl-md rounded-br-md w-full mt-1 max-h-48 overflow-y-auto">
               <li *ngFor="let option of departs" (click)="selectOption(3, option, 'area_operacion')"
-                class="cursor-pointer px-4 py-2 hover:bg-primary1 hover:text-white">
+                  class="cursor-pointer px-4 py-2 hover:bg-primary1 hover:text-white">
                 {{ option.label }}
               </li>
             </ul>
             <!-- Mensajes de validación -->
             <span class="text-sm text-success"
-              *ngIf="formGroup4.get('area_operacion')?.valid && formGroup4.get('area_operacion')?.touched">
+                  *ngIf="formGroup4.get('area_operacion')?.valid && formGroup4.get('area_operacion')?.touched">
               Selección válida
             </span>
             <span class="text-sm text-error"
-              *ngIf="formGroup4.get('area_operacion')?.invalid && (formGroup4.get('area_operacion')?.touched || formGroup4.get('area_operacion')?.dirty)">
+                  *ngIf="formGroup4.get('area_operacion')?.invalid && (formGroup4.get('area_operacion')?.touched || formGroup4.get('area_operacion')?.dirty)">
               {{ selects[3].errorMessage }}
             </span>
 
@@ -879,31 +947,31 @@
           <div class="w-full relative mt-2">
 
             <div (click)="toggleDropdown(4)"
-              [ngClass]="{'text-error !border border-error': formGroup4.get('disponibilidad')?.invalid && (formGroup4.get('disponibilidad')?.touched || formGroup4.get('disponibilidad')?.dirty)}"
-              class="cursor-pointer shadow-sm min-w-[160px] w-full p-[10px] h-[40px] bg-transparent border-2 border-secondary1 focus:outline-none focus:border-primary1 flex justify-between items-center">
+                 [ngClass]="{'text-error !border border-error': formGroup4.get('disponibilidad')?.invalid && (formGroup4.get('disponibilidad')?.touched || formGroup4.get('disponibilidad')?.dirty)}"
+                 class="cursor-pointer shadow-sm min-w-[160px] w-full p-[10px] h-[40px] bg-transparent border-2 border-secondary1 focus:outline-none focus:border-primary1 flex justify-between items-center">
               <span *ngIf="!selects[4].value" class="font-[500] text-xs">Seleccione</span>
               <span *ngIf="selects[4].value" class="text-normal">{{
-                formGroup4.get('disponibilidad')?.value.label
+                  formGroup4.get('disponibilidad')?.value.label
                 }}</span>
 
               <i class="pi pi-chevron-down text-primary2 text-xs"
-                [ngClass]="{'!text-error': formGroup4.get('disponibilidad')?.invalid && (formGroup4.get('disponibilidad')?.touched || formGroup4.get('disponibilidad')?.dirty)}"></i>
+                 [ngClass]="{'!text-error': formGroup4.get('disponibilidad')?.invalid && (formGroup4.get('disponibilidad')?.touched || formGroup4.get('disponibilidad')?.dirty)}"></i>
             </div>
 
             <ul *ngIf="selects[4].isDropdownOpen"
-              class="absolute z-20 bg-secondary4 border border-primary1 shadow-md rounded-bl-md rounded-br-md w-full mt-1 max-h-48 overflow-y-auto">
+                class="absolute z-20 bg-secondary4 border border-primary1 shadow-md rounded-bl-md rounded-br-md w-full mt-1 max-h-48 overflow-y-auto">
               <li *ngFor="let option of horas" (click)="selectOption(4, option, 'disponibilidad')"
-                class="cursor-pointer px-4 py-2 hover:bg-primary1 hover:text-white">
+                  class="cursor-pointer px-4 py-2 hover:bg-primary1 hover:text-white">
                 {{ option.label }}
               </li>
             </ul>
             <!-- Mensajes de validación -->
             <span class="text-sm text-success"
-              *ngIf="formGroup4.get('disponibilidad')?.valid && formGroup4.get('disponibilidad')?.touched">
+                  *ngIf="formGroup4.get('disponibilidad')?.valid && formGroup4.get('disponibilidad')?.touched">
               Selección válida
             </span>
             <span class="text-sm text-error"
-              *ngIf="formGroup4.get('disponibilidad')?.invalid && (formGroup4.get('disponibilidad')?.touched || formGroup4.get('ClaseVehiculo')?.dirty)">
+                  *ngIf="formGroup4.get('disponibilidad')?.invalid && (formGroup4.get('disponibilidad')?.touched || formGroup4.get('ClaseVehiculo')?.dirty)">
               {{ selects[4].errorMessage }}
             </span>
 
@@ -922,18 +990,42 @@
 
 </div>
 
-<!-- Primer Modal -->
-<app-alert [showModal]="showModal" title="¿Está seguro de enviar?" subtitle="¿Está seguro de enviar?"
-  [showSubtitle]="false" [message]="'Una vez enviado, no podrá cambiar la información.'" buttonText="Enviar"
-  [showFirstButton]="true" cancelButtonText="Cancelar" [showCancelButton]="true" TypeAlert="success"
-  (close)="handleClose()"
-  (closeByButton1)="currentContractIteration == totalContracts ? sendAllContracts() : handleCloseByButton1()"
-  (closeByButton2)="handleCloseByButton2()" (closeByIcon)="handleCloseByIcon()"
-  (closeByBackdrop)="handleCloseByBackdrop()" (close)="showModal = false"></app-alert>
+<!-- APP ALERT REQUISITO CAPITAL SOCIAL Y PATRIMONIO -->
+<app-alert [showModal]="showModalRequisito" title="No cumple requisito" subtitle=""
+           message="{{valid1 ? dynamicTextAlertValid2 :valid2 ? dynamicTextAlertValid1 : 'No se cumple con el requisito mínimo de capital social o patrimonio liquido '}}"
+           cancelButtonText="Cerrar" [showCancelButton]="true" [showFirstButton]="false"
+           (close)="showModalRequisito = false"
+           textColor="text-waring" TypeAlert="warning"></app-alert>
 
-<!-- Final Modal -->
+<!-- modal de confirmación -->
+<app-alert [showModal]="showModal" title="¿Está seguro de enviar?" subtitle="¿Está seguro de enviar?"
+           [showSubtitle]="false" [message]="'Una vez enviado, no podrá cambiar la información.'" buttonText="Enviar"
+           [showFirstButton]="true" cancelButtonText="Cancelar" [showCancelButton]="true" TypeAlert="success"
+           (close)="handleClose()"
+           (closeByButton1)="currentContractIteration == totalContracts ? sendAllContracts() : handleCloseByButton1()"
+           (closeByButton2)="handleCloseByButton2()" (closeByIcon)="handleCloseByIcon()"
+           (closeByBackdrop)="handleCloseByBackdrop()" (close)="showModal = false"></app-alert>
+
+
+<!-- modal de loading -->
+<app-alert [showModal]="ShowLoadingModal" title="Verificando datos" subtitle="Un momento por favor."
+           message="Se está guardando los datos enviados" [showFirstButton]="false" [showCancelButton]="false"
+           TypeAlert="loader"></app-alert>
+
+
+<!-- modal final -->
 <app-alert [showModal]="showFinalModal" title="Envío exitoso" textColor="text-success" [showSubtitle]="false"
-  [message]="'Su solicitud ha sido enviada exitosamente, se le asignará un radicado para su trámite'"
-  buttonText="Continuar" [showFirstButton]="true" [showCancelButton]="false" TypeAlert="success" (close)="handleClose()"
-  (closeByButton1)="finalStep()" (closeByButton2)="handleCloseByButton2()" (closeByIcon)="handleCloseByIcon()"
-  (closeByBackdrop)="handleCloseByBackdrop()" (close)="showFinalModal = false"></app-alert>
+           [message]="'Su solicitud ha sido enviada exitosamente, se le asignará un radicado para su trámite'"
+           buttonText="Continuar" [showFirstButton]="true" [showCancelButton]="false" TypeAlert="success"
+           (close)="handleClose()" (closeByButton1)="finalStep()" (closeByButton2)="handleCloseByButton2()"
+           (closeByIcon)="handleCloseByIcon()" (closeByBackdrop)="handleCloseByBackdrop()"
+           (close)="showFinalModal = false"></app-alert>
+
+<!-- modal error -->
+<app-alert [showModal]="showErrorModal" title="Error en el envió de datos" textColor="text-error" [showSubtitle]="false"
+           [message]="'Estamos experimentando inconvenientes técnicos con el envió de la solicitud, por favor intente más tarde'"
+           buttonText="Continuar" [showFirstButton]="true" [showCancelButton]="false" TypeAlert="error"
+           (close)="handleClose()"
+           (closeByButton1)="showErrorModal = false" (closeByButton2)="handleCloseByButton2()"
+           (closeByIcon)="handleCloseByIcon()" (closeByBackdrop)="handleCloseByBackdrop()"
+           (close)="showErrorModal = false"></app-alert>
