@@ -1,20 +1,25 @@
 import { AuthService } from './../../../services/auth/auth.service';
-import {Component} from '@angular/core';
-import {FileUploadComponent} from "../../../components/file-upload/file-upload.component";
-import {InputText} from "../../../components/input/input.component";
-import {LeftNavComponent} from "../../../components/left-nav/left-nav.component";
-import {NgClass, NgForOf, NgIf} from "@angular/common";
-import {PaginatorModule} from "primeng/paginator";
-import {PrimaryButtonComponent} from "../../../components/primary-button/primary-button.component";
-import {SelectComponent} from "../../../components/select/select.component";
-import {SttepperComponent} from "../../../components/sttepper/sttepper.component";
-import {ActiveNumService} from "../../../services/left-nav/active-num.service";
-import {ActiveNumStepperService} from "../../../services/stepper/active-num.service";
-import {ApiService} from "../../../services/api/api.service";
-import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
-import {ErrorService} from "../../../services/error/error.service";
-import {AlertComponent} from "../../../components/alert/alert.component";
-import {ActivatedRoute, Router} from "@angular/router";
+import { Component } from '@angular/core';
+import { FileUploadComponent } from '../../../components/file-upload/file-upload.component';
+import { InputText } from '../../../components/input/input.component';
+import { LeftNavComponent } from '../../../components/left-nav/left-nav.component';
+import { NgClass, NgForOf, NgIf } from '@angular/common';
+import { PaginatorModule } from 'primeng/paginator';
+import { PrimaryButtonComponent } from '../../../components/primary-button/primary-button.component';
+import { SelectComponent } from '../../../components/select/select.component';
+import { SttepperComponent } from '../../../components/sttepper/sttepper.component';
+import { ActiveNumService } from '../../../services/left-nav/active-num.service';
+import { ActiveNumStepperService } from '../../../services/stepper/active-num.service';
+import { ApiService } from '../../../services/api/api.service';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { ErrorService } from '../../../services/error/error.service';
+import { AlertComponent } from '../../../components/alert/alert.component';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-solicitud',
@@ -31,13 +36,12 @@ import {ActivatedRoute, Router} from "@angular/router";
     ReactiveFormsModule,
     NgClass,
     AlertComponent,
-    NgForOf
+    NgForOf,
   ],
   templateUrl: './solicitud.component.html',
-  styleUrl: './solicitud.component.css'
+  styleUrl: './solicitud.component.css',
 })
 export default class SolicitudComponent {
-
   constructor(
     private stateService: ActiveNumService,
     private stepperService: ActiveNumStepperService,
@@ -45,10 +49,29 @@ export default class SolicitudComponent {
     private fb: FormBuilder,
     private errorService: ErrorService,
     private router: Router,
-    private route: ActivatedRoute,
+    private route: ActivatedRoute
   ) {
     this.user = this.authService.currentUser; // Almacena el usuario actual desde el servicio de autenticación
+
+    const navigation = this.router.getCurrentNavigation();
+    const state = navigation?.extras.state as {
+      id: number;
+    };
+
+    if (state) {
+      this.id = state.id;
+
+      // Guardar el ID como cadena en localStorage
+      localStorage.setItem('id', this.id.toString());
+    } else {
+      // Recuperar de localStorage y convertir a número si está disponible
+      const storedId = localStorage.getItem('id');
+      this.id = storedId ? parseInt(storedId, 10) : 0; // Convertir a número si es válido
+    }
   }
+
+  //Capturar objetos del navigation
+  id: number = 0;
 
   //Objeto para manejar los active num del left menu y stepper.
   activeNum: string = '0'; //Left menu
@@ -73,9 +96,6 @@ export default class SolicitudComponent {
   pdfUrl: string = 'https://www.orimi.com/pdf-test.pdf';
   fileName: string = 'archivo-prueba.pdf';
   fileSizeInKB: number = 123.45;
-
-  //Variable de id de la vista dashboard
-  id: number | undefined;
 
   //Menu left
   infoMenu = [
@@ -102,7 +122,7 @@ export default class SolicitudComponent {
     {
       num: 2,
       info: 'Visualizar información',
-    }
+    },
   ];
 
   //Inputs
@@ -114,7 +134,7 @@ export default class SolicitudComponent {
       placeholder: '$100.000',
       label: 'Capital social',
       required: false,
-      value: ''
+      value: '',
     },
     //Input 1
     {
@@ -123,7 +143,7 @@ export default class SolicitudComponent {
       placeholder: '$100.000',
       label: 'Patrimonio Líquido en SMLV',
       required: false,
-      value: ''
+      value: '',
     },
     //Input 2
     {
@@ -132,7 +152,7 @@ export default class SolicitudComponent {
       placeholder: '5',
       label: 'Cantidad de vehículos',
       required: false,
-      value: ''
+      value: '',
     },
 
     //Formulario 3 Operativo
@@ -287,7 +307,6 @@ export default class SolicitudComponent {
   };
 
   ngOnInit(): void {
-
     //Suscribirse al observable para obtener los cambios reactivos del menuleft
     this.stateService.activeNum$.subscribe((num) => {
       this.activeNum = num;
@@ -298,8 +317,6 @@ export default class SolicitudComponent {
       this.activeStep = step;
       console.log('Active step:', step);
     });
-
-    
 
     //Validaciones segun el formulario
     this.formGroup1 = this.fb.group({
@@ -316,7 +333,7 @@ export default class SolicitudComponent {
     this.formGroup2 = this.fb.group({
       0: [''],
       1: [''],
-      2: ['']
+      2: [''],
     });
 
     this.formGroup3 = this.fb.group({
@@ -337,7 +354,7 @@ export default class SolicitudComponent {
     this.formGroup4 = this.fb.group({
       9: [null, Validators.required],
       15: ['', Validators.required],
-      16: ['', Validators.required]
+      16: ['', Validators.required],
     });
 
     //Suscribirse al servicio de manejo de errores
@@ -346,7 +363,7 @@ export default class SolicitudComponent {
     });
 
     //Servicio para conectar id con esta vista
-    this.route.paramMap.subscribe(params => {
+    this.route.paramMap.subscribe((params) => {
       this.id = Number(params.get('id'));
     });
   }
@@ -414,7 +431,7 @@ export default class SolicitudComponent {
 
     const formGroup = formControlMap[formControlName];
     if (formGroup) {
-      formGroup.patchValue({[formControlName]: file});
+      formGroup.patchValue({ [formControlName]: file });
     }
   }
 
@@ -429,17 +446,16 @@ export default class SolicitudComponent {
 
   //Metodo para descargar pdf
   downloadPdf() {
-    fetch(this.pdfUrl, {mode: 'no-cors'})
-      .then(response => response.blob())
-      .then(blob => {
+    fetch(this.pdfUrl, { mode: 'no-cors' })
+      .then((response) => response.blob())
+      .then((blob) => {
         const link = document.createElement('a');
         link.href = window.URL.createObjectURL(blob);
         link.download = this.fileName;
         link.click();
       })
-      .catch(error => console.error('Error al descargar el archivo:', error));
+      .catch((error) => console.error('Error al descargar el archivo:', error));
   }
-
 
   //Metodo para guardar el valor del input y select
   onInputChange(index: number, event: any) {
@@ -466,8 +482,7 @@ export default class SolicitudComponent {
     this.inputs[index].value = value;
 
     // Actualiza los valores en los formularios reactivos
-    this.formGroup4.patchValue({[index]: value});
-
+    this.formGroup4.patchValue({ [index]: value });
   }
 
   //Metodo para guardar el formulario
@@ -475,7 +490,7 @@ export default class SolicitudComponent {
     if (this.validateFormGroup(this.formGroup4, this.errorStates)) {
       this.showModal = true; // Mostrar modal
     } else {
-      this.validateFormGroup(this.formGroup4, this.errorStates)
+      this.validateFormGroup(this.formGroup4, this.errorStates);
     }
   }
 
@@ -502,5 +517,4 @@ export default class SolicitudComponent {
       location.reload();
     });
   }
-
 }

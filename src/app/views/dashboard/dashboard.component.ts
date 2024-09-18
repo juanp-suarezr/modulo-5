@@ -250,7 +250,14 @@ export default class DashboardComponent {
 
   //Metodo para redirigir el id a la vista solicitud
   onIdClicked(id: number): void {
-    this.router.navigate(['/solicitud', id]);
+    console.log(id);
+    
+    this.router.navigate(['/solicitudAprobacion'], {
+      state: {
+        id: id,
+        
+      },
+    });
   }
 
   //ejemplo uso update

@@ -53,6 +53,8 @@ export class TableComponent {
 
   //Metodo para darle click al id
   onIdClick(id: number) {
+    console.log(id);
+    
     this.idClicked.emit(id);
   }
 

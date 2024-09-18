@@ -24,11 +24,11 @@
                       {{ item[key] }}
                     </p>
                     <!-- id con rol de escritura gestion doc -->
-                    <a *ngIf="key === 'id' && (hasRole('ROLE_ESCRITURA_GESDOC') || hasRole('ROLE_SUPERTRANSPORTE'))"
+                    <button *ngIf="key === 'id' && (hasRole('ROLE_ESCRITURA_GESDOC') || hasRole('ROLE_SUPERTRANSPORTE'))"
                       class="underline text-primary2 font-semibold cursor-pointer" pTooltip="clic para abrir"
                       tooltipPosition="right" (click)="onIdClick(item[key])">
                       {{ item[key] }}
-                    </a>
+                    </button>
                     <!-- datos con rol de escritura gestion doc -->
                     <p *ngIf="key !== 'id' && key !== 'semaforo' && (hasRole('ROLE_ESCRITURA_GESDOC') || hasRole('ROLE_SUPERTRANSPORTE'))"
                       class="whitespace-no-wrap">
@@ -92,11 +92,11 @@
               </p>
 
               <!-- Condición: id con rol de escritura gestion doc -->
-              <a *ngIf="info[i] === 'id' && (hasRole('ROLE_ESCRITURA_GESDOC') || hasRole('ROLE_SUPERTRANSPORTE'))"
+              <button *ngIf="info[i] === 'id' && (hasRole('ROLE_ESCRITURA_GESDOC') || hasRole('ROLE_SUPERTRANSPORTE'))"
                 class="underline text-primary2 font-semibold cursor-pointer" pTooltip="clic para abrir"
                 tooltipPosition="right" (click)="onIdClick(item[info[i]])">
                 {{ item[info[i]] }}
-              </a>
+              </button>
 
               <!-- Condición: datos con rol de escritura gestion doc -->
               <p *ngIf="info[i] !== 'id' && info[i] !== 'semaforo' && (hasRole('ROLE_ESCRITURA_GESDOC') || hasRole('ROLE_SUPERTRANSPORTE'))"
