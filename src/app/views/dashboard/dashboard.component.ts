@@ -18,12 +18,14 @@ import { SkeletonModule } from 'primeng/skeleton';
 import { Router } from '@angular/router';
 import { first } from 'rxjs';
 import { PrimaryButtonComponent } from "../../components/primary-button/primary-button.component";
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
   imports: [
     CommonModule,
+    FormsModule,
     ButtonModule,
     RippleModule,
     AccordionModule,
@@ -47,8 +49,8 @@ export default class DashboardComponent {
   categorias: any;
   estadoSolicitud: any;
   // Variables de filtro
-  filterCategory: string = '';
-  filterStatus: string = '';
+  filterCategory: number = 0;
+  filterStatus: number = 0;
   searchQuery: string = '';
 
   headers = [
@@ -89,14 +91,16 @@ export default class DashboardComponent {
         this.loadInitialData();
       });
   }
-
+  
   loadInitialData(): void {
     // Realiza una llamada a la API para obtener las categorías
     this.apiService.getCategorias().subscribe(
       (response) => {
         console.log(response); // Muestra la respuesta en la consola
         this.categorias = response.detalle;
-        this.getSolicitudes(response); // Llama a otro método para manejar los datos de solicitudes
+        console.log(this.categorias);
+        
+        this.getSolicitudes(this.categorias, this.filterStatus, this.filterCategory, this.searchQuery); // Llama a otro método para manejar los datos de solicitudes
       },
       (error) => {
         console.error('Error fetching user data', error); // Maneja el error si ocurre
@@ -105,13 +109,15 @@ export default class DashboardComponent {
   }
 
   //obtener solicitudes
-  getSolicitudes(res: any) {
+  getSolicitudes(res: any, estado: any, categoria:any, search: any) {
     this.loading = true; // Comienza la carga de datos
     console.log(res);
 
     // traer los datos de la consulta
-    this.apiSFService.getSolicitudes().subscribe(
+    this.apiSFService.getSolicitudes(estado, categoria, search).subscribe(
+      
       (response) => {
+        
         // Validar roles y generar headers después de cargar los datos
         if (
           this.user.roles.some((role: any) =>
@@ -135,7 +141,7 @@ export default class DashboardComponent {
           this.apiService.getEstados().subscribe(
             (responseEstados) => {
               this.estadoSolicitud = responseEstados.detalle;
-              this.response = response.map((clase: any) => {
+              this.response = response.registros.map((clase: any) => {
                 // Convertir las fechas a milisegundos
                 const fechaHoy = new Date().valueOf(); // Fecha actual en milisegundos
                 const fechaSolicitud = new Date(clase.fechaSolicitud).valueOf(); // Fecha de solicitud en milisegundos
@@ -157,11 +163,11 @@ export default class DashboardComponent {
                     (item: any) => item.id == clase.idEstadoSolicitud
                   )?.descripcion,
                   categoria:
-                    res.detalle.find(
+                    res.find(
                       (item: any) => item.id == clase.idCategoriaSolicitud
                     )?.descripcion === 'Fijación'
                       ? 'Fijación de Capacidad Transportadora'
-                      : res.detalle.find(
+                      : res.find(
                           (item: any) => item.id == clase.idCategoriaSolicitud
                         )?.descripcion === 'Incremento'
                       ? 'Incremento de Capacidad Transportadora'
@@ -183,17 +189,17 @@ export default class DashboardComponent {
             }
           );
         } else {
-          this.response = response.map((clase: any) => ({
+          this.response = response.registros.map((clase: any) => ({
             id: clase.id,
             fecha: clase.fechaSolicitud,
             empresa: clase.nombreEmpresa,
             territorial: clase.territorial,
             categoria:
-              res.detalle.find(
+              res.find(
                 (item: any) => item.id == clase.idCategoriaSolicitud
               )?.descripcion === 'Fijación'
                 ? 'Fijación de Capacidad Transportadora'
-                : res.detalle.find(
+                : res.find(
                     (item: any) => item.id == clase.idCategoriaSolicitud
                   )?.descripcion === 'Incremento'
                 ? 'Incremento de Capacidad Transportadora'
@@ -221,16 +227,25 @@ export default class DashboardComponent {
       status: this.filterStatus,
       searchQuery: this.searchQuery
     });
+
+    // Si las categorías ya están cargadas, solo aplica los filtros
+  if (this.categorias) {
+    this.getSolicitudes(this.categorias, this.filterStatus, this.filterCategory, this.searchQuery);
+  }
     // Lógica para filtrar los datos
   }
 
   // Método para limpiar los filtros
-  clearFilters() {
-    this.filterCategory = '';
-    this.filterStatus = '';
+  clearFilters(): void {
+    this.filterCategory = 0;
+    this.filterStatus = 0;
     this.searchQuery = '';
     console.log('Filtros limpiados');
-    // Lógica para reiniciar los valores en la UI
+    
+    // Llamar a getSolicitudes sin filtros, sin volver a cargar las categorías
+    if (this.categorias) {
+      this.getSolicitudes(this.categorias, this.filterStatus, this.filterCategory, this.searchQuery);
+    }
   }
 
   //Metodo para redirigir el id a la vista solicitud

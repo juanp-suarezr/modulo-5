@@ -1,0 +1,732 @@
+<div class="sm:grid sm:grid-cols-10 gap-4" *ngIf="user.roles[0].roleName == 'ROLE_ESCRITURA_MIN'"
+     xmlns="http://www.w3.org/1999/html">
+
+  <div class="md:col-span-2 sm:col-span-3 w-auto sm:mt-16 mt-12">
+    <app-left-nav [data]="infoMenu" active="{{activeNum}}"></app-left-nav>
+  </div>
+
+  <!-- solicitud contenido -->
+  <div class="md:col-span-8 sm:col-span-7 w-auto sm:mt-10 mt-4 md:px-8 px-2" *ngIf="activeNum == '0'">
+
+    <h3 class="text-primary1 !font-bold">Solicitud ID {{id}}</h3>
+
+    <!-- sttepper -->
+    <div class="mt-4 w-full inline-flex justify-center">
+      <app-sttepper [dataStep]="infoStepper"></app-sttepper>
+    </div>
+
+    <!-- formulario 1 -->
+    <form [formGroup]="formGroup1" class="px-4 md:pl-16 md:pe-16 mt-6 active1 mb-6" *ngIf="activeStep == 1">
+
+      <!-- contenido 1 -->
+      <div class="content1 md:grid sm:grid-cols-2 md:gap-x-36 md:flex items-center h-full">
+
+        <!-- descarga 1 -->
+        <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+
+          <p class="text-primary3 font-semibold">
+            Solicitud de fijación de capacidad transportadora
+          </p>
+
+          <!-- documento y boton -->
+          <div class="flex flex-row justify-center items-start pt-6 my-auto">
+
+            <div class="mt-4 bg-white border-2 border-secondary2 p-2 flex inline-flex justify-center w-auto">
+
+              <!-- documento -->
+              <div class="w-auto m-auto">
+                <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto" viewBox="0 0 384 512">
+                  <path
+                    d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z"/>
+                </svg>
+              </div>
+
+              <!-- texto info file -->
+              <div class="px-2 w-auto">
+                <p class="truncate text-[8px] font-semibold">
+                  {{ truncatedFileName(fileName) }}
+                </p>
+                <p class="truncate text-[8px]">{{ fileSizeInKB }} Kb</p>
+              </div>
+
+            </div>
+
+            <!-- boton -->
+            <div class="w-auto m-auto mb-2 px-6">
+              <button type="button" (click)="downloadPdf()"
+                      class="inline-flex items-center justify-center px-4 py-2 text-white bg-primary4 hover:bg-primary2 focus:bg-primary2 font-medium rounded-full text-[16px] work-sans text-center"
+                      [ngClass]="'text-' + dataClass.textSize">
+                Descargar archivo adjunto
+              </button>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- descarga 2 -->
+        <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+
+          <p class="text-primary3 font-semibold">
+            Contratos de prestación del servicio de transporte
+            terrestre automotor especial suscritos por la empresa
+            de transporte
+          </p>
+
+          <!-- documento y boton -->
+          <div class="flex flex-row justify-center items-start pt-6 my-auto">
+
+            <div class="mt-4 bg-white border-2 border-secondary2 p-2 flex inline-flex justify-center w-auto">
+
+              <!-- documento -->
+              <div class="w-auto m-auto">
+                <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto" viewBox="0 0 384 512">
+                  <path
+                    d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z"/>
+                </svg>
+              </div>
+
+              <!-- texto info file -->
+              <div class="px-2 w-auto">
+                <p class="truncate text-[8px] font-semibold">
+                  {{ truncatedFileName(fileName) }}
+                </p>
+                <p class="truncate text-[8px]">{{ fileSizeInKB }} Kb</p>
+              </div>
+
+            </div>
+
+            <!-- boton -->
+            <div class="w-auto m-auto mb-2 px-6">
+              <button type="button" (click)="downloadPdf()"
+                      class="inline-flex items-center justify-center px-4 py-2 text-white bg-primary4 hover:bg-primary2 focus:bg-primary2 font-medium rounded-full text-[16px] work-sans text-center"
+                      [ngClass]="'text-' + dataClass.textSize">
+                Descargar archivo adjunto
+              </button>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- contenido 2 -->
+      <div class="content2 md:grid sm:grid-cols-2 md:gap-x-36 md:flex items-center h-full pt-6">
+
+        <!-- descarga 3 -->
+        <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+
+          <p class="text-primary3 font-semibold">
+            Plan de Rodamiento
+          </p>
+
+          <!-- documento y boton -->
+          <div class="flex flex-row justify-center items-start pt-6 my-auto">
+
+            <div class="mt-4 bg-white border-2 border-secondary2 p-2 flex inline-flex justify-center w-auto">
+
+              <!-- documento -->
+              <div class="w-auto m-auto">
+                <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto" viewBox="0 0 384 512">
+                  <path
+                    d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z"/>
+                </svg>
+              </div>
+
+              <!-- texto info file -->
+              <div class="px-2 w-auto">
+                <p class="truncate text-[8px] font-semibold">
+                  {{ truncatedFileName(fileName) }}
+                </p>
+                <p class="truncate text-[8px]">{{ fileSizeInKB }} Kb</p>
+              </div>
+
+            </div>
+
+            <!-- boton -->
+            <div class="w-auto m-auto mb-2 px-6">
+              <button type="button" (click)="downloadPdf()"
+                      class="inline-flex items-center justify-center px-4 py-2 text-white bg-primary4 hover:bg-primary2 focus:bg-primary2 font-medium rounded-full text-[16px] work-sans text-center"
+                      [ngClass]="'text-' + dataClass.textSize">
+                Descargar archivo adjunto
+              </button>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- descarga 4 -->
+        <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+
+          <p class="text-primary3 font-semibold">
+            Estructura costos básicos contratante y contratista
+          </p>
+
+          <!-- documento y boton -->
+          <div class="flex flex-row justify-center items-start pt-6 my-auto">
+
+            <div class="mt-4 bg-white border-2 border-secondary2 p-2 flex inline-flex justify-center w-auto">
+
+              <!-- documento -->
+              <div class="w-auto m-auto">
+                <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto" viewBox="0 0 384 512">
+                  <path
+                    d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z"/>
+                </svg>
+              </div>
+
+              <!-- texto info file -->
+              <div class="px-2 w-auto">
+                <p class="truncate text-[8px] font-semibold">
+                  {{ truncatedFileName(fileName) }}
+                </p>
+                <p class="truncate text-[8px]">{{ fileSizeInKB }} Kb</p>
+              </div>
+
+            </div>
+
+            <!-- boton -->
+            <div class="w-auto m-auto mb-2 px-6">
+              <button type="button" (click)="downloadPdf()"
+                      class="inline-flex items-center justify-center px-4 py-2 text-white bg-primary4 hover:bg-primary2 focus:bg-primary2 font-medium rounded-full text-[16px] work-sans text-center"
+                      [ngClass]="'text-' + dataClass.textSize">
+                Descargar archivo adjunto
+              </button>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- contenido 3 -->
+      <div class="content1 md:grid sm:grid-cols-2 md:gap-x-36 md:flex items-center h-full pt-6">
+
+        <!-- descarga 5 -->
+        <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+
+          <p class="text-primary3 font-semibold">
+            Certificado de Existencia y Representación legal no
+            menos a 30 días
+          </p>
+
+          <!-- documento y boton -->
+          <div class="flex flex-row justify-center items-start pt-6 my-auto">
+
+            <div class="mt-4 bg-white border-2 border-secondary2 p-2 flex inline-flex justify-center w-auto">
+
+              <!-- documento -->
+              <div class="w-auto m-auto">
+                <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto" viewBox="0 0 384 512">
+                  <path
+                    d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z"/>
+                </svg>
+              </div>
+
+              <!-- texto info file -->
+              <div class="px-2 w-auto">
+                <p class="truncate text-[8px] font-semibold">
+                  {{ truncatedFileName(fileName) }}
+                </p>
+                <p class="truncate text-[8px]">{{ fileSizeInKB }} Kb</p>
+              </div>
+
+            </div>
+
+            <!-- boton -->
+            <div class="w-auto m-auto mb-2 px-6">
+              <button type="button" (click)="downloadPdf()"
+                      class="inline-flex items-center justify-center px-4 py-2 text-white bg-primary4 hover:bg-primary2 focus:bg-primary2 font-medium rounded-full text-[16px] work-sans text-center"
+                      [ngClass]="'text-' + dataClass.textSize">
+                Descargar archivo adjunto
+              </button>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- descarga 6 -->
+        <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+
+          <p class="text-primary3 font-semibold">
+            Registro Único Tributario
+          </p>
+
+          <!-- documento y boton -->
+          <div class="flex flex-row justify-center items-start pt-6 my-auto">
+
+            <div class="mt-4 bg-white border-2 border-secondary2 p-2 flex inline-flex justify-center w-auto">
+
+              <!-- documento -->
+              <div class="w-auto m-auto">
+                <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto" viewBox="0 0 384 512">
+                  <path
+                    d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z"/>
+                </svg>
+              </div>
+
+              <!-- texto info file -->
+              <div class="px-2 w-auto">
+                <p class="truncate text-[8px] font-semibold">
+                  {{ truncatedFileName(fileName) }}
+                </p>
+                <p class="truncate text-[8px]">{{ fileSizeInKB }} Kb</p>
+              </div>
+
+            </div>
+
+            <!-- boton -->
+            <div class="w-auto m-auto mb-2 px-6">
+              <button type="button" (click)="downloadPdf()"
+                      class="inline-flex items-center justify-center px-4 py-2 text-white bg-primary4 hover:bg-primary2 focus:bg-primary2 font-medium rounded-full text-[16px] work-sans text-center"
+                      [ngClass]="'text-' + dataClass.textSize">
+                Descargar archivo adjunto
+              </button>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- contenido 4 -->
+      <div class="content1 md:grid sm:grid-cols-2 md:gap-x-36 md:flex items-center h-full pt-6">
+
+        <!-- descarga 7 -->
+        <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+
+          <p class="text-primary3 font-semibold">
+            Resolución de habilitación
+          </p>
+
+          <!-- documento y boton -->
+          <div class="flex flex-row justify-center items-start pt-6 my-auto">
+
+            <div class="mt-4 bg-white border-2 border-secondary2 p-2 flex inline-flex justify-center w-auto">
+
+              <!-- documento -->
+              <div class="w-auto m-auto">
+                <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto" viewBox="0 0 384 512">
+                  <path
+                    d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z"/>
+                </svg>
+              </div>
+
+              <!-- texto info file -->
+              <div class="px-2 w-auto">
+                <p class="truncate text-[8px] font-semibold">
+                  {{ truncatedFileName(fileName) }}
+                </p>
+                <p class="truncate text-[8px]">{{ fileSizeInKB }} Kb</p>
+              </div>
+
+            </div>
+
+            <!-- boton -->
+            <div class="w-auto m-auto mb-2 px-6">
+              <button type="button" (click)="downloadPdf()"
+                      class="inline-flex items-center justify-center px-4 py-2 text-white bg-primary4 hover:bg-primary2 focus:bg-primary2 font-medium rounded-full text-[16px] work-sans text-center"
+                      [ngClass]="'text-' + dataClass.textSize">
+                Descargar archivo adjunto
+              </button>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- descarga 8 -->
+        <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+
+          <p class="text-primary3 font-semibold">
+            Cédula de Ciudadanía del Representante Legal
+          </p>
+
+          <!-- documento y boton -->
+          <div class="flex flex-row justify-center items-start pt-6 my-auto">
+
+            <div class="mt-4 bg-white border-2 border-secondary2 p-2 flex inline-flex justify-center w-auto">
+
+              <!-- documento -->
+              <div class="w-auto m-auto">
+                <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto" viewBox="0 0 384 512">
+                  <path
+                    d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z"/>
+                </svg>
+              </div>
+
+              <!-- texto info file -->
+              <div class="px-2 w-auto">
+                <p class="truncate text-[8px] font-semibold">
+                  {{ truncatedFileName(fileName) }}
+                </p>
+                <p class="truncate text-[8px]">{{ fileSizeInKB }} Kb</p>
+              </div>
+
+            </div>
+
+            <!-- boton -->
+            <div class="w-auto m-auto mb-2 px-6">
+              <button type="button" (click)="downloadPdf()"
+                      class="inline-flex items-center justify-center px-4 py-2 text-white bg-primary4 hover:bg-primary2 focus:bg-primary2 font-medium rounded-full text-[16px] work-sans text-center"
+                      [ngClass]="'text-' + dataClass.textSize">
+                Descargar archivo adjunto
+              </button>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="mt-6 w-full flex justify-end">
+        <app-primary-button class="" (click)="changeActiveStep(2)">continuar</app-primary-button>
+      </div>
+
+    </form>
+
+    <!-- formulario 2 -->
+    <form [formGroup]="formGroup2" class="px-4 md:pl-16 md:pe-16 mt-6 active1 mb-6" *ngIf="activeStep == 2">
+
+      <!-- contenido 1 -->
+      <div class="content1 md:grid sm:grid-cols-2 md:gap-x-36 md:flex items-center h-full">
+
+        <!-- input 1 -->
+        <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+
+          <p class="text-primary3 font-semibold h-full">
+            Capital Social en SMLV
+          </p>
+
+          <input-text class="w-full mt-2 cursor-pointer" [input]="inputs[0]" [index]="0" [disabled]="true"
+                      (inputChange)="onInputChange($event.index, $event.event)"></input-text>
+
+          <!-- texto informativo -->
+          <div class="flex inline-flex md:gap-3 gap-2 h-full w-full mt-2">
+
+                        <span class="lg:w-[12%] sm:w-[12%] w-[10%] h-full flex justify-center lg:px-1 m-auto">
+                            <img class="w-full m-auto" src="assets/iconoInfo.svg">
+                        </span>
+            <p class="text-primary1 work-sans text-[11px] mt-2 w-auto">
+              Empresa con capacidad transportadora operacional autorizada de
+              hasta 51 y 300 vehículos: Capital pagado mínimo: 400 SMLMV –
+              Patrimonio líquido mínimo > 280 SMLMV
+            </p>
+
+          </div>
+
+        </div>
+
+        <!-- input 2 -->
+        <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+          <p class="text-primary3 font-semibold h-full">
+            Patrimonio Líquido en SMLV
+          </p>
+
+          <input-text class="w-full mt-2 cursor-pointer" [input]="inputs[1]" [index]="1" [disabled]="true"
+                      (inputChange)="onInputChange($event.index, $event.event)"></input-text>
+
+          <!-- texto informativo -->
+          <div class="flex inline-flex md:gap-3 gap-2 h-full w-full mt-2">
+                        <span class="lg:w-[12%] sm:w-[12%] w-[10%] h-full flex justify-center lg:px-1 m-auto">
+                            <img class="w-full m-auto" src="assets/iconoInfo.svg">
+                        </span>
+            <p class="text-primary1 work-sans text-[11px] mt-2 w-auto">
+              Empresa con capacidad transportadora operacional autorizada de
+              hasta 51 y 300 vehículos: Capital pagado mínimo: 400 SMLMV –
+              Patrimonio líquido mínimo > 280 SMLMV
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- contenido 2 -->
+      <div class="content2 md:grid sm:grid-cols-2 md:gap-x-36 md:flex items-center h-full pt-6">
+
+        <!-- input 2 -->
+        <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+          <p class="text-primary3 font-semibold h-full">
+            Cantidad de vehículos que está requiriendo fijar
+          </p>
+
+          <input-text class="w-full mt-2 cursor-pointer" [input]="inputs[2]" [index]="2" [disabled]="true"
+                      (inputChange)="onInputChange($event.index, $event.event)"></input-text>
+
+        </div>
+
+      </div>
+
+
+      <div class="mt-6 w-full flex justify-end">
+        <app-primary-button type="button" class="" (click)="changeActiveStep(3)">continuar</app-primary-button>
+      </div>
+
+    </form>
+
+  </div>
+
+  <!-- contenido operativo -->
+  <div class="md:col-span-8 sm:col-span-7 w-auto sm:mt-10 mt-4 md:px-8 px-2" *ngIf="activeNum == '1'">
+    <h3 class="text-primary1 !font-bold">Solicitud ID {{id}}</h3>
+
+    <!-- formulario 3 -->
+    <form [formGroup]="formGroup3" class="px-4 md:pl-16 md:pe-16 mt-6 active1 mb-6">
+
+      <!-- contenido 1 -->
+      <div class="content1 md:grid sm:grid-cols-2 md:grid-cols-3 md:gap-x-24 md:flex items-center h-full">
+
+        <!--input 1 -->
+        <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+
+          <p class="text-primary3 font-semibold h-full">
+            Cantidad de contratos
+          </p>
+
+          <input-text class="w-full mt-2" [input]="inputs[3]" [index]="3" [disabled]="true"
+                      (inputChange)="onInputChange($event.index, $event.event)"></input-text>
+
+        </div>
+
+        <!-- input 2 -->
+        <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+
+          <p class="text-primary3 font-semibold h-full">
+            N° de contrato
+          </p>
+
+          <input-text class="w-full mt-2" [input]="inputs[4]" [index]="4" [disabled]="true"
+                      (inputChange)="onInputChange($event.index, $event.event)"></input-text>
+
+        </div>
+
+        <!-- input 3 -->
+        <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+
+          <p class="text-primary3 font-semibold h-full">
+            Contratante
+          </p>
+
+          <input-text class="w-full mt-2" [input]="inputs[5]" [index]="5" [disabled]="true"
+                      (inputChange)="onInputChange($event.index, $event.event)"></input-text>
+
+        </div>
+
+      </div>
+
+      <!-- contenido 2 -->
+      <div class="content1 md:grid sm:grid-cols-2 md:grid-cols-3 md:gap-x-24 md:flex items-center h-full">
+
+        <!--input 1 -->
+        <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+
+          <p class="text-primary3 font-semibold h-full">
+            Fecha de inicio
+          </p>
+
+          <input-text class="w-full mt-2" [input]="inputs[6]" [index]="6" [disabled]="true"
+                      (inputChange)="onInputChange($event.index, $event.event)"></input-text>
+
+        </div>
+
+        <!-- input 2 -->
+        <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+
+          <p class="text-primary3 font-semibold h-full">
+            Fecha de terminación
+          </p>
+
+          <input-text class="w-full mt-2" [input]="inputs[7]" [index]="7" [disabled]="true"
+                      (inputChange)="onInputChange($event.index, $event.event)"></input-text>
+
+        </div>
+
+        <!-- input 3 -->
+        <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+
+          <p class="text-primary3 font-semibold h-full">
+            Duración en meses
+          </p>
+
+          <input-text class="w-full mt-2" [input]="inputs[8]" [index]="8" [disabled]="true"
+                      (inputChange)="onInputChange($event.index, $event.event)"></input-text>
+
+        </div>
+
+      </div>
+
+      <!-- contenido 3 -->
+      <div class="content1 md:grid sm:grid-cols-2 md:grid-cols-3 md:gap-x-24 md:flex items-center h-full">
+
+        <!--input 1 -->
+        <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+
+          <p class="text-primary3 font-semibold h-full">
+            N° de Vehículos / Contrato
+          </p>
+
+          <input-text class="w-full mt-2" [input]="inputs[9]" [index]="9" [disabled]="true"
+                      (inputChange)="onInputChange($event.index, $event.event)"></input-text>
+
+        </div>
+
+        <!-- input 2 -->
+        <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+
+          <p class="text-primary3 font-semibold h-full">
+            Clase de vehículo
+          </p>
+
+          <input-text class="w-full mt-2" [input]="inputs[10]" [index]="10" [disabled]="true"
+                      (inputChange)="onInputChange($event.index, $event.event)"></input-text>
+
+        </div>
+
+        <!-- input 3 -->
+        <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+
+          <p class="text-primary3 font-semibold h-full">
+            Valor del Contrato
+          </p>
+
+          <input-text class="w-full mt-2" [input]="inputs[11]" [index]="11" [disabled]="true"
+                      (inputChange)="onInputChange($event.index, $event.event)"></input-text>
+
+        </div>
+
+      </div>
+
+      <!-- contenido 4 -->
+      <div class="content1 md:grid sm:grid-cols-2 md:grid-cols-3 md:gap-x-24 md:flex items-center h-full">
+
+        <!--input 1 -->
+        <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+
+          <p class="text-primary3 font-semibold h-full">
+            Forma de pago
+          </p>
+
+          <input-text class="w-full mt-2" [input]="inputs[12]" [index]="12" [disabled]="true"
+                      (inputChange)="onInputChange($event.index, $event.event)"></input-text>
+
+        </div>
+
+        <!-- input 2 -->
+        <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+
+          <p class="text-primary3 font-semibold h-full">
+            Áreas de Operación
+          </p>
+
+          <input-text class="w-full mt-2" [input]="inputs[13]" [index]="13" [disabled]="true"
+                      (inputChange)="onInputChange($event.index, $event.event)"></input-text>
+
+        </div>
+
+        <!-- input 3 -->
+        <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+
+          <p class="text-primary3 font-semibold h-full">
+            Tiempos estimados (En horas)
+            - Disponibilidad de Vehículo
+          </p>
+
+          <input-text class="w-full mt-2" [input]="inputs[14]" [index]="14" [disabled]="true"
+                      (inputChange)="onInputChange($event.index, $event.event)"></input-text>
+
+        </div>
+
+      </div>
+
+      <div class="mt-6 w-full flex justify-end">
+        <app-primary-button type="button" class="" (click)="changeActiveStep(4)">continuar</app-primary-button>
+      </div>
+
+    </form>
+
+  </div>
+
+  <!-- contenido radicado -->
+  <div class="md:col-span-8 sm:col-span-7 w-auto sm:mt-10 mt-4 md:px-8 px-2" *ngIf="activeNum == '2'">
+    <h3 class="text-primary1 !font-bold">Solicitud ID {{id}}</h3>
+
+    <!-- formulario 4 -->
+    <form [formGroup]="formGroup4" class="px-4 md:pl-16 md:pe-16 mt-6 active1 mb-6">
+
+      <div class="flex flex-row my-auto">
+
+        <div class="col-span-2">
+          <p class="font-bold">Digitar los siguientes campos*</p>
+          <p class="text-primary4 font-[500] pt-4">Los campos marcados con * son obligatorios</p>
+        </div>
+
+        <p class="font-bold">Digite la documentación*</p>
+
+      </div>
+
+      <!-- contenido 1 -->
+      <div class="content1 md:grid sm:grid-cols-2 md:grid-cols-3 md:gap-x-24 md:flex items-center h-full">
+
+        <!-- documento 1 -->
+        <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+
+          <p class="text-primary3 font-semibold"
+             [ngClass]="{'!text-error !font-normal': errorStates[9]}">
+            Radicado de entrada*
+          </p>
+
+          <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" mimes=".pdf" [maxFiles]="1"
+                           [error]="errorStates[9]" (fileSelected)="onFileSelected($event, 9)"></app-file-upload>
+
+        </div>
+
+        <!-- input 2 -->
+        <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+
+          <p class="text-primary3 font-semibold"
+             [ngClass]="{'!text-error !font-normal': errorStates[15]}">
+            Fecha de radicado*
+          </p>
+
+          <input-text class="w-full mt-2 cursor-pointer h-full" [input]="inputs[15]" [index]="15"
+                      [error]="errorStates[15]" (inputChange)="onInputChange($event.index, $event.event)"></input-text>
+        </div>
+
+        <!-- input 3 -->
+        <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+
+          <p class="text-primary3 font-semibold"
+             [ngClass]="{'!text-error !font-normal': errorStates[16]}">
+            Número de radicado*
+          </p>
+
+          <input-text class="w-full mt-2 cursor-pointer h-full" [input]="inputs[16]" [index]="16"
+                      [error]="errorStates[16]" (inputChange)="onInputChange($event.index, $event.event)"></input-text>
+
+        </div>
+
+      </div>
+
+      <div class="mt-40 w-full flex justify-center">
+        <app-primary-button (click)="onSubmitAllForms()">Guardar</app-primary-button>
+      </div>
+
+    </form>
+
+  </div>
+
+</div>
+
+<!-- Modal -->
+<app-alert [showModal]="showModal" title="Asignación exitosa" textColor="text-success" [showSubtitle]="false"
+           [message]="'Se ha asignado un radicado a esta solicitud'" buttonText="Continuar" [showFirstButton]="true"
+           [showCancelButton]="false" TypeAlert="success" (close)="handleClose()" (closeByButton1)="finalStep()"
+           (closeByButton2)="handleCloseByButton2()" (closeByIcon)="handleCloseByIcon()"
+           (closeByBackdrop)="handleCloseByBackdrop()" (close)="showModal = false"></app-alert>
