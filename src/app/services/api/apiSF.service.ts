@@ -28,8 +28,20 @@ export class ApiSFService {
   }
 
   //get solicitudes
-  getSolicitudes(): Observable<any> {
-    return this.http.get(`${this.baseUrl}/api/formulario`);
+  getSolicitudes(estado: any, categoria: any, search: any): Observable<any> {
+    let searchParam = '';
+
+    // Verificar si es un número o un string
+    if (!isNaN(search)) {
+      // Es un número, buscar por ID
+      searchParam = `id=${search}`;
+    } else {
+      // Es una cadena de texto, buscar por nombre de empresa
+      searchParam = `nombreEmpresa=${search}`;
+    }
+    return this.http.get(
+      `${this.baseUrl}/api/formulario?${searchParam}&?idEstadoSolicitud=${estado}&?idCategoriaSolicitud=${categoria}`
+    );
   }
 
   //validator nit
@@ -39,11 +51,8 @@ export class ApiSFService {
 
   // POST fijar capacidad transportadora
   createSolicitud(data: any): Observable<any> {
-    return this.http.post(`${this.baseUrl}/api/formulario-contrato`, data, { responseType: 'text' });
+    return this.http.post(`${this.baseUrl}/api/formulario-contrato`, data, {
+      responseType: 'text',
+    });
   }
-  
-
-
-
-
 }

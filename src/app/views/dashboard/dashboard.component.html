@@ -10,17 +10,17 @@
       <!-- Select 1 -->
       <div class="col-span-1">
         <label for="filter1" class="text-primary3 font-medium h-full text-xs">Filtrar por categoría</label>
-        <select id="filter1"
+        <select id="filter1" [(ngModel)]="filterCategory"
           class="mt-1 shadow-sm w-full p-2 bg-transparent border-2 border-secondary1 focus:outline-none focus:border-primary1 flex justify-between items-center">
           <option value="">todas</option>
-          <option *ngFor="let option of categorias" :value="categorias.id">{{categorias.descripcion}}</option>
+          <option *ngFor="let option of categorias" [ngValue]="option.id">{{option.descripcion}}</option>
         </select>
       </div>
 
       <!-- Input de búsqueda -->
       <div class="col-span-1">
         <label for="search" class="text-primary3 font-medium h-full text-xs">Buscar</label>
-        <input
+        <input [(ngModel)]="searchQuery"
           class="mt-1 shadow-sm rounded-md w-full p-2 border-2 border-secondary1 focus:outline-none focus:border-primary1 bg-transparent"
           type="text" placeholder="Buscar por ID o empresa solicitante">
       </div>
@@ -28,10 +28,10 @@
       <!-- Select 2 -->
       <div class="col-span-1">
         <label for="filter2" class="text-primary3 font-medium h-full text-xs">Filtrar por estado</label>
-        <select id="filter2"
+        <select id="filter2" [(ngModel)]="filterStatus"
           class="mt-1 shadow-sm w-full p-2 bg-transparent border-2 border-secondary1 focus:outline-none focus:border-primary1 flex justify-between items-center">
           <option value="">todos</option>
-          <option *ngFor="let option of estadoSolicitud" :value="estadoSolicitud.id">{{estadoSolicitud.descripcion}}
+          <option *ngFor="let option of estadoSolicitud" [ngValue]="option.id">{{option.descripcion}}
           </option>
         </select>
       </div>
