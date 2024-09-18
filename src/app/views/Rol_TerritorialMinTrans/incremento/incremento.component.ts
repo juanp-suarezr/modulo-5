@@ -6,31 +6,31 @@ import {
   AfterViewInit,
   TemplateRef,
 } from '@angular/core';
-import {CommonModule} from '@angular/common';
+import { CommonModule } from '@angular/common';
 import {
   FormBuilder,
   FormGroup,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import {FileUploadComponent} from '../../../components/file-upload/file-upload.component';
-import {InputText} from '../../../components/input/input.component';
-import {LeftNavComponent} from '../../../components/left-nav/left-nav.component';
-import {PrimaryButtonComponent} from '../../../components/primary-button/primary-button.component';
-import {SttepperComponent} from '../../../components/sttepper/sttepper.component';
-import {ActiveNumService} from '../../../services/left-nav/active-num.service';
-import {ActiveNumStepperService} from '../../../services/stepper/active-num.service';
-import {ApiService} from '../../../services/api/api.service';
-import {ErrorService} from '../../../services/error/error.service';
-import {SelectComponent} from '../../../components/select/select.component';
-import {AlertComponent} from '../../../components/alert/alert.component';
-import {Router} from '@angular/router';
-import {MESES} from '../../../shared/data/meses';
-import {FORMAPAGO} from '../../../shared/data/formapago';
-import {HORAS} from '../../../shared/data/horas';
-import {dateRangeValidator} from '../../../validator/date.validator';
-import {NoNegativeGlobal} from '../../../validator/noNegative.validator';
-import {ApiSFService} from "../../../services/api/apiSF.service";
+import { FileUploadComponent } from '../../../components/file-upload/file-upload.component';
+import { InputText } from '../../../components/input/input.component';
+import { LeftNavComponent } from '../../../components/left-nav/left-nav.component';
+import { PrimaryButtonComponent } from '../../../components/primary-button/primary-button.component';
+import { SttepperComponent } from '../../../components/sttepper/sttepper.component';
+import { ActiveNumService } from '../../../services/left-nav/active-num.service';
+import { ActiveNumStepperService } from '../../../services/stepper/active-num.service';
+import { ApiService } from '../../../services/api/api.service';
+import { ErrorService } from '../../../services/error/error.service';
+import { SelectComponent } from '../../../components/select/select.component';
+import { AlertComponent } from '../../../components/alert/alert.component';
+import { Router } from '@angular/router';
+import { MESES } from '../../../shared/data/meses';
+import { FORMAPAGO } from '../../../shared/data/formapago';
+import { HORAS } from '../../../shared/data/horas';
+import { dateRangeValidator } from '../../../validator/date.validator';
+import { NoNegativeGlobal } from '../../../validator/noNegative.validator';
+import { ApiSFService } from '../../../services/api/apiSF.service';
 
 @Component({
   selector: 'app-incremento',
@@ -72,9 +72,8 @@ export default class IncrementoComponent implements AfterViewInit {
     private errorService: ErrorService,
     private cdr: ChangeDetectorRef,
     private router: Router,
-    private apiSFService: ApiSFService,
-  ) {
-  }
+    private apiSFService: ApiSFService
+  ) {}
 
   //Objeto para manejar los active num del left menu y stepper.
   activeNum: string = '0'; //Left menu
@@ -111,11 +110,11 @@ export default class IncrementoComponent implements AfterViewInit {
   selectedPercentage: string = '';
 
   //Propiedad para almacenar el texto dinamico
-  dynamicText: string = "";
+  dynamicText: string = '';
 
   //Propiedad para almacenar el texto dinamico en las alertas
-  dynamicTextAlertValid1: string = "";
-  dynamicTextAlertValid2: string = "";
+  dynamicTextAlertValid1: string = '';
+  dynamicTextAlertValid2: string = '';
 
   //estado requerimiento
   smlmmv: number = 1300000;
@@ -230,8 +229,8 @@ export default class IncrementoComponent implements AfterViewInit {
       placeholder: 'Seleccione',
       value: '',
       options: [
-        {value: 7, label: '7%'},
-        {value: 10, label: '10%'},
+        { value: 7, label: '7%' },
+        { value: 10, label: '10%' },
       ],
       good: 'Selección valida',
       error: 'Propiedad de la empresa es requerido',
@@ -288,16 +287,6 @@ export default class IncrementoComponent implements AfterViewInit {
       this.activeStep = step;
       console.log('Active step:', step);
     });
-
-    //Traer los datos de la consulta, para roles
-    this.apiService.getAuthUserAndRoles().subscribe(
-      (response) => {
-        this.user = response.user;
-      },
-      (error) => {
-        console.error('Error fetching user data', error);
-      }
-    );
 
     //datos selects
     this.meses = MESES;
@@ -363,7 +352,7 @@ export default class IncrementoComponent implements AfterViewInit {
     this.formGroup4 = this.fb.group(
       {
         cantidad_contratos: [
-          {value: '', disabled: false},
+          { value: '', disabled: false },
           Validators.required,
         ],
         contrato: ['', Validators.required],
@@ -378,7 +367,7 @@ export default class IncrementoComponent implements AfterViewInit {
         area_operacion: ['', Validators.required],
         disponibilidad: ['', Validators.required],
       },
-      {validators: [dateRangeValidator, NoNegativeGlobal]}
+      { validators: [dateRangeValidator, NoNegativeGlobal] }
     );
   }
 
@@ -460,27 +449,37 @@ export default class IncrementoComponent implements AfterViewInit {
         break;
       case 4:
         if (this.validateFormGroup(this.formGroup3, this.errorStates)) {
-
           if (parseFloat(this.inputs[0].value) <= 50) {
             this.valid1 =
               this.formGroup3.get('capital_social')?.value >= 300 * this.smlmmv;
             this.valid2 =
-              this.formGroup3.get('patrimonio_liquido')?.value < 180 * this.smlmmv;
-          } else if (parseFloat(this.inputs[0].value) >= 51 && parseFloat(this.inputs[0].value) <= 300) {
+              this.formGroup3.get('patrimonio_liquido')?.value <
+              180 * this.smlmmv;
+          } else if (
+            parseFloat(this.inputs[0].value) >= 51 &&
+            parseFloat(this.inputs[0].value) <= 300
+          ) {
             this.valid1 =
               this.formGroup3.get('capital_social')?.value >= 400 * this.smlmmv;
             this.valid2 =
-              this.formGroup3.get('patrimonio_liquido')?.value < 280 * this.smlmmv;
-          } else if (parseFloat(this.inputs[0].value) >= 301 && parseFloat(this.inputs[0].value) <= 600) {
+              this.formGroup3.get('patrimonio_liquido')?.value <
+              280 * this.smlmmv;
+          } else if (
+            parseFloat(this.inputs[0].value) >= 301 &&
+            parseFloat(this.inputs[0].value) <= 600
+          ) {
             this.valid1 =
               this.formGroup3.get('capital_social')?.value >= 700 * this.smlmmv;
             this.valid2 =
-              this.formGroup3.get('patrimonio_liquido')?.value < 500 * this.smlmmv;
+              this.formGroup3.get('patrimonio_liquido')?.value <
+              500 * this.smlmmv;
           } else if (parseFloat(this.inputs[0].value) >= 601) {
             this.valid1 =
-              this.formGroup3.get('capital_social')?.value >= 1000 * this.smlmmv;
+              this.formGroup3.get('capital_social')?.value >=
+              1000 * this.smlmmv;
             this.valid2 =
-              this.formGroup3.get('patrimonio_liquido')?.value < 700 * this.smlmmv;
+              this.formGroup3.get('patrimonio_liquido')?.value <
+              700 * this.smlmmv;
           }
 
           if (this.valid1 && this.valid2) {
@@ -489,7 +488,6 @@ export default class IncrementoComponent implements AfterViewInit {
           } else {
             this.showModalRequisito = true;
           }
-
         }
         break;
 
@@ -544,7 +542,7 @@ export default class IncrementoComponent implements AfterViewInit {
         const formGroup = formControlMap[formControlName];
         if (formGroup) {
           // Parchamos el form con los archivos en base64
-          formGroup.patchValue({[formControlName]: base64Array});
+          formGroup.patchValue({ [formControlName]: base64Array });
         }
       })
       .catch((error) => {
@@ -613,7 +611,7 @@ export default class IncrementoComponent implements AfterViewInit {
     this.inputs[index].value = value;
 
     // Actualiza los valores en los formularios reactivos
-    this.formGroup2.patchValue({[index]: value});
+    this.formGroup2.patchValue({ [index]: value });
 
     // Si el índice es 1 (select), actualiza el porcentaje seleccionado
     if (index === 1) {
@@ -631,30 +629,41 @@ export default class IncrementoComponent implements AfterViewInit {
     if (numeroVehiculos && porcentaje) {
       const resultado = (numeroVehiculos * porcentaje) / 100;
       this.inputs[2].value = resultado.toFixed(2);
-      this.formGroup2.patchValue({2: resultado.toFixed(2)});
+      this.formGroup2.patchValue({ 2: resultado.toFixed(2) });
     }
 
     //Lógica para cambiar el texto dinámico
     if (index === 0) {
       if (numeroVehiculos <= 50) {
-        this.dynamicText = "Empresa con capacidad transportadora operacional autorizada de hasta 50 vehículos: Capital pagado mínimo: 300 SMLMV – Patrimonio líquido mínimo > 180 SMLMV";
-        this.dynamicTextAlertValid1 = "No se cumple con el requisito mínimo de capital social (300 SMLMV)"
-        this.dynamicTextAlertValid2 = "No se cumple con el requisito mínimo de patrimonio liquido (menor a 180 SMLMV)"
+        this.dynamicText =
+          'Empresa con capacidad transportadora operacional autorizada de hasta 50 vehículos: Capital pagado mínimo: 300 SMLMV – Patrimonio líquido mínimo > 180 SMLMV';
+        this.dynamicTextAlertValid1 =
+          'No se cumple con el requisito mínimo de capital social (300 SMLMV)';
+        this.dynamicTextAlertValid2 =
+          'No se cumple con el requisito mínimo de patrimonio liquido (menor a 180 SMLMV)';
       } else if (numeroVehiculos >= 51 && numeroVehiculos <= 300) {
-        this.dynamicText = "Empresa con capacidad transportadora operacional autorizada de hasta 51 y 300 vehículos: Capital pagado mínimo: 400 SMLMV – Patrimonio líquido mínimo > 280 SMLMV";
-        this.dynamicTextAlertValid1 = "No se cumple con el requisito mínimo de capital social (400 SMLMV)"
-        this.dynamicTextAlertValid2 = "No se cumple con el requisito mínimo de patrimonio liquido (menor a 280 SMLMV)"
+        this.dynamicText =
+          'Empresa con capacidad transportadora operacional autorizada de hasta 51 y 300 vehículos: Capital pagado mínimo: 400 SMLMV – Patrimonio líquido mínimo > 280 SMLMV';
+        this.dynamicTextAlertValid1 =
+          'No se cumple con el requisito mínimo de capital social (400 SMLMV)';
+        this.dynamicTextAlertValid2 =
+          'No se cumple con el requisito mínimo de patrimonio liquido (menor a 280 SMLMV)';
       } else if (numeroVehiculos >= 301 && numeroVehiculos <= 600) {
-        this.dynamicText = "Empresa con capacidad transportadora operacional autorizada de hasta 301 y 600 vehículos: Capital pagado mínimo: 700 SMLMV – Patrimonio líquido mínimo > 500 SMLMV";
-        this.dynamicTextAlertValid1 = "No se cumple con el requisito mínimo de capital social (700 SMLMV)"
-        this.dynamicTextAlertValid2 = "No se cumple con el requisito mínimo de patrimonio liquido (menor a 500 SMLMV)"
+        this.dynamicText =
+          'Empresa con capacidad transportadora operacional autorizada de hasta 301 y 600 vehículos: Capital pagado mínimo: 700 SMLMV – Patrimonio líquido mínimo > 500 SMLMV';
+        this.dynamicTextAlertValid1 =
+          'No se cumple con el requisito mínimo de capital social (700 SMLMV)';
+        this.dynamicTextAlertValid2 =
+          'No se cumple con el requisito mínimo de patrimonio liquido (menor a 500 SMLMV)';
       } else if (numeroVehiculos >= 601) {
-        this.dynamicText = "Empresa con capacidad transportadora operacional autorizada de más 600 vehículos: Capital pagado mínimo: 1000 SMLMV – Patrimonio líquido mínimo > 700 SMLMV";
-        this.dynamicTextAlertValid1 = "No se cumple con el requisito mínimo de capital social (1000 SMLMV)"
-        this.dynamicTextAlertValid2 = "No se cumple con el requisito mínimo de patrimonio liquido (menor a 700 SMLMV)"
+        this.dynamicText =
+          'Empresa con capacidad transportadora operacional autorizada de más 600 vehículos: Capital pagado mínimo: 1000 SMLMV – Patrimonio líquido mínimo > 700 SMLMV';
+        this.dynamicTextAlertValid1 =
+          'No se cumple con el requisito mínimo de capital social (1000 SMLMV)';
+        this.dynamicTextAlertValid2 =
+          'No se cumple con el requisito mínimo de patrimonio liquido (menor a 700 SMLMV)';
       }
     }
-
   }
 
   // No realizar ningún cambio al enfocar, pero mantener el valor
@@ -832,7 +841,7 @@ export default class IncrementoComponent implements AfterViewInit {
     }
   }
 
-  //calcular duracion en meses
+  // Calcular la duración en meses con decimales
   calculateMonthsDifference(startDate: Date, endDate: Date): number {
     if (startDate && endDate) {
       const start = new Date(startDate);
@@ -840,9 +849,20 @@ export default class IncrementoComponent implements AfterViewInit {
 
       const yearDiff = end.getFullYear() - start.getFullYear();
       const monthDiff = end.getMonth() - start.getMonth();
+      const dayDiff = end.getDate() - start.getDate();
 
       // Calcular la diferencia total en meses
-      return yearDiff * 12 + monthDiff;
+      let totalMonths = yearDiff * 12 + monthDiff;
+
+      // Ajustar el valor con la diferencia de días
+      const daysInEndMonth = new Date(
+        end.getFullYear(),
+        end.getMonth() + 1,
+        0
+      ).getDate(); // Días en el mes final
+      totalMonths += dayDiff / daysInEndMonth; // Agregar la fracción de mes
+
+      return totalMonths;
     }
     return 0;
   }

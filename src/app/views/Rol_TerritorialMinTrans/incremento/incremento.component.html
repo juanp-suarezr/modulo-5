@@ -581,7 +581,7 @@
           <div class="mt-2 w-full relative">
             <input
               class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent"
-              type="number" formControlName="contrato" required placeholder="Ingrese número">
+              type="text" formControlName="contrato" required placeholder="Ingrese número">
             <div class="w-full relative">
               <!-- Icono de error (rojo) -->
               <span *ngIf="formGroup4.get('contrato')?.invalid && (formGroup4.get('contrato')?.touched || submitted)"
@@ -595,14 +595,7 @@
                 <span class="pi pi-check-circle text-success text-[24px]"></span>
               </span>
             </div>
-            <span *ngIf="submitted && formGroup4.get('contrato')?.errors?.['required']" class="text-error">
-              El numero de contrato es obligatorio
-            </span>
-            <span
-              *ngIf="formGroup4.get('contrato')?.hasError('negativeNumber') && (formGroup4.get('contrato')?.touched || submitted)"
-              class="text-error">
-              El numeró no puede ser negativo
-            </span>
+            
           </div>
         </div>
 

@@ -499,9 +499,9 @@
                     <div class="mt-2 relative w-full">
                         <input
                             class="shadow-sm rounded-md w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent"
-                            type="date" formControlName="fechaInicio" required placeholder="dd/mm/aaaa">
+                            type="date" formControlName="fecha_inicio" required placeholder="dd/mm/aaaa">
 
-                        <span *ngIf="submitted && formGroup4.get('fechaInicio')?.errors?.['required']"
+                        <span *ngIf="submitted && formGroup4.get('fecha_inicio')?.errors?.['required']"
                             class="text-error">
                             Fecha de inicio es obligatorio
                         </span>
@@ -517,13 +517,13 @@
                     <div class="mt-2 relative w-full">
                         <input
                             class="shadow-sm rounded-md w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent"
-                            type="date" formControlName="fechaFin" required placeholder="dd/mm/aaaa">
+                            type="date" formControlName="fecha_terminacion" required placeholder="dd/mm/aaaa">
 
-                        <span *ngIf="submitted && formGroup4.get('fechaFin')?.errors?.['required']" class="text-error">
+                        <span *ngIf="submitted && formGroup4.get('fecha_terminacion')?.errors?.['required']" class="text-error">
                             Fecha de terminación es obligatorio
                         </span>
                         <span
-                            *ngIf="formGroup4.hasError('dateRangeInvalid') && (formGroup4.get('fechaFin')?.touched || submitted)"
+                            *ngIf="formGroup4.hasError('dateRangeInvalid') && (formGroup4.get('fecha_terminacion')?.touched || submitted)"
                             class="text-error">
                             La fecha de terminación no puede ser anterior a la fecha de inicio.
                         </span>

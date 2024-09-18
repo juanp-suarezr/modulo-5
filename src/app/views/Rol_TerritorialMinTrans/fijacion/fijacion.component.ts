@@ -204,8 +204,6 @@ export default class FijacionComponent {
       console.log('Active step:', step);
     });
 
-    
-
     //datos selects
     this.horas = HORAS;
 
@@ -222,11 +220,11 @@ export default class FijacionComponent {
     this.loadOptions();
 
     // Escuchar cambios en los campos 'fechaInicio' y 'fechaFin'
-    this.formGroup4.get('fechaInicio')?.valueChanges.subscribe(() => {
+    this.formGroup4.get('fecha_inicio')?.valueChanges.subscribe(() => {
       this.updateDuration();
     });
 
-    this.formGroup4.get('fechaFin')?.valueChanges.subscribe(() => {
+    this.formGroup4.get('fecha_terminacion')?.valueChanges.subscribe(() => {
       this.updateDuration();
     });
   }
@@ -268,8 +266,8 @@ export default class FijacionComponent {
         ],
         numeroContrato: ['', Validators.required],
         contratante: ['', Validators.required],
-        fechaInicio: ['', Validators.required],
-        fechaFin: ['', Validators.required],
+        fecha_inicio: ['', Validators.required],
+        fecha_terminacion: ['', Validators.required],
         duracionMeses: ['', Validators.required],
         numeroVehiculos: ['', Validators.required],
         idClaseVehiculo: ['', Validators.required],
@@ -525,8 +523,8 @@ export default class FijacionComponent {
 
   //calcular duracion en meses
   updateDuration(): void {
-    const fechaInicio = this.formGroup4.get('fechaInicio')?.value;
-    const fechaFin = this.formGroup4.get('fechaFin')?.value;
+    const fechaInicio = this.formGroup4.get('fecha_inicio')?.value;
+    const fechaFin = this.formGroup4.get('fecha_terminacion')?.value;
 
     if (fechaInicio && fechaFin) {
       const duracionMeses = this.calculateMonthsDifference(
@@ -537,7 +535,7 @@ export default class FijacionComponent {
     }
   }
 
-  //calcular duracion en meses
+  // Calcular la duración en meses con decimales
   calculateMonthsDifference(startDate: Date, endDate: Date): number {
     if (startDate && endDate) {
       const start = new Date(startDate);
@@ -545,9 +543,20 @@ export default class FijacionComponent {
 
       const yearDiff = end.getFullYear() - start.getFullYear();
       const monthDiff = end.getMonth() - start.getMonth();
+      const dayDiff = end.getDate() - start.getDate();
 
       // Calcular la diferencia total en meses
-      return yearDiff * 12 + monthDiff;
+      let totalMonths = yearDiff * 12 + monthDiff;
+
+      // Ajustar el valor con la diferencia de días
+      const daysInEndMonth = new Date(
+        end.getFullYear(),
+        end.getMonth() + 1,
+        0
+      ).getDate(); // Días en el mes final
+      totalMonths += dayDiff / daysInEndMonth; // Agregar la fracción de mes
+
+      return totalMonths;
     }
     return 0;
   }
@@ -712,8 +721,8 @@ export default class FijacionComponent {
         consecutivo: index,
         numeroContrato: item.numeroContrato,
         contratante: item.contratante,
-        fechaInicio: item.fechaInicio,
-        fechaFin: item.fechaFin,
+        fechaInicio: item.fecha_inicio,
+        fechaFin: item.fecha_terminacion,
         duracionMeses: item.duracionMeses,
         numeroVehiculos: item.numeroVehiculos,
         idClaseVehiculo: item.idClaseVehiculo.value,
