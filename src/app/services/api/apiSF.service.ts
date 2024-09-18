@@ -30,7 +30,8 @@ export class ApiSFService {
   //get solicitudes
   getSolicitudes(estado: any, categoria: any, search: any): Observable<any> {
     let searchParam = '';
-
+    
+    
     // Verificar si es un número o un string
     if (!isNaN(search)) {
       // Es un número, buscar por ID

@@ -27,8 +27,13 @@ export const routes: Routes = [
         canActivate: [AuthGuard],
       },
       {
-        path: 'solicitud',
+        path: 'solicitudRadicacion',
         loadComponent: () => import('./views/Rol_GestionDocumental/solicitud/solicitud.component'),
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'solicitudAprobacion',
+        loadComponent: () => import('./views/Rol_Supertransporte/solicitud/solicitud.component'),
         canActivate: [AuthGuard],
       },
       {
