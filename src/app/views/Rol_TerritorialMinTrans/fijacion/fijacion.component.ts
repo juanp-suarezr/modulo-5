@@ -1,3 +1,4 @@
+import { first } from 'rxjs';
 import { OnlyNumberGlobal } from './../../../validator/onlyNumber.validator';
 import { ErrorService } from '../../../services/error/error.service';
 import { PrimaryButtonComponent } from '../../../components/primary-button/primary-button.component';
@@ -100,6 +101,9 @@ export default class FijacionComponent {
   currentContractIteration: number = 0; // Contador para las iteraciones
   totalContracts: number = 0; // Número total de contratos
 
+  //nombre contratos
+  fileNames: { [key: number]: string[] } = [];
+
   //estado requerimiento
   smlmmv: number = 1300000;
   //validaciones requerimientos capita y patrimonio
@@ -142,6 +146,9 @@ export default class FijacionComponent {
       info: 'Digitar información',
     },
   ];
+
+  // Array para almacenar las opciones seleccionadas
+  selectedOptions: any[] = [];
 
   //info selects
   selects = [
@@ -285,6 +292,40 @@ export default class FijacionComponent {
   }
 
   selectOption(index: number, option: any, name: string) {
+    this.selects[index].value = option;
+    this.selects[index].isDropdownOpen = false;
+    this.formGroup3.get(name)?.setValue(option);
+    this.formGroup4.get(name)?.setValue(option);
+  }
+
+  // Método para alternar la selección de una opción
+  toggleOption(option: any) {
+    if (this.isSelected(option)) {
+      this.selectedOptions = this.selectedOptions.filter(
+        (selected) => selected.value !== option.value
+      );
+    } else {
+      this.selectedOptions.push(option);
+    }
+
+    // Actualiza el control del formulario
+    this.formGroup4.get('idClaseVehiculo')?.setValue(this.selectedOptions);
+    console.log('Opciones seleccionadas:', this.selectedOptions);
+  }
+
+  // Verifica si una opción está seleccionada
+  isSelected(option: any): boolean {
+    return this.selectedOptions.some(
+      (selected) => selected.value === option.value
+    );
+  }
+
+  // Obtener las etiquetas de las opciones seleccionadas
+  getSelectedLabels(): string {
+    return this.selectedOptions.map((option) => option.label).join(', ');
+  }
+
+  selectMultipleOption(index: number, option: any, name: string) {
     this.selects[index].value = option;
     this.selects[index].isDropdownOpen = false;
     this.formGroup3.get(name)?.setValue(option);
@@ -511,9 +552,25 @@ export default class FijacionComponent {
         };
 
         const formGroup = formControlMap[formControlName];
+
         if (formGroup) {
           // Parchamos el form con los archivos en base64
           formGroup.patchValue({ [formControlName]: base64Array });
+
+          // Solo para el cargador de archivos del formGroup1 y el control específico
+          if (formControlName === 2 && formGroup === this.formGroup1) {
+            // Inicializamos el array para almacenar los nombres de archivos truncados
+            this.fileNames[1] = file.map((f, index) => {
+              const maxLength = 20; // Longitud máxima para cada nombre
+              const nameWithoutExt = f.name.split('.').slice(0, -1).join('.'); // Elimina la extensión
+              const firstPart = `num_${index+1}__${this.nombreEmpresa}_${this.nit}_`;
+              return nameWithoutExt.length > maxLength
+                ? firstPart+(nameWithoutExt.substring(0, maxLength - 3) + '...')
+                : firstPart+nameWithoutExt;
+            });
+
+            console.log(this.fileNames[1]);
+          }
         }
       })
       .catch((error) => {
@@ -725,7 +782,9 @@ export default class FijacionComponent {
         fechaFin: item.fecha_terminacion,
         duracionMeses: item.duracionMeses,
         numeroVehiculos: item.numeroVehiculos,
-        idClaseVehiculo: item.idClaseVehiculo.value,
+        idClaseVehiculo: [
+          item.idClaseVehiculo.map((i: { value: any }) => i.value),
+        ],
         valorContrato: item.valorContrato,
         idFormaPago: item.idFormaPago.value,
         idAreaOperacion: item.idAreaOperacion.value,
@@ -734,6 +793,8 @@ export default class FijacionComponent {
         estado: true,
       });
     });
+
+    console.log(contratos);
 
     // Rellenar el array documentos
     this.formGroup1.value[2].forEach((item: any) => {
