@@ -4,11 +4,11 @@
     Solicitudes
   </h3>
 
-  <div class="card mt-2" *ngIf="hasSuperTransporteRole">
+  <div class="card mt-2">
     <!-- Filtros -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 px-4">
+    <div class="flex justify-center gap-4 px-4">
       <!-- Select 1 -->
-      <div class="col-span-1">
+      <div class="w-full md:max-w-80">
         <label for="filter1" class="text-primary3 font-medium h-full text-xs">Filtrar por categoría</label>
         <select id="filter1" [(ngModel)]="filterCategory"
           class="mt-1 shadow-sm w-full p-2 bg-transparent border-2 border-secondary1 focus:outline-none focus:border-primary1 flex justify-between items-center">
@@ -18,15 +18,15 @@
       </div>
 
       <!-- Input de búsqueda -->
-      <div class="col-span-1">
+      <div class="w-full">
         <label for="search" class="text-primary3 font-medium h-full text-xs">Buscar</label>
         <input [(ngModel)]="searchQuery"
           class="mt-1 shadow-sm rounded-md w-full p-2 border-2 border-secondary1 focus:outline-none focus:border-primary1 bg-transparent"
-          type="text" placeholder="Buscar por ID o empresa solicitante">
+          type="text" placeholder="Buscar por ID, NIT o empresa solicitante">
       </div>
 
       <!-- Select 2 -->
-      <div class="col-span-1">
+      <div class="w-full" *ngIf="hasSuperTransporteRole">
         <label for="filter2" class="text-primary3 font-medium h-full text-xs">Filtrar por estado</label>
         <select id="filter2" [(ngModel)]="filterStatus"
           class="mt-1 shadow-sm w-full p-2 bg-transparent border-2 border-secondary1 focus:outline-none focus:border-primary1 flex justify-between items-center">

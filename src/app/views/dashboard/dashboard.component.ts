@@ -56,9 +56,10 @@ export default class DashboardComponent {
   headers = [
     { id: 1, titulo: 'ID' },
     { id: 2, titulo: 'Fecha solicitud <br> (dd/mm/aaaa)' },
-    { id: 3, titulo: 'Nombre de la empresa <br> que realiza solicitud' },
-    { id: 4, titulo: 'Territorial que <br> emitió la solicitud' },
-    { id: 5, titulo: 'Categoría de <br> solicitud' },
+    { id: 3, titulo: 'NIT empresa' },
+    { id: 4, titulo: 'Nombre de la empresa <br> que realiza solicitud' },
+    { id: 5, titulo: 'Territorial que <br> emitió la solicitud' },
+    { id: 6, titulo: 'Categoría de <br> solicitud' },
   ];
   
 
@@ -127,11 +128,12 @@ export default class DashboardComponent {
           this.headers = [
             { id: 1, titulo: 'ID' },
             { id: 2, titulo: 'Fecha solicitud <br> (dd/mm/aaaa)' },
+            { id: 3, titulo: 'NIT empresa' },
             {
-              id: 3,
+              id: 4,
               titulo: 'Nombre de la empresa <br> que realiza solicitud',
             },
-            { id: 4, titulo: 'Territorial que <br> emitió la solicitud' },
+            { id: 5, titulo: 'Territorial que <br> emitió la solicitud' },
             { id: 6, titulo: 'Estado <br> solicitud' },
             { id: 7, titulo: 'Categoría de<br> solicitud' },
             { id: 8, titulo: 'Semáforo <br> alerta' },
@@ -157,6 +159,7 @@ export default class DashboardComponent {
                 return {
                   id: clase.id,
                   fecha: clase.fechaSolicitud,
+                  nit: clase.nit,
                   empresa: clase.nombreEmpresa,
                   territorial: clase.territorial,
                   estado: responseEstados.detalle.find(
@@ -192,6 +195,7 @@ export default class DashboardComponent {
           this.response = response.registros.map((clase: any) => ({
             id: clase.id,
             fecha: clase.fechaSolicitud,
+            nit: clase.nit,
             empresa: clase.nombreEmpresa,
             territorial: clase.territorial,
             categoria:
