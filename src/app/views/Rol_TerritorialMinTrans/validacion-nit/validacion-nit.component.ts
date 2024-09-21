@@ -37,17 +37,53 @@ export default class ValidacionNitComponent {
   showModal: boolean = false; // Control para mostrar el modal de error
   ShowLoadingModal: boolean = false; //loading
   showModalWarning: boolean = false; //warning fallo en consulta
+  showModalAlerta: boolean = false; // Control para mostrar el modal de error
   isProcessing: boolean = false; // Control para deshabilitar el botón
 
   ngOnInit(): void {
     this.initializeForm();
+
     // Configuración inicial del FormGroup
   }
 
   initializeForm() {
     this.formGroup1 = this.fb.group({
-      nombreEmpresa: ['', [Validators.required]],
-      nit: ['', [Validators.required, NoNegativeGlobal]],
+      nombreEmpresa: ['', { value: '', disabled: true }, Validators.required],
+      nit: ['901852316', [Validators.required, NoNegativeGlobal]],
+    });
+  }
+
+  ngAfterViewInit() {
+    this.formGroup1.get('nombreEmpresa')?.disable();
+    // Escuchar cambios en los campos 'fechaInicio' y 'fechaFin'
+    this.formGroup1.get('nit')?.valueChanges.subscribe(() => {
+      if (this.formGroup1.get('nit')?.value.length >= 9) {
+        this.apiSFService
+          .getDataByNIT(this.formGroup1.get('nit')?.value)
+          .subscribe(
+            (response) => {
+              const parsedData = JSON.parse(response);
+              console.log(parsedData);
+
+              if (parsedData.registros) {
+                this.formGroup1
+                  .get('nombreEmpresa')
+                  ?.setValue(parsedData.registros[0].razonSocialEmpresa);
+                console.log(
+                  'Datos enviados exitosamente:',
+                  parsedData.registros[0].razonSocialEmpresa
+                ); // 901852316
+              } else {
+                this.showModalAlerta = true;
+                this.formGroup1.get('nombreEmpresa')?.enable();
+              }
+            },
+            (error) => {
+              // Manejo del error
+              console.error('Error al enviar los datos:', error);
+            }
+          );
+      }
     });
   }
 
@@ -78,14 +114,13 @@ export default class ValidacionNitComponent {
             this.isProcessing = false; // Habilita el botón de nuevo
             this.ShowLoadingModal = false;
             this.showModalWarning = true;
-
           }
         );
     } else {
       this.submitted = true;
       this.formGroup1.markAllAsTouched();
     }
-  }
+  } 
 
   handleCloseByButton2() {
     this.router.navigate(['/dashboard']).then(() => {});

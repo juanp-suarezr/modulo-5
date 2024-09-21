@@ -590,7 +590,7 @@ export default class FijacionComponent {
       );
       this.formGroup4.get('duracionMeses')?.setValue(duracionMeses);
     }
-  }
+  } 
 
   // Calcular la duración en meses con decimales
   calculateMonthsDifference(startDate: Date, endDate: Date): number {

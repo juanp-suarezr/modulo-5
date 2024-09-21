@@ -18,7 +18,7 @@
                 <!-- input -->
                 <div class="mt-2 relative w-full">
                     <input
-                        class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent"
+                        class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent disabled:bg-secondary3 disabled:border-secondary2 disabled:text-secondary2 disabled:font-bold"
                         type="text" formControlName="nombreEmpresa" required placeholder="Nombre empresa">
                     <div class="w-full relative">
                         <!-- Icono de error (rojo) -->
@@ -92,6 +92,12 @@
     </form>
 
 
+    <!-- modal de error en data -->
+    <app-alert [showModal]="showModalAlerta" title="No se encuentra registro en RUES" subtitle=""
+        message="Se recomienda pedir realizar registro RUES, para tramitar solicitudes con mayor facilidad, se le habilitará el espacio para añadir de manera manual la razón social, "
+        cancelButtonText="Cerrar" [showCancelButton]="true" [showFirstButton]="false" (close)="showModalWarning = false"
+        textColor="text-waring" TypeAlert="warning"></app-alert>
+
     <!-- modal de confirmación -->
     <app-alert [showModal]="showModal" title="Error en la fijación de la capacidad transportadora"
         [showSubtitle]="false"
@@ -107,7 +113,7 @@
     <!-- modal de error en data -->
     <app-alert [showModal]="showModalWarning" title="No verificado" subtitle=""
         message="Estamos experimentando inconvenientes técnicos con la validación del nit. Por favor, vuelva a intentarlo más tarde"
-        cancelButtonText="Cerrar" [showCancelButton]="true" [showFirstButton]="false"
-        (close)="showModalWarning = false" textColor="text-waring" TypeAlert="warning"></app-alert>
+        cancelButtonText="Cerrar" [showCancelButton]="true" [showFirstButton]="false" (close)="showModalWarning = false"
+        textColor="text-waring" TypeAlert="warning"></app-alert>
 
 </div>

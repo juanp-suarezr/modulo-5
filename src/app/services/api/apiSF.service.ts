@@ -50,6 +50,14 @@ export class ApiSFService {
     return this.http.get(`${this.baseUrl}/api/formulario/verificar-nit/${nit}`);
   }
 
+  //get data by nit
+  getDataByNIT(nit: string): Observable<any> {
+    return this.http.post(`http://104.211.39.160:8000/getConfecamaras`, {"document": nit}, {
+      responseType: 'text',
+    });
+  }
+  
+
   // POST fijar capacidad transportadora
   createSolicitud(data: any): Observable<any> {
     return this.http.post(`${this.baseUrl}/api/formulario-contrato`, data, {
