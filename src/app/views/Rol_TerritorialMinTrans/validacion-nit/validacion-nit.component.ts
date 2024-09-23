@@ -11,6 +11,13 @@ import {
 import { AlertComponent } from '../../../components/alert/alert.component';
 import { NoNegativeGlobal } from '../../../validator/noNegative.validator';
 import { Router } from '@angular/router';
+import { of } from 'rxjs';
+import {
+  catchError,
+  debounceTime,
+  distinctUntilChanged,
+  switchMap,
+} from 'rxjs/operators';
 
 @Component({
   selector: 'app-validacion-nit',
@@ -36,9 +43,11 @@ export default class ValidacionNitComponent {
   formGroup1!: FormGroup;
   showModal: boolean = false; // Control para mostrar el modal de error
   ShowLoadingModal: boolean = false; //loading
-  showModalWarning: boolean = false; //warning fallo en consulta
-  showModalAlerta: boolean = false; // Control para mostrar el modal de error
-  isProcessing: boolean = false; // Control para deshabilitar el botón
+  showModalWarning: boolean = false; //warning fallo en consulta solicitudes - nit
+  showModalWarning1: boolean = false; //warning fallo en consulta rues
+  showModalAlerta: boolean = false; // Control para mostrar el modal de error cuando no esta registrado
+  showModalAlerta1: boolean = false; // Control para mostrar el modal de error cuando matricula vencida
+  isProcessing: boolean = true; // Control para deshabilitar el botón
 
   ngOnInit(): void {
     this.initializeForm();
@@ -55,36 +64,62 @@ export default class ValidacionNitComponent {
 
   ngAfterViewInit() {
     this.formGroup1.get('nombreEmpresa')?.disable();
-    // Escuchar cambios en los campos 'fechaInicio' y 'fechaFin'
-    this.formGroup1.get('nit')?.valueChanges.subscribe(() => {
-      if (this.formGroup1.get('nit')?.value.length >= 9) {
-        this.apiSFService
-          .getDataByNIT(this.formGroup1.get('nit')?.value)
-          .subscribe(
-            (response) => {
-              const parsedData = JSON.parse(response);
-              console.log(parsedData);
+    
 
-              if (parsedData.registros) {
-                this.formGroup1
-                  .get('nombreEmpresa')
-                  ?.setValue(parsedData.registros[0].razonSocialEmpresa);
-                console.log(
-                  'Datos enviados exitosamente:',
-                  parsedData.registros[0].razonSocialEmpresa
-                ); // 901852316
-              } else {
-                this.showModalAlerta = true;
+    // Escuchar cambios en el campo 'nit'
+    this.formGroup1
+      .get('nit')
+      ?.valueChanges.pipe(
+        debounceTime(500), // Espera 500ms después de que el usuario haya dejado de escribir
+        distinctUntilChanged(), // Solo realiza la consulta si el valor cambia realmente
+        switchMap((value: string) => {
+          this.isProcessing = true;
+          this.formGroup1
+                .get('nombreEmpresa')
+                ?.setValue('');
+          // Verificar si el valor es válido para hacer la consulta
+          if (value && value.length >= 9) {
+            return this.apiSFService.getDataByNIT(value).pipe(
+              catchError((error) => {
+                console.error('Error al enviar los datos:', error);
+                this.showModalWarning1 = true;
                 this.formGroup1.get('nombreEmpresa')?.enable();
-              }
-            },
-            (error) => {
-              // Manejo del error
-              console.error('Error al enviar los datos:', error);
+                return of(null); // Retorna null si hay un error
+              })
+            );
+          } else {
+            this.isProcessing = true;
+            // Si el NIT no es válido, no hacer nada
+            return of(null);
+          }
+        })
+      )
+      .subscribe((response) => {
+        if (response) {
+          const parsedData = JSON.parse(response);
+          console.log(parsedData);
+
+          if (parsedData.registros) {
+            if (parsedData.registros[0].nomEstadoMatricula === 'ACTIVA') {
+              console.log('Empresa activa');
+              // Actualizar el campo 'nombreEmpresa'
+              this.isProcessing = false;
+              this.formGroup1
+                .get('nombreEmpresa')
+                ?.setValue(parsedData.registros[0].razonSocialEmpresa);
+              console.log(
+                'Datos enviados exitosamente:',
+                parsedData.registros[0].razonSocialEmpresa
+              );
+            } else {
+              this.showModalAlerta1 = true;
+              console.log('Empresa inactiva');
             }
-          );
-      }
-    });
+          } else {
+            this.showModalAlerta = true;
+          }
+        }
+      });
   }
 
   validator() {
@@ -120,7 +155,7 @@ export default class ValidacionNitComponent {
       this.submitted = true;
       this.formGroup1.markAllAsTouched();
     }
-  } 
+  }
 
   handleCloseByButton2() {
     this.router.navigate(['/dashboard']).then(() => {});

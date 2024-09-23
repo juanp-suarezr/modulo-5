@@ -92,10 +92,23 @@
     </form>
 
 
+
     <!-- modal de error en data -->
     <app-alert [showModal]="showModalAlerta" title="No se encuentra registro en RUES" subtitle=""
-        message="Se recomienda pedir realizar registro RUES, para tramitar solicitudes con mayor facilidad, se le habilitará el espacio para añadir de manera manual la razón social, "
-        cancelButtonText="Cerrar" [showCancelButton]="true" [showFirstButton]="false" (close)="showModalWarning = false"
+        message="Se recomienda solicitar realizar registro RUES, para poder tramitar solicitudes."
+        cancelButtonText="Cerrar" [showCancelButton]="true" [showFirstButton]="false" (close)="showModalAlerta = false"
+        textColor="text-waring" TypeAlert="warning"></app-alert>
+
+    <!-- modal de error en data -->
+    <app-alert [showModal]="showModalAlerta1" title="Registro con matricula cancelada" subtitle=""
+        message="Se recomienda solicitar actualizar novedad de registro RUES, para poder tramitar solicitudes."
+        cancelButtonText="Cerrar" [showCancelButton]="true" [showFirstButton]="false" (close)="showModalAlerta1 = false"
+        textColor="text-waring" TypeAlert="warning"></app-alert>
+
+    <!-- modal de error en data -->
+    <app-alert [showModal]="showModalWarning1" title="inconvenientes registros RUES" subtitle=""
+        message="Estamos experimentando inconvenientes técnicos con la consulta del NIT en rues. Se le habilitará el espacio para añadir de manera manual la razón social."
+        cancelButtonText="Cerrar" [showCancelButton]="true" [showFirstButton]="false" (close)="showModalWarning1 = false"
         textColor="text-waring" TypeAlert="warning"></app-alert>
 
     <!-- modal de confirmación -->
@@ -112,7 +125,7 @@
 
     <!-- modal de error en data -->
     <app-alert [showModal]="showModalWarning" title="No verificado" subtitle=""
-        message="Estamos experimentando inconvenientes técnicos con la validación del nit. Por favor, vuelva a intentarlo más tarde"
+        message="Estamos experimentando inconvenientes técnicos con la validación del nit. Por favor, vuelva a intentarlo más tarde."
         cancelButtonText="Cerrar" [showCancelButton]="true" [showFirstButton]="false" (close)="showModalWarning = false"
         textColor="text-waring" TypeAlert="warning"></app-alert>
 
