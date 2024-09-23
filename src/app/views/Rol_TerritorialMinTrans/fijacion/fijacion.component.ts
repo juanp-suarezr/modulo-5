@@ -177,7 +177,9 @@ export default class FijacionComponent {
     {
       name: 'idAreaOperacion',
       required: true,
+      placeholder: 'Seleccione',
       value: '', // Valor seleccionado
+      selectedOption: '',
       good: 'Selección correcta',
       errorMessage: 'Áreas de Operación es requerido',
       isDropdownOpen: false,

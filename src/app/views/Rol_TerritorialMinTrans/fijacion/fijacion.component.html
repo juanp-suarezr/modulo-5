@@ -380,7 +380,7 @@
             <!-- content 1 -->
             <div class="content1 md:grid sm:grid-cols-2 md:grid-cols-3 md:gap-x-24 md:flex items-center h-full">
 
-            
+
                 <!-- input 3 Cantidad de contratos* -->
                 <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
                     <p class="text-primary3 font-semibold">
@@ -392,7 +392,7 @@
                             class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent disabled:bg-secondary3 disabled:border-secondary2 disabled:text-secondary2"
                             type="number" formControlName="cantidad_contratos" placeholder="Ingrese número">
                         <div class="w-full relative">
-                            
+
                             <!-- Icono de éxito (verde) -->
                             <span
                                 *ngIf="formGroup4.get('cantidad_contratos')?.valid && (formGroup4.get('cantidad_contratos')?.touched || submitted)"
@@ -400,7 +400,7 @@
                                 <span class="pi pi-check-circle text-success text-[24px]"></span>
                             </span>
                         </div>
-                        
+
                     </div>
 
                 </div>
@@ -483,18 +483,18 @@
             <div class="content1 md:grid sm:grid-cols-2 md:grid-cols-3 md:gap-x-24 md:flex items-center h-full">
                 <!-- input 7 Fecha de inicio* -->
                 <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
-                    <p class="text-primary3 font-semibold">
-                        Fecha de inicio*
+                    <p class="text-primary3 font-semibold h-full">
+                        Fecha y hora de inicio*
                     </p>
                     <!-- input -->
                     <div class="mt-2 relative w-full">
                         <input
                             class="shadow-sm rounded-md w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent"
-                            type="date" formControlName="fecha_inicio" required placeholder="dd/mm/aaaa">
+                            type="datetime-local" formControlName="fecha_inicio" required placeholder="dd/mm/aaaa">
 
                         <span *ngIf="submitted && formGroup4.get('fecha_inicio')?.errors?.['required']"
                             class="text-error">
-                            Fecha de inicio es obligatorio
+                            Fecha y hora de inicio son obligatorias
                         </span>
                     </div>
                 </div>
@@ -502,17 +502,17 @@
                 <!-- input 8 Fecha de terminación* -->
                 <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
                     <p class="text-primary3 font-semibold">
-                        Fecha de terminación*
+                        Fecha y hora de terminación*
                     </p>
                     <!-- input -->
                     <div class="mt-2 relative w-full">
                         <input
                             class="shadow-sm rounded-md w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent"
-                            type="date" formControlName="fecha_terminacion" required placeholder="dd/mm/aaaa">
+                            type="datetime-local" formControlName="fecha_terminacion" required placeholder="dd/mm/aaaa">
 
                         <span *ngIf="submitted && formGroup4.get('fecha_terminacion')?.errors?.['required']"
                             class="text-error">
-                            Fecha de terminación es obligatorio
+                            Fecha y hora de terminación son obligatorias
                         </span>
                         <span
                             *ngIf="formGroup4.hasError('dateRangeInvalid') && (formGroup4.get('fecha_terminacion')?.touched || submitted)"
@@ -595,7 +595,8 @@
                             [ngClass]="{'text-error !border border-error': formGroup4.get('idClaseVehiculo')?.invalid && (formGroup4.get('idClaseVehiculo')?.touched || formGroup4.get('idClaseVehiculo')?.dirty)}"
                             class="cursor-pointer shadow-sm min-w-[160px] w-full p-[10px] min-h-[40px] bg-transparent border-2 border-secondary1 focus:outline-none focus:border-primary1 flex justify-between items-center">
                             <span *ngIf="!selectedOptionsClase.length" class="font-[500] text-xs">Seleccione</span>
-                            <span *ngIf="selectedOptionsClase.length" class="text-normal">{{ getSelectedLabels('idClaseVehiculo') }}</span>
+                            <span *ngIf="selectedOptionsClase.length" class="text-normal">{{
+                                getSelectedLabels('idClaseVehiculo') }}</span>
 
                             <i class="pi pi-chevron-down text-primary2 text-xs"
                                 [ngClass]="{'!text-error': formGroup4.get('idClaseVehiculo')?.invalid && (formGroup4.get('idClaseVehiculo')?.touched || formGroup4.get('idClaseVehiculo')?.dirty)}"></i>
@@ -731,7 +732,8 @@
                             [ngClass]="{'text-error !border border-error': formGroup4.get('idAreaOperacion')?.invalid && (formGroup4.get('idAreaOperacion')?.touched || formGroup4.get('idAreaOperacion')?.dirty)}"
                             class="cursor-pointer shadow-sm min-w-[160px] w-full p-[10px] min-h-[40px] bg-transparent border-2 border-secondary1 focus:outline-none focus:border-primary1 flex justify-between items-center">
                             <span *ngIf="!selectedOptionsDeparts.length" class="font-[500] text-xs">Seleccione</span>
-                            <span *ngIf="selectedOptionsDeparts.length" class="text-normal">{{ getSelectedLabels('idAreaOperacion') }}</span>
+                            <span *ngIf="selectedOptionsDeparts.length" class="text-normal">{{
+                                getSelectedLabels('idAreaOperacion') }}</span>
 
                             <i class="pi pi-chevron-down text-primary2 text-xs"
                                 [ngClass]="{'!text-error': formGroup4.get('idAreaOperacion')?.invalid && (formGroup4.get('idAreaOperacion')?.touched || formGroup4.get('idAreaOperacion')?.dirty)}"></i>
