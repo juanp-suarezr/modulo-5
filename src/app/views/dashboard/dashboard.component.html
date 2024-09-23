@@ -12,8 +12,8 @@
         <label for="filter1" class="text-primary3 font-medium h-full text-xs">Filtrar por categoría</label>
         <select id="filter1" [(ngModel)]="filterCategory"
           class="mt-1 shadow-sm w-full p-2 bg-transparent border-2 border-secondary1 focus:outline-none focus:border-primary1 flex justify-between items-center">
-          <option value="0">todas</option>
-          <option *ngFor="let option of categorias" [ngValue]="option.id">{{option.descripcion}}</option>
+          <option value="">todas</option>
+          <option *ngFor="let option of categorias" [ngValue]="option.descripcion">{{option.descripcion}}</option>
         </select>
       </div>
 
@@ -30,8 +30,8 @@
         <label for="filter2" class="text-primary3 font-medium h-full text-xs">Filtrar por estado</label>
         <select id="filter2" [(ngModel)]="filterStatus"
           class="mt-1 shadow-sm w-full p-2 bg-transparent border-2 border-secondary1 focus:outline-none focus:border-primary1 flex justify-between items-center">
-          <option value="0">todos</option>
-          <option *ngFor="let option of estadoSolicitud" [ngValue]="option.id">{{option.descripcion}}
+          <option value="">todos</option>
+          <option *ngFor="let option of estadoSolicitud" [ngValue]="option.descripcion">{{option.descripcion}}
           </option>
         </select>
       </div>

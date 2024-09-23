@@ -27,22 +27,36 @@ export class ApiSFService {
     return this.http.delete(`${this.baseUrl}/items/${id}`);
   }
 
-  //get solicitudes
-  getSolicitudes(estado: any, categoria: any, search: any): Observable<any> {
-    let searchParam = '';
-    
-    
-    // Verificar si es un número o un string
-    if (!isNaN(search)) {
-      // Es un número, buscar por ID
-      searchParam = `id=${search}`;
-    } else {
-      // Es una cadena de texto, buscar por nombre de empresa
-      searchParam = `nombreEmpresa=${search}`;
+  // GET solicitudes con múltiples filtros
+  getSolicitudes(
+    estado: string,
+    categoria: string,
+    search: string
+  ): Observable<any> {
+    let params: string[] = [];
+
+    // Agregar parámetros de búsqueda si existen
+    if (search) {
+      const searchParam = !isNaN(+search)
+        ?  search.length > 8 ? `nit=${search}` :`id=${search}`
+        : `nombreEmpresa=${search}`;
+      params.push(searchParam);
     }
-    return this.http.get(
-      `${this.baseUrl}/api/formulario?${searchParam}&?idEstadoSolicitud=${estado}&?idCategoriaSolicitud=${categoria}`
-    );
+
+    if (estado) {
+      params.push(`estadoSolicitudDescripcion=${estado}`);
+    }
+
+    if (categoria) {
+      params.push(`categoriaSolicitudDescripcion=${categoria}`);
+    }
+
+    // Unir todos los parámetros con '&'
+    let allParams = params.join('&');
+    console.log(allParams);
+
+    // Realizar la solicitud HTTP con los parámetros construidos
+    return this.http.get(`${this.baseUrl}/api/formulario?${allParams}`);
   }
 
   //validator nit
@@ -52,11 +66,14 @@ export class ApiSFService {
 
   //get data by nit
   getDataByNIT(nit: string): Observable<any> {
-    return this.http.post(`http://104.211.39.160:8000/getConfecamaras`, {"document": nit}, {
-      responseType: 'text',
-    });
+    return this.http.post(
+      `http://104.211.39.160:8000/getConfecamaras`,
+      { document: nit },
+      {
+        responseType: 'text',
+      }
+    );
   }
-  
 
   // POST fijar capacidad transportadora
   createSolicitud(data: any): Observable<any> {

@@ -17,7 +17,7 @@ import { ApiSFService } from '../../services/api/apiSF.service';
 import { SkeletonModule } from 'primeng/skeleton';
 import { Router } from '@angular/router';
 import { first } from 'rxjs';
-import { PrimaryButtonComponent } from "../../components/primary-button/primary-button.component";
+import { PrimaryButtonComponent } from '../../components/primary-button/primary-button.component';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -33,8 +33,8 @@ import { FormsModule } from '@angular/forms';
     PaginatorComponent,
     TableComponent,
     SkeletonModule,
-    PrimaryButtonComponent
-],
+    PrimaryButtonComponent,
+  ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css',
 })
@@ -44,13 +44,12 @@ export default class DashboardComponent {
   user: any;
   loading: boolean = true; // Estado de carga
 
-
-  //arrays 
+  //arrays
   categorias: any;
   estadoSolicitud: any;
   // Variables de filtro
-  filterCategory: number = 0;
-  filterStatus: number = 0;
+  filterCategory: string = '';
+  filterStatus: string = '';
   searchQuery: string = '';
 
   headers = [
@@ -61,7 +60,6 @@ export default class DashboardComponent {
     { id: 5, titulo: 'Territorial que <br> emitió la solicitud' },
     { id: 6, titulo: 'Categoría de <br> solicitud' },
   ];
-  
 
   constructor(
     private apiService: ApiService,
@@ -92,7 +90,7 @@ export default class DashboardComponent {
         this.loadInitialData();
       });
   }
-  
+
   loadInitialData(): void {
     // Realiza una llamada a la API para obtener las categorías
     this.apiService.getCategorias().subscribe(
@@ -100,25 +98,28 @@ export default class DashboardComponent {
         console.log(response); // Muestra la respuesta en la consola
         this.categorias = response.detalle;
         console.log(this.categorias);
-        
-        this.getSolicitudes(this.categorias, this.filterStatus, this.filterCategory, this.searchQuery); // Llama a otro método para manejar los datos de solicitudes
       },
       (error) => {
         console.error('Error fetching user data', error); // Maneja el error si ocurre
       }
     );
+
+    this.getSolicitudes(
+      this.categorias,
+      this.filterStatus,
+      this.filterCategory,
+      this.searchQuery
+    ); // Llama a otro método para manejar los datos de solicitudes
   }
 
   //obtener solicitudes
-  getSolicitudes(res: any, estado: any, categoria:any, search: any) {
+  getSolicitudes(res: any, estado: any, categoria: any, search: any) {
     this.loading = true; // Comienza la carga de datos
     console.log(res);
 
     // traer los datos de la consulta
     this.apiSFService.getSolicitudes(estado, categoria, search).subscribe(
-      
       (response) => {
-        
         // Validar roles y generar headers después de cargar los datos
         if (
           this.user.roles.some((role: any) =>
@@ -140,72 +141,52 @@ export default class DashboardComponent {
             { id: 9, titulo: 'Número<br> radicado' },
           ];
 
-          this.apiService.getEstados().subscribe(
-            (responseEstados) => {
-              this.estadoSolicitud = responseEstados.detalle;
-              this.response = response.registros.map((clase: any) => {
-                // Convertir las fechas a milisegundos
-                const fechaHoy = new Date().valueOf(); // Fecha actual en milisegundos
-                const fechaSolicitud = new Date(clase.fechaSolicitud).valueOf(); // Fecha de solicitud en milisegundos
+          this.response = response.content.map((clase: any) => {
+            // Convertir las fechas a milisegundos
+            const fechaHoy = new Date().valueOf(); // Fecha actual en milisegundos
+            const fechaSolicitud = new Date(clase.fechaSolicitud).valueOf(); // Fecha de solicitud en milisegundos
 
-                // Calcular la diferencia en milisegundos
-                const diferenciaMilisegundos = fechaHoy - fechaSolicitud;
+            // Calcular la diferencia en milisegundos
+            const diferenciaMilisegundos = fechaHoy - fechaSolicitud;
 
-                // Convertir la diferencia de milisegundos a días
-                const diferenciaDias = Math.floor(
-                  diferenciaMilisegundos / (1000 * 60 * 60 * 24)
-                );
+            // Convertir la diferencia de milisegundos a días
+            const diferenciaDias = Math.floor(
+              diferenciaMilisegundos / (1000 * 60 * 60 * 24)
+            );
 
-                return {
-                  id: clase.id,
-                  fecha: clase.fechaSolicitud,
-                  nit: clase.nit,
-                  empresa: clase.nombreEmpresa,
-                  territorial: clase.territorial,
-                  estado: responseEstados.detalle.find(
-                    (item: any) => item.id == clase.idEstadoSolicitud
-                  )?.descripcion,
-                  categoria:
-                    res.find(
-                      (item: any) => item.id == clase.idCategoriaSolicitud
-                    )?.descripcion === 'Fijación'
-                      ? 'Fijación de Capacidad Transportadora'
-                      : res.find(
-                          (item: any) => item.id == clase.idCategoriaSolicitud
-                        )?.descripcion === 'Incremento'
-                      ? 'Incremento de Capacidad Transportadora'
-                      : 'Sin categoría',
-                  semaforo: diferenciaDias, // Diferencia en días entre la fecha actual y la fecha de solicitud
-                  radicado: clase.numeroRadicado,
-                };
-              });
+            return {
+              id: clase.id,
+              fecha: clase.fechaSolicitud,
+              nit: clase.nit,
+              empresa: clase.nombreEmpresa,
+              territorial: clase.territorial,
+              estado: clase.estadoSolicitudDescripcion,
+              categoria:
+                clase.categoriaSolicitudDescripcion === 'Fijación'
+                  ? 'Fijación de Capacidad Transportadora'
+                  : clase.categoriaSolicitudDescripcion === 'Incremento'
+                  ? 'Incremento de Capacidad Transportadora'
+                  : 'Sin categoría',
+              semaforo: diferenciaDias, // Diferencia en días entre la fecha actual y la fecha de solicitud
+              radicado: clase.numeroRadicado,
+            };
+          });
 
-              console.log(this.response);
+          console.log(this.response);
 
-              this.loading = false; // Termina la carga de datos
-              this.cdRef.detectChanges(); // Forzar la detección de cambios
-            },
-            (error) => {
-              this.loading = false; // Termina la carga de datos en caso de error
-              this.cdRef.detectChanges(); // Forzar la detección de cambios
-              console.error('Error fetching user data', error);
-            }
-          );
+          this.loading = false; // Termina la carga de datos
+          this.cdRef.detectChanges(); // Forzar la detección de cambios
         } else {
-          this.response = response.registros.map((clase: any) => ({
+          this.response = response.content.map((clase: any) => ({
             id: clase.id,
             fecha: clase.fechaSolicitud,
             nit: clase.nit,
             empresa: clase.nombreEmpresa,
             territorial: clase.territorial,
             categoria:
-              res.find(
-                (item: any) => item.id == clase.idCategoriaSolicitud
-              )?.descripcion === 'Fijación'
+              clase.categoriaSolicitudDescripcion === 'Fijación'
                 ? 'Fijación de Capacidad Transportadora'
-                : res.find(
-                    (item: any) => item.id == clase.idCategoriaSolicitud
-                  )?.descripcion === 'Incremento'
+                : clase.categoriaSolicitudDescripcion === 'Incremento'
                 ? 'Incremento de Capacidad Transportadora'
                 : 'Sin categoría',
           }));
@@ -223,43 +204,51 @@ export default class DashboardComponent {
     );
   }
 
-
   // Método para aplicar filtros
   applyFilters() {
     console.log('Aplicando filtros:', {
       category: this.filterCategory,
       status: this.filterStatus,
-      searchQuery: this.searchQuery
+      searchQuery: this.searchQuery,
     });
 
     // Si las categorías ya están cargadas, solo aplica los filtros
-  if (this.categorias) {
-    this.getSolicitudes(this.categorias, this.filterStatus, this.filterCategory, this.searchQuery);
-  }
+    if (this.categorias) {
+      this.getSolicitudes(
+        this.categorias,
+        this.filterStatus,
+        this.filterCategory,
+        this.searchQuery
+      );
+    }
     // Lógica para filtrar los datos
   }
 
   // Método para limpiar los filtros
   clearFilters(): void {
-    this.filterCategory = 0;
-    this.filterStatus = 0;
+    this.filterCategory = '';
+    this.filterStatus = '';
     this.searchQuery = '';
     console.log('Filtros limpiados');
-    
+
     // Llamar a getSolicitudes sin filtros, sin volver a cargar las categorías
     if (this.categorias) {
-      this.getSolicitudes(this.categorias, this.filterStatus, this.filterCategory, this.searchQuery);
+      this.getSolicitudes(
+        this.categorias,
+        this.filterStatus,
+        this.filterCategory,
+        this.searchQuery
+      );
     }
   }
 
   //Metodo para redirigir el id a la vista solicitud
   onIdClicked(id: number): void {
     console.log(id);
-    
+
     this.router.navigate(['/solicitudAprobacion'], {
       state: {
         id: id,
-        
       },
     });
   }
@@ -275,6 +264,4 @@ export default class DashboardComponent {
       }
     );
   }
-
-  
 }
