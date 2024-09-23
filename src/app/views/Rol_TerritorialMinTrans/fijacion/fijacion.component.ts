@@ -148,7 +148,8 @@ export default class FijacionComponent {
   ];
 
   // Array para almacenar las opciones seleccionadas
-  selectedOptions: any[] = [];
+  selectedOptionsClase: any[] = [];
+  selectedOptionsDeparts: any[] = [];
 
   //info selects
   selects = [
@@ -299,30 +300,63 @@ export default class FijacionComponent {
   }
 
   // Método para alternar la selección de una opción
-  toggleOption(option: any) {
-    if (this.isSelected(option)) {
-      this.selectedOptions = this.selectedOptions.filter(
-        (selected) => selected.value !== option.value
-      );
+  toggleOption(option: any, nameForm: string) {
+
+    if (this.isSelected(option, nameForm)) {
+
+      if (nameForm == 'idAreaOperacion') {
+        this.selectedOptionsDeparts = this.selectedOptionsDeparts.filter(
+          (selected) => selected.value !== option.value
+        );
+      } else {
+        this.selectedOptionsClase = this.selectedOptionsClase.filter(
+          (selected) => selected.value !== option.value
+        );
+      }
+      
     } else {
-      this.selectedOptions.push(option);
+      if (nameForm == 'idAreaOperacion') {
+        this.selectedOptionsDeparts.push(option);
+      } else {
+        this.selectedOptionsClase.push(option);
+      }
+      
     }
 
     // Actualiza el control del formulario
-    this.formGroup4.get('idClaseVehiculo')?.setValue(this.selectedOptions);
-    console.log('Opciones seleccionadas:', this.selectedOptions);
+    if (nameForm == 'idAreaOperacion') {
+      this.formGroup4.get(nameForm)?.setValue(this.selectedOptionsDeparts);
+      console.log('Opciones seleccionadas:', this.selectedOptionsDeparts);
+    } else {
+      this.formGroup4.get(nameForm)?.setValue(this.selectedOptionsClase);
+      console.log('Opciones seleccionadas:', this.selectedOptionsClase);
+    }
+    
+  
   }
 
   // Verifica si una opción está seleccionada
-  isSelected(option: any): boolean {
-    return this.selectedOptions.some(
-      (selected) => selected.value === option.value
-    );
+  isSelected(option: any, nameForm:string): boolean {
+    if (nameForm == 'idAreaOperacion') {
+      return this.selectedOptionsDeparts.some(
+        (selected) => selected.value === option.value
+      );
+    } else {
+      return this.selectedOptionsClase.some(
+        (selected) => selected.value === option.value
+      );
+    }
+    
   }
 
   // Obtener las etiquetas de las opciones seleccionadas
-  getSelectedLabels(): string {
-    return this.selectedOptions.map((option) => option.label).join(', ');
+  getSelectedLabels(nameForm: string): string {
+    if (nameForm == 'idAreaOperacion') {
+      return this.selectedOptionsDeparts.map((option) => option.label).join(', ');
+    } else {
+      return this.selectedOptionsClase.map((option) => option.label).join(', ');
+    }
+
   }
 
   selectMultipleOption(index: number, option: any, name: string) {
@@ -787,7 +821,7 @@ export default class FijacionComponent {
         ],
         valorContrato: item.valorContrato,
         idFormaPago: item.idFormaPago.value,
-        idAreaOperacion: item.idAreaOperacion.value,
+        idAreaOperacion: item.idAreaOperacion.map((i: { value: any }) => i.value),
         disponibilidadVehiculosEstimada:
           item.disponibilidadVehiculosEstimada.value,
         estado: true,

@@ -594,8 +594,8 @@
                         <div (click)="toggleDropdown(0)"
                             [ngClass]="{'text-error !border border-error': formGroup4.get('idClaseVehiculo')?.invalid && (formGroup4.get('idClaseVehiculo')?.touched || formGroup4.get('idClaseVehiculo')?.dirty)}"
                             class="cursor-pointer shadow-sm min-w-[160px] w-full p-[10px] min-h-[40px] bg-transparent border-2 border-secondary1 focus:outline-none focus:border-primary1 flex justify-between items-center">
-                            <span *ngIf="!selectedOptions.length" class="font-[500] text-xs">Seleccione</span>
-                            <span *ngIf="selectedOptions.length" class="text-normal">{{ getSelectedLabels() }}</span>
+                            <span *ngIf="!selectedOptionsClase.length" class="font-[500] text-xs">Seleccione</span>
+                            <span *ngIf="selectedOptionsClase.length" class="text-normal">{{ getSelectedLabels('idClaseVehiculo') }}</span>
 
                             <i class="pi pi-chevron-down text-primary2 text-xs"
                                 [ngClass]="{'!text-error': formGroup4.get('idClaseVehiculo')?.invalid && (formGroup4.get('idClaseVehiculo')?.touched || formGroup4.get('idClaseVehiculo')?.dirty)}"></i>
@@ -604,13 +604,13 @@
                         <!-- Opciones desplegables -->
                         <ul *ngIf="selects[0].isDropdownOpen"
                             class="absolute z-20 bg-secondary4 border border-primary1 shadow-md rounded-bl-md rounded-br-md w-full mt-1 max-h-48 overflow-y-auto">
-                            <li *ngFor="let option of ClaseVehiculo" (click)="toggleOption(option)"
+                            <li *ngFor="let option of ClaseVehiculo" (click)="toggleOption(option, 'idClaseVehiculo')"
                                 class="cursor-pointer px-4 py-2 hover:bg-secondary1 flex items-center">
 
                                 <!-- Estilo personalizado -->
                                 <div class="mr-2 !border-2 !border-primary1 rounded-md !h-5 !w-5 flex items-center justify-center"
-                                    [ngClass]=" {'!bg-primary1 text-white': isSelected(option)}">
-                                    <span *ngIf="isSelected(option)"> &#10003; </span>
+                                    [ngClass]=" {'!bg-primary1 text-white': isSelected(option, 'idClaseVehiculo')}">
+                                    <span *ngIf="isSelected(option, 'idClaseVehiculo')"> &#10003; </span>
                                 </div>
                                 {{ option.label }}
 
@@ -726,23 +726,31 @@
                     <!-- select -->
                     <div class="w-full relative mt-2">
 
+                        <!-- Selector principal -->
                         <div (click)="toggleDropdown(2)"
                             [ngClass]="{'text-error !border border-error': formGroup4.get('idAreaOperacion')?.invalid && (formGroup4.get('idAreaOperacion')?.touched || formGroup4.get('idAreaOperacion')?.dirty)}"
-                            class="cursor-pointer shadow-sm min-w-[160px] w-full p-[10px] h-[40px] bg-transparent border-2 border-secondary1 focus:outline-none focus:border-primary1 flex justify-between items-center">
-                            <span *ngIf="!selects[2].value" class="font-[500] text-xs">Seleccione</span>
-                            <span *ngIf="selects[2].value" class="text-normal">{{
-                                formGroup4.get('idAreaOperacion')?.value.label
-                                }}</span>
+                            class="cursor-pointer shadow-sm min-w-[160px] w-full p-[10px] min-h-[40px] bg-transparent border-2 border-secondary1 focus:outline-none focus:border-primary1 flex justify-between items-center">
+                            <span *ngIf="!selectedOptionsDeparts.length" class="font-[500] text-xs">Seleccione</span>
+                            <span *ngIf="selectedOptionsDeparts.length" class="text-normal">{{ getSelectedLabels('idAreaOperacion') }}</span>
 
                             <i class="pi pi-chevron-down text-primary2 text-xs"
                                 [ngClass]="{'!text-error': formGroup4.get('idAreaOperacion')?.invalid && (formGroup4.get('idAreaOperacion')?.touched || formGroup4.get('idAreaOperacion')?.dirty)}"></i>
                         </div>
 
+                        <!-- Opciones desplegables -->
                         <ul *ngIf="selects[2].isDropdownOpen"
                             class="absolute z-20 bg-secondary4 border border-primary1 shadow-md rounded-bl-md rounded-br-md w-full mt-1 max-h-48 overflow-y-auto">
-                            <li *ngFor="let option of departs" (click)="selectOption(2, option, 'idAreaOperacion')"
-                                class="cursor-pointer px-4 py-2 hover:bg-primary1 hover:text-white">
+                            <li *ngFor="let option of departs" (click)="toggleOption(option, 'idAreaOperacion')"
+                                class="cursor-pointer px-4 py-2 hover:bg-secondary1 flex items-center">
+
+                                <!-- Estilo personalizado -->
+                                <div class="mr-2 !border-2 !border-primary1 rounded-md !h-5 !w-5 flex items-center justify-center"
+                                    [ngClass]=" {'!bg-primary1 text-white': isSelected(option, 'idAreaOperacion')}">
+                                    <span *ngIf="isSelected(option, 'idAreaOperacion')"> &#10003; </span>
+                                </div>
                                 {{ option.label }}
+
+
                             </li>
                         </ul>
                         <!-- Mensajes de validación -->
