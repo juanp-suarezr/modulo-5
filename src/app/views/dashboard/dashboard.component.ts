@@ -44,6 +44,12 @@ export default class DashboardComponent {
   user: any;
   loading: boolean = true; // Estado de carga
 
+  //paginator datas
+  
+  currentPage: number = 1;
+  pageSize: number = 4;
+  totalPages: number = 1;
+
   //arrays
   categorias: any;
   estadoSolicitud: any;
@@ -59,6 +65,7 @@ export default class DashboardComponent {
     { id: 4, titulo: 'Nombre de la empresa <br> que realiza solicitud' },
     { id: 5, titulo: 'Territorial que <br> emitió la solicitud' },
     { id: 6, titulo: 'Categoría de <br> solicitud' },
+    { id: 7, titulo: 'Acciones' },
   ];
 
   constructor(
@@ -91,6 +98,19 @@ export default class DashboardComponent {
       });
   }
 
+  onPageChange(page: number) {
+    this.currentPage = page;
+    //llamado a el servicio que le trae el listado de registros
+    this.getSolicitudes(
+      this.categorias,
+      this.filterStatus,
+      this.filterCategory,
+      this.searchQuery,
+      this.pageSize,
+      this.currentPage,
+    );
+  }
+
   loadInitialData(): void {
     // Realiza una llamada a la API para obtener las categorías
     this.apiService.getCategorias().subscribe(
@@ -108,100 +128,118 @@ export default class DashboardComponent {
       this.categorias,
       this.filterStatus,
       this.filterCategory,
-      this.searchQuery
+      this.searchQuery,
+      this.pageSize,
+      this.currentPage,
     ); // Llama a otro método para manejar los datos de solicitudes
   }
 
   //obtener solicitudes
-  getSolicitudes(res: any, estado: any, categoria: any, search: any) {
+  getSolicitudes(
+    res: any,
+    estado: any,
+    categoria: any,
+    search: any,
+    pageSize: number,
+    currentPage: number
+  ) {
     this.loading = true; // Comienza la carga de datos
     console.log(res);
 
     // traer los datos de la consulta
-    this.apiSFService.getSolicitudes(estado, categoria, search).subscribe(
-      (response) => {
-        // Validar roles y generar headers después de cargar los datos
-        if (
-          this.user.roles.some((role: any) =>
-            role.roleName.includes('ROLE_SUPERTRANSPORTE')
-          )
-        ) {
-          this.headers = [
-            { id: 1, titulo: 'ID' },
-            { id: 2, titulo: 'Fecha solicitud <br> (dd/mm/aaaa)' },
-            { id: 3, titulo: 'NIT empresa' },
-            {
-              id: 4,
-              titulo: 'Nombre de la empresa <br> que realiza solicitud',
-            },
-            { id: 5, titulo: 'Territorial que <br> emitió la solicitud' },
-            { id: 6, titulo: 'Estado <br> solicitud' },
-            { id: 7, titulo: 'Categoría de<br> solicitud' },
-            { id: 8, titulo: 'Semáforo <br> alerta' },
-            { id: 9, titulo: 'Número<br> radicado' },
-          ];
+    this.apiSFService
+      .getSolicitudes(estado, categoria, search, pageSize, currentPage)
+      .subscribe(
+        (response) => {
 
-          this.response = response.content.map((clase: any) => {
-            // Convertir las fechas a milisegundos
-            const fechaHoy = new Date().valueOf(); // Fecha actual en milisegundos
-            const fechaSolicitud = new Date(clase.fechaSolicitud).valueOf(); // Fecha de solicitud en milisegundos
+          // Validar roles y generar headers después de cargar los datos
+          if (
+            this.user.roles.some((role: any) =>
+              role.roleName.includes('ROLE_SUPERTRANSPORTE')
+            )
+          ) {
+            this.headers = [
+              { id: 1, titulo: 'ID' },
+              { id: 2, titulo: 'Fecha solicitud <br> (dd/mm/aaaa)' },
+              { id: 3, titulo: 'NIT empresa' },
+              {
+                id: 4,
+                titulo: 'Nombre de la empresa <br> que realiza solicitud',
+              },
+              { id: 5, titulo: 'Territorial que <br> emitió la solicitud' },
+              { id: 6, titulo: 'Estado <br> solicitud' },
+              { id: 7, titulo: 'Categoría de<br> solicitud' },
+              { id: 8, titulo: 'Semáforo <br> alerta' },
+              { id: 9, titulo: 'Número<br> radicado' },
+            ];
 
-            // Calcular la diferencia en milisegundos
-            const diferenciaMilisegundos = fechaHoy - fechaSolicitud;
+            this.totalPages = response.totalPages-1;
+            this.response = response.content.map((clase: any) => {
+              // Convertir las fechas a milisegundos
+              const fechaHoy = new Date().valueOf(); // Fecha actual en milisegundos
+              const fechaSolicitud = new Date(clase.fechaSolicitud).valueOf(); // Fecha de solicitud en milisegundos
 
-            // Convertir la diferencia de milisegundos a días
-            const diferenciaDias = Math.floor(
-              diferenciaMilisegundos / (1000 * 60 * 60 * 24)
-            );
+              // Calcular la diferencia en milisegundos
+              const diferenciaMilisegundos = fechaHoy - fechaSolicitud;
 
-            return {
+              // Convertir la diferencia de milisegundos a días
+              const diferenciaDias = Math.floor(
+                diferenciaMilisegundos / (1000 * 60 * 60 * 24)
+              );
+
+              return {
+                id: clase.id,
+                fecha: clase.fechaSolicitud,
+                nit: clase.nit,
+                empresa: clase.nombreEmpresa,
+                territorial: clase.territorial,
+                estado: clase.estadoSolicitudDescripcion,
+                categoria:
+                  clase.categoriaSolicitudDescripcion === 'Fijación'
+                    ? 'Fijación de Capacidad Transportadora'
+                    : clase.categoriaSolicitudDescripcion === 'Incremento'
+                    ? 'Incremento de Capacidad Transportadora'
+                    : 'Sin categoría',
+                semaforo: diferenciaDias, // Diferencia en días entre la fecha actual y la fecha de solicitud
+                radicado: clase.numeroRadicado,
+              };
+            });
+
+            console.log(this.response);
+
+            this.loading = false; // Termina la carga de datos
+            this.cdRef.detectChanges(); // Forzar la detección de cambios
+          } else {
+            this.totalPages = response.totalPages-1;
+            console.log(this.totalPages);
+            
+            console.log(response);
+            this.response = response.content.map((clase: any) => ({
               id: clase.id,
               fecha: clase.fechaSolicitud,
               nit: clase.nit,
               empresa: clase.nombreEmpresa,
               territorial: clase.territorial,
-              estado: clase.estadoSolicitudDescripcion,
               categoria:
                 clase.categoriaSolicitudDescripcion === 'Fijación'
                   ? 'Fijación de Capacidad Transportadora'
                   : clase.categoriaSolicitudDescripcion === 'Incremento'
                   ? 'Incremento de Capacidad Transportadora'
                   : 'Sin categoría',
-              semaforo: diferenciaDias, // Diferencia en días entre la fecha actual y la fecha de solicitud
-              radicado: clase.numeroRadicado,
-            };
-          });
+                  estadoSolicitudDescripcion: clase.estadoSolicitudDescripcion,
+            }));
 
-          console.log(this.response);
-
-          this.loading = false; // Termina la carga de datos
+            this.loading = false; // Termina la carga de datos
+            this.cdRef.detectChanges(); // Forzar la detección de cambios
+            console.log(this.loading);
+          }
+        },
+        (error) => {
+          this.loading = false; // Termina la carga de datos en caso de error
           this.cdRef.detectChanges(); // Forzar la detección de cambios
-        } else {
-          this.response = response.content.map((clase: any) => ({
-            id: clase.id,
-            fecha: clase.fechaSolicitud,
-            nit: clase.nit,
-            empresa: clase.nombreEmpresa,
-            territorial: clase.territorial,
-            categoria:
-              clase.categoriaSolicitudDescripcion === 'Fijación'
-                ? 'Fijación de Capacidad Transportadora'
-                : clase.categoriaSolicitudDescripcion === 'Incremento'
-                ? 'Incremento de Capacidad Transportadora'
-                : 'Sin categoría',
-          }));
-
-          this.loading = false; // Termina la carga de datos
-          this.cdRef.detectChanges(); // Forzar la detección de cambios
-          console.log(this.loading);
+          console.error('Error fetching user data', error);
         }
-      },
-      (error) => {
-        this.loading = false; // Termina la carga de datos en caso de error
-        this.cdRef.detectChanges(); // Forzar la detección de cambios
-        console.error('Error fetching user data', error);
-      }
-    );
+      );
   }
 
   // Método para aplicar filtros
@@ -218,7 +256,10 @@ export default class DashboardComponent {
         this.categorias,
         this.filterStatus,
         this.filterCategory,
-        this.searchQuery
+        this.searchQuery,
+        this.pageSize,
+        this.currentPage,
+        
       );
     }
     // Lógica para filtrar los datos
@@ -229,6 +270,7 @@ export default class DashboardComponent {
     this.filterCategory = '';
     this.filterStatus = '';
     this.searchQuery = '';
+    this.currentPage = 1;
     console.log('Filtros limpiados');
 
     // Llamar a getSolicitudes sin filtros, sin volver a cargar las categorías
@@ -237,7 +279,9 @@ export default class DashboardComponent {
         this.categorias,
         this.filterStatus,
         this.filterCategory,
-        this.searchQuery
+        this.searchQuery,
+        this.pageSize,
+        this.currentPage,
       );
     }
   }
@@ -247,6 +291,19 @@ export default class DashboardComponent {
     console.log(id);
 
     this.router.navigate(['/solicitudAprobacion'], {
+      state: {
+        id: id,
+      },
+    });
+  }
+
+  solicitudGuardada(id: number, categoria: string): void {
+    console.log(id);
+    let router =
+      categoria == 'Incremento'
+        ? '/incrementocapacidadtransportadora'
+        : 'fijacioncapacidadtransportadora';
+    this.router.navigate([router], {
       state: {
         id: id,
       },

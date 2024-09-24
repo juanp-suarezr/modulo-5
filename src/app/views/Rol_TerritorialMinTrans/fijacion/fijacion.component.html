@@ -107,8 +107,10 @@
                 </div>
             </div>
 
-            <div class="mt-6 w-full flex justify-end">
-                <app-primary-button class="" (click)="changeActiveStep(2)">continuar</app-primary-button>
+            <div class="mt-6 w-full flex justify-end gap-4">
+
+                <app-primary-button class="" (click)="changeActiveStep(2, true)">Guardar</app-primary-button>
+                <app-primary-button class="" (click)="goToModal(2)">continuar</app-primary-button>
             </div>
 
         </form>
@@ -178,13 +180,17 @@
             </div>
 
             <div class="mt-6 w-full flex justify-end">
-                <app-primary-button class="" (click)="changeActiveStep(3)">continuar</app-primary-button>
+                <button type="button" (click)="changeActiveStep(1, false)"
+                    class="inline-flex items-center justify-center px-4 py-2 text-white bg-primary4 hover:bg-primary2 focus:bg-primary2 font-medium rounded-full text-[16px] work-sans text-center">
+                    Regresar
+                </button>
+                <app-primary-button class="" (click)="changeActiveStep(3, true)">continuar</app-primary-button>
             </div>
 
         </form>
 
         <!-- form 3 -->
-        <form [formGroup]="formGroup3" class="px-4 md:pl-16 md:pe-16 mt-6 active1 mb-6" (ngSubmit)="changeActiveStep(4)"
+        <form [formGroup]="formGroup3" class="px-4 md:pl-16 md:pe-16 mt-6 active1 mb-6" (ngSubmit)="changeActiveStep(4, true)"
             *ngIf="activeStep == 3">
             <div class="col-span-2">
                 <p class="font-bold">Digitar los siguientes campos*</p>
@@ -373,9 +379,9 @@
                         información se debe diligenciar por cada uno de los contratos.
                     </p>
                 </div>
-                <h3 class="mt-2">
+                <p class="mt-2">
                     {{ this.fileNames[1][currentContractIteration]}}
-                </h3>
+                </p>
             </div>
             <!-- content 1 -->
             <div class="content1 md:grid sm:grid-cols-2 md:grid-cols-3 md:gap-x-24 md:flex items-center h-full">
@@ -487,7 +493,7 @@
                         Fecha y hora de inicio*
                     </p>
                     <!-- input -->
-                    <div class="mt-2 relative w-full">
+                    <div class="relative w-full">
                         <input
                             class="shadow-sm rounded-md w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent"
                             type="datetime-local" formControlName="fecha_inicio" required placeholder="dd/mm/aaaa">
@@ -821,6 +827,12 @@
     </div>
 
 </div>
+
+<!-- APP ALERT REQUISITO CAPITAL SOCIAL Y PATRIMONIO -->
+<app-alert [showModal]="showModalContinuar" title="Continuar sin guardar" subtitle=""
+    message="Esta seguro que desea continuar sin guardar." cancelButtonText="Cerrar" [showCancelButton]="true" buttonText="Continuar"
+    [showFirstButton]="true" (close)="showModalContinuar = false" (closeByButton1)="changeActiveStep(numberTocontinue, false)"
+    TypeAlert="warning"></app-alert>
 
 <!-- APP ALERT REQUISITO CAPITAL SOCIAL Y PATRIMONIO -->
 <app-alert [showModal]="showModalRequisito" title="No cumple requisito" subtitle=""

@@ -97,6 +97,7 @@
 
   <div class="mb-4" *ngIf="loading == false">
     <app-table [data]="response" [headers]="headers" (idClicked)="onIdClicked($event)"></app-table>
+    <app-paginador [totalPages]="totalPages" [initialPage]="currentPage" (pageChange)="onPageChange($event)"></app-paginador>
   </div>
 
 

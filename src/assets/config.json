@@ -1,0 +1,4 @@
+{
+    "API_URL": "http://localhost:8080",
+    "API_URL2": "http://localhost:9090"
+}

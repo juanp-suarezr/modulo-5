@@ -1,49 +1,26 @@
-<div *ngIf="data > 0" class="w-full">
-    <!-- Mostrar el rango de datos de la página actual -->
-    <div class="p-2 border-b border-gray-300">
-      <p>Mostrando {{ paginatedData.start }} a {{ paginatedData.end }} de {{ data }} elementos</p>
-    </div>
-  
-    <!-- Paginador -->
-    <div class="flex justify-center mt-4 space-x-2">
-      <!-- Botón Anterior -->
-      <button 
-        (click)="changePage(currentPage - 1)" 
-        [disabled]="currentPage === 1"
-        class="px-4 py-2 text-sm bg-gray-200 rounded hover:bg-gray-300 disabled:bg-gray-400 disabled:cursor-not-allowed">
-        
-        <ng-container *ngIf="isResponsive">
-          <!-- Mostrar flecha en pantallas pequeñas -->
-          <span class="pi pi-angle-left block sm:hidden"></span>
-          <!-- Mostrar 'Anterior' en pantallas grandes -->
-          <span class="hidden sm:block">Anterior</span>
-        </ng-container>
-      </button>
-  
-      <!-- Páginas (solo se muestra si no es responsive) -->
-      <ng-container *ngIf="!isResponsive">
-        <span 
-          *ngFor="let page of [].constructor(totalPages); let i = index" 
-          (click)="changePage(i + 1)"
-          [ngClass]="{ 'font-bold text-primary1': currentPage === i + 1 }"
-          class="px-2 py-1 cursor-pointer">
-          {{ i + 1 }}
-        </span>
-      </ng-container>
-  
-      <!-- Botón Siguiente -->
-      <button 
-        (click)="changePage(currentPage + 1)" 
-        [disabled]="currentPage === totalPages"
-        class="px-4 py-2 text-sm bg-gray-200 rounded hover:bg-gray-300 disabled:bg-gray-400 disabled:cursor-not-allowed">
-        
-        <ng-container *ngIf="isResponsive">
-          <!-- Mostrar flecha en pantallas pequeñas -->
-          <span class="pi pi-angle-right block sm:hidden"></span>
-          <!-- Mostrar 'Siguiente' en pantallas grandes -->
-          <span class="hidden sm:block">Siguiente</span>
-        </ng-container>
-      </button>
-    </div>
-  </div>
-  
+<div class="pagination-container-govco">
+  <nav class="nav-pagination-govco" aria-label="Paginador de ejemplo">
+      <div class="pagination-govco" id="paginationExample">
+          <ul id="lista-paginador">
+              <li *ngIf="currentPage > 1" class="page-item-govco prev-page-govco no">
+                  <a href="javascript:void(0)" (click)="changePage(currentPage - 1)">
+                      <span class="prev-page-icon-govco"></span>
+                      <span class="prev-page-text-govco">Anterior</span>
+                  </a>
+              </li>
+              <li *ngFor="let page of pagesToDisplay" [ngClass]="{'active-govco': page === currentPage}"
+                  class="page-item-govco number-govco">
+                  <a href="javascript:void(0)" (click)="changePage(page)">
+                      {{ page }}
+                  </a>
+              </li>
+              <li *ngIf="currentPage < totalPages" class="page-item-govco next-page-govco no">
+                  <a href="javascript:void(0)" (click)="changePage(currentPage + 1)">
+                      <span class="next-page-icon-govco"></span>
+                      <span class="next-page-text-govco">Siguiente</span>
+                  </a>
+              </li>
+          </ul>
+      </div>
+  </nav>
+</div>

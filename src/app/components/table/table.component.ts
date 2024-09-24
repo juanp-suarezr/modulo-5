@@ -15,7 +15,9 @@ export class TableComponent {
   @Input() headers: any = [];
   @Input() data: any = [];
   @Output() idClicked: EventEmitter<number> = new EventEmitter<number>();
+  @Output() solicitudGuardada: EventEmitter<{ id: number, categoria: string }> = new EventEmitter<{ id: number, categoria: string }>();
   user: any;
+  
 
   constructor(private authService: AuthService) {
     this.user = this.authService.currentUser; // Obtener el usuario actual
@@ -56,6 +58,14 @@ export class TableComponent {
     console.log(id);
     
     this.idClicked.emit(id);
+  }
+
+  //Metodo para continuar con registro
+  onButtonClick(solicitud: any) {
+    console.log(solicitud);
+    
+    this.solicitudGuardada.emit({id:solicitud.id, categoria: solicitud.categoriaSolicitudDescripcion});
+    
   }
 
   getColorForSemaforo(dias: number): string {

@@ -31,7 +31,9 @@ export class ApiSFService {
   getSolicitudes(
     estado: string,
     categoria: string,
-    search: string
+    search: string, 
+    pageSize: number,
+    currentPage: number,
   ): Observable<any> {
     let params: string[] = [];
 
@@ -53,10 +55,10 @@ export class ApiSFService {
 
     // Unir todos los parámetros con '&'
     let allParams = params.join('&');
-    console.log(allParams);
+    
 
     // Realizar la solicitud HTTP con los parámetros construidos
-    return this.http.get(`${this.baseUrl}/api/formulario?${allParams}`);
+    return this.http.get(`${this.baseUrl}/api/formulario?size=${pageSize}&page=${currentPage}&${allParams}`);
   }
 
   //validator nit
@@ -75,9 +77,9 @@ export class ApiSFService {
     );
   }
 
-  // POST fijar capacidad transportadora
-  createSolicitud(data: any): Observable<any> {
-    return this.http.post(`${this.baseUrl}/api/formulario-contrato`, data, {
+  // POST fijar capacidad transportadora primer creacion
+  createSolicitud(data1: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}/api/formularioContratoPasos/paso1`, data1, {
       responseType: 'text',
     });
   }

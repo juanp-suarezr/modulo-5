@@ -74,10 +74,6 @@ h6 {
     /* Color del scrollbar track */
 }
 
-.border_verde{
-    border-bottom: #0f946e solid 2px;
-    padding-bottom: 15px;
-}
 
 @tailwind base;
 @tailwind components;

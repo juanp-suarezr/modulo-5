@@ -60,18 +60,22 @@ export default class FijacionComponent {
     const state = navigation?.extras.state as {
       nit: string;
       nombreEmpresa: string;
+      idSolicitud: string;
     };
 
     if (state) {
       this.nit = state.nit;
       this.nombreEmpresa = state.nombreEmpresa;
+      this.idSolicitud = state.idSolicitud;
 
       localStorage.setItem('nit', this.nit);
       localStorage.setItem('nombreEmpresa', this.nombreEmpresa);
+      localStorage.setItem('idSolicitud', this.idSolicitud || '');
     } else {
       // Recuperar de localStorage si está disponible
       this.nit = localStorage.getItem('nit') || '';
       this.nombreEmpresa = localStorage.getItem('nombreEmpresa') || '';
+      this.idSolicitud = localStorage.getItem('idSolicitud') || '';
     }
   }
 
@@ -86,6 +90,7 @@ export default class FijacionComponent {
   //Capturar objetos del navigation
   nit: string = '';
   nombreEmpresa: string = '';
+  idSolicitud: string = '';
 
   //objeto para manejar los active num del left menu y stepper.
   activeNum: string = '0'; //left menu
@@ -115,6 +120,9 @@ export default class FijacionComponent {
   ShowLoadingModal: boolean = false; // Control para mostrar el modal loading
   showErrorModal: boolean = false; // Control para mostrar el modal error
   showFinalModal: boolean = false; // Control para mostrar el modal final
+  showModalContinuar: boolean = false; //control para mostrar modal de desea continuar
+  //number to continue modal
+  numberTocontinue: number = 0;
 
   //objeto para manejo de errores
   errorStates: { [key: number]: boolean } = {};
@@ -303,9 +311,7 @@ export default class FijacionComponent {
 
   // Método para alternar la selección de una opción
   toggleOption(option: any, nameForm: string) {
-
     if (this.isSelected(option, nameForm)) {
-
       if (nameForm == 'idAreaOperacion') {
         this.selectedOptionsDeparts = this.selectedOptionsDeparts.filter(
           (selected) => selected.value !== option.value
@@ -315,14 +321,12 @@ export default class FijacionComponent {
           (selected) => selected.value !== option.value
         );
       }
-      
     } else {
       if (nameForm == 'idAreaOperacion') {
         this.selectedOptionsDeparts.push(option);
       } else {
         this.selectedOptionsClase.push(option);
       }
-      
     }
 
     // Actualiza el control del formulario
@@ -333,12 +337,10 @@ export default class FijacionComponent {
       this.formGroup4.get(nameForm)?.setValue(this.selectedOptionsClase);
       console.log('Opciones seleccionadas:', this.selectedOptionsClase);
     }
-    
-  
   }
 
   // Verifica si una opción está seleccionada
-  isSelected(option: any, nameForm:string): boolean {
+  isSelected(option: any, nameForm: string): boolean {
     if (nameForm == 'idAreaOperacion') {
       return this.selectedOptionsDeparts.some(
         (selected) => selected.value === option.value
@@ -348,17 +350,17 @@ export default class FijacionComponent {
         (selected) => selected.value === option.value
       );
     }
-    
   }
 
   // Obtener las etiquetas de las opciones seleccionadas
   getSelectedLabels(nameForm: string): string {
     if (nameForm == 'idAreaOperacion') {
-      return this.selectedOptionsDeparts.map((option) => option.label).join(', ');
+      return this.selectedOptionsDeparts
+        .map((option) => option.label)
+        .join(', ');
     } else {
       return this.selectedOptionsClase.map((option) => option.label).join(', ');
     }
-
   }
 
   selectMultipleOption(index: number, option: any, name: string) {
@@ -465,20 +467,110 @@ export default class FijacionComponent {
     this.stateService.setActiveNum(newValue);
   }
 
+  //modal continuar sin guardar
+  goToModal(num: number) {
+    this.showModalContinuar = true;
+    this.numberTocontinue = num;
+  }
+
   // Método para cambiar el valor del stepper
-  changeActiveStep(newValue: number) {
+  changeActiveStep(newValue: number, saved: boolean) {
     switch (newValue) {
       case 1:
+        this.stepperService.setActiveNum(newValue);
         break;
       case 2:
         console.log(this.formGroup1.value);
         if (this.validateFormGroup(this.formGroup1, this.errorStates)) {
-          this.stepperService.setActiveNum(newValue);
+          if (saved) {
+            this.ShowLoadingModal = true;
+            // Inicializar contratos como un array vacío
+            let documentos: Array<{
+              nit: string;
+              documento: string;
+            }> = [];
+
+            // Rellenar el array documentos
+            this.formGroup1.value[2].forEach((item: any) => {
+              documentos.push({
+                nit: this.nit,
+                documento: item,
+              });
+            });
+            
+            if (this.idSolicitud == '' || this.idSolicitud === 'undefined') {
+              
+              
+              const data1 = {
+                fechaSolicitud: new Date(),
+                nombreEmpresa: this.nombreEmpresa,
+                nit: this.nit,
+                territorial: 'Bogota',
+                idCategoriaSolicitud: 149,
+                solicitudFijacionCapacidad: this.formGroup1.value[1][0],
+                planRodamiento: this.formGroup1.value[3][0],
+                estructuraCostosBasicos: this.formGroup1.value[4][0],
+                certificadoExistencia: this.formGroup1.value[5][0],
+                registroUnicoTributario: this.formGroup1.value[6][0],
+                documentos: documentos,
+              };
+
+              this.apiSFService.createSolicitud(data1).subscribe(
+                (response) => {
+                  // Aquí puedes manejar la respuesta, por ejemplo:
+                  this.ShowLoadingModal = false;
+                  console.log('Datos enviados exitosamente:', response);
+                  this.idSolicitud = response;
+                  this.stepperService.setActiveNum(newValue);
+                  this.formGroup4
+                    .get('cantidad_contratos')
+                    ?.setValue(this.formGroup1.value[2].length);
+                },
+                (error) => {
+                  this.ShowLoadingModal = false;
+                  this.showErrorModal = true;
+                  // Manejo del error
+                  console.error('Error al enviar los datos:', error);
+                }
+              );
+            } else {
+              const data1 = {
+                fechaSolicitud: new Date(),
+                territorial: 'Bogota',
+                idCategoriaSolicitud: 149,
+                solicitudFijacionCapacidad: this.formGroup1.value[1][0],
+                planRodamiento: this.formGroup1.value[3][0],
+                estructuraCostosBasicos: this.formGroup1.value[4][0],
+                certificadoExistencia: this.formGroup1.value[5][0],
+                registroUnicoTributario: this.formGroup1.value[6][0],
+                documentos: documentos,
+              };
+
+              // this.apiSFService.createSolicitud(data1).subscribe(
+              //   (response) => {
+              //     // Aquí puedes manejar la respuesta, por ejemplo:
+              //     this.ShowLoadingModal = false;
+              //     console.log('Datos enviados exitosamente:', response);
+              //     this.idSolicitud = response;
+              //   },
+              //   (error) => {
+              //     this.ShowLoadingModal = false;
+              //     this.showErrorModal = true;
+              //     // Manejo del error
+              //     console.error('Error al enviar los datos:', error);
+              //   }
+              // );
+            }
+          } else {
+            this.ShowLoadingModal = false;
+            this.stepperService.setActiveNum(newValue);
+            this.formGroup4
+              .get('cantidad_contratos')
+              ?.setValue(this.formGroup1.value[2].length);
+          }
+
           this.formGroup4.get('cantidad_contratos')?.disable();
           this.formGroup4.get('duracionMeses')?.disable();
-          this.formGroup4
-            .get('cantidad_contratos')
-            ?.setValue(this.formGroup1.value[2].length);
         }
         break;
       case 3:
@@ -599,10 +691,13 @@ export default class FijacionComponent {
             this.fileNames[1] = file.map((f, index) => {
               const maxLength = 20; // Longitud máxima para cada nombre
               const nameWithoutExt = f.name.split('.').slice(0, -1).join('.'); // Elimina la extensión
-              const firstPart = `num_${index+1}__${this.nombreEmpresa}_${this.nit}_`;
+              const firstPart = `num_${index + 1}__${this.nombreEmpresa}_${
+                this.nit
+              }_`;
               return nameWithoutExt.length > maxLength
-                ? firstPart+(nameWithoutExt.substring(0, maxLength - 3) + '...')
-                : firstPart+nameWithoutExt;
+                ? firstPart +
+                    (nameWithoutExt.substring(0, maxLength - 3) + '...')
+                : firstPart + nameWithoutExt;
             });
 
             console.log(this.fileNames[1]);
@@ -626,7 +721,7 @@ export default class FijacionComponent {
       );
       this.formGroup4.get('duracionMeses')?.setValue(duracionMeses);
     }
-  } 
+  }
 
   // Calcular la duración en meses con decimales
   calculateMonthsDifference(startDate: Date, endDate: Date): number {
@@ -823,7 +918,9 @@ export default class FijacionComponent {
         ],
         valorContrato: item.valorContrato,
         idFormaPago: item.idFormaPago.value,
-        idAreaOperacion: item.idAreaOperacion.map((i: { value: any }) => i.value),
+        idAreaOperacion: item.idAreaOperacion.map(
+          (i: { value: any }) => i.value
+        ),
         disponibilidadVehiculosEstimada:
           item.disponibilidadVehiculosEstimada.value,
         estado: true,
