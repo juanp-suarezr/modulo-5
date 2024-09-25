@@ -878,15 +878,9 @@ export default class FijacionComponent {
           if (formControlName === 2 && formGroup === this.formGroup1) {
             // Inicializamos el array para almacenar los nombres de archivos truncados
             this.fileNames[1] = file.map((f, index) => {
-              const maxLength = 20; // Longitud máxima para cada nombre
-              const nameWithoutExt = f.name.split('.').slice(0, -1).join('.'); // Elimina la extensión
-              const firstPart = `num_${index + 1}__${this.nombreEmpresa}_${
-                this.nit
-              }_`;
-              return nameWithoutExt.length > maxLength
-                ? firstPart +
-                    (nameWithoutExt.substring(0, maxLength - 3) + '...')
-                : firstPart + nameWithoutExt;
+              
+              const firstPart = `consecutivo_${index + 1}__${this.nit}_${this.nombreEmpresa}__`;
+              return firstPart;
             });
 
             console.log(this.fileNames[1]);

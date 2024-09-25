@@ -9,7 +9,7 @@ export class ActiveNumStepperService {
   activeStep$ = this.activeNumSubject.asObservable();
 
   setActiveNum(value: number) {
-    this.activeNumSubject.next(value);
+    this.activeNumSubject.next(value); 
   }
 
 }
