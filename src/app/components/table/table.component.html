@@ -1,10 +1,10 @@
 <div class="mt-6 w-full mb-6 hidden sm:block">
   <div class="flex flex-col">
     <div class="inline-block shadow">
-      <div class="inline-block min-w-full py-2">
+      <div class="min-w-full py-2">
         <div class="overflow-x-auto">
           <div class="h-full">
-            <table class="min-w-full table-fixed border-2 border-secondary1">
+            <table class="w-full overflow-auto border-2 border-secondary1">
               <thead class="bg-secondary1 sticky top-0 text-left font-semibold tracking-wide text-primary2 z-10">
                 <tr class="border-b">
                   <th *ngFor="let header of headers" class="px-5 py-3 font-semibold tracking-wider">
@@ -12,7 +12,7 @@
                   </th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody *ngIf="data.length > 0">
                 <tr class="text-primary3 border-b-2 border-secondary1 bg-white" *ngFor="let item of data">
                   <td *ngFor="let key of info" class="px-5 py-5">
                     <!-- datos con rol de escritura territorial -->
@@ -23,7 +23,8 @@
                     <!-- boton con rol de escritura territorial -->
                     <button
                       *ngIf="key == 'estadoSolicitudDescripcion'  && item[key] == 'Pendiente'  && hasRole('ROLE_ESCRITURA_MIN')"
-                      class="whitespace-no-wrap" (click)="onButtonClick(item)">
+                      class="whitespace-no-wrap flex inline-flex px-3 py-2 bg-primary1 text-white hover:bg-primary2 rounded-full shadow-md"
+                      (click)="onButtonClick(item)">
                       Continuar
                     </button>
                     <!-- id con rol de escritura gestion doc -->
@@ -68,7 +69,18 @@
 
                   </td>
                 </tr>
+
               </tbody>
+              <tbody *ngIf="data.length == 0">
+                <tr>
+                  <td [attr.colspan]="headers.length" class="text-center py-5">
+                    <p class="work-sans text-lg font-normal text-primary2 italic">
+                      No hay ningún registro con los criterios de búsqueda o filtros seleccionados
+                    </p>
+                  </td>
+                </tr>
+              </tbody>
+
             </table>
           </div>
         </div>
@@ -79,7 +91,9 @@
 </div>
 
 <div class="mt-6 w-full mb-6 sm:hidden">
-  <div class="border-2 bg-white border-secondary1 max-h-[28rem] overflow-y-auto"> <!-- Contenedor general con scroll -->
+  <!-- cuando hay registros -->
+  <div class="border-2 bg-white border-secondary1 max-h-[28rem] overflow-y-auto" *ngIf="data.length > 0">
+    <!-- Contenedor general con scroll -->
     <div class="flex flex-col space-y-6" *ngFor="let item of data">
       <div class="border-2 bg-white border-secondary1 py-4 px-4">
         <div class="flex flex-col space-y-4">
@@ -89,10 +103,19 @@
 
             <!-- Condicionales de visualización aplicados -->
             <div class="w-1/2 p-2">
-              <!-- Condición: datos con rol de escritura territorial -->
-              <p *ngIf="info[i] !== 'id' && hasRole('ROLE_ESCRITURA_MIN')" class="whitespace-no-wrap">
+
+              <!-- datos con rol de escritura territorial -->
+              <p *ngIf="info[i] !== 'id' && info[i] !== 'estadoSolicitudDescripcion' && hasRole('ROLE_ESCRITURA_MIN')"
+                class="whitespace-no-wrap">
                 {{ formatField(item[info[i]]) }}
               </p>
+              <!-- boton con rol de escritura territorial -->
+              <button
+                *ngIf="info[i] == 'estadoSolicitudDescripcion'  && item[info[i]] == 'Pendiente'  && hasRole('ROLE_ESCRITURA_MIN')"
+                class="whitespace-no-wrap flex inline-flex px-3 py-1 bg-primary1 text-white text-xs hover:bg-primary2 rounded-full shadow-md"
+                (click)="onButtonClick(item)">
+                Continuar
+              </button>
 
               <!-- Condición: id con rol de escritura gestion doc -->
               <p *ngIf="info[i] === 'id' && hasRole('ROLE_ESCRITURA_MIN')" class="whitespace-no-wrap">
@@ -141,5 +164,11 @@
         </div>
       </div>
     </div>
+  </div>
+  <!-- cuando no hay registros -->
+  <div class="border-2 bg-white border-secondary1 max-h-[28rem] overflow-y-auto" *ngIf="data.length == 0">
+    <p class="work-sans text-lg font-normal text-primary2 italic flex justify-center">
+      No hay ningún registro con los criterios de búsqueda o filtros seleccionados
+    </p>
   </div>
 </div>

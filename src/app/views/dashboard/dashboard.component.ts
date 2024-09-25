@@ -52,11 +52,12 @@ export default class DashboardComponent {
 
   //arrays
   categorias: any;
-  estadoSolicitud: any;
+  estadosSolicitud: any;
   // Variables de filtro
   filterCategory: string = '';
   filterStatus: string = '';
   searchQuery: string = '';
+  fechaSolicitud: string = '';
 
   headers = [
     { id: 1, titulo: 'ID' },
@@ -65,7 +66,9 @@ export default class DashboardComponent {
     { id: 4, titulo: 'Nombre de la empresa <br> que realiza solicitud' },
     { id: 5, titulo: 'Territorial que <br> emitió la solicitud' },
     { id: 6, titulo: 'Categoría de <br> solicitud' },
-    { id: 7, titulo: 'Acciones' },
+    { id: 7, titulo: 'Estado <br> solicitud' },
+    { id: 8, titulo: 'concepto <br> solicitud' },
+    { id: 9, titulo: 'Acciones' },
   ];
 
   constructor(
@@ -118,6 +121,18 @@ export default class DashboardComponent {
         console.log(response); // Muestra la respuesta en la consola
         this.categorias = response.detalle;
         console.log(this.categorias);
+      },
+      (error) => {
+        console.error('Error fetching user data', error); // Maneja el error si ocurre
+      }
+    );
+
+    // Realiza una llamada a la API para obtener los estados de solicitudas categorías
+    this.apiService.getEstados().subscribe(
+      (response) => {
+        console.log(response); // Muestra la respuesta en la consola
+        this.estadosSolicitud = response.detalle;
+        console.log(this.estadosSolicitud);
       },
       (error) => {
         console.error('Error fetching user data', error); // Maneja el error si ocurre
@@ -226,6 +241,8 @@ export default class DashboardComponent {
                   : clase.categoriaSolicitudDescripcion === 'Incremento'
                   ? 'Incremento de Capacidad Transportadora'
                   : 'Sin categoría',
+                  estadoSolicitud: clase.estadoSolicitudDescripcion,
+                  conceptoSolicitud: clase.estadoSolicitudDescripcion,
                   estadoSolicitudDescripcion: clase.estadoSolicitudDescripcion,
             }));
 
@@ -249,6 +266,8 @@ export default class DashboardComponent {
       status: this.filterStatus,
       searchQuery: this.searchQuery,
     });
+
+    this.currentPage = 1;
 
     // Si las categorías ya están cargadas, solo aplica los filtros
     if (this.categorias) {
