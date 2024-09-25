@@ -22,7 +22,7 @@
                     </p>
                     <!-- boton con rol de escritura territorial -->
                     <button
-                      *ngIf="key == 'estadoSolicitudDescripcion'  && item[key] == ''  && hasRole('ROLE_ESCRITURA_MIN')"
+                      *ngIf="key == 'estadoSolicitudDescripcion'  && item[key] == 'Pendiente'  && hasRole('ROLE_ESCRITURA_MIN')"
                       class="whitespace-no-wrap" (click)="onButtonClick(item)">
                       Continuar
                     </button>
