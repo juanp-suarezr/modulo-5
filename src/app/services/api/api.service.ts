@@ -6,7 +6,7 @@ import { Observable, of } from 'rxjs';
   providedIn: 'root',
 })
 export class ApiService {
-  private baseUrl = 'http://localhost:8080';
+  private baseUrl = 'http://48.216.166.9/transversales/datos-maestros/';
 
   constructor(private http: HttpClient) {}
 
@@ -27,32 +27,7 @@ export class ApiService {
     return this.http.delete(`${this.baseUrl}/items/${id}`);
   }
 
-  //obtener auth y roles
-  getAuthUserAndRoles(): Observable<any> {
-    // Datos "quemados" simulando la respuesta de un API en Spring Boot
-    const response = {
-      user: {
-        id: 1,
-        username: 'juan.perez',
-        fullName: 'Rol escritura territorial ministerio',
-        email: 'juan.perez@example.com',
-        roles: [
-          {
-            id: 101,
-            roleName: 'ROLE_ESCRITURA_MIN',
-            description: 'Rol escritura territorial ministerio',
-          },
-        ],
-        isActive: true,
-        createdAt: '2024-08-16T08:30:00Z',
-        lastLogin: '2024-08-15T18:45:00Z',
-      },
-    };
-
-    //Retornamos los datos como un Observable simulando la respuesta de un API
-    return of(response);
-  }
-
+  
 
   //obtener solicitudes indicadores gestion
   getSolicitudesTransporte2(): Observable<any> {

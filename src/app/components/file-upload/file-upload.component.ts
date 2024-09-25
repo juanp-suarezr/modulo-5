@@ -25,6 +25,7 @@ export class FileUploadComponent implements OnInit, AfterViewInit {
   @Input() mimes: string = '*';
   @Input() maxFiles: number = 0; // Define el máximo de archivos permitidos
   @Input() error: boolean = false;
+  @Input() fileValue: File[] = [];
   @Output() fileSelected = new EventEmitter<File[]>();
   @ViewChild('fileInput') fileInput!: ElementRef;
   files: File[] = [];

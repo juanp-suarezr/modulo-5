@@ -310,15 +310,5 @@ export default class DashboardComponent {
     });
   }
 
-  //ejemplo uso update
-  updateItem(id: number, data: any): void {
-    this.apiService.updateItem(id, data).subscribe(
-      (response) => {
-        console.log('Item updated successfully:', response);
-      },
-      (error) => {
-        console.error('Error updating item', error);
-      }
-    );
-  }
+  
 }

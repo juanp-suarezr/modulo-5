@@ -9,19 +9,7 @@ export class ApiSFService {
   private baseUrl = 'http://localhost:9090';
 
   constructor(private http: HttpClient) {}
-
-  // Ejemplo de método GET
-  getItems(): Observable<any> {
-    return this.http.get(`${this.baseUrl}/items`);
-  }
-  // Ejemplo de método POST
-  createItem(data: any): Observable<any> {
-    return this.http.post(`${this.baseUrl}/items`, data);
-  }
-  // Ejemplo de método PATCH
-  updateItem(id: number, data: any): Observable<any> {
-    return this.http.patch(`${this.baseUrl}/items/${id}`, data);
-  }
+  
   // Ejemplo de método DELETE
   deleteItem(id: number): Observable<any> {
     return this.http.delete(`${this.baseUrl}/items/${id}`);
@@ -61,6 +49,11 @@ export class ApiSFService {
     return this.http.get(`${this.baseUrl}/api/formulario?size=${pageSize}&page=${currentPage}&${allParams}`);
   }
 
+  //GET solicitud by ID
+  getSolicitudByID(id: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}/api/formulario/${id}`);
+  }
+
   //validator nit
   getSolicitudByNIT(nit: string): Observable<any> {
     return this.http.get(`${this.baseUrl}/api/formulario/verificar-nit/${nit}`);
@@ -77,10 +70,43 @@ export class ApiSFService {
     );
   }
 
-  // POST fijar capacidad transportadora primer creacion
+  // POST solicitud primer creacion
   createSolicitud(data1: any): Observable<any> {
     return this.http.post(`${this.baseUrl}/api/formularioContratoPasos/paso1`, data1, {
       responseType: 'text',
     });
   }
+
+  // PUT solicitud paso 1
+  SolicitudPaso1(id: string, data1: any): Observable<any> {
+    return this.http.patch(`${this.baseUrl}/api/formularioContratoPasos/paso1/${id}`, data1, {
+      responseType: 'text',
+    });
+  }
+
+  // PUT solicitud paso 2
+  SolicitudPaso2(id: string, data2: any): Observable<any> {
+    return this.http.patch(`${this.baseUrl}/api/formularioContratoPasos/paso2/${id}`, data2, {
+      responseType: 'text',
+    });
+  }
+
+  // PUT solicitud paso 2
+  SolicitudPaso3(id: string, data3: any): Observable<any> {
+    return this.http.patch(`${this.baseUrl}/api/formularioContratoPasos/paso3/${id}`, data3, {
+      responseType: 'text',
+    });
+  }
+
+
+
+  // PUT solicitud paso 4 contratos
+  SolicitudPaso4(id: string, data4: any): Observable<any> {
+    return this.http.patch(`${this.baseUrl}/api/formularioContratoPasos/paso4/${id}`, data4, {
+      responseType: 'text',
+    });
+  }
+  
+  
+
 }

@@ -1,6 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActiveNumService } from '../../services/left-nav/active-num.service';
+import { AuthService } from '../../services/auth/auth.service';
 
 @Component({
   selector: 'app-left-nav',
@@ -12,8 +13,9 @@ import { ActiveNumService } from '../../services/left-nav/active-num.service';
 export class LeftNavComponent {
   @Input() data?: { num: string; name: string }[];
   @Input() active?: string;
-
-  constructor(private stateService: ActiveNumService) {}
+  @Output() changed: EventEmitter<string> = new EventEmitter<string>();
+  constructor(private stateService: ActiveNumService) {
+  }
 
   ngOnInit(): void {
     // Suscribirse al observable para obtener los cambios reactivos
@@ -24,6 +26,6 @@ export class LeftNavComponent {
 
   // Método para cambiar el valor
   changeActiveNum(newValue: string) {
-    this.stateService.setActiveNum(newValue);
+    this.changed.emit(newValue);
   }
 }
