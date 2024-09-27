@@ -1,4 +1,4 @@
-import { first } from 'rxjs';
+import { first, BehaviorSubject } from 'rxjs';
 import { OnlyNumberGlobal } from './../../../validator/onlyNumber.validator';
 import { ErrorService } from '../../../services/error/error.service';
 import { PrimaryButtonComponent } from '../../../components/primary-button/primary-button.component';
@@ -67,15 +67,17 @@ export default class FijacionComponent {
       this.nit = state.nit;
       this.nombreEmpresa = state.nombreEmpresa;
       this.idSolicitud = state.idSolicitud;
+      console.log(state.idSolicitud);
+      console.log(this.idSolicitud);
 
       localStorage.setItem('nit', this.nit);
       localStorage.setItem('nombreEmpresa', this.nombreEmpresa);
-      localStorage.setItem('idSolicitud', this.idSolicitud || '');
+      this.setIdSolicitud(this.idSolicitud);
     } else {
       // Recuperar de localStorage si está disponible
       this.nit = localStorage.getItem('nit') || '';
       this.nombreEmpresa = localStorage.getItem('nombreEmpresa') || '';
-      this.idSolicitud = localStorage.getItem('idSolicitud') || '';
+      this.setIdSolicitud(localStorage.getItem('idSolicitud') || '');
     }
   }
 
@@ -90,7 +92,13 @@ export default class FijacionComponent {
   //Capturar objetos del navigation
   nit: string = '';
   nombreEmpresa: string = '';
-  idSolicitud: string = '';
+  //observable option
+  private idSolicitudSubject = new BehaviorSubject<string>(''); // Inicializa con un valor vacío
+  idSolicitud$ = this.idSolicitudSubject.asObservable(); // Observable para observar cambios
+  idSolicitud: any; // Variable para almacenar el idSolicitudidSolicitud: string = '';
+
+  //solicitud guardada
+  solicitudGuardada: any;
 
   //objeto para manejar los active num del left menu y stepper.
   activeNum: string = '0'; //left menu
@@ -210,6 +218,10 @@ export default class FijacionComponent {
     textInfo: 'Archivo PDF. Peso máximo: 2MB',
   };
 
+  setIdSolicitud(newId: string): void {
+    this.idSolicitudSubject.next(newId); // Cambia el valor del BehaviorSubject
+    this.idSolicitud = newId; // Actualiza la variable local
+  }
   ngOnInit(): void {
     // Suscribirse al observable para obtener los cambios reactivos del menuleft
     this.stateService.activeNum$.subscribe((num) => {
@@ -232,6 +244,50 @@ export default class FijacionComponent {
     this.errorService.errorStates$.subscribe((errorStates) => {
       this.errorStates = errorStates;
     });
+
+    // Suscribirse a los cambios en idSolicitud
+    this.idSolicitud$.subscribe((newId) => {
+      localStorage.setItem('idSolicitud', newId);
+      console.log("entro");
+      
+      if (newId) {
+        //GET SOLICITUD
+        this.apiSFService.getSolicitudByID(newId).subscribe(
+          (response) => {
+            
+            this.solicitudGuardada = response;
+
+
+      this.nombreEmpresa = response.nombreEmpresa,
+      this.nit = response.nit,
+      this.formGroup1.patchValue({ [1]: this.displayFile(response.solicitudFijacionCapacidad) });
+      // this.formGroup1.get('1')?.setValue(response.solicitudFijacionCapacidad),
+      this.formGroup1.get('3')?.setValue(response.planRodamiento),
+      // planRodamiento: this.formGroup1.value[3][0],
+      // estructuraCostosBasicos: this.formGroup1.value[4][0],
+      // certificadoExistencia: this.formGroup1.value[5][0],
+      // registroUnicoTributario: this.formGroup1.value[6][0],
+      // resolucionHabilitacion: this.formGroup2.value[7][0],
+      // cedulaRepresentante: this.formGroup2.value[8][0],
+      // estadosFinancieros: this.formGroup2.value[9][0],
+      // cedulaContador: this.formGroup2.value[10][0],
+      // tarjetaProfesionalContador: this.formGroup2.value[11][0],
+      // capitalSocial: this.formGroup3.get('capitalSocial')?.value,
+      // patrimonioLiquido: this.formGroup3.get('patrimonioLiquido')?.value,
+      // cantidadVehiculos: this.formGroup3.get('cantidadVehiculos')?.value,
+      // contratos: contratos,
+      // documentos: documentos,
+            console.log(this.formGroup1);
+          },
+          (error) => {
+            console.error('Error fetching user data', error);
+          }
+        );
+      }
+    });
+
+    // Forzar detección de cambios
+    this.cdr.detectChanges();
   }
 
   ngAfterViewInit() {
@@ -296,6 +352,17 @@ export default class FijacionComponent {
       },
       { validators: [dateRangeValidator, NoNegativeGlobal] }
     );
+  }
+
+  deleteFile(num:number) {
+    switch (num) {
+      case 1:
+      this.formGroup1.get(num.toString())?.setValue('');
+        break;
+    
+      default:
+        break;
+    }
   }
 
   toggleDropdown(index: number) {
@@ -395,7 +462,7 @@ export default class FijacionComponent {
         console.error('Error fetching user data', error);
       }
     );
-
+    //formas de pago
     this.apiService.getFormasPago().subscribe(
       (response) => {
         this.formaPago = response.detalle.map((formas: any) => ({
@@ -487,7 +554,7 @@ export default class FijacionComponent {
         break;
       case 2:
         //validator
-        console.log(this.displayFile(this.formGroup1.value[1]));
+
         if (this.validateFormGroup(this.formGroup1, this.errorStates)) {
           //valida si se va a guardar la info
           if (saved) {
@@ -506,7 +573,13 @@ export default class FijacionComponent {
               });
             });
             //valida si ya hay una solicitud guardada
-            if (this.idSolicitud == '' || this.idSolicitud === 'undefined') {
+            if (
+              this.idSolicitud == '' ||
+              this.idSolicitud === 'undefined' ||
+              this.idSolicitud === undefined
+            ) {
+              console.log(this.idSolicitud);
+
               const data1 = {
                 fechaSolicitud: new Date(),
                 nombreEmpresa: this.nombreEmpresa,
@@ -523,12 +596,14 @@ export default class FijacionComponent {
               //CREA SOLICITUD
               this.apiSFService.createSolicitud(data1).subscribe(
                 (response) => {
+                  const parsedData = JSON.parse(response);
+
                   // Aquí puedes manejar la respuesta, por ejemplo:
                   this.ShowLoadingModal = false;
-                  console.log('Datos enviados exitosamente:', response.id_solicitud);
-                  this.idSolicitud = response.id_solicitud;
-                  console.log( this.idSolicitud);
-                  
+                  console.log('Datos enviados exitosamente:', parsedData);
+                  this.idSolicitud = parsedData.id_solicitud;
+                  console.log(this.idSolicitud);
+
                   this.stepperService.setActiveNum(newValue);
                   this.formGroup4
                     .get('cantidad_contratos')
@@ -543,6 +618,7 @@ export default class FijacionComponent {
               );
             } else {
               //cuando ya hay solicitud creada
+              console.log('solocitud' + this.idSolicitud);
               this.ActualizarSolicitud(1, documentos);
             }
           } else {
@@ -690,9 +766,6 @@ export default class FijacionComponent {
               this.stepperService.setActiveNum(3);
               this.changeActiveNum('1');
             }
-
-            
-            
           } else {
             console.log('no validado');
             this.showModalRequisito = true;
@@ -852,6 +925,7 @@ export default class FijacionComponent {
 
   //metodo para guardar el archivo seleccionado
   onFileSelected(file: File[], formControlName: number) {
+
     this.convertFilesToBase64(file)
       .then((base64Array) => {
         const formControlMap: { [key: number]: FormGroup } = {
@@ -878,8 +952,9 @@ export default class FijacionComponent {
           if (formControlName === 2 && formGroup === this.formGroup1) {
             // Inicializamos el array para almacenar los nombres de archivos truncados
             this.fileNames[1] = file.map((f, index) => {
-              
-              const firstPart = `consecutivo_${index + 1}__${this.nit}_${this.nombreEmpresa}__`;
+              const firstPart = `consecutivo_${index + 1}__${this.nit}_${
+                this.nombreEmpresa
+              }__`;
               return firstPart;
             });
 
@@ -924,6 +999,7 @@ export default class FijacionComponent {
 
     console.log(blob);
     console.log(url);
+    return blob;
   }
 
   //calcular duracion en meses

@@ -4,10 +4,18 @@
     <app-left-nav [data]="infoMenu" active="{{activeNum}}"></app-left-nav>
   </div>
 
-  <!-- solicitud contenido -->
-  <div class="md:col-span-8 sm:col-span-7 w-auto sm:mt-10 mt-4 md:px-8 px-2" *ngIf="activeNum == '0'">
+  <!-- carga loading -->
+  <div class="md:col-span-8 sm:col-span-7 w-auto h-full sm:mt-10 mt-4 md:px-8 px-2" *ngIf="loadingPage">
+    <div class="card flex justify-center items-center mt-8">
+      <p-progressSpinner styleClass="w-6rem h-6rem" strokeWidth="4" fill="var(--surface-ground)"/>
+    </div>
+  </div>
 
-    <h3 class="text-primary1 !font-bold">Solicitud ID {{id}}</h3>
+  <!-- solicitud contenido -->
+  <div class="md:col-span-8 sm:col-span-7 w-auto sm:mt-10 mt-4 md:px-8 px-2"
+    *ngIf="activeNum == '0' && loadingPage == false">
+
+    <h3 class="text-primary1 !font-bold">Solicitud ID {{solicitud?.id}}</h3>
 
     <!-- sttepper -->
     <div class="mt-4 w-full inline-flex justify-center">
@@ -62,12 +70,275 @@
 
       </div>
 
+      <!-- contenido 2 -->
+      <div class="content2 md:grid sm:grid-cols-2 md:grid-cols-3 md:gap-x-24 md:flex items-start h-full mt-6">
+
+        <!--Estado de solicitud -->
+        <div class="w-full flex flex-col justify-start items-stretch pt-6 my-auto h-full mb-6">
+          <p class="text-primary3 font-semibold h-full m-auto">
+            Estado de solicitud
+          </p>
+          <!-- input -->
+          <div class="mt-2 relative w-full h-full flex justify-center items-center">
+            <p class="my-auto me-2 flex intems-center font-bold text-primary1 sm:text-base">Activar</p>
+            <p-inputSwitch class="my-auto h-auto flex items-center" [(ngModel)]="checked" />
+          </div>
+        </div>
+
+        <!-- SEMAFORO SUBSANACION -->
+        <div class="w-full flex flex-col justify-start items-stretch pt-6 my-auto h-full mb-6" *ngIf="checked">
+          <p class="text-primary3 font-semibold h-full m-auto">
+            Semáforo de subsanación
+          </p>
+          <!-- input -->
+          <div class="mt-2 relative w-full h-full flex items-center">
+            <!-- Barra de progreso del semáforo -->
+            <div class="w-full relative flex-col whitespace-no-wrap z-[1]">
+
+              <!-- Barra de progreso base (gris) -->
+              <div class="absolute top-0 left-0 h-[3px] bg-secondary2 w-full"></div>
+
+              <!-- Barra de progreso con color variable según los días -->
+              <div class="absolute top-0 left-0 h-[3px]" [ngStyle]="{
+                width: (diferencias() >= 30 ? 100 : (diferencias() / 30) * 100) + '%',
+                backgroundColor: getColorForSemaforo(diferencias(), 30)
+              }"></div>
+
+              <!-- Círculo en el punto de progreso -->
+              <div class="absolute top-[-5px] h-[14px] w-[14px] rounded-full flex items-center justify-center"
+                [ngStyle]="{
+                left: 'calc(' + (diferencias() >= 30 ? 100 : (diferencias() / 30) * 100) + '% - 7px)',
+                backgroundColor: getColorForSemaforo(diferencias(), 30)
+              }">
+                <div class="h-[8px] w-[8px] rounded-full bg-white"></div>
+              </div>
+            </div>
+          </div>
+          <div class="flex inline-flex md:gap-3 gap-2 h-full w-full mt-2">
+
+            <span class="lg:w-[12%] sm:w-[12%] w-[10%] h-full flex justify-center lg:px-1 m-auto">
+              <img class="w-full m-auto" src="assets/iconoInfo.svg">
+            </span>
+            <p class="text-primary1 work-sans text-[11px] mt-2 w-auto">
+              Se tienen 30 días para subsanar
+              la solicitud.
+            </p>
+          </div>
+        </div>
+
+        <!--  Categoría de solicitud -->
+        <div class="w-full flex flex-col justify-start items-stretch pt-6 my-auto h-full mb-6">
+          <p class="text-primary3 font-semibold h-full m-auto">
+            Categoría de solicitud
+          </p>
+          <!-- input -->
+          <div class="mt-2 relative w-full h-full flex items-center">
+            <div
+              class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border focus:outline-none focus:border-primary1 bg-secondary3 border-secondary2 text-primary3 flex items-center justify-center">
+              {{ solicitud?.categoriaSolicitudDescripcion === 'Fijación' ? 'Fijación de Capacidad Transportadora' :
+              solicitud?.categoriaSolicitudDescripcion === 'Incremento' ? 'Incremento de Capacidad Transportadora' :
+              'Sin categoría' }}
+            </div>
+          </div>
+        </div>
+
+        <!-- SEMAFORO ALERTA -->
+        <div class="w-full flex flex-col justify-start items-stretch pt-6 my-auto h-full mb-6">
+          <p class="text-primary3 font-semibold h-full m-auto">
+            Semáforo de alerta
+          </p>
+          <!-- input -->
+          <div class="mt-2 relative w-full h-full flex items-center">
+            <!-- Barra de progreso del semáforo -->
+            <div class="w-full relative flex-col whitespace-no-wrap z-[1]">
+
+              <!-- Barra de progreso base (gris) -->
+              <div class="absolute top-0 left-0 h-[3px] bg-secondary2 w-full"></div>
+
+              <!-- Barra de progreso con color variable según los días -->
+              <div class="absolute top-0 left-0 h-[3px]" [ngStyle]="{
+                width: (diferencias() >= 10 ? 100 : (diferencias() / 10) * 100) + '%',
+                backgroundColor: getColorForSemaforo(diferencias(), 10)
+              }"></div>
+
+              <!-- Círculo en el punto de progreso -->
+              <div class="absolute top-[-5px] h-[14px] w-[14px] rounded-full flex items-center justify-center"
+                [ngStyle]="{
+                left: 'calc(' + (diferencias() >= 10 ? 100 : (diferencias() / 10) * 100) + '% - 7px)',
+                backgroundColor: getColorForSemaforo(diferencias(), 10)
+              }">
+                <div class="h-[8px] w-[8px] rounded-full bg-white"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+
+    </div>
+
+    <div class="px-4 md:pl-16 md:pe-16 mt-6 active1 mb-6" *ngIf="activeStep == 2">
+      <!-- contenido 1 -->
+      <div class="content1 md:grid sm:grid-cols-2 md:grid-cols-3 md:gap-x-24 md:flex items-start h-full">
+
+        <!-- FECHA SOLICITUD -->
+        <div class="w-full flex flex-col justify-start items-stretch pt-6 my-auto h-full">
+          <p class="text-primary3 font-semibold h-full m-auto">
+            Fecha solicitud
+          </p>
+          <!-- input -->
+          <div class="mt-2 relative w-full h-full flex items-center">
+            <div
+              class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border focus:outline-none focus:border-primary1 bg-secondary3 border-secondary2 text-primary3 flex items-center justify-center">
+              {{ formatField(solicitud?.fechaSolicitud) }}
+            </div>
+          </div>
+        </div>
+
+        <!-- NOMBRE EMPRESA -->
+        <div class="w-full flex flex-col justify-start items-stretch pt-6 my-auto h-full">
+          <p class="text-primary3 font-semibold h-full m-auto">
+            Nombre de la empresa que realiza solicitud
+          </p>
+          <!-- input -->
+          <div class="mt-2 relative w-full h-full flex items-center">
+            <div
+              class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border focus:outline-none focus:border-primary1 bg-secondary3 border-secondary2 text-primary3 flex items-center justify-center">
+              {{ solicitud?.nombreEmpresa }}
+            </div>
+          </div>
+        </div>
+
+        <!-- TERRITORIAL QUE EMITIÓ LA SOLICITUD -->
+        <div class="w-full flex flex-col justify-start items-stretch pt-6 my-auto h-full">
+          <p class="text-primary3 font-semibold h-full m-auto">
+            Territorial que emitió la solicitud
+          </p>
+          <!-- input -->
+          <div class="mt-2 relative w-full h-full flex items-center">
+            <div
+              class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border focus:outline-none focus:border-primary1 bg-secondary3 border-secondary2 text-primary3 flex items-center justify-center">
+              {{ solicitud?.territorial }}
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- contenido 2 -->
+      <div class="content2 md:grid sm:grid-cols-2 md:grid-cols-3 md:gap-x-24 md:flex items-start h-full mt-6">
+
+        <!--Estado de solicitud -->
+        <div class="w-full flex flex-col justify-start items-stretch pt-6 my-auto h-full mb-6">
+          <p class="text-primary3 font-semibold h-full m-auto">
+            Estado de solicitud
+          </p>
+          <!-- input -->
+          <div class="mt-2 relative w-full h-full flex justify-center items-center">
+            <p class="my-auto me-2 flex intems-center font-bold text-primary1 sm:text-base">Activar</p>
+            <p-inputSwitch class="my-auto h-auto flex items-center" [(ngModel)]="checked" />
+          </div>
+        </div>
+
+        <!-- SEMAFORO SUBSANACION -->
+        <div class="w-full flex flex-col justify-start items-stretch pt-6 my-auto h-full mb-6" *ngIf="checked">
+          <p class="text-primary3 font-semibold h-full m-auto">
+            Semáforo de subsanación
+          </p>
+          <!-- input -->
+          <div class="mt-2 relative w-full h-full flex items-center">
+            <!-- Barra de progreso del semáforo -->
+            <div class="w-full relative flex-col whitespace-no-wrap z-[1]">
+
+              <!-- Barra de progreso base (gris) -->
+              <div class="absolute top-0 left-0 h-[3px] bg-secondary2 w-full"></div>
+
+              <!-- Barra de progreso con color variable según los días -->
+              <div class="absolute top-0 left-0 h-[3px]" [ngStyle]="{
+                width: (diferencias() >= 30 ? 100 : (diferencias() / 30) * 100) + '%',
+                backgroundColor: getColorForSemaforo(diferencias(), 30)
+              }"></div>
+
+              <!-- Círculo en el punto de progreso -->
+              <div class="absolute top-[-5px] h-[14px] w-[14px] rounded-full flex items-center justify-center"
+                [ngStyle]="{
+                left: 'calc(' + (diferencias() >= 30 ? 100 : (diferencias() / 30) * 100) + '% - 7px)',
+                backgroundColor: getColorForSemaforo(diferencias(), 30)
+              }">
+                <div class="h-[8px] w-[8px] rounded-full bg-white"></div>
+              </div>
+            </div>
+          </div>
+          <div class="flex inline-flex md:gap-3 gap-2 h-full w-full mt-2">
+
+            <span class="lg:w-[12%] sm:w-[12%] w-[10%] h-full flex justify-center lg:px-1 m-auto">
+              <img class="w-full m-auto" src="assets/iconoInfo.svg">
+            </span>
+            <p class="text-primary1 work-sans text-[11px] mt-2 w-auto">
+              Se tienen 30 días para subsanar
+              la solicitud.
+            </p>
+          </div>
+        </div>
+
+        <!--  Categoría de solicitud -->
+        <div class="w-full flex flex-col justify-start items-stretch pt-6 my-auto h-full mb-6">
+          <p class="text-primary3 font-semibold h-full m-auto">
+            Categoría de solicitud
+          </p>
+          <!-- input -->
+          <div class="mt-2 relative w-full h-full flex items-center">
+            <div
+              class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border focus:outline-none focus:border-primary1 bg-secondary3 border-secondary2 text-primary3 flex items-center justify-center">
+              {{ solicitud?.categoriaSolicitudDescripcion === 'Fijación' ? 'Fijación de Capacidad Transportadora' :
+              solicitud?.categoriaSolicitudDescripcion === 'Incremento' ? 'Incremento de Capacidad Transportadora' :
+              'Sin categoría' }}
+            </div>
+          </div>
+        </div>
+
+        <!-- SEMAFORO ALERTA -->
+        <div class="w-full flex flex-col justify-start items-stretch pt-6 my-auto h-full mb-6">
+          <p class="text-primary3 font-semibold h-full m-auto">
+            Semáforo de alerta
+          </p>
+          <!-- input -->
+          <div class="mt-2 relative w-full h-full flex items-center">
+            <!-- Barra de progreso del semáforo -->
+            <div class="w-full relative flex-col whitespace-no-wrap z-[1]">
+
+              <!-- Barra de progreso base (gris) -->
+              <div class="absolute top-0 left-0 h-[3px] bg-secondary2 w-full"></div>
+
+              <!-- Barra de progreso con color variable según los días -->
+              <div class="absolute top-0 left-0 h-[3px]" [ngStyle]="{
+                width: (diferencias() >= 10 ? 100 : (diferencias() / 10) * 100) + '%',
+                backgroundColor: getColorForSemaforo(diferencias(), 10)
+              }"></div>
+
+              <!-- Círculo en el punto de progreso -->
+              <div class="absolute top-[-5px] h-[14px] w-[14px] rounded-full flex items-center justify-center"
+                [ngStyle]="{
+                left: 'calc(' + (diferencias() >= 10 ? 100 : (diferencias() / 10) * 100) + '% - 7px)',
+                backgroundColor: getColorForSemaforo(diferencias(), 10)
+              }">
+                <div class="h-[8px] w-[8px] rounded-full bg-white"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
 
     </div>
 
 
 
   </div>
+
+
 
 
 

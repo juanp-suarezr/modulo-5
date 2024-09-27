@@ -3,7 +3,13 @@ import { ChangeDetectorRef, Component } from '@angular/core';
 import { FileUploadComponent } from '../../../components/file-upload/file-upload.component';
 import { InputText } from '../../../components/input/input.component';
 import { LeftNavComponent } from '../../../components/left-nav/left-nav.component';
-import { formatDate, NgClass, NgForOf, NgIf } from '@angular/common';
+import {
+  CommonModule,
+  formatDate,
+  NgClass,
+  NgForOf,
+  NgIf,
+} from '@angular/common';
 import { PaginatorModule } from 'primeng/paginator';
 import { PrimaryButtonComponent } from '../../../components/primary-button/primary-button.component';
 import { SelectComponent } from '../../../components/select/select.component';
@@ -21,6 +27,9 @@ import { ErrorService } from '../../../services/error/error.service';
 import { AlertComponent } from '../../../components/alert/alert.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiSFService } from '../../../services/api/apiSF.service';
+import { InputSwitchModule } from 'primeng/inputswitch';
+import { BehaviorSubject } from 'rxjs';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @Component({
   selector: 'app-solicitud',
@@ -38,6 +47,9 @@ import { ApiSFService } from '../../../services/api/apiSF.service';
     NgClass,
     AlertComponent,
     NgForOf,
+    InputSwitchModule,
+    CommonModule,
+    ProgressSpinnerModule,
   ],
   templateUrl: './solicitud.component.html',
   styleUrl: './solicitud.component.css',
@@ -55,16 +67,38 @@ export default class SolicitudComponent {
     private cdr: ChangeDetectorRef // Inyectar ChangeDetectorRef
   ) {
     this.user = this.authService.currentUser; // Almacena el usuario actual desde el servicio de autenticación
+
+        // TRAER ID DESDE NAVEGACIÓN O LOCALSTORAGE
+        const navigation = this.router.getCurrentNavigation();
+        const state = navigation?.extras.state as { id: string };
+        console.log(state);
+        
+        if (state && state.id) {
+          console.log(state.id);
+          this.setId(state.id); // Establecer nuevo ID
+        } else {
+          const storedId = localStorage.getItem('id');
+          if (storedId) {
+            this.setId(storedId); // Establecer ID desde localStorage
+          }
+        }
   }
 
+  //LOADING PAGE
+  loadingPage: boolean = true;
+
   //Capturar objetos del navigation
-  id: string = '0';
+  private idSubject = new BehaviorSubject<string>('0'); // Inicializa con '0'
+  id$ = this.idSubject.asObservable(); // Observable para observar cambios
   //solicitud traida
   solicitud: any;
 
   //Objeto para manejar los active num del left menu y stepper.
   activeNum: string = '0'; //Left menu
   activeStep: number = 1; //Stteper
+
+  //DATOS SUBSANAR
+  checked: boolean = false;
 
   //Formularios
   formGroup1!: FormGroup;
@@ -122,8 +156,6 @@ export default class SolicitudComponent {
     },
   ];
 
-  
-
   //Props o datos para input upload
   dataClass = {
     textSize: 'xs',
@@ -142,52 +174,46 @@ export default class SolicitudComponent {
       console.log('Active step:', step);
     });
 
-    
     //Suscribirse al servicio de manejo de errores
     this.errorService.errorStates$.subscribe((errorStates) => {
       this.errorStates = errorStates;
     });
 
-    
-
-    //TRAERSE ID
-    const navigation = this.router.getCurrentNavigation();
-    const state = navigation?.extras.state as {
-      id: string;
-    };
-
-    if (state) {
-      this.id = state.id;
-      console.log(this.id);
-      localStorage.setItem('id', this.id.toString());
-    } else {
-      const storedId = localStorage.getItem('id');
-      this.id = storedId ? storedId : '0';
-    }
+    // Suscribirse a los cambios de id para almacenar en localStorage
+    this.id$.subscribe((newId) => {
+      localStorage.setItem('id', newId); // Actualizar localStorage cuando id cambie
+      console.log('ID actualizado en localStorage:', newId);
+      this.loadOptions();
+    });
 
     // Forzar detección de cambios
     this.cdr.detectChanges();
   }
 
-  ngAfterViewInit() {
-    this.loadOptions();
-
+  // Método para actualizar el id y el BehaviorSubject
+  setId(newId: string): void {
+    this.idSubject.next(newId); // Actualizar el id en el BehaviorSubject
   }
 
+  // Método para cambiar el ID desde cualquier parte del componente
+  updateId(newId: string) {
+    this.setId(newId); // Actualiza el ID usando el método setId
+  }
+
+  
 
   loadOptions() {
     //GET SOLICITUD
-    this.apiSFService.getSolicitudByID(this.id).subscribe(
+    this.apiSFService.getSolicitudByID(this.idSubject.getValue()).subscribe(
       (response) => {
         this.solicitud = response;
         console.log(response);
-        
+        this.loadingPage = false;
       },
       (error) => {
         console.error('Error fetching user data', error);
       }
     );
-    
   }
   //FORMATO FECHA
   formatField(value: any): string {
@@ -210,6 +236,43 @@ export default class SolicitudComponent {
 
     // Si el valor pasa el regex o no es una cadena, intenta parsearlo como fecha
     return !isNaN(Date.parse(value));
+  }
+
+  //METODO PARA SEMAFORO
+  diferencias(): number {
+    if (this.solicitud) {
+      // Convertir las fechas a milisegundos
+      const fechaHoy = new Date().valueOf(); // Fecha actual en milisegundos
+      const fechaSolicitud = new Date(this.solicitud.fechaSolicitud).valueOf(); // Fecha de solicitud en milisegundos
+
+      // Calcular la diferencia en milisegundos
+      const diferenciaMilisegundos = fechaHoy - fechaSolicitud;
+
+      // Convertir la diferencia de milisegundos a días
+      const diferenciaDias = Math.floor(
+        diferenciaMilisegundos / (1000 * 60 * 60 * 24)
+      );
+
+      return diferenciaDias;
+    } else {
+      return 0;
+    }
+  }
+  //OBTENER COLOR SEMAFORO
+  getColorForSemaforo(dias: number, maxDias: number): string {
+    const diaRojo = maxDias == 30 ? 9 : 3;
+    const MindiaAmarillo = maxDias == 30 ? 10 : 4;
+    const MaxdiaAmarillo = maxDias == 30 ? 19 : 7;
+    const diaVerde = maxDias == 30 ? 20 : 8;
+
+    if (dias <= diaRojo) {
+      return '#068460'; // 1-3 días: verde
+    } else if (dias >= MindiaAmarillo && dias <= MaxdiaAmarillo) {
+      return '#FFAB00'; // 4-7 días: amarillo
+    } else if (dias >= diaVerde) {
+      return '#A80521'; // 8-10 días: rojo
+    }
+    return 'gray'; // Default para valores inesperados
   }
 
   //Metodo para cambiar el valor del menuleft
@@ -280,10 +343,6 @@ export default class SolicitudComponent {
       })
       .catch((error) => console.error('Error al descargar el archivo:', error));
   }
-
-  
-
-  
 
   //Metodos Modal
   handleClose() {

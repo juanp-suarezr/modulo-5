@@ -109,6 +109,7 @@ export default class DashboardComponent {
       this.filterStatus,
       this.filterCategory,
       this.searchQuery,
+      this.fechaSolicitud,
       this.pageSize,
       this.currentPage,
     );
@@ -144,6 +145,7 @@ export default class DashboardComponent {
       this.filterStatus,
       this.filterCategory,
       this.searchQuery,
+      this.fechaSolicitud,
       this.pageSize,
       this.currentPage,
     ); // Llama a otro método para manejar los datos de solicitudes
@@ -155,6 +157,7 @@ export default class DashboardComponent {
     estado: any,
     categoria: any,
     search: any,
+    fechaSolicitud: any,
     pageSize: number,
     currentPage: number
   ) {
@@ -163,7 +166,7 @@ export default class DashboardComponent {
 
     // traer los datos de la consulta
     this.apiSFService
-      .getSolicitudes(estado, categoria, search, pageSize, currentPage)
+      .getSolicitudes(estado, categoria, search, fechaSolicitud, pageSize, currentPage)
       .subscribe(
         (response) => {
 
@@ -188,7 +191,7 @@ export default class DashboardComponent {
               { id: 9, titulo: 'Número<br> radicado' },
             ];
 
-            this.totalPages = response.totalPages-1;
+            this.totalPages = response.totalPages;
             this.response = response.content.map((clase: any) => {
               // Convertir las fechas a milisegundos
               const fechaHoy = new Date().valueOf(); // Fecha actual en milisegundos
@@ -225,7 +228,7 @@ export default class DashboardComponent {
             this.loading = false; // Termina la carga de datos
             this.cdRef.detectChanges(); // Forzar la detección de cambios
           } else {
-            this.totalPages = response.totalPages-1;
+            this.totalPages = response.totalPages;
             console.log(this.totalPages);
             
             console.log(response);
@@ -265,6 +268,7 @@ export default class DashboardComponent {
       category: this.filterCategory,
       status: this.filterStatus,
       searchQuery: this.searchQuery,
+      fechaSolicitud: this.fechaSolicitud,
     });
 
     this.currentPage = 1;
@@ -276,6 +280,7 @@ export default class DashboardComponent {
         this.filterStatus,
         this.filterCategory,
         this.searchQuery,
+        this.fechaSolicitud,
         this.pageSize,
         this.currentPage,
         
@@ -289,6 +294,7 @@ export default class DashboardComponent {
     this.filterCategory = '';
     this.filterStatus = '';
     this.searchQuery = '';
+    this.fechaSolicitud = '',
     this.currentPage = 1;
     console.log('Filtros limpiados');
 
@@ -299,6 +305,7 @@ export default class DashboardComponent {
         this.filterStatus,
         this.filterCategory,
         this.searchQuery,
+        this.fechaSolicitud,
         this.pageSize,
         this.currentPage,
       );
@@ -316,15 +323,15 @@ export default class DashboardComponent {
     });
   }
 
-  solicitudGuardada(id: number, categoria: string): void {
-    console.log(id);
+  solicitudGuardadaClick(solicitud: any): void {
+    console.log(solicitud.id);
     let router =
-      categoria == 'Incremento'
+      solicitud.categoria == 'Incremento'
         ? '/incrementocapacidadtransportadora'
         : 'fijacioncapacidadtransportadora';
     this.router.navigate([router], {
       state: {
-        id: id,
+        idSolicitud: solicitud.id,
       },
     });
   }

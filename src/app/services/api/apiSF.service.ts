@@ -20,6 +20,7 @@ export class ApiSFService {
     estado: string,
     categoria: string,
     search: string, 
+    fechaSolicitud: string,
     pageSize: number,
     currentPage: number,
   ): Observable<any> {
@@ -39,6 +40,10 @@ export class ApiSFService {
 
     if (categoria) {
       params.push(`categoriaSolicitudDescripcion=${categoria}`);
+    }
+
+    if (fechaSolicitud) {
+      params.push(`fechaSolicitud=${fechaSolicitud}`);
     }
 
     // Unir todos los parámetros con '&'

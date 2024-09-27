@@ -64,7 +64,7 @@ export class TableComponent {
   onButtonClick(solicitud: any) {
     console.log(solicitud);
     
-    this.solicitudGuardada.emit({id:solicitud.id, categoria: solicitud.categoriaSolicitudDescripcion});
+    this.solicitudGuardada.emit({id:solicitud.id, categoria: solicitud.categoria});
     
   }
 
