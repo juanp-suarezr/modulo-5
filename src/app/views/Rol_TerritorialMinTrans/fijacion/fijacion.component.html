@@ -32,11 +32,12 @@
                     </p><br>
                     <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" [maxFiles]="1" mimes=".pdf"
                         [error]="errorStates[1]" (fileSelected)="onFileSelected($event, 1)"></app-file-upload>
-
+                    <!-- Opcion que aparece si existe archivo guardado en la solicitud -->
                     <div class="mt-2 w-full border-t border-secondary2"
-                        *ngIf="this.formGroup1.get('1')?.value != '' && this.solicitudGuardada">
+                        *ngIf="(this.formGroup1.get('1')?.value != '' && this.formGroup1.get('1')?.value != null) && this.solicitudGuardada">
 
-                        <div class="mt-2 flex gap-2 items-center">
+                        <div class="mt-2 flex gap-2 items-center cursor-pointer"
+                            (click)="viewDocument(formGroup1.get('1')?.value)">
 
                             <!-- Archivos Visibles -->
                             <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
@@ -83,6 +84,61 @@
                     </p>
                     <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" mimes=".pdf" [error]="errorStates[2]"
                         (fileSelected)="onFileSelected($event, 2)"></app-file-upload>
+
+
+                    <!-- Opcion que aparece si existe archivo guardado en la solicitud -->
+                    <div class="mt-2 w-full border-t border-secondary2"
+                        *ngIf="(this.formGroup1.get('2')?.value != '' && this.formGroup1.get('2')?.value != null) && this.solicitudGuardada">
+
+                        <div class="mt-2 flex gap-2 items-center">
+                            <!-- Botón de Navegación Izquierda (visible solo si hay más de 2 archivos) -->
+                            <button *ngIf="this.formGroup1.get('2')?.value.length > 2" class="m-auto"
+                                (click)="moveLeft()" [disabled]="currentIndex === 0">
+                                <span class="pi pi-chevron-left text-primary2 text-xl"></span>
+                            </button>
+
+                            <!-- Archivos Visibles -->
+                            <div *ngFor="let file of this.formGroup1.get('2')?.value; let index = index" (click)="viewDocument(formGroup1.get('1')?.value[index])"
+                                class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
+
+                                <!-- document -->
+                                <div class="w-auto m-auto">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto"
+                                        viewBox="0 0 384 512">
+                                        <path
+                                            d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z" />
+                                    </svg>
+                                </div>
+
+                                <!-- texto info file -->
+                                <div class="px-2 w-auto">
+                                    <p class="truncate text-[8px] font-semibold">
+                                        Contrato {{ index+1 }}
+                                    </p>
+                                    <p class="truncate text-[8px]">{{
+                                        (this.formGroup1.get('2')?.value[index].documento.size / 1024).toFixed(2) }} Kb</p>
+                                </div>
+
+                                <!-- button borrar -->
+                                <button class="m-auto w-auto" (click)="deleteFile(2)">
+                                    <span
+                                        class="pi pi-trash w-full h-full sm:text-xl text-base text-primary2 text-medium"></span>
+                                </button>
+
+                            </div>
+
+                            <!-- Botón de Navegación Derecha (visible solo si hay más de 2 archivos) -->
+                            <button *ngIf="this.formGroup1.get('2')?.value.length > 2" class="m-auto"
+                                (click)="moveRight()"
+                                [disabled]="currentIndex >= this.formGroup1.get('2')?.value.length - maxVisibleFiles">
+                                <span class="pi pi-chevron-right text-primary2 text-xl"></span>
+                            </button>
+                        </div>
+
+
+
+
+                    </div>
                 </div>
             </div>
 
@@ -112,6 +168,48 @@
                         [dataClass]="{textSize: 'xs', textInfo: 'Archivo PDF o .xlsx. Peso máximo: 2MB'}"
                         [error]="errorStates[3]" mimes=".pdf,.xlsx" [maxFiles]="1"
                         (fileSelected)="onFileSelected($event, 3)"></app-file-upload>
+
+                    <!-- Opcion que aparece si existe archivo guardado en la solicitud -->
+                    <div class="mt-2 w-full border-t border-secondary2"
+                        *ngIf="(this.formGroup1.get('3')?.value != '' && this.formGroup1.get('3')?.value != null) && this.solicitudGuardada">
+
+                        <div class="mt-2 flex gap-2 items-center cursor-pointer"
+                            (click)="viewDocument(formGroup1.get('3')?.value)">
+
+                            <!-- Archivos Visibles -->
+                            <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
+
+                                <!-- document -->
+                                <div class="w-auto m-auto">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto"
+                                        viewBox="0 0 384 512">
+                                        <path
+                                            d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z" />
+                                    </svg>
+                                </div>
+
+                                <!-- texto info file -->
+                                <div class="px-2 w-auto">
+                                    <p class="truncate text-[8px] font-semibold">
+                                        Plan de Rodamiento
+                                    </p>
+                                    <p class="truncate text-[8px]">{{ (this.formGroup1.get('3')?.value.size /
+                                        1024).toFixed(2) }} Kb</p>
+                                </div>
+
+                                <!-- button borrar -->
+                                <button class="m-auto w-auto" (click)="deleteFile(3)">
+                                    <span
+                                        class="pi pi-trash w-full h-full sm:text-xl text-base text-primary2 text-medium"></span>
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+
+                    </div>
                 </div>
 
                 <!-- cargue 4 Estructura costos básicos contratante y contratista -->
@@ -121,6 +219,47 @@
                     </p>
                     <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" [maxFiles]="1" mimes=".pdf"
                         [error]="errorStates[4]" (fileSelected)="onFileSelected($event, 4)"></app-file-upload>
+
+                    <!-- Opcion que aparece si existe archivo guardado en la solicitud -->
+                    <div class="mt-2 w-full border-t border-secondary2"
+                        *ngIf="(this.formGroup1.get('4')?.value != '' && this.formGroup1.get('4')?.value != null) && this.solicitudGuardada">
+                        <div class="mt-2 flex gap-2 items-center cursor-pointer"
+                            (click)="viewDocument(formGroup1.get('4')?.value)">
+
+                            <!-- Archivos Visibles -->
+                            <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
+
+                                <!-- document -->
+                                <div class="w-auto m-auto">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto"
+                                        viewBox="0 0 384 512">
+                                        <path
+                                            d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z" />
+                                    </svg>
+                                </div>
+
+                                <!-- texto info file -->
+                                <div class="px-2 w-auto">
+                                    <p class="truncate text-[8px] font-semibold">
+                                        Estructura costos básicos contratante y contratista
+                                    </p>
+                                    <p class="truncate text-[8px]">{{ (this.formGroup1.get('4')?.value.size /
+                                        1024).toFixed(2) }} Kb</p>
+                                </div>
+
+                                <!-- button borrar -->
+                                <button class="m-auto w-auto" (click)="deleteFile(4)">
+                                    <span
+                                        class="pi pi-trash w-full h-full sm:text-xl text-base text-primary2 text-medium"></span>
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+
+                    </div>
                 </div>
             </div>
 
@@ -135,6 +274,47 @@
                     </p>
                     <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" [maxFiles]="1" mimes=".pdf"
                         [error]="errorStates[5]" (fileSelected)="onFileSelected($event, 5)"></app-file-upload>
+
+                    <!-- Opcion que aparece si existe archivo guardado en la solicitud -->
+                    <div class="mt-2 w-full border-t border-secondary2"
+                        *ngIf="(this.formGroup1.get('5')?.value != '' && this.formGroup1.get('5')?.value != null) && this.solicitudGuardada">
+                        <div class="mt-2 flex gap-2 items-center cursor-pointer"
+                            (click)="viewDocument(formGroup1.get('5')?.value)">
+
+                            <!-- Archivos Visibles -->
+                            <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
+
+                                <!-- document -->
+                                <div class="w-auto m-auto">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto"
+                                        viewBox="0 0 384 512">
+                                        <path
+                                            d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z" />
+                                    </svg>
+                                </div>
+
+                                <!-- texto info file -->
+                                <div class="px-2 w-auto">
+                                    <p class="truncate text-[8px] font-semibold">
+                                        Certificado de Existencia y Representación legal
+                                    </p>
+                                    <p class="truncate text-[8px]">{{ (this.formGroup1.get('5')?.value.size /
+                                        1024).toFixed(2) }} Kb</p>
+                                </div>
+
+                                <!-- button borrar -->
+                                <button class="m-auto w-auto" (click)="deleteFile(5)">
+                                    <span
+                                        class="pi pi-trash w-full h-full sm:text-xl text-base text-primary2 text-medium"></span>
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+
+                    </div>
                 </div>
 
                 <!-- cargue 6 Registro Único Tributario -->
@@ -144,6 +324,47 @@
                     </p>
                     <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" [maxFiles]="1" mimes=".pdf"
                         [error]="errorStates[6]" (fileSelected)="onFileSelected($event, 6)"></app-file-upload>
+
+                    <!-- Opcion que aparece si existe archivo guardado en la solicitud -->
+                    <div class="mt-2 w-full border-t border-secondary2"
+                        *ngIf="(this.formGroup1.get('6')?.value != '' && this.formGroup1.get('6')?.value != null) && this.solicitudGuardada">
+                        <div class="mt-2 flex gap-2 items-center cursor-pointer"
+                            (click)="viewDocument(formGroup1.get('6')?.value)">
+
+                            <!-- Archivos Visibles -->
+                            <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
+
+                                <!-- document -->
+                                <div class="w-auto m-auto">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto"
+                                        viewBox="0 0 384 512">
+                                        <path
+                                            d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z" />
+                                    </svg>
+                                </div>
+
+                                <!-- texto info file -->
+                                <div class="px-2 w-auto">
+                                    <p class="truncate text-[8px] font-semibold">
+                                        Registro Único Tributario
+                                    </p>
+                                    <p class="truncate text-[8px]">{{ (this.formGroup1.get('6')?.value.size /
+                                        1024).toFixed(2) }} Kb</p>
+                                </div>
+
+                                <!-- button borrar -->
+                                <button class="m-auto w-auto" (click)="deleteFile(6)">
+                                    <span
+                                        class="pi pi-trash w-full h-full sm:text-xl text-base text-primary2 text-medium"></span>
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+
+                    </div>
                 </div>
             </div>
 
@@ -171,6 +392,47 @@
                     </p>
                     <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" mimes=".pdf" [maxFiles]="1"
                         [error]="errorStates[7]" (fileSelected)="onFileSelected($event, 7)"></app-file-upload>
+
+                    <!-- Opcion que aparece si existe archivo guardado en la solicitud -->
+                    <div class="mt-2 w-full border-t border-secondary2"
+                        *ngIf="(this.formGroup1.get('7')?.value != '' && this.formGroup1.get('7')?.value != null) && this.solicitudGuardada">
+                        <div class="mt-2 flex gap-2 items-center cursor-pointer"
+                            (click)="viewDocument(formGroup1.get('7')?.value)">
+
+                            <!-- Archivos Visibles -->
+                            <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
+
+                                <!-- document -->
+                                <div class="w-auto m-auto">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto"
+                                        viewBox="0 0 384 512">
+                                        <path
+                                            d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z" />
+                                    </svg>
+                                </div>
+
+                                <!-- texto info file -->
+                                <div class="px-2 w-auto">
+                                    <p class="truncate text-[8px] font-semibold">
+                                        Resolución de habilitación
+                                    </p>
+                                    <p class="truncate text-[8px]">{{ (this.formGroup1.get('7')?.value.size /
+                                        1024).toFixed(2) }} Kb</p>
+                                </div>
+
+                                <!-- button borrar -->
+                                <button class="m-auto w-auto" (click)="deleteFile(7)">
+                                    <span
+                                        class="pi pi-trash w-full h-full sm:text-xl text-base text-primary2 text-medium"></span>
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+
+                    </div>
                 </div>
 
                 <!-- cargue 8 Cédula de Ciudadanía del Representante Legal* -->
@@ -180,6 +442,47 @@
                     </p>
                     <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" mimes=".pdf" [error]="errorStates[8]"
                         [maxFiles]="1" (fileSelected)="onFileSelected($event, 8)"></app-file-upload>
+
+                    <!-- Opcion que aparece si existe archivo guardado en la solicitud -->
+                    <div class="mt-2 w-full border-t border-secondary2"
+                        *ngIf="(this.formGroup1.get('8')?.value != '' && this.formGroup1.get('8')?.value != null) && this.solicitudGuardada">
+                        <div class="mt-2 flex gap-2 items-center cursor-pointer"
+                            (click)="viewDocument(formGroup1.get('8')?.value)">
+
+                            <!-- Archivos Visibles -->
+                            <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
+
+                                <!-- document -->
+                                <div class="w-auto m-auto">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto"
+                                        viewBox="0 0 384 512">
+                                        <path
+                                            d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z" />
+                                    </svg>
+                                </div>
+
+                                <!-- texto info file -->
+                                <div class="px-2 w-auto">
+                                    <p class="truncate text-[8px] font-semibold">
+                                        Cédula Representante Legal
+                                    </p>
+                                    <p class="truncate text-[8px]">{{ (this.formGroup1.get('8')?.value.size /
+                                        1024).toFixed(2) }} Kb</p>
+                                </div>
+
+                                <!-- button borrar -->
+                                <button class="m-auto w-auto" (click)="deleteFile(8)">
+                                    <span
+                                        class="pi pi-trash w-full h-full sm:text-xl text-base text-primary2 text-medium"></span>
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+
+                    </div>
                 </div>
             </div>
 
@@ -194,6 +497,49 @@
 
                     <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" mimes=".pdf" [error]="errorStates[9]"
                         [maxFiles]="1" (fileSelected)="onFileSelected($event, 9)"></app-file-upload>
+
+                    <!-- Opcion que aparece si existe archivo guardado en la solicitud -->
+                    <div class="mt-2 w-full border-t border-secondary2"
+                        *ngIf="(this.formGroup1.get('9')?.value != '' && this.formGroup1.get('9')?.value != null) && this.solicitudGuardada">
+                        <div class="mt-2 flex gap-2 items-center cursor-pointer"
+                            (click)="viewDocument(formGroup1.get('9')?.value)">
+
+                            <!-- Archivos Visibles -->
+                            <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
+
+                                <!-- document -->
+                                <div class="w-auto m-auto">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto"
+                                        viewBox="0 0 384 512">
+                                        <path
+                                            d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z" />
+                                    </svg>
+                                </div>
+
+                                <!-- texto info file -->
+                                <div class="px-2 w-auto">
+                                    <p class="truncate text-[8px] font-semibold">
+                                        Estados financieros
+                                    </p>
+                                    <p class="truncate text-[8px]">{{ (this.formGroup1.get('9')?.value.size /
+                                        1024).toFixed(2) }} Kb</p>
+                                </div>
+
+                                <!-- button borrar -->
+                                <button class="m-auto w-auto" (click)="deleteFile(9)">
+                                    <span
+                                        class="pi pi-trash w-full h-full sm:text-xl text-base text-primary2 text-medium"></span>
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+
+                    </div>
+
+
                 </div>
 
                 <!-- cargue 10 Cédula del contador que firma los estados financieros -->
@@ -203,6 +549,47 @@
                     </p>
                     <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" mimes=".pdf" [maxFiles]="1"
                         [error]="errorStates[10]" (fileSelected)="onFileSelected($event, 10)"></app-file-upload>
+
+                    <!-- Opcion que aparece si existe archivo guardado en la solicitud -->
+                    <div class="mt-2 w-full border-t border-secondary2"
+                        *ngIf="(this.formGroup1.get('10')?.value != '' && this.formGroup1.get('10')?.value != null) && this.solicitudGuardada">
+                        <div class="mt-2 flex gap-2 items-center cursor-pointer"
+                            (click)="viewDocument(formGroup1.get('10')?.value)">
+
+                            <!-- Archivos Visibles -->
+                            <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
+
+                                <!-- document -->
+                                <div class="w-auto m-auto">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto"
+                                        viewBox="0 0 384 512">
+                                        <path
+                                            d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z" />
+                                    </svg>
+                                </div>
+
+                                <!-- texto info file -->
+                                <div class="px-2 w-auto">
+                                    <p class="truncate text-[8px] font-semibold">
+                                        Cédula del contador
+                                    </p>
+                                    <p class="truncate text-[8px]">{{ (this.formGroup1.get('10')?.value.size /
+                                        1024).toFixed(2) }} Kb</p>
+                                </div>
+
+                                <!-- button borrar -->
+                                <button class="m-auto w-auto" (click)="deleteFile(10)">
+                                    <span
+                                        class="pi pi-trash w-full h-full sm:text-xl text-base text-primary2 text-medium"></span>
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+
+                    </div>
                 </div>
             </div>
 
@@ -215,6 +602,48 @@
                     </p>
                     <app-file-upload class="mt-2 h-full" [maxFiles]="1" [dataClass]="dataClass" mimes=".pdf"
                         [error]="errorStates[11]" (fileSelected)="onFileSelected($event, 11)"></app-file-upload>
+
+                    <!-- Opcion que aparece si existe archivo guardado en la solicitud -->
+                    <div class="mt-2 w-full border-t border-secondary2"
+                        *ngIf="(this.formGroup1.get('11')?.value != '' && this.formGroup1.get('11')?.value != null) && this.solicitudGuardada">
+                        <div class="mt-2 flex gap-2 items-center cursor-pointer"
+                            (click)="viewDocument(formGroup1.get('11')?.value)">
+
+                            <!-- Archivos Visibles -->
+                            <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
+
+                                <!-- document -->
+                                <div class="w-auto m-auto">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto"
+                                        viewBox="0 0 384 512">
+                                        <path
+                                            d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z" />
+                                    </svg>
+                                </div>
+
+                                <!-- texto info file -->
+                                <div class="px-2 w-auto">
+                                    <p class="truncate text-[8px] font-semibold">
+                                        Tarjeta profesional contador
+                                    </p>
+                                    <p class="truncate text-[8px]">{{ (this.formGroup1.get('11')?.value.size /
+                                        1024).toFixed(2) }} Kb</p>
+                                </div>
+
+                                <!-- button borrar -->
+                                <button class="m-auto w-auto" (click)="deleteFile(11)">
+                                    <span
+                                        class="pi pi-trash w-full h-full sm:text-xl text-base text-primary2 text-medium"></span>
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+
+                    </div>
+
                 </div>
 
             </div>

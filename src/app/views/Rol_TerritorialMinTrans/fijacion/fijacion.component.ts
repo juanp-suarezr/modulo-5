@@ -26,6 +26,8 @@ import { dateRangeValidator } from '../../../validator/date.validator';
 import { HORAS } from '../../../shared/data/horas';
 import { NoNegativeGlobal } from '../../../validator/noNegative.validator';
 import { ApiSFService } from '../../../services/api/apiSF.service';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { DialogModule } from 'primeng/dialog';
 
 @Component({
   selector: 'app-fijacion',
@@ -41,6 +43,7 @@ import { ApiSFService } from '../../../services/api/apiSF.service';
     ReactiveFormsModule,
     SelectComponent,
     AlertComponent,
+    DialogModule,
   ],
   templateUrl: './fijacion.component.html',
   styleUrl: './fijacion.component.css',
@@ -54,7 +57,8 @@ export default class FijacionComponent {
     private fb: FormBuilder,
     private errorService: ErrorService,
     private cdr: ChangeDetectorRef,
-    private router: Router
+    private router: Router,
+    private sanitizer: DomSanitizer
   ) {
     const navigation = this.router.getCurrentNavigation();
     const state = navigation?.extras.state as {
@@ -81,6 +85,10 @@ export default class FijacionComponent {
     }
   }
 
+  //view archivo blob
+  documentUrl: SafeResourceUrl | undefined;
+  displayModal: boolean = false;
+
   parseInt: any;
   departs: any = [];
   ClaseVehiculo: any = [];
@@ -99,6 +107,10 @@ export default class FijacionComponent {
 
   //solicitud guardada
   solicitudGuardada: any;
+
+  //manejo de varios contratos guardados
+  currentIndex = 0;
+  maxVisibleFiles = 2;
 
   //objeto para manejar los active num del left menu y stepper.
   activeNum: string = '0'; //left menu
@@ -248,35 +260,72 @@ export default class FijacionComponent {
     // Suscribirse a los cambios en idSolicitud
     this.idSolicitud$.subscribe((newId) => {
       localStorage.setItem('idSolicitud', newId);
-      console.log("entro");
-      
+      console.log('entro');
+
       if (newId) {
         //GET SOLICITUD
         this.apiSFService.getSolicitudByID(newId).subscribe(
           (response) => {
-            
             this.solicitudGuardada = response;
 
+            (this.nombreEmpresa = response.nombreEmpresa),
+              (this.nit = response.nit),
+              this.formGroup1.patchValue({
+                [1]: this.displayFile(response.solicitudFijacionCapacidad),
+              });
 
-      this.nombreEmpresa = response.nombreEmpresa,
-      this.nit = response.nit,
-      this.formGroup1.patchValue({ [1]: this.displayFile(response.solicitudFijacionCapacidad) });
-      // this.formGroup1.get('1')?.setValue(response.solicitudFijacionCapacidad),
-      this.formGroup1.get('3')?.setValue(response.planRodamiento),
-      // planRodamiento: this.formGroup1.value[3][0],
-      // estructuraCostosBasicos: this.formGroup1.value[4][0],
-      // certificadoExistencia: this.formGroup1.value[5][0],
-      // registroUnicoTributario: this.formGroup1.value[6][0],
-      // resolucionHabilitacion: this.formGroup2.value[7][0],
-      // cedulaRepresentante: this.formGroup2.value[8][0],
-      // estadosFinancieros: this.formGroup2.value[9][0],
-      // cedulaContador: this.formGroup2.value[10][0],
-      // tarjetaProfesionalContador: this.formGroup2.value[11][0],
-      // capitalSocial: this.formGroup3.get('capitalSocial')?.value,
-      // patrimonioLiquido: this.formGroup3.get('patrimonioLiquido')?.value,
-      // cantidadVehiculos: this.formGroup3.get('cantidadVehiculos')?.value,
-      // contratos: contratos,
-      // documentos: documentos,
+            this.formGroup1.patchValue({
+              [3]: this.displayFile(response.planRodamiento),
+            });
+            this.formGroup1.patchValue({
+              [4]: this.displayFile(response.estructuraCostosBasicos),
+            });
+            this.formGroup1.patchValue({
+              [5]: this.displayFile(response.certificadoExistencia),
+            });
+            this.formGroup1.patchValue({
+              [6]: this.displayFile(response.registroUnicoTributario),
+            });
+            this.formGroup1.patchValue({
+              [7]: this.displayFile(response.resolucionHabilitacion),
+            });
+            this.formGroup1.patchValue({
+              [8]: this.displayFile(response.cedulaRepresentante),
+            });
+            this.formGroup1.patchValue({
+              [9]: this.displayFile(response.estadosFinancieros),
+            });
+            this.formGroup1.patchValue({
+              [10]: this.displayFile(response.cedulaContador),
+            });
+            this.formGroup1.patchValue({
+              [11]: this.displayFile(response.tarjetaProfesionalContador),
+            });
+
+            //GET DOCUMENTOS
+            this.apiSFService.getDocumentosByID(response.nit).subscribe(
+              (response1) => {
+                // Crear un array de contratos
+                const contratosArray = response1.map((element: any) => ({
+                  nit: element.nit,
+                  id: element.id,
+                  documento: this.displayFile(element.documento),
+                }));
+
+                // Guardar el array en formGroup1[0]
+                this.formGroup1.patchValue({
+                  [2]: contratosArray,
+                });
+
+                console.log(this.formGroup1);
+              },
+              (error) => {
+                console.error('Error fetching user data', error);
+              }
+            );
+
+            // contratos: contratos,
+
             console.log(this.formGroup1);
           },
           (error) => {
@@ -354,12 +403,32 @@ export default class FijacionComponent {
     );
   }
 
-  deleteFile(num:number) {
+  deleteFile(num: number) {
     switch (num) {
       case 1:
-      this.formGroup1.get(num.toString())?.setValue('');
+        this.formGroup1.get(num.toString())?.setValue('');
         break;
-    
+
+      case 2:
+        this.formGroup1.get(num.toString())?.setValue('');
+        break;
+
+      case 3:
+        this.formGroup1.get(num.toString())?.setValue('');
+        break;
+
+      case 4:
+        this.formGroup1.get(num.toString())?.setValue('');
+        break;
+
+      case 5:
+        this.formGroup1.get(num.toString())?.setValue('');
+        break;
+
+      case 6:
+        this.formGroup1.get(num.toString())?.setValue('');
+        break;
+
       default:
         break;
     }
@@ -925,7 +994,6 @@ export default class FijacionComponent {
 
   //metodo para guardar el archivo seleccionado
   onFileSelected(file: File[], formControlName: number) {
-
     this.convertFilesToBase64(file)
       .then((base64Array) => {
         const formControlMap: { [key: number]: FormGroup } = {
@@ -969,7 +1037,7 @@ export default class FijacionComponent {
 
   // Detectar si el archivo es PDF o XLSX desde Base64
   detectMimeType(base64: string): string {
-    if (base64[0].startsWith('JVBERi0')) {
+    if (base64.startsWith('JVBERi0')) {
       return 'application/pdf'; // PDF
     } else if (base64.startsWith('UEsFB') || base64.startsWith('UEsDB')) {
       return 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'; // XLSX
@@ -994,12 +1062,43 @@ export default class FijacionComponent {
 
   // Crear un enlace para descargar o mostrar el archivo
   displayFile(base64File: string) {
+    if (base64File == null || base64File == '') {
+      return;
+    }
     const blob = this.convertBase64ToBlob(base64File);
     const url = URL.createObjectURL(blob);
 
     console.log(blob);
     console.log(url);
     return blob;
+  }
+
+  viewDocument(blob: Blob) {
+    if (blob) {
+      const url = URL.createObjectURL(blob);
+
+      window.open(url);
+    }
+  }
+
+  //MOSTRAR CONTRATOS GUARDADOS
+  get visibleFiles(): File[] {
+    return this.formGroup1.get('2')?.value.slice(
+      this.currentIndex,
+      this.currentIndex + this.maxVisibleFiles
+    );
+  }
+
+  moveLeft(): void {
+    if (this.currentIndex > 0) {
+      this.currentIndex--;
+    }
+  }
+
+  moveRight(): void {
+    if (this.currentIndex < this.formGroup1.get('2')?.value.length - this.maxVisibleFiles) {
+      this.currentIndex++;
+    }
   }
 
   //calcular duracion en meses

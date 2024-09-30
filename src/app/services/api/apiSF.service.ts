@@ -59,6 +59,11 @@ export class ApiSFService {
     return this.http.get(`${this.baseUrl}/api/formulario/${id}`);
   }
 
+  //GET solicitud-documentos by ID NIT
+  getDocumentosByID(id: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}/documentos/${id}`);
+  }
+
   //validator nit
   getSolicitudByNIT(nit: string): Observable<any> {
     return this.http.get(`${this.baseUrl}/api/formulario/verificar-nit/${nit}`);
