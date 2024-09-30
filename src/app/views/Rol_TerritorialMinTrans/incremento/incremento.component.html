@@ -113,8 +113,9 @@
 
         </div>
 
-        <div class="mt-6 w-full flex justify-end">
-          <app-primary-button class="" (click)="changeActiveStep(2)">continuar</app-primary-button>
+        <div class="mt-6 w-full flex justify-between">
+          <app-primary-button class="" (click)="changeActiveStep(2, true)">Guardar</app-primary-button>
+          <app-primary-button class="" (click)="goToModal(2)">continuar</app-primary-button>
         </div>
 
       </form>
@@ -278,8 +279,13 @@
 
         </div>
 
-        <div class="mt-6 w-full flex justify-end">
-          <app-primary-button class="" (click)="changeActiveStep(3)">continuar</app-primary-button>
+        <div class="mt-6 w-full flex justify-between">
+          <button type="button" (click)="changeActiveStep(1, false)"
+                  class="inline-flex items-center justify-center px-6 py-1 text-white bg-primary4 hover:bg-primary2 focus:bg-primary2 font-medium rounded-full text-[16px] work-sans text-center">
+            Regresar
+          </button>
+          <app-primary-button class="" (click)="changeActiveStep(3, true)">Guardar</app-primary-button>
+          <app-primary-button class="" (click)="goToModal(3)">continuar</app-primary-button>
         </div>
 
       </form>
@@ -289,7 +295,7 @@
     <!-- formulario 3 -->
     <ng-template #content3>
       <form [formGroup]="formGroup3" class="px-4 md:pl-16 md:pe-16 mt-6 active1 mb-6" *ngIf="activeStep == 3"
-            (ngSubmit)="changeActiveStep(4)">
+            (ngSubmit)="changeActiveStep(4, true)">
         <div class="col-span-2">
           <p class="font-bold">Digitar los siguientes campos*</p>
           <p class="text-primary4 font-[500]">Los campos marcados con * son obligatorios</p>
@@ -495,8 +501,13 @@
         </div>
 
 
-        <div class="mt-6 w-full flex justify-end">
-          <app-primary-button type="submit" class="">continuar</app-primary-button>
+        <div class="mt-6 w-full flex justify-between">
+          <button type="button" (click)="changeActiveStep(2, false, true)"
+                  class="inline-flex items-center justify-center px-6 py-1 text-white bg-primary4 hover:bg-primary2 focus:bg-primary2 font-medium rounded-full text-[16px] work-sans text-center">
+            Regresar
+          </button>
+          <app-primary-button type="submit" class="">Guardar</app-primary-button>
+          <app-primary-button type="submit" (click)="goToModal(4)" class="">continuar</app-primary-button>
         </div>
 
       </form>
@@ -717,6 +728,58 @@
       <!-- contenido 3 -->
       <div class="content1 md:grid sm:grid-cols-2 md:grid-cols-3 md:gap-x-24 md:flex items-center h-full">
 
+        <!-- select -->
+        <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+
+          <p class="text-primary3 font-semibold h-full">
+            Clase de vehículo*
+          </p>
+
+          <!-- select -->
+          <div class="w-full relative mt-2">
+
+            <!-- Selector principal -->
+            <div (click)="toggleDropdown(0)"
+                 [ngClass]="{'text-error !border border-error': formGroup4.get('idClaseVehiculo')?.invalid && (formGroup4.get('idClaseVehiculo')?.touched || formGroup4.get('idClaseVehiculo')?.dirty)}"
+                 class="cursor-pointer shadow-sm min-w-[160px] w-full p-[10px] min-h-[40px] bg-transparent border-2 border-secondary1 focus:outline-none focus:border-primary1 flex justify-between items-center">
+              <span *ngIf="!selectedOptionsClase.length" class="font-[500] text-xs">Seleccione</span>
+              <span *ngIf="selectedOptionsClase.length" class="text-normal">{{
+                  getSelectedLabels('idClaseVehiculo')
+                }}</span>
+              <i class="pi pi-chevron-down text-primary2 text-xs"
+                 [ngClass]="{'!text-error': formGroup4.get('idClaseVehiculo')?.invalid && (formGroup4.get('idClaseVehiculo')?.touched || formGroup4.get('idClaseVehiculo')?.dirty)}"></i>
+            </div>
+
+            <!-- Opciones desplegables -->
+            <ul *ngIf="selects[0].isDropdownOpen"
+                class="absolute z-20 bg-secondary4 border border-primary1 shadow-md rounded-bl-md rounded-br-md w-full mt-1 max-h-48 overflow-y-auto">
+              <li *ngFor="let option of ClaseVehiculo" (click)="toggleOption(option, 'idClaseVehiculo')"
+                  class="cursor-pointer px-4 py-2 hover:bg-secondary1 flex items-center">
+
+                <!-- Estilo personalizado -->
+                <div class="mr-2 !border-2 !border-primary1 rounded-md !h-5 !w-5 flex items-center justify-center"
+                     [ngClass]=" {'!bg-primary1 text-white': isSelected(option, 'idClaseVehiculo')}">
+                  <span *ngIf="isSelected(option, 'idClaseVehiculo')"> &#10003; </span>
+                </div>
+                {{ option.label }}
+              </li>
+            </ul>
+
+            <!-- Mensajes de validación -->
+            <span class="text-sm text-success"
+                  *ngIf="formGroup4.get('idClaseVehiculo')?.valid && formGroup4.get('idClaseVehiculo')?.touched">
+                            Selección válida
+              </span>
+
+            <span class="text-sm text-error"
+                  *ngIf="formGroup4.get('idClaseVehiculo')?.invalid && (formGroup4.get('idClaseVehiculo')?.touched || formGroup4.get('idClaseVehiculo')?.dirty)">
+                            {{ selects[0].errorMessage }}
+              </span>
+
+          </div>
+
+        </div>
+
         <!-- input num vehiculos -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
 
@@ -752,49 +815,6 @@
               class="text-error">
               El numeró no puede ser negativo
             </span>
-          </div>
-
-        </div>
-
-        <!-- select 3 -->
-        <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
-
-          <p class="text-primary3 font-semibold h-full" [ngClass]="{'!text-error !font-normal': errorStates[12]}">
-            Clase de vehículo*
-          </p>
-
-          <!-- select -->
-          <div class="w-full relative mt-2">
-
-            <div (click)="toggleDropdown(1)"
-                 [ngClass]="{'text-error !border border-error': formGroup4.get('ClaseVehiculo')?.invalid && (formGroup4.get('ClaseVehiculo')?.touched || formGroup4.get('ClaseVehiculo')?.dirty)}"
-                 class="cursor-pointer shadow-sm min-w-[160px] w-full p-[10px] h-[40px] bg-transparent border-2 border-secondary1 focus:outline-none focus:border-primary1 flex justify-between items-center">
-              <span *ngIf="!selects[1].value" class="font-[500] text-xs">Seleccione</span>
-              <span *ngIf="selects[1].value" class="text-normal">{{
-                  formGroup4.get('ClaseVehiculo')?.value.label
-                }}</span>
-
-              <i class="pi pi-chevron-down text-primary2 text-xs"
-                 [ngClass]="{'!text-error': formGroup4.get('ClaseVehiculo')?.invalid && (formGroup4.get('ClaseVehiculo')?.touched || formGroup4.get('ClaseVehiculo')?.dirty)}"></i>
-            </div>
-
-            <ul *ngIf="selects[1].isDropdownOpen"
-                class="absolute z-20 bg-secondary4 border border-primary1 shadow-md rounded-bl-md rounded-br-md w-full mt-1 max-h-48 overflow-y-auto">
-              <li *ngFor="let option of ClaseVehiculo" (click)="selectOption(1, option, 'ClaseVehiculo')"
-                  class="cursor-pointer px-4 py-2 hover:bg-primary1 hover:text-white">
-                {{ option.label }}
-              </li>
-            </ul>
-            <!-- Mensajes de validación -->
-            <span class="text-sm text-success"
-                  *ngIf="formGroup4.get('ClaseVehiculo')?.valid && formGroup4.get('ClaseVehiculo')?.touched">
-              Selección válida
-            </span>
-            <span class="text-sm text-error"
-                  *ngIf="formGroup4.get('ClaseVehiculo')?.invalid && (formGroup4.get('ClaseVehiculo')?.touched || formGroup4.get('ClaseVehiculo')?.dirty)">
-              {{ selects[1].errorMessage }}
-            </span>
-
           </div>
 
         </div>
@@ -884,7 +904,7 @@
               Selección válida
             </span>
             <span class="text-sm text-error"
-                  *ngIf="formGroup4.get('forma_pago')?.invalid && (formGroup4.get('forma_pago')?.touched || formGroup4.get('ClaseVehiculo')?.dirty)">
+                  *ngIf="formGroup4.get('forma_pago')?.invalid && (formGroup4.get('forma_pago')?.touched || formGroup4.get('forma_pago')?.dirty)">
               {{ selects[2].errorMessage }}
             </span>
 
@@ -902,33 +922,43 @@
           <!-- select -->
           <div class="w-full relative mt-2">
 
+            <!-- Selector principal -->
             <div (click)="toggleDropdown(3)"
-                 [ngClass]="{'text-error !border border-error': formGroup4.get('area_operacion')?.invalid && (formGroup4.get('area_operacion')?.touched || formGroup4.get('area_operacion')?.dirty)}"
-                 class="cursor-pointer shadow-sm min-w-[160px] w-full p-[10px] h-[40px] bg-transparent border-2 border-secondary1 focus:outline-none focus:border-primary1 flex justify-between items-center">
-              <span *ngIf="!selects[3].value" class="font-[500] text-xs">Seleccione</span>
-              <span *ngIf="selects[3].value" class="text-normal">{{
-                  formGroup4.get('area_operacion')?.value.label
+                 [ngClass]="{'text-error !border border-error': formGroup4.get('idAreaOperacion')?.invalid && (formGroup4.get('idAreaOperacion')?.touched || formGroup4.get('idAreaOperacion')?.dirty)}"
+                 class="cursor-pointer shadow-sm min-w-[160px] w-full p-[10px] min-h-[40px] bg-transparent border-2 border-secondary1 focus:outline-none focus:border-primary1 flex justify-between items-center">
+              <span *ngIf="!selectedOptionsDeparts.length" class="font-[500] text-xs">Seleccione</span>
+              <span *ngIf="selectedOptionsDeparts.length" class="text-normal">{{
+                  getSelectedLabels('idAreaOperacion')
                 }}</span>
 
               <i class="pi pi-chevron-down text-primary2 text-xs"
-                 [ngClass]="{'!text-error': formGroup4.get('area_operacion')?.invalid && (formGroup4.get('area_operacion')?.touched || formGroup4.get('area_operacion')?.dirty)}"></i>
+                 [ngClass]="{'!text-error': formGroup4.get('idAreaOperacion')?.invalid && (formGroup4.get('idAreaOperacion')?.touched || formGroup4.get('idAreaOperacion')?.dirty)}"></i>
             </div>
 
+            <!-- Opciones desplegables -->
             <ul *ngIf="selects[3].isDropdownOpen"
                 class="absolute z-20 bg-secondary4 border border-primary1 shadow-md rounded-bl-md rounded-br-md w-full mt-1 max-h-48 overflow-y-auto">
-              <li *ngFor="let option of departs" (click)="selectOption(3, option, 'area_operacion')"
-                  class="cursor-pointer px-4 py-2 hover:bg-primary1 hover:text-white">
+              <li *ngFor="let option of departs" (click)="toggleOption(option, 'idAreaOperacion')"
+                  class="cursor-pointer px-4 py-2 hover:bg-secondary1 flex items-center">
+
+                <!-- Estilo personalizado -->
+                <div class="mr-2 !border-2 !border-primary1 rounded-md !h-5 !w-5 flex items-center justify-center"
+                     [ngClass]=" {'!bg-primary1 text-white': isSelected(option, 'idAreaOperacion')}">
+                  <span *ngIf="isSelected(option, 'idAreaOperacion')"> &#10003; </span>
+                </div>
                 {{ option.label }}
+
               </li>
             </ul>
             <!-- Mensajes de validación -->
             <span class="text-sm text-success"
-                  *ngIf="formGroup4.get('area_operacion')?.valid && formGroup4.get('area_operacion')?.touched">
-              Selección válida
+                  *ngIf="formGroup4.get('idAreaOperacion')?.valid && formGroup4.get('idAreaOperacion')?.touched">
+                            Selección válida
             </span>
+
             <span class="text-sm text-error"
-                  *ngIf="formGroup4.get('area_operacion')?.invalid && (formGroup4.get('area_operacion')?.touched || formGroup4.get('area_operacion')?.dirty)">
-              {{ selects[3].errorMessage }}
+                  *ngIf="formGroup4.get('idAreaOperacion')?.invalid && (formGroup4.get('idAreaOperacion')?.touched || formGroup4.get('idAreaOperacion')?.dirty)">
+                            {{ selects[3].errorMessage }}
             </span>
 
           </div>
@@ -988,6 +1018,12 @@
   </div>
 
 </div>
+
+<!-- APP ALERT CONTINUAR -->
+<app-alert [showModal]="showModalContinuar" title="Continuar sin guardar" subtitle=""
+           message="Esta seguro que desea continuar sin guardar." cancelButtonText="Cerrar" [showCancelButton]="true" buttonText="Continuar"
+           [showFirstButton]="true" (close)="showModalContinuar = false" (closeByButton1)="changeActiveStep(numberTocontinue, false)"
+           TypeAlert="warning"></app-alert>
 
 <!-- APP ALERT REQUISITO CAPITAL SOCIAL Y PATRIMONIO -->
 <app-alert [showModal]="showModalRequisito" title="No cumple requisito" subtitle=""
