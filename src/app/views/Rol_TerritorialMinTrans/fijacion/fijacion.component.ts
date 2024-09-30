@@ -686,6 +686,7 @@ export default class FijacionComponent {
                   this.ShowLoadingModal = false;
                   console.log('Datos enviados exitosamente:', parsedData);
                   this.idSolicitud = parsedData.id_solicitud;
+                  localStorage.setItem('idSolicitud', this.idSolicitud);
                   console.log(this.idSolicitud);
 
                   this.stepperService.setActiveNum(newValue);
