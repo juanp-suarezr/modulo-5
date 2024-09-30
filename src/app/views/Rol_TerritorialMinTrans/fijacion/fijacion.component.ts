@@ -324,6 +324,13 @@ export default class FijacionComponent {
                   [2]: contratosArray,
                 });
 
+                this.fileNames[1] = response1.map((f: any, index: number) => {
+                  const firstPart = `consecutivo_${index + 1}__${this.nit}_${
+                    this.nombreEmpresa
+                  }__`;
+                  return firstPart;
+                });
+
                 console.log(this.formGroup1);
               },
               (error) => {
