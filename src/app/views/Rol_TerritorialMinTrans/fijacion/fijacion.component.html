@@ -34,7 +34,7 @@
                         [error]="errorStates[1]" (fileSelected)="onFileSelected($event, 1)"></app-file-upload>
                     <!-- Opcion que aparece si existe archivo guardado en la solicitud -->
                     <div class="mt-2 w-full border-t border-secondary2"
-                        *ngIf="(this.formGroup1.get('1')?.value != '' && this.formGroup1.get('1')?.value != null) && this.solicitudGuardada">
+                        *ngIf="(this.formGroup1.get('1')?.value != '' && this.formGroup1.get('1')?.value != null) && this.solicitudGuardada && !isActuFile.includes(1)">
 
                         <div class="mt-2 flex gap-2 items-center cursor-pointer"
                             (click)="viewDocument(formGroup1.get('1')?.value)">
@@ -88,7 +88,7 @@
 
                     <!-- Opcion que aparece si existe archivo guardado en la solicitud -->
                     <div class="mt-2 w-full border-t border-secondary2"
-                        *ngIf="(this.formGroup1.get('2')?.value != '' && this.formGroup1.get('2')?.value != null) && this.solicitudGuardada">
+                        *ngIf="(this.formGroup1.get('2')?.value != '' && this.formGroup1.get('2')?.value != null) && this.solicitudGuardada && !isActuFile.includes(2)">
 
                         <div class="mt-2 flex gap-2 items-center">
                             <!-- Botón de Navegación Izquierda (visible solo si hay más de 2 archivos) -->
@@ -171,7 +171,7 @@
 
                     <!-- Opcion que aparece si existe archivo guardado en la solicitud -->
                     <div class="mt-2 w-full border-t border-secondary2"
-                        *ngIf="(this.formGroup1.get('3')?.value != '' && this.formGroup1.get('3')?.value != null) && this.solicitudGuardada">
+                        *ngIf="(this.formGroup1.get('3')?.value != '' && this.formGroup1.get('3')?.value != null) && this.solicitudGuardada && !isActuFile.includes(3)">
 
                         <div class="mt-2 flex gap-2 items-center cursor-pointer"
                             (click)="viewDocument(formGroup1.get('3')?.value)">
@@ -222,7 +222,7 @@
 
                     <!-- Opcion que aparece si existe archivo guardado en la solicitud -->
                     <div class="mt-2 w-full border-t border-secondary2"
-                        *ngIf="(this.formGroup1.get('4')?.value != '' && this.formGroup1.get('4')?.value != null) && this.solicitudGuardada">
+                        *ngIf="(this.formGroup1.get('4')?.value != '' && this.formGroup1.get('4')?.value != null) && this.solicitudGuardada && !isActuFile.includes(4)">
                         <div class="mt-2 flex gap-2 items-center cursor-pointer"
                             (click)="viewDocument(formGroup1.get('4')?.value)">
 
@@ -277,7 +277,7 @@
 
                     <!-- Opcion que aparece si existe archivo guardado en la solicitud -->
                     <div class="mt-2 w-full border-t border-secondary2"
-                        *ngIf="(this.formGroup1.get('5')?.value != '' && this.formGroup1.get('5')?.value != null) && this.solicitudGuardada">
+                        *ngIf="(this.formGroup1.get('5')?.value != '' && this.formGroup1.get('5')?.value != null) && this.solicitudGuardada && !isActuFile.includes(5)">
                         <div class="mt-2 flex gap-2 items-center cursor-pointer"
                             (click)="viewDocument(formGroup1.get('5')?.value)">
 
@@ -327,7 +327,7 @@
 
                     <!-- Opcion que aparece si existe archivo guardado en la solicitud -->
                     <div class="mt-2 w-full border-t border-secondary2"
-                        *ngIf="(this.formGroup1.get('6')?.value != '' && this.formGroup1.get('6')?.value != null) && this.solicitudGuardada">
+                        *ngIf="(this.formGroup1.get('6')?.value != '' && this.formGroup1.get('6')?.value != null) && this.solicitudGuardada && !isActuFile.includes(6)">
                         <div class="mt-2 flex gap-2 items-center cursor-pointer"
                             (click)="viewDocument(formGroup1.get('6')?.value)">
 
@@ -395,7 +395,7 @@
 
                     <!-- Opcion que aparece si existe archivo guardado en la solicitud -->
                     <div class="mt-2 w-full border-t border-secondary2"
-                        *ngIf="(this.formGroup1.get('7')?.value != '' && this.formGroup1.get('7')?.value != null) && this.solicitudGuardada">
+                        *ngIf="(this.formGroup1.get('7')?.value != '' && this.formGroup1.get('7')?.value != null) && this.solicitudGuardada && !isActuFile.includes(7)">
                         <div class="mt-2 flex gap-2 items-center cursor-pointer"
                             (click)="viewDocument(formGroup1.get('7')?.value)">
 
@@ -445,7 +445,7 @@
 
                     <!-- Opcion que aparece si existe archivo guardado en la solicitud -->
                     <div class="mt-2 w-full border-t border-secondary2"
-                        *ngIf="(this.formGroup1.get('8')?.value != '' && this.formGroup1.get('8')?.value != null) && this.solicitudGuardada">
+                        *ngIf="(this.formGroup1.get('8')?.value != '' && this.formGroup1.get('8')?.value != null) && this.solicitudGuardada && !isActuFile.includes(8)">
                         <div class="mt-2 flex gap-2 items-center cursor-pointer"
                             (click)="viewDocument(formGroup1.get('8')?.value)">
 
@@ -500,7 +500,7 @@
 
                     <!-- Opcion que aparece si existe archivo guardado en la solicitud -->
                     <div class="mt-2 w-full border-t border-secondary2"
-                        *ngIf="(this.formGroup1.get('9')?.value != '' && this.formGroup1.get('9')?.value != null) && this.solicitudGuardada">
+                        *ngIf="(this.formGroup1.get('9')?.value != '' && this.formGroup1.get('9')?.value != null) && this.solicitudGuardada && !isActuFile.includes(9)">
                         <div class="mt-2 flex gap-2 items-center cursor-pointer"
                             (click)="viewDocument(formGroup1.get('9')?.value)">
 
@@ -552,7 +552,7 @@
 
                     <!-- Opcion que aparece si existe archivo guardado en la solicitud -->
                     <div class="mt-2 w-full border-t border-secondary2"
-                        *ngIf="(this.formGroup1.get('10')?.value != '' && this.formGroup1.get('10')?.value != null) && this.solicitudGuardada">
+                        *ngIf="(this.formGroup1.get('10')?.value != '' && this.formGroup1.get('10')?.value != null) && this.solicitudGuardada && !isActuFile.includes(10)">
                         <div class="mt-2 flex gap-2 items-center cursor-pointer"
                             (click)="viewDocument(formGroup1.get('10')?.value)">
 
@@ -605,7 +605,7 @@
 
                     <!-- Opcion que aparece si existe archivo guardado en la solicitud -->
                     <div class="mt-2 w-full border-t border-secondary2"
-                        *ngIf="(this.formGroup1.get('11')?.value != '' && this.formGroup1.get('11')?.value != null) && this.solicitudGuardada">
+                        *ngIf="(this.formGroup1.get('11')?.value != '' && this.formGroup1.get('11')?.value != null) && this.solicitudGuardada && !isActuFile.includes(11)">
                         <div class="mt-2 flex gap-2 items-center cursor-pointer"
                             (click)="viewDocument(formGroup1.get('11')?.value)">
 
@@ -654,7 +654,7 @@
                     Regresar
                 </button>
                 <app-primary-button class="" (click)="changeActiveStep(3, true)">Guardar</app-primary-button>
-                <app-primary-button class="" (click)="goToModal(3)">Continuar</app-primary-button>
+                <app-primary-button type="button" class="" (click)="goToModal(3)">Continuar</app-primary-button>
             </div>
 
         </form>

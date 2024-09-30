@@ -49,6 +49,7 @@ import { DialogModule } from 'primeng/dialog';
   styleUrl: './fijacion.component.css',
 })
 export default class FijacionComponent {
+  
   constructor(
     private stateService: ActiveNumService,
     private stepperService: ActiveNumStepperService,
@@ -100,6 +101,7 @@ export default class FijacionComponent {
   //Capturar objetos del navigation
   nit: string = '';
   nombreEmpresa: string = '';
+
   //observable option
   private idSolicitudSubject = new BehaviorSubject<string>(''); // Inicializa con un valor vacío
   idSolicitud$ = this.idSolicitudSubject.asObservable(); // Observable para observar cambios
@@ -107,6 +109,9 @@ export default class FijacionComponent {
 
   //solicitud guardada
   solicitudGuardada: any;
+
+  //identificador de actualización de file
+  isActuFile: [number] = [-1];
 
   //manejo de varios contratos guardados
   currentIndex = 0;
@@ -266,6 +271,8 @@ export default class FijacionComponent {
         //GET SOLICITUD
         this.apiSFService.getSolicitudByID(newId).subscribe(
           (response) => {
+            console.log(this.ActuFileGuardado);
+            
             this.solicitudGuardada = response;
 
             (this.nombreEmpresa = response.nombreEmpresa),
@@ -665,6 +672,7 @@ export default class FijacionComponent {
               //CREA SOLICITUD
               this.apiSFService.createSolicitud(data1).subscribe(
                 (response) => {
+                  this.isActuFile = [-1];
                   const parsedData = JSON.parse(response);
 
                   // Aquí puedes manejar la respuesta, por ejemplo:
@@ -994,6 +1002,9 @@ export default class FijacionComponent {
 
   //metodo para guardar el archivo seleccionado
   onFileSelected(file: File[], formControlName: number) {
+
+    this.ActuFileGuardado(formControlName);
+
     this.convertFilesToBase64(file)
       .then((base64Array) => {
         const formControlMap: { [key: number]: FormGroup } = {
@@ -1033,6 +1044,13 @@ export default class FijacionComponent {
       .catch((error) => {
         console.error('Error al convertir los archivos:', error);
       });
+  }
+
+  //Actualizar archivos guardados
+  ActuFileGuardado(num: number) {
+
+    this.isActuFile.push(num);
+
   }
 
   // Detectar si el archivo es PDF o XLSX desde Base64
@@ -1309,12 +1327,12 @@ export default class FijacionComponent {
           item.idClaseVehiculo.map((i: { value: any }) => i.value),
         ],
         valorContrato: item.valorContrato,
-        idFormaPago: item.idFormaPago.value,
+        idFormaPago: item.idFormaPago,
         idAreaOperacion: item.idAreaOperacion.map(
           (i: { value: any }) => i.value
         ),
         disponibilidadVehiculosEstimada:
-          item.disponibilidadVehiculosEstimada.value,
+          item.disponibilidadVehiculosEstimada,
         estado: true,
       });
     });
