@@ -431,45 +431,6 @@
           <div class="w-full flex flex-col justify-center pt-6">
 
             <p class="text-primary3 font-semibold">
-              Nombre de empresa que realiza la solicitud*
-            </p>
-
-            <!-- input -->
-            <div class="mt-2 relative w-full">
-              <input
-                class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent"
-                type="text" formControlName="nombreEmpresa" required placeholder="Nombre empresa">
-              <div class="w-full relative">
-                <!-- Icono de error (rojo) -->
-                <span
-                  *ngIf="formGroup3.get('nombreEmpresa')?.invalid && (formGroup3.get('nombreEmpresa')?.touched || submitted)"
-                  class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
-                            <span class="pi pi-exclamation-circle text-error text-[24px]"></span>
-                        </span>
-
-                <!-- Icono de éxito (verde) -->
-                <span
-                  *ngIf="formGroup3.get('nombreEmpresa')?.valid && (formGroup3.get('nombreEmpresa')?.touched || submitted)"
-                  class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
-                            <span class="pi pi-check-circle text-success text-[24px]"></span>
-                        </span>
-              </div>
-              <span *ngIf="submitted && formGroup3.get('nombreEmpresa')?.errors?.['required']" class="text-error">
-                        Nombre de empresa es obligatorio
-                    </span>
-            </div>
-
-          </div>
-
-        </div>
-
-        <!-- contenido 2 -->
-        <div class="content2 md:grid sm:grid-cols-2 md:gap-x-36 md:flex items-center h-full pt-6">
-
-          <!-- input 1 -->
-          <div class="w-full flex flex-col justify-center pt-6">
-
-            <p class="text-primary3 font-semibold">
               NIT de empresa que realiza la solicitud*
             </p>
 
@@ -500,6 +461,46 @@
 
         </div>
 
+        <!-- contenido 2 -->
+        <div class="content2 md:grid sm:grid-cols-2 md:gap-x-36 md:flex items-center h-full pt-6">
+
+          <!-- input 1 -->
+          <div class="w-full flex flex-col justify-center pt-6">
+
+            <p class="text-primary3 font-semibold">
+              Nombre de empresa que realiza la solicitud*
+            </p>
+
+            <!-- input -->
+            <div class="mt-2 relative w-full">
+              <input
+                class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent disabled:bg-secondary3 disabled:border-secondary2 disabled:text-secondary2 disabled:font-bold"
+                type="text" formControlName="nombreEmpresa" required placeholder="Nombre empresa">
+              <div class="w-full relative">
+                <!-- Icono de error (rojo) -->
+                <span
+                  *ngIf="formGroup3.get('nombreEmpresa')?.invalid && (formGroup3.get('nombreEmpresa')?.touched || submitted)"
+                  class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
+                            <span class="pi pi-exclamation-circle text-error text-[24px]"></span>
+                        </span>
+
+                <!-- Icono de éxito (verde) -->
+                <span
+                  *ngIf="formGroup3.get('nombreEmpresa')?.valid && (formGroup3.get('nombreEmpresa')?.touched || submitted)"
+                  class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
+                            <span class="pi pi-check-circle text-success text-[24px]"></span>
+                </span>
+
+              </div>
+              <span *ngIf="submitted && formGroup3.get('nombreEmpresa')?.errors?.['required']" class="text-error">
+                        Nombre de empresa es obligatorio
+              </span>
+            </div>
+
+          </div>
+
+        </div>
+
 
         <div class="mt-6 w-full flex justify-between">
           <button type="button" (click)="changeActiveStep(2, false, true)"
@@ -507,7 +508,7 @@
             Regresar
           </button>
           <app-primary-button type="submit" class="">Guardar</app-primary-button>
-          <app-primary-button type="submit" (click)="goToModal(4)" class="">continuar</app-primary-button>
+          <app-primary-button type="button" (click)="goToModal(4)" class="">continuar</app-primary-button>
         </div>
 
       </form>
@@ -1021,8 +1022,10 @@
 
 <!-- APP ALERT CONTINUAR -->
 <app-alert [showModal]="showModalContinuar" title="Continuar sin guardar" subtitle=""
-           message="Esta seguro que desea continuar sin guardar." cancelButtonText="Cerrar" [showCancelButton]="true" buttonText="Continuar"
-           [showFirstButton]="true" (close)="showModalContinuar = false" (closeByButton1)="changeActiveStep(numberTocontinue, false)"
+           message="Esta seguro que desea continuar sin guardar." cancelButtonText="Cerrar" [showCancelButton]="true"
+           buttonText="Continuar"
+           [showFirstButton]="true" (close)="showModalContinuar = false"
+           (closeByButton1)="changeActiveStep(numberTocontinue, false)"
            TypeAlert="warning"></app-alert>
 
 <!-- APP ALERT REQUISITO CAPITAL SOCIAL Y PATRIMONIO -->
@@ -1064,3 +1067,22 @@
            (closeByButton1)="showErrorModal = false" (closeByButton2)="handleCloseByButton2()"
            (closeByIcon)="handleCloseByIcon()" (closeByBackdrop)="handleCloseByBackdrop()"
            (close)="showErrorModal = false"></app-alert>
+
+
+<!-- modal de error en data -->
+<app-alert [showModal]="showModalWarning1" title="inconvenientes registros RUES" subtitle=""
+           message="Estamos experimentando inconvenientes técnicos con la consulta del NIT en rues. Se le habilitará el espacio para añadir de manera manual la razón social."
+           cancelButtonText="Cerrar" [showCancelButton]="true" [showFirstButton]="false" (close)="showModalWarning1 = false"
+           textColor="text-waring" TypeAlert="warning"></app-alert>
+
+<!-- modal de error en data -->
+<app-alert [showModal]="showModalAlerta" title="No se encuentra registro en RUES" subtitle=""
+           message="Se recomienda solicitar realizar registro RUES, para poder tramitar solicitudes."
+           cancelButtonText="Cerrar" [showCancelButton]="true" [showFirstButton]="false" (close)="showModalAlerta = false"
+           textColor="text-waring" TypeAlert="warning"></app-alert>
+
+<!-- modal de error en data -->
+<app-alert [showModal]="showModalAlerta1" title="Registro con matricula cancelada" subtitle=""
+           message="Se recomienda solicitar actualizar novedad de registro RUES, para poder tramitar solicitudes."
+           cancelButtonText="Cerrar" [showCancelButton]="true" [showFirstButton]="false" (close)="showModalAlerta1 = false"
+           textColor="text-waring" TypeAlert="warning"></app-alert>

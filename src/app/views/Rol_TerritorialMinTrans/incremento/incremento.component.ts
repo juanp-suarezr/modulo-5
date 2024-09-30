@@ -31,6 +31,8 @@ import { HORAS } from '../../../shared/data/horas';
 import { dateRangeValidator } from '../../../validator/date.validator';
 import { NoNegativeGlobal } from '../../../validator/noNegative.validator';
 import { ApiSFService } from '../../../services/api/apiSF.service';
+import {catchError, debounceTime, distinctUntilChanged, switchMap} from "rxjs/operators";
+import {of} from "rxjs";
 
 @Component({
   selector: 'app-incremento',
@@ -134,6 +136,12 @@ export default class IncrementoComponent implements AfterViewInit {
   ShowLoadingModal: boolean = false;
   showErrorModal: boolean = false;
   showModalContinuar: boolean = false;
+  showModalWarning1: boolean = false;
+  showModalAlerta: boolean = false; // Control para mostrar el modal de error cuando no esta registrado
+  showModalAlerta1: boolean = false; // Control para mostrar el modal de error cuando matricula vencida
+
+  //Control para deshabilitar el botón
+  isProcessing: boolean = true;
 
   //number to continue modal
   numberTocontinue: number = 0;
@@ -328,6 +336,61 @@ export default class IncrementoComponent implements AfterViewInit {
     this.formGroup4.get('fecha_terminacion')?.valueChanges.subscribe(() => {
       this.updateDuration();
     });
+
+    this.formGroup3.get('nombreEmpresa')?.disable();
+
+    this.formGroup3
+      .get('nit')
+      ?.valueChanges.pipe(
+      debounceTime(500),
+      distinctUntilChanged(),
+      switchMap((value: string) => {
+        this.isProcessing = true;
+        this.formGroup3
+          .get('nombreEmpresa')
+          ?.setValue('');
+        if (value && value.length >= 9) {
+          return this.apiSFService.getDataByNIT(value).pipe(
+            catchError((error) => {
+              console.error('Error al enviar los datos:', error);
+              this.showModalWarning1 = true;
+              this.formGroup3.get('nombreEmpresa')?.enable();
+              return of(null); // Retorna null si hay un error
+            })
+          );
+        } else {
+          this.isProcessing = true;
+          // Si el NIT no es válido, no hacer nada
+          return of(null);
+        }
+      })
+    )
+      .subscribe((response) => {
+        if (response) {
+          const parsedData = JSON.parse(response);
+          console.log(parsedData);
+
+          if (parsedData.registros) {
+            if (parsedData.registros[0].nomEstadoMatricula === 'ACTIVA') {
+              console.log('Empresa activa');
+              // Actualizar el campo 'nombreEmpresa'
+              this.isProcessing = false;
+              this.formGroup3
+                .get('nombreEmpresa')
+                ?.setValue(parsedData.registros[0].razonSocialEmpresa);
+              console.log(
+                'Datos enviados exitosamente:',
+                parsedData.registros[0].razonSocialEmpresa
+              );
+            } else {
+              this.showModalAlerta1 = true;
+              console.log('Empresa inactiva');
+            }
+          } else {
+            this.showModalAlerta = true;
+          }
+        }
+      });
   }
 
   // Aquí defines tu formulario
@@ -507,17 +570,16 @@ export default class IncrementoComponent implements AfterViewInit {
             if (this.idSolicitud == '' || this.idSolicitud === 'undefined') {
               const data1 = {
                 fechaSolicitud: new Date(),
-                nombreEmpresa: this.nombreEmpresa,
-                nit: this.nit,
-                territorial: 'Bogota',
-                idCategoriaSolicitud: 149,
-                solicitudFijacionCapacidad: this.formGroup1.value[1][0],
-                planRodamiento: this.formGroup1.value[3][0],
-                estructuraCostosBasicos: this.formGroup1.value[4][0],
+                territorial: 'Medellin',
+                idCategoriaSolicitud: 150,
+                documentos: documentos,
+                planRodamiento: this.formGroup1.value[2][0],
+                estructuraCostosBasicos: this.formGroup1.value[3][0],
+                certificadoCumplimiento: this.formGroup1.value[4][0],
                 certificadoExistencia: this.formGroup1.value[5][0],
                 registroUnicoTributario: this.formGroup1.value[6][0],
-                documentos: documentos,
               };
+
               //CREA SOLICITUD
               this.apiSFService.createSolicitud(data1).subscribe(
                 (response) => {
@@ -581,16 +643,14 @@ export default class IncrementoComponent implements AfterViewInit {
 
               const data1 = {
                 fechaSolicitud: new Date(),
-                nombreEmpresa: this.nombreEmpresa,
-                nit: this.nit,
-                territorial: 'Bogota',
-                idCategoriaSolicitud: 149,
-                solicitudFijacionCapacidad: this.formGroup1.value[1][0],
-                planRodamiento: this.formGroup1.value[3][0],
-                estructuraCostosBasicos: this.formGroup1.value[4][0],
-                certificadoExistencia: this.formGroup1.value[5][0],
-                registroUnicoTributario: this.formGroup1.value[6][0],
-                documentos: documentos,
+                territorial: 'Medellin',
+                idCategoriaSolicitud: 150,
+                resolucionHabilitacion: this.formGroup2.value[7][0],
+                cedulaRepresentante: this.formGroup2.value[8][0],
+                estadosFinancieros: this.formGroup2.value[9][0],
+                cedulaContador: this.formGroup2.value[10][0],
+                tarjetaProfesionalContador: this.formGroup2.value[11][0],
+                cantidadVehiculosIncrementar: parseFloat(this.inputs[0].value),
               };
 
               this.apiSFService.createSolicitud(data1).subscribe(
@@ -623,11 +683,40 @@ export default class IncrementoComponent implements AfterViewInit {
       case 4:
         console.log('entro');
 
-        if (this.formGroup3.valid) {
-          this.valid1 =
-            this.formGroup3.get('capitalSocial')?.value >= 300 * this.smlmmv;
-          this.valid2 =
-            this.formGroup3.get('patrimonioLiquido')?.value < 180 * this.smlmmv;
+        if (this.validateFormGroup(this.formGroup3, this.errorStates)) {
+
+          if (parseFloat(this.inputs[0].value) <= 50) {
+            this.valid1 =
+              this.formGroup3.get('capital_social')?.value >= 300 * this.smlmmv;
+            this.valid2 =
+              this.formGroup3.get('patrimonio_liquido')?.value <
+              180 * this.smlmmv;
+          } else if (
+            parseFloat(this.inputs[0].value) >= 51 &&
+            parseFloat(this.inputs[0].value) <= 300
+          ) {
+            this.valid1 =
+              this.formGroup3.get('capital_social')?.value >= 400 * this.smlmmv;
+            this.valid2 =
+              this.formGroup3.get('patrimonio_liquido')?.value <
+              280 * this.smlmmv;
+          } else if (
+            parseFloat(this.inputs[0].value) >= 301 &&
+            parseFloat(this.inputs[0].value) <= 600
+          ) {
+            this.valid1 =
+              this.formGroup3.get('capital_social')?.value >= 700 * this.smlmmv;
+            this.valid2 =
+              this.formGroup3.get('patrimonio_liquido')?.value <
+              500 * this.smlmmv;
+          } else if (parseFloat(this.inputs[0].value) >= 601) {
+            this.valid1 =
+              this.formGroup3.get('capital_social')?.value >=
+              1000 * this.smlmmv;
+            this.valid2 =
+              this.formGroup3.get('patrimonio_liquido')?.value <
+              700 * this.smlmmv;
+          }
 
           if (this.valid1 && this.valid2) {
             if (saved) {
@@ -650,16 +739,12 @@ export default class IncrementoComponent implements AfterViewInit {
 
                 const data1 = {
                   fechaSolicitud: new Date(),
-                  nombreEmpresa: this.nombreEmpresa,
-                  nit: this.nit,
-                  territorial: 'Bogota',
-                  idCategoriaSolicitud: 149,
-                  solicitudFijacionCapacidad: this.formGroup1.value[1][0],
-                  planRodamiento: this.formGroup1.value[3][0],
-                  estructuraCostosBasicos: this.formGroup1.value[4][0],
-                  certificadoExistencia: this.formGroup1.value[5][0],
-                  registroUnicoTributario: this.formGroup1.value[6][0],
-                  documentos: documentos,
+                  territorial: 'Medellin',
+                  idCategoriaSolicitud: 150,
+                  capitalSocial: this.formGroup3.get('capital_social')?.value,
+                  patrimonioLiquido: this.formGroup3.get('patrimonio_liquido')?.value,
+                  nombreEmpresa: this.formGroup3.get('nombreEmpresa')?.value,
+                  nit: this.formGroup3.get('nit')?.value,
                 };
 
                 this.apiSFService.createSolicitud(data1).subscribe(
@@ -798,78 +883,6 @@ export default class IncrementoComponent implements AfterViewInit {
         break;
     }
   }
-
-  /*//Metodo para cambiar el valor del stepper
-  changeActiveStep(newValue: number) {
-    switch (newValue) {
-      case 1:
-        break;
-      case 2:
-        console.log(this.formGroup1.value);
-        if (this.validateFormGroup(this.formGroup1, this.errorStates)) {
-          this.stepperService.setActiveNum(newValue);
-          this.formGroup4.get('cantidad_contratos')?.disable();
-          this.formGroup4.get('duracionMeses')?.disable();
-          this.formGroup4
-            .get('cantidad_contratos')
-            ?.setValue(this.formGroup1.value[1].length);
-        }
-        break;
-      case 3:
-        if (this.validateFormGroup(this.formGroup2, this.errorStates)) {
-          this.stepperService.setActiveNum(newValue);
-        }
-        break;
-      case 4:
-        if (this.validateFormGroup(this.formGroup3, this.errorStates)) {
-          if (parseFloat(this.inputs[0].value) <= 50) {
-            this.valid1 =
-              this.formGroup3.get('capital_social')?.value >= 300 * this.smlmmv;
-            this.valid2 =
-              this.formGroup3.get('patrimonio_liquido')?.value <
-              180 * this.smlmmv;
-          } else if (
-            parseFloat(this.inputs[0].value) >= 51 &&
-            parseFloat(this.inputs[0].value) <= 300
-          ) {
-            this.valid1 =
-              this.formGroup3.get('capital_social')?.value >= 400 * this.smlmmv;
-            this.valid2 =
-              this.formGroup3.get('patrimonio_liquido')?.value <
-              280 * this.smlmmv;
-          } else if (
-            parseFloat(this.inputs[0].value) >= 301 &&
-            parseFloat(this.inputs[0].value) <= 600
-          ) {
-            this.valid1 =
-              this.formGroup3.get('capital_social')?.value >= 700 * this.smlmmv;
-            this.valid2 =
-              this.formGroup3.get('patrimonio_liquido')?.value <
-              500 * this.smlmmv;
-          } else if (parseFloat(this.inputs[0].value) >= 601) {
-            this.valid1 =
-              this.formGroup3.get('capital_social')?.value >=
-              1000 * this.smlmmv;
-            this.valid2 =
-              this.formGroup3.get('patrimonio_liquido')?.value <
-              700 * this.smlmmv;
-          }
-
-          if (this.valid1 && this.valid2) {
-            this.changeActiveNum('1');
-            this.stepperService.setActiveNum(3);
-          } else {
-            this.showModalRequisito = true;
-          }
-        }
-        break;
-
-      default:
-        break;
-    }
-
-    console.log(this.errorStates);
-  }*/
 
   //Validador error
   validateFormGroup(
@@ -1331,17 +1344,17 @@ export default class IncrementoComponent implements AfterViewInit {
     this.contractDataArray.forEach((item, index) => {
       contratos.push({
         consecutivo: index,
-        numeroContrato: item.contrato,
+        numeroContrato: item.numeroContrato,
         contratante: item.contratante,
         fechaInicio: item.fecha_inicio,
         fechaFin: item.fecha_terminacion,
         duracionMeses: item.duracionMeses,
-        numeroVehiculos: item.num_vehiculos,
-        idClaseVehiculo: item.ClaseVehiculo.value,
+        numeroVehiculos: item.numeroVehiculos,
+        idClaseVehiculo: item.idClaseVehiculo.map((i: { value: any }) => i.value),
         valorContrato: item.valorContrato,
-        idFormaPago: item.forma_pago.value,
-        idAreaOperacion: item.area_operacion.value,
-        disponibilidadVehiculosEstimada: item.disponibilidad.value,
+        idFormaPago: item.idFormaPago,
+        idAreaOperacion: item.idAreaOperacion.map((i: { value: any }) => i.value),
+        disponibilidadVehiculosEstimada: item.disponibilidadVehiculosEstimada,
         estado: true,
       });
     });
