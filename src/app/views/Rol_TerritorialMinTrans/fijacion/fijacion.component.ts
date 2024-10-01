@@ -28,6 +28,7 @@ import { NoNegativeGlobal } from '../../../validator/noNegative.validator';
 import { ApiSFService } from '../../../services/api/apiSF.service';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { DialogModule } from 'primeng/dialog';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @Component({
   selector: 'app-fijacion',
@@ -44,6 +45,7 @@ import { DialogModule } from 'primeng/dialog';
     SelectComponent,
     AlertComponent,
     DialogModule,
+    ProgressSpinnerModule,
   ],
   templateUrl: './fijacion.component.html',
   styleUrl: './fijacion.component.css',
@@ -85,6 +87,9 @@ export default class FijacionComponent {
       this.setIdSolicitud(localStorage.getItem('idSolicitud') || '');
     }
   }
+
+  //loadingInicial
+  loadingInicio: boolean = true;
 
   //view archivo blob
   documentUrl: SafeResourceUrl | undefined;
@@ -263,55 +268,24 @@ export default class FijacionComponent {
     });
 
     // Suscribirse a los cambios en idSolicitud
+    this.loadingInicio = true;
     this.idSolicitud$.subscribe((newId) => {
       localStorage.setItem('idSolicitud', newId);
       console.log('entro');
-
-      if (newId) {
+      this.loadingInicio = false;
+      if (newId != '' &&
+        newId != 'undefined' &&
+        newId != undefined) {
+        this.loadingInicio = true;
         //GET SOLICITUD
         this.apiSFService.getSolicitudByID(newId).subscribe(
           (response) => {
-            console.log(this.ActuFileGuardado);
-            
             this.solicitudGuardada = response;
-
-            (this.nombreEmpresa = response.nombreEmpresa),
-              (this.nit = response.nit),
-              this.formGroup1.patchValue({
-                [1]: this.displayFile(response.solicitudFijacionCapacidad),
-              });
-
-            this.formGroup1.patchValue({
-              [3]: this.displayFile(response.planRodamiento),
-            });
-            this.formGroup1.patchValue({
-              [4]: this.displayFile(response.estructuraCostosBasicos),
-            });
-            this.formGroup1.patchValue({
-              [5]: this.displayFile(response.certificadoExistencia),
-            });
-            this.formGroup1.patchValue({
-              [6]: this.displayFile(response.registroUnicoTributario),
-            });
-            this.formGroup1.patchValue({
-              [7]: this.displayFile(response.resolucionHabilitacion),
-            });
-            this.formGroup1.patchValue({
-              [8]: this.displayFile(response.cedulaRepresentante),
-            });
-            this.formGroup1.patchValue({
-              [9]: this.displayFile(response.estadosFinancieros),
-            });
-            this.formGroup1.patchValue({
-              [10]: this.displayFile(response.cedulaContador),
-            });
-            this.formGroup1.patchValue({
-              [11]: this.displayFile(response.tarjetaProfesionalContador),
-            });
-
+            
             //GET DOCUMENTOS
             this.apiSFService.getDocumentosByID(response.nit).subscribe(
               (response1) => {
+                this.loadingInicio = false;
                 // Crear un array de contratos
                 const contratosArray = response1.map((element: any) => ({
                   nit: element.nit,
@@ -338,9 +312,55 @@ export default class FijacionComponent {
               }
             );
 
-            // contratos: contratos,
+            (this.nombreEmpresa = response.nombreEmpresa),
+              (this.nit = response.nit),
+              this.formGroup1.patchValue({
+                [1]: this.displayFile(response.solicitudFijacionCapacidad),
+              });
 
-            console.log(this.formGroup1);
+            this.formGroup1.patchValue({
+              [3]: this.displayFile(response.planRodamiento),
+            });
+            this.formGroup1.patchValue({
+              [4]: this.displayFile(response.estructuraCostosBasicos),
+            });
+            this.formGroup1.patchValue({
+              [5]: this.displayFile(response.certificadoExistencia),
+            });
+            this.formGroup1.patchValue({
+              [6]: this.displayFile(response.registroUnicoTributario),
+            });
+            this.formGroup2.patchValue({
+              [7]: this.displayFile(response.resolucionHabilitacion),
+            });
+            this.formGroup2.patchValue({
+              [8]: this.displayFile(response.cedulaRepresentante),
+            });
+            this.formGroup2.patchValue({
+              [9]: this.displayFile(response.estadosFinancieros),
+            });
+            this.formGroup2.patchValue({
+              [10]: this.displayFile(response.cedulaContador),
+            });
+            this.formGroup2.patchValue({
+              [11]: this.displayFile(response.tarjetaProfesionalContador),
+            });
+
+            this.formGroup3.patchValue({
+              ['capitalSocial']: response.capitalSocial,
+            });
+
+            this.formGroup3.patchValue({
+              ['patrimonioLiquido']: response.patrimonioLiquido,
+            });
+
+            this.formGroup3.patchValue({
+              ['cantidadVehiculos']: response.cantidadVehiculos,
+            });
+            
+
+            console.log(response);
+            console.log(this.isActuFile);
           },
           (error) => {
             console.error('Error fetching user data', error);
@@ -441,6 +461,26 @@ export default class FijacionComponent {
 
       case 6:
         this.formGroup1.get(num.toString())?.setValue('');
+        break;
+
+      case 7:
+        this.formGroup2.get(num.toString())?.setValue('');
+        break;
+
+      case 8:
+        this.formGroup2.get(num.toString())?.setValue('');
+        break;
+
+      case 9:
+        this.formGroup2.get(num.toString())?.setValue('');
+        break;
+
+      case 10:
+        this.formGroup2.get(num.toString())?.setValue('');
+        break;
+
+      case 11:
+        this.formGroup2.get(num.toString())?.setValue('');
         break;
 
       default:
@@ -630,7 +670,11 @@ export default class FijacionComponent {
   }
 
   // Método para cambiar el valor del stepper
-  changeActiveStep(newValue: number, saved: boolean, back: boolean = false) {
+  async changeActiveStep(
+    newValue: number,
+    saved: boolean,
+    back: boolean = false
+  ) {
     switch (newValue) {
       case 1:
         this.stepperService.setActiveNum(newValue);
@@ -642,19 +686,8 @@ export default class FijacionComponent {
           //valida si se va a guardar la info
           if (saved) {
             this.ShowLoadingModal = true;
-            // Inicializar contratos como un array vacío
-            let documentos: Array<{
-              nit: string;
-              documento: string;
-            }> = [];
-
-            // Rellenar el array documentos
-            this.formGroup1.value[2].forEach((item: any) => {
-              documentos.push({
-                nit: this.nit,
-                documento: item,
-              });
-            });
+            const data1 = await this.datosPaso1();
+            
             //valida si ya hay una solicitud guardada
             if (
               this.idSolicitud == '' ||
@@ -663,19 +696,7 @@ export default class FijacionComponent {
             ) {
               console.log(this.idSolicitud);
 
-              const data1 = {
-                fechaSolicitud: new Date(),
-                nombreEmpresa: this.nombreEmpresa,
-                nit: this.nit,
-                territorial: 'Bogota',
-                idCategoriaSolicitud: 149,
-                solicitudFijacionCapacidad: this.formGroup1.value[1][0],
-                planRodamiento: this.formGroup1.value[3][0],
-                estructuraCostosBasicos: this.formGroup1.value[4][0],
-                certificadoExistencia: this.formGroup1.value[5][0],
-                registroUnicoTributario: this.formGroup1.value[6][0],
-                documentos: documentos,
-              };
+              
               //CREA SOLICITUD
               this.apiSFService.createSolicitud(data1).subscribe(
                 (response) => {
@@ -704,7 +725,7 @@ export default class FijacionComponent {
             } else {
               //cuando ya hay solicitud creada
               console.log('solocitud' + this.idSolicitud);
-              this.ActualizarSolicitud(1, documentos);
+              this.ActualizarSolicitud(1, data1);
             }
           } else {
             //Continuar Sin guardar
@@ -726,55 +747,30 @@ export default class FijacionComponent {
           //valida si se requiere guardar
           if (saved) {
             this.ShowLoadingModal = true;
-            //valida si se trae el id (ya realizó el primer cargue)
-            if (this.idSolicitud == '' || this.idSolicitud === 'undefined') {
-              // Inicializar contratos como un array vacío
-              let documentos: Array<{
-                nit: string;
-                documento: string;
-              }> = [];
 
-              // Rellenar el array documentos
-              this.formGroup1.value[2].forEach((item: any) => {
-                documentos.push({
-                  nit: this.nit,
-                  documento: item,
-                });
-              });
+            const data1 = await this.datosPaso1();
+            console.log(data1);
 
-              const data1 = {
-                fechaSolicitud: new Date(),
-                nombreEmpresa: this.nombreEmpresa,
-                nit: this.nit,
-                territorial: 'Bogota',
-                idCategoriaSolicitud: 149,
-                solicitudFijacionCapacidad: this.formGroup1.value[1][0],
-                planRodamiento: this.formGroup1.value[3][0],
-                estructuraCostosBasicos: this.formGroup1.value[4][0],
-                certificadoExistencia: this.formGroup1.value[5][0],
-                registroUnicoTributario: this.formGroup1.value[6][0],
-                documentos: documentos,
-              };
-
+            // Ahora puedes continuar con el envío de los datos
+            if (
+              this.idSolicitud == '' ||
+              this.idSolicitud === 'undefined' ||
+              this.idSolicitud === undefined
+            ) {
               this.apiSFService.createSolicitud(data1).subscribe(
                 (response) => {
-                  // Aquí puedes manejar la respuesta, por ejemplo:
-
                   console.log('Datos enviados exitosamente:', response);
-
                   this.idSolicitud = response;
                   this.ActualizarSolicitud(2);
                 },
                 (error) => {
                   this.ShowLoadingModal = false;
                   this.showErrorModal = true;
-                  // Manejo del error
                   console.error('Error al enviar los datos:', error);
                 }
               );
             } else {
-              //envia solo a actualizar el paso2
-              this.ActualizarSolicitud(2);
+              this.ActualizarSolicitud(1, data1, 'opcion2');
             }
           } else {
             //continuar sin guardar
@@ -796,35 +792,12 @@ export default class FijacionComponent {
             if (saved) {
               this.ShowLoadingModal = true;
               //valida si se trae el id (ya realizó el primer cargue)
-              if (this.idSolicitud == '' || this.idSolicitud === 'undefined') {
-                // Inicializar contratos como un array vacío
-                let documentos: Array<{
-                  nit: string;
-                  documento: string;
-                }> = [];
-
-                // Rellenar el array documentos
-                this.formGroup1.value[2].forEach((item: any) => {
-                  documentos.push({
-                    nit: this.nit,
-                    documento: item,
-                  });
-                });
-
-                const data1 = {
-                  fechaSolicitud: new Date(),
-                  nombreEmpresa: this.nombreEmpresa,
-                  nit: this.nit,
-                  territorial: 'Bogota',
-                  idCategoriaSolicitud: 149,
-                  solicitudFijacionCapacidad: this.formGroup1.value[1][0],
-                  planRodamiento: this.formGroup1.value[3][0],
-                  estructuraCostosBasicos: this.formGroup1.value[4][0],
-                  certificadoExistencia: this.formGroup1.value[5][0],
-                  registroUnicoTributario: this.formGroup1.value[6][0],
-                  documentos: documentos,
-                };
-
+              const data1 = await this.datosPaso1();
+              if (
+                this.idSolicitud == '' ||
+                this.idSolicitud === 'undefined' ||
+                this.idSolicitud === undefined
+              ) {
                 this.apiSFService.createSolicitud(data1).subscribe(
                   (response) => {
                     // Aquí puedes manejar la respuesta, por ejemplo:
@@ -832,7 +805,7 @@ export default class FijacionComponent {
                     console.log('Datos enviados exitosamente:', response);
 
                     this.idSolicitud = response;
-                    this.ActualizarSolicitud(3);
+                    this.ActualizarSolicitud(2, 0, 'opcion3');
                   },
                   (error) => {
                     this.ShowLoadingModal = false;
@@ -842,8 +815,8 @@ export default class FijacionComponent {
                   }
                 );
               } else {
-                //envia solo a actualizar el paso2
-                this.ActualizarSolicitud(3);
+                //envia solo a actualizar el paso1, paso 2, paso3
+                this.ActualizarSolicitud(1, data1, 'opcion3');
               }
             } else {
               //continuar sin guardar
@@ -871,27 +844,91 @@ export default class FijacionComponent {
 
     console.log(this.errorStates);
   }
+
+  //datos paso 1
+  async datosPaso1() {
+    // Rellenar el array de documentos con una conversión asíncrona para cada Blob
+    const documentoPromises = this.formGroup1.value[2].map(
+      async (item: any) => {
+        if (item.documento instanceof Blob) {
+          // Convertir Blob a base64
+          
+          const base64String = await this.convertirBlob(item.documento);
+          return {
+            nit: this.nit,
+            documento: base64String,
+            id: item.id
+          };
+        } else {
+          console.log(item);
+          // Si no es Blob, lo añadimos directamente
+          return {
+            nit: this.nit,
+            documento: item.documento,
+          };
+        }
+      }
+    );
+
+    // Convertir los valores que pueden ser Blob a Base64 (sin incluir los documentos, ya procesados)
+    try {
+      const [
+        solicitudFijacionCapacidad,
+        planRodamiento,
+        estructuraCostosBasicos,
+        certificadoExistencia,
+        registroUnicoTributario,
+        documentos,
+      ] = await Promise.all([
+        this.convertirSiEsBlob(this.formGroup1.value[1]), // solicitudFijacionCapacidad
+        this.convertirSiEsBlob(this.formGroup1.value[3]), // planRodamiento
+        this.convertirSiEsBlob(this.formGroup1.value[4]), // estructuraCostosBasicos
+        this.convertirSiEsBlob(this.formGroup1.value[5]), // certificadoExistencia
+        this.convertirSiEsBlob(this.formGroup1.value[6]), // registroUnicoTributario
+        Promise.all(documentoPromises), // documentos
+      ]);
+
+      // Creación del objeto data1 con todos los campos procesados
+      const data1 = {
+        fechaSolicitud: new Date(),
+        nombreEmpresa: this.nombreEmpresa,
+        nit: this.nit,
+        territorial: 'Bogota',
+        idCategoriaSolicitud: 149,
+        solicitudFijacionCapacidad,
+        planRodamiento,
+        estructuraCostosBasicos,
+        certificadoExistencia,
+        registroUnicoTributario,
+        documentos,
+      };
+
+      return data1; // Retorna el objeto data1
+    } catch (error) {
+      console.error('Error en la conversión de archivos:', error);
+      this.ShowLoadingModal = false;
+      throw error; // Propaga el error si lo hay
+    }
+  }
+
   //actualizar solicitudes
-  ActualizarSolicitud(num: number, contr?: any) {
+  ActualizarSolicitud(num: number, data?: any, opcion?: string) {
+    this.isActuFile = [-1];
     switch (num) {
       case 1:
-        const data1 = {
-          fechaSolicitud: new Date(),
-          territorial: 'Bogota',
-          idCategoriaSolicitud: 149,
-          solicitudFijacionCapacidad: this.formGroup1.value[1][0],
-          planRodamiento: this.formGroup1.value[3][0],
-          estructuraCostosBasicos: this.formGroup1.value[4][0],
-          certificadoExistencia: this.formGroup1.value[5][0],
-          registroUnicoTributario: this.formGroup1.value[6][0],
-          documentos: contr,
-        };
         //put paso 1 actualizar - cargue 1
-        this.apiSFService.SolicitudPaso1(this.idSolicitud, data1).subscribe(
+        this.apiSFService.SolicitudPaso1(this.idSolicitud, data).subscribe(
           (response) => {
             // Aquí puedes manejar la respuesta, por ejemplo:
-            this.ShowLoadingModal = false;
-            this.stepperService.setActiveNum(num + 1);
+
+            if (opcion == 'opcion2') {
+              this.ActualizarSolicitud(2);
+            } else if (opcion == 'opcion3') {
+              this.ActualizarSolicitud(2, 0, 'opcion3');
+            } else {
+              this.ShowLoadingModal = false;
+              this.stepperService.setActiveNum(num + 1);
+            }
             console.log('Datos enviados exitosamente:', response);
           },
           (error) => {
@@ -904,28 +941,61 @@ export default class FijacionComponent {
         break;
 
       case 2:
-        const data2 = {
-          resolucionHabilitacion: this.formGroup2.value[7][0],
-          cedulaRepresentante: this.formGroup2.value[8][0],
-          estadosFinancieros: this.formGroup2.value[9][0],
-          cedulaContador: this.formGroup2.value[10][0],
-          tarjetaProfesionalContador: this.formGroup2.value[11][0],
-        };
-        //put paso 2 actualizar - cargue 2
-        this.apiSFService.SolicitudPaso2(this.idSolicitud, data2).subscribe(
-          (response) => {
-            // Aquí puedes manejar la respuesta, por ejemplo:
+        // Convertir valores que pueden ser Blob a Base64 (para los archivos en data2)
+        Promise.all([
+          this.convertirSiEsBlob(this.formGroup2.value[7]), // resolucionHabilitacion
+          this.convertirSiEsBlob(this.formGroup2.value[8]), // cedulaRepresentante
+          this.convertirSiEsBlob(this.formGroup2.value[9]), // estadosFinancieros
+          this.convertirSiEsBlob(this.formGroup2.value[10]), // cedulaContador
+          this.convertirSiEsBlob(this.formGroup2.value[11]), // tarjetaProfesionalContador
+        ])
+          .then(
+            ([
+              resolucionHabilitacion,
+              cedulaRepresentante,
+              estadosFinancieros,
+              cedulaContador,
+              tarjetaProfesionalContador,
+            ]) => {
+              // Creación del objeto data2 con todos los campos procesados
+              const data2 = {
+                resolucionHabilitacion,
+                cedulaRepresentante,
+                estadosFinancieros,
+                cedulaContador,
+                tarjetaProfesionalContador,
+                idCategoriaSolicitud: 149,
+              };
+
+              // put paso 2 actualizar - cargue 2
+              this.apiSFService
+                .SolicitudPaso2(this.idSolicitud, data2)
+                .subscribe(
+                  (response) => {
+                    // Aquí puedes manejar la respuesta, por ejemplo:
+
+                    if (opcion == 'opcion3') {
+                      this.ActualizarSolicitud(3);
+                    } else {
+                      this.ShowLoadingModal = false;
+                      this.stepperService.setActiveNum(num + 1);
+                    }
+                    // this.ActuFileGuardado(7, 8, 9, 10, 11);
+                    console.log('Datos enviados exitosamente:', response);
+                  },
+                  (error) => {
+                    this.ShowLoadingModal = false;
+                    this.showErrorModal = true;
+                    // Manejo del error
+                    console.error('Error al enviar los datos:', error);
+                  }
+                );
+            }
+          )
+          .catch((error) => {
+            console.error('Error en la conversión de archivos:', error);
             this.ShowLoadingModal = false;
-            this.stepperService.setActiveNum(num + 1);
-            console.log('Datos enviados exitosamente:', response);
-          },
-          (error) => {
-            this.ShowLoadingModal = false;
-            this.showErrorModal = true;
-            // Manejo del error
-            console.error('Error al enviar los datos:', error);
-          }
-        );
+          });
 
         break;
 
@@ -934,6 +1004,7 @@ export default class FijacionComponent {
           capitalSocial: this.formGroup3.get('capitalSocial')?.value,
           patrimonioLiquido: this.formGroup3.get('patrimonioLiquido')?.value,
           cantidadVehiculos: this.formGroup3.get('cantidadVehiculos')?.value,
+          idCategoriaSolicitud: 149,
         };
         //put paso 3 actualizar - cargue 3
         this.apiSFService.SolicitudPaso3(this.idSolicitud, data3).subscribe(
@@ -941,6 +1012,7 @@ export default class FijacionComponent {
             // Aquí puedes manejar la respuesta, por ejemplo:
             this.ShowLoadingModal = false;
             this.stepperService.setActiveNum(num);
+            this.changeActiveNum('1');
             console.log('Datos enviados exitosamente:', response);
           },
           (error) => {
@@ -1010,7 +1082,6 @@ export default class FijacionComponent {
 
   //metodo para guardar el archivo seleccionado
   onFileSelected(file: File[], formControlName: number) {
-
     this.ActuFileGuardado(formControlName);
 
     this.convertFilesToBase64(file)
@@ -1056,9 +1127,7 @@ export default class FijacionComponent {
 
   //Actualizar archivos guardados
   ActuFileGuardado(num: number) {
-
     this.isActuFile.push(num);
-
   }
 
   // Detectar si el archivo es PDF o XLSX desde Base64
@@ -1094,27 +1163,73 @@ export default class FijacionComponent {
     const blob = this.convertBase64ToBlob(base64File);
     const url = URL.createObjectURL(blob);
 
-    console.log(blob);
-    console.log(url);
     return blob;
   }
 
   viewDocument(blob: Blob) {
     if (blob) {
-      console.log(blob);
-      
       const url = URL.createObjectURL(blob);
 
       window.open(url);
     }
   }
 
+  //CONVERTIR DE BLOB A BASE64
+  blobToBase64(blob: Blob): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+
+      reader.onloadend = () => {
+        // Elimina el prefijo 'data:[mime-type];base64,' para obtener solo el contenido base64
+        const base64String = (reader.result as string).split(',')[1];
+        resolve(base64String);
+      };
+
+      reader.onerror = (error) => {
+        reject(error);
+      };
+
+      reader.readAsDataURL(blob); // Convierte el blob a base64
+    });
+  }
+  // Función para manejar los diferentes casos de acceso a los valores (Blob o Base64)
+  convertirSiEsBlob(valor: any) {
+    // Si es Blob, convertimos a Base64
+    if (valor instanceof Blob) {
+      return this.convertirBlob(valor); // Convertir Blob a Base64
+    } else if (Array.isArray(valor) && valor.length > 0) {
+      // Si es un array (Base64), retornamos el primer valor del array
+      return Promise.resolve(valor[0]);
+    } else {
+      // Si no es ni Blob ni un array, devolvemos el valor como está
+      return Promise.resolve(valor);
+    }
+  }
+  //FUNCION PARA CONVERTIR BLOB - BASE64
+
+  convertirBlob(blob: Blob): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        // Extraemos la parte base64 sin el prefijo 'data:...;base64,'
+        const base64String = reader.result?.toString().split(',')[1] || '';
+        resolve(base64String);
+      };
+      reader.onerror = (error) => {
+        reject(`Error al convertir Blob a base64: ${error}`);
+      };
+      reader.readAsDataURL(blob); // Leemos el blob como DataURL
+    });
+  }
+
   //MOSTRAR CONTRATOS GUARDADOS
   get visibleFiles(): File[] {
-    return this.formGroup1.get('2')?.value.slice(
-      this.currentIndex,
-      this.currentIndex + this.maxVisibleFiles
-    );
+    return this.formGroup1
+      .get('2')
+      ?.value.slice(
+        this.currentIndex,
+        this.currentIndex + this.maxVisibleFiles
+      );
   }
 
   moveLeft(): void {
@@ -1124,7 +1239,10 @@ export default class FijacionComponent {
   }
 
   moveRight(): void {
-    if (this.currentIndex < this.formGroup1.get('2')?.value.length - this.maxVisibleFiles) {
+    if (
+      this.currentIndex <
+      this.formGroup1.get('2')?.value.length - this.maxVisibleFiles
+    ) {
       this.currentIndex++;
     }
   }
@@ -1169,6 +1287,8 @@ export default class FijacionComponent {
     return 0;
   }
 
+  
+
   // Método para enviar los formularios
   onSubmitAllForms() {
     // Obtener el valor de input[3] para determinar la cantidad de contratos
@@ -1178,10 +1298,9 @@ export default class FijacionComponent {
     }
 
     if (
-      // this.formGroup1.valid &&
-      // this.formGroup2.valid &&
-      // this.formGroup3.valid
-      true
+      this.formGroup1.valid &&
+      this.formGroup2.valid &&
+      this.formGroup3.valid
     ) {
       //si el numero de contratos es mayor a 0
       if (this.totalContracts > 0) {
@@ -1243,7 +1362,6 @@ export default class FijacionComponent {
     this.showFinalModal = false;
     localStorage.setItem('idSolicitud', '');
     this.router.navigate(['/dashboard']).then(() => {
-      
       location.reload();
     });
   }
@@ -1343,8 +1461,7 @@ export default class FijacionComponent {
         idAreaOperacion: item.idAreaOperacion.map(
           (i: { value: any }) => i.value
         ),
-        disponibilidadVehiculosEstimada:
-          item.disponibilidadVehiculosEstimada,
+        disponibilidadVehiculosEstimada: item.disponibilidadVehiculosEstimada,
         estado: true,
       });
     });

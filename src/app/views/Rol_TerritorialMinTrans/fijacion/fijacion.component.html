@@ -1,8 +1,15 @@
-<div class="sm:grid sm:grid-cols-10 gap-4 h-full mb-12 pb-4">
+<!-- carga loading -->
+<div class="w-full h-full md:px-8 px-2 pb-24 pt-24" *ngIf="loadingInicio">
+    <div class="card flex justify-center items-center">
+        <p-progressSpinner styleClass="w-6rem h-6rem" strokeWidth="4" fill="var(--surface-ground)" />
+    </div>
+</div>
+<div class="sm:grid sm:grid-cols-10 gap-4 h-full mb-12 pb-4" *ngIf="loadingInicio == false">
 
     <div class="md:col-span-2 sm:col-span-3 w-auto sm:mt-16 mt-12 mb-12">
         <app-left-nav [data]="infoMenu" active="{{activeNum}}" (changed)="changeActiveNum($event)"></app-left-nav>
     </div>
+
     <!-- solicitud contet -->
     <div class="md:col-span-8 sm:col-span-7 w-auto sm:mt-10 mt-4 md:px-8 px-2" *ngIf="activeNum == '0'">
         <!-- <h2 class="text-primary4 !font-semibold">
@@ -33,7 +40,7 @@
                     <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" [maxFiles]="1" mimes=".pdf"
                         [error]="errorStates[1]" (fileSelected)="onFileSelected($event, 1)"></app-file-upload>
                     <!-- Opcion que aparece si existe archivo guardado en la solicitud -->
-                    <div class="mt-2 w-full border-t border-secondary2"
+                    <div class="w-full"
                         *ngIf="(this.formGroup1.get('1')?.value != '' && this.formGroup1.get('1')?.value != null) && this.solicitudGuardada && !isActuFile.includes(1)">
 
                         <div class="mt-2 flex gap-2 items-center cursor-pointer"
@@ -87,7 +94,7 @@
 
 
                     <!-- Opcion que aparece si existe archivo guardado en la solicitud -->
-                    <div class="mt-2 w-full border-t border-secondary2"
+                    <div class="w-full"
                         *ngIf="(this.formGroup1.get('2')?.value != '' && this.formGroup1.get('2')?.value != null) && this.solicitudGuardada && !isActuFile.includes(2)">
 
                         <div class="mt-2 flex gap-2 items-center">
@@ -98,11 +105,12 @@
                             </button>
 
                             <!-- Archivos Visibles -->
-                            <div *ngFor="let file of this.formGroup1.get('2')?.value; let index = index" (click)="viewDocument(formGroup1.get('2')?.value[index].documento)"
-                                class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto cursor-pointer">
+                            <div *ngFor="let file of this.formGroup1.get('2')?.value; let index = index"
+                                class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto z-1">
 
                                 <!-- document -->
-                                <div class="w-auto m-auto">
+                                <div class="w-full m-auto cursor-pointer z-1"
+                                    (click)="viewDocument(formGroup1.get('2')?.value[index].documento)">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto"
                                         viewBox="0 0 384 512">
                                         <path
@@ -116,11 +124,12 @@
                                         Contrato {{ index+1 }}
                                     </p>
                                     <p class="truncate text-[8px]">{{
-                                        (this.formGroup1.get('2')?.value[index].documento.size / 1024).toFixed(2) }} Kb</p>
+                                        (this.formGroup1.get('2')?.value[index].documento.size / 1024).toFixed(2) }} Kb
+                                    </p>
                                 </div>
 
                                 <!-- button borrar -->
-                                <button class="m-auto w-auto" (click)="deleteFile(2)">
+                                <button class="m-auto w-full z-10" (click)="deleteFile(2)">
                                     <span
                                         class="pi pi-trash w-full h-full sm:text-xl text-base text-primary2 text-medium"></span>
                                 </button>
@@ -170,7 +179,7 @@
                         (fileSelected)="onFileSelected($event, 3)"></app-file-upload>
 
                     <!-- Opcion que aparece si existe archivo guardado en la solicitud -->
-                    <div class="mt-2 w-full border-t border-secondary2"
+                    <div class="w-full"
                         *ngIf="(this.formGroup1.get('3')?.value != '' && this.formGroup1.get('3')?.value != null) && this.solicitudGuardada && !isActuFile.includes(3)">
 
                         <div class="mt-2 flex gap-2 items-center cursor-pointer"
@@ -221,7 +230,7 @@
                         [error]="errorStates[4]" (fileSelected)="onFileSelected($event, 4)"></app-file-upload>
 
                     <!-- Opcion que aparece si existe archivo guardado en la solicitud -->
-                    <div class="mt-2 w-full border-t border-secondary2"
+                    <div class="w-full"
                         *ngIf="(this.formGroup1.get('4')?.value != '' && this.formGroup1.get('4')?.value != null) && this.solicitudGuardada && !isActuFile.includes(4)">
                         <div class="mt-2 flex gap-2 items-center cursor-pointer"
                             (click)="viewDocument(formGroup1.get('4')?.value)">
@@ -276,7 +285,7 @@
                         [error]="errorStates[5]" (fileSelected)="onFileSelected($event, 5)"></app-file-upload>
 
                     <!-- Opcion que aparece si existe archivo guardado en la solicitud -->
-                    <div class="mt-2 w-full border-t border-secondary2"
+                    <div class="w-full"
                         *ngIf="(this.formGroup1.get('5')?.value != '' && this.formGroup1.get('5')?.value != null) && this.solicitudGuardada && !isActuFile.includes(5)">
                         <div class="mt-2 flex gap-2 items-center cursor-pointer"
                             (click)="viewDocument(formGroup1.get('5')?.value)">
@@ -326,7 +335,7 @@
                         [error]="errorStates[6]" (fileSelected)="onFileSelected($event, 6)"></app-file-upload>
 
                     <!-- Opcion que aparece si existe archivo guardado en la solicitud -->
-                    <div class="mt-2 w-full border-t border-secondary2"
+                    <div class="w-full"
                         *ngIf="(this.formGroup1.get('6')?.value != '' && this.formGroup1.get('6')?.value != null) && this.solicitudGuardada && !isActuFile.includes(6)">
                         <div class="mt-2 flex gap-2 items-center cursor-pointer"
                             (click)="viewDocument(formGroup1.get('6')?.value)">
@@ -394,10 +403,10 @@
                         [error]="errorStates[7]" (fileSelected)="onFileSelected($event, 7)"></app-file-upload>
 
                     <!-- Opcion que aparece si existe archivo guardado en la solicitud -->
-                    <div class="mt-2 w-full border-t border-secondary2"
-                        *ngIf="(this.formGroup1.get('7')?.value != '' && this.formGroup1.get('7')?.value != null) && this.solicitudGuardada && !isActuFile.includes(7)">
+                    <div class="w-full"
+                        *ngIf="(this.formGroup2.get('7')?.value != '' && this.formGroup2.get('7')?.value != null) && this.solicitudGuardada && !isActuFile.includes(7)">
                         <div class="mt-2 flex gap-2 items-center cursor-pointer"
-                            (click)="viewDocument(formGroup1.get('7')?.value)">
+                            (click)="viewDocument(formGroup2.get('7')?.value)">
 
                             <!-- Archivos Visibles -->
                             <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
@@ -416,7 +425,7 @@
                                     <p class="truncate text-[8px] font-semibold">
                                         Resolución de habilitación
                                     </p>
-                                    <p class="truncate text-[8px]">{{ (this.formGroup1.get('7')?.value.size /
+                                    <p class="truncate text-[8px]">{{ (this.formGroup2.get('7')?.value.size /
                                         1024).toFixed(2) }} Kb</p>
                                 </div>
 
@@ -444,10 +453,10 @@
                         [maxFiles]="1" (fileSelected)="onFileSelected($event, 8)"></app-file-upload>
 
                     <!-- Opcion que aparece si existe archivo guardado en la solicitud -->
-                    <div class="mt-2 w-full border-t border-secondary2"
-                        *ngIf="(this.formGroup1.get('8')?.value != '' && this.formGroup1.get('8')?.value != null) && this.solicitudGuardada && !isActuFile.includes(8)">
+                    <div class="w-full"
+                        *ngIf="(this.formGroup2.get('8')?.value != '' && this.formGroup2.get('8')?.value != null) && this.solicitudGuardada && !isActuFile.includes(8)">
                         <div class="mt-2 flex gap-2 items-center cursor-pointer"
-                            (click)="viewDocument(formGroup1.get('8')?.value)">
+                            (click)="viewDocument(formGroup2.get('8')?.value)">
 
                             <!-- Archivos Visibles -->
                             <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
@@ -466,7 +475,7 @@
                                     <p class="truncate text-[8px] font-semibold">
                                         Cédula Representante Legal
                                     </p>
-                                    <p class="truncate text-[8px]">{{ (this.formGroup1.get('8')?.value.size /
+                                    <p class="truncate text-[8px]">{{ (this.formGroup2.get('8')?.value.size /
                                         1024).toFixed(2) }} Kb</p>
                                 </div>
 
@@ -499,10 +508,10 @@
                         [maxFiles]="1" (fileSelected)="onFileSelected($event, 9)"></app-file-upload>
 
                     <!-- Opcion que aparece si existe archivo guardado en la solicitud -->
-                    <div class="mt-2 w-full border-t border-secondary2"
-                        *ngIf="(this.formGroup1.get('9')?.value != '' && this.formGroup1.get('9')?.value != null) && this.solicitudGuardada && !isActuFile.includes(9)">
+                    <div class="w-full"
+                        *ngIf="(this.formGroup2.get('9')?.value != '' && this.formGroup2.get('9')?.value != null) && this.solicitudGuardada && !isActuFile.includes(9)">
                         <div class="mt-2 flex gap-2 items-center cursor-pointer"
-                            (click)="viewDocument(formGroup1.get('9')?.value)">
+                            (click)="viewDocument(formGroup2.get('9')?.value)">
 
                             <!-- Archivos Visibles -->
                             <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
@@ -521,7 +530,7 @@
                                     <p class="truncate text-[8px] font-semibold">
                                         Estados financieros
                                     </p>
-                                    <p class="truncate text-[8px]">{{ (this.formGroup1.get('9')?.value.size /
+                                    <p class="truncate text-[8px]">{{ (this.formGroup2.get('9')?.value.size /
                                         1024).toFixed(2) }} Kb</p>
                                 </div>
 
@@ -551,10 +560,10 @@
                         [error]="errorStates[10]" (fileSelected)="onFileSelected($event, 10)"></app-file-upload>
 
                     <!-- Opcion que aparece si existe archivo guardado en la solicitud -->
-                    <div class="mt-2 w-full border-t border-secondary2"
-                        *ngIf="(this.formGroup1.get('10')?.value != '' && this.formGroup1.get('10')?.value != null) && this.solicitudGuardada && !isActuFile.includes(10)">
+                    <div class="w-full"
+                        *ngIf="(this.formGroup2.get('10')?.value != '' && this.formGroup2.get('10')?.value != null) && this.solicitudGuardada && !isActuFile.includes(10)">
                         <div class="mt-2 flex gap-2 items-center cursor-pointer"
-                            (click)="viewDocument(formGroup1.get('10')?.value)">
+                            (click)="viewDocument(formGroup2.get('10')?.value)">
 
                             <!-- Archivos Visibles -->
                             <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
@@ -573,7 +582,7 @@
                                     <p class="truncate text-[8px] font-semibold">
                                         Cédula del contador
                                     </p>
-                                    <p class="truncate text-[8px]">{{ (this.formGroup1.get('10')?.value.size /
+                                    <p class="truncate text-[8px]">{{ (this.formGroup2.get('10')?.value.size /
                                         1024).toFixed(2) }} Kb</p>
                                 </div>
 
@@ -604,10 +613,10 @@
                         [error]="errorStates[11]" (fileSelected)="onFileSelected($event, 11)"></app-file-upload>
 
                     <!-- Opcion que aparece si existe archivo guardado en la solicitud -->
-                    <div class="mt-2 w-full border-t border-secondary2"
-                        *ngIf="(this.formGroup1.get('11')?.value != '' && this.formGroup1.get('11')?.value != null) && this.solicitudGuardada && !isActuFile.includes(11)">
+                    <div class="w-full"
+                        *ngIf="(this.formGroup2.get('11')?.value != '' && this.formGroup2.get('11')?.value != null) && this.solicitudGuardada && !isActuFile.includes(11)">
                         <div class="mt-2 flex gap-2 items-center cursor-pointer"
-                            (click)="viewDocument(formGroup1.get('11')?.value)">
+                            (click)="viewDocument(formGroup2.get('11')?.value)">
 
                             <!-- Archivos Visibles -->
                             <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
@@ -626,7 +635,7 @@
                                     <p class="truncate text-[8px] font-semibold">
                                         Tarjeta profesional contador
                                     </p>
-                                    <p class="truncate text-[8px]">{{ (this.formGroup1.get('11')?.value.size /
+                                    <p class="truncate text-[8px]">{{ (this.formGroup2.get('11')?.value.size /
                                         1024).toFixed(2) }} Kb</p>
                                 </div>
 
@@ -827,7 +836,7 @@
                     Regresar
                 </button>
                 <app-primary-button type="submit" class="">Guardar</app-primary-button>
-                <app-primary-button type="submit" (click)="goToModal(4)" class="">Continuar</app-primary-button>
+                <app-primary-button type="button" (click)="goToModal(4)" class="">Continuar</app-primary-button>
             </div>
 
         </form>
@@ -838,8 +847,9 @@
         <h3 class="text-primary1 !font-bold">Fijación de Capacidad Transportadora</h3>
 
         <!-- form 4 -->
-        <form [formGroup]="formGroup4" class="px-4 md:pl-16 md:pe-16 mt-6 active1 mb-16"
-            (ngSubmit)="onSubmitAllForms()">
+        <form [formGroup]="formGroup4" class="px-4 md:pl-16 md:pe-16 mt-6 active1 hidden mb-16"
+            *ngFor="let file of this.formGroup1.get('2')?.value; let index = index"
+            [ngClass]="{ 'hidden': index !== currentContractIteration }" (ngSubmit)="onSubmitAllForms()">
             <div class="col-span-2">
                 <p class="font-bold">Digitar los siguientes campos*</p>
                 <p class="text-primary4 font-[500] pt-4">Los campos marcados con * son obligatorios</p>
@@ -855,9 +865,9 @@
                         información se debe diligenciar por cada uno de los contratos.
                     </p>
                 </div>
-                <p class="mt-2">
+                <h3 class="mt-2">
                     {{ this.fileNames[1][currentContractIteration]+formGroup4.get('numeroContrato')?.value}}
-                </p>
+                </h3>
             </div>
             <!-- content 1 -->
             <div class="content1 md:grid sm:grid-cols-2 md:grid-cols-3 md:gap-x-24 md:flex items-center h-full">
@@ -1294,8 +1304,14 @@
             </div>
 
 
-            <div class="mt-12 w-full flex justify-center">
-                <app-primary-button class="">Enviar</app-primary-button>
+
+            <div class="mt-12 w-full flex justify-between">
+                <button type="button" (click)="changeActiveStep(2, false, true)"
+                    class="inline-flex items-center justify-center px-6 py-1 text-white bg-primary4 hover:bg-primary2 focus:bg-primary2 font-medium rounded-full text-[16px] work-sans text-center">
+                    Regresar
+                </button>
+                <app-primary-button type="submit" class="">Guardar</app-primary-button>
+                <app-primary-button type="button" (click)="goToModal(4)" class="">Continuar</app-primary-button>
             </div>
 
         </form>

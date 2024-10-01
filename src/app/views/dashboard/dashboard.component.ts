@@ -96,6 +96,7 @@ export default class DashboardComponent {
     this.appRef.isStable
       .pipe(first((isStable) => isStable)) // `first(isStable => isStable)` toma el primer valor `true` emitido
       .subscribe(() => {
+        localStorage.setItem('idSolicitud', '');
         // Cuando la aplicación esté estable, comienza a cargar los datos
         this.loadInitialData();
       });

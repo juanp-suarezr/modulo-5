@@ -89,21 +89,21 @@ export class ApiSFService {
 
   // PUT solicitud paso 1
   SolicitudPaso1(id: string, data1: any): Observable<any> {
-    return this.http.patch(`${this.baseUrl}/api/formularioContratoPasos/paso1/${id}`, data1, {
+    return this.http.put(`${this.baseUrl}/api/formularioContratoPasos/paso1/${id}`, data1, {
       responseType: 'text',
     });
   }
 
   // PUT solicitud paso 2
   SolicitudPaso2(id: string, data2: any): Observable<any> {
-    return this.http.patch(`${this.baseUrl}/api/formularioContratoPasos/paso2/${id}`, data2, {
+    return this.http.put(`${this.baseUrl}/api/formularioContratoPasos/paso2/${id}`, data2, {
       responseType: 'text',
     });
   }
 
   // PUT solicitud paso 2
   SolicitudPaso3(id: string, data3: any): Observable<any> {
-    return this.http.patch(`${this.baseUrl}/api/formularioContratoPasos/paso3/${id}`, data3, {
+    return this.http.put(`${this.baseUrl}/api/formularioContratoPasos/paso3/${id}`, data3, {
       responseType: 'text',
     });
   }
@@ -112,7 +112,7 @@ export class ApiSFService {
 
   // PUT solicitud paso 4 contratos
   SolicitudPaso4(id: string, data4: any): Observable<any> {
-    return this.http.patch(`${this.baseUrl}/api/formularioContratoPasos/paso4/${id}`, data4, {
+    return this.http.put(`${this.baseUrl}/api/formularioContratoPasos/paso4/${id}`, data4, {
       responseType: 'text',
     });
   }
