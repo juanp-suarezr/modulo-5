@@ -1101,6 +1101,8 @@ export default class FijacionComponent {
 
   viewDocument(blob: Blob) {
     if (blob) {
+      console.log(blob);
+      
       const url = URL.createObjectURL(blob);
 
       window.open(url);
@@ -1239,7 +1241,9 @@ export default class FijacionComponent {
 
   finalStep() {
     this.showFinalModal = false;
+    localStorage.setItem('idSolicitud', '');
     this.router.navigate(['/dashboard']).then(() => {
+      
       location.reload();
     });
   }

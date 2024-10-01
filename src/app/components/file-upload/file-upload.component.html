@@ -69,7 +69,7 @@
     </button>
 
     <!-- Archivos Visibles -->
-    <div *ngFor="let file of visibleFiles" class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
+    <div *ngFor="let file of visibleFiles" class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto cursor-pointer" (click)="viewDocument(file)">
 
       <!-- document -->
       <div class="w-auto m-auto">

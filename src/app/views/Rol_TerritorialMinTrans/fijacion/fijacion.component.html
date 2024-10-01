@@ -98,8 +98,8 @@
                             </button>
 
                             <!-- Archivos Visibles -->
-                            <div *ngFor="let file of this.formGroup1.get('2')?.value; let index = index" (click)="viewDocument(formGroup1.get('1')?.value[index])"
-                                class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
+                            <div *ngFor="let file of this.formGroup1.get('2')?.value; let index = index" (click)="viewDocument(formGroup1.get('2')?.value[index].documento)"
+                                class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto cursor-pointer">
 
                                 <!-- document -->
                                 <div class="w-auto m-auto">

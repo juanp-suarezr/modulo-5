@@ -148,4 +148,14 @@ export class FileUploadComponent implements OnInit, AfterViewInit {
     }
   }
 
+  viewDocument(file: File) {
+    if (file) {
+      console.log(file);
+      
+      const url = URL.createObjectURL(file);
+
+      window.open(url);
+    }
+  }
+
 }
