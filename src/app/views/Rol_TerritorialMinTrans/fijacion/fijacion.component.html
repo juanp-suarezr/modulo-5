@@ -847,7 +847,7 @@
         <h3 class="text-primary1 !font-bold">Fijación de Capacidad Transportadora</h3>
 
         <!-- form 4 -->
-        <form [formGroup]="formGroup4" class="px-4 md:pl-16 md:pe-16 mt-6 active1 hidden mb-16"
+        <form [formGroup]="formGroup4" class="px-4 md:pl-16 md:pe-16 mt-6 active1 mb-16"
             *ngFor="let file of this.formGroup1.get('2')?.value; let index = index"
             [ngClass]="{ 'hidden': index !== currentContractIteration }" (ngSubmit)="onSubmitAllForms()">
             <div class="col-span-2">
@@ -1306,12 +1306,12 @@
 
 
             <div class="mt-12 w-full flex justify-between">
-                <button type="button" (click)="changeActiveStep(2, false, true)"
+                <button type="button" (click)="changeContratoInfo(false)" *ngIf="currentContractIteration != 0"
                     class="inline-flex items-center justify-center px-6 py-1 text-white bg-primary4 hover:bg-primary2 focus:bg-primary2 font-medium rounded-full text-[16px] work-sans text-center">
                     Regresar
                 </button>
                 <app-primary-button type="submit" class="">Guardar</app-primary-button>
-                <app-primary-button type="button" (click)="goToModal(4)" class="">Continuar</app-primary-button>
+                <app-primary-button type="button" (click)="showModalContinuar1 = true" *ngIf="this.fileNames[1].length != currentContractIteration+1">Continuar</app-primary-button>
             </div>
 
         </form>
@@ -1332,6 +1332,19 @@
     cancelButtonText="Cerrar" [showCancelButton]="true" [showFirstButton]="false" (close)="showModalRequisito = false"
     textColor="text-waring" TypeAlert="warning"></app-alert>
 
+
+
+<!-- modal de loading -->
+<app-alert [showModal]="ShowLoadingModal" title="Verificando datos" subtitle="Un momento por favor."
+    message="Se está guardando los datos enviados" [showFirstButton]="false" [showCancelButton]="false"
+    TypeAlert="loader"></app-alert>
+
+<!-- modal de continuar sin guardar operativo -->
+<app-alert [showModal]="showModalContinuar1" title="Continuar sin guardar" subtitle=""
+    message="Esta seguro que desea continuar sin guardar." cancelButtonText="Cerrar" [showCancelButton]="true"
+    buttonText="Continuar" [showFirstButton]="true" (close)="showModalContinuar = false"
+    (closeByButton1)="changeContratoInfo(true)" TypeAlert="warning"></app-alert>
+
 <!-- modal de confirmación -->
 <app-alert [showModal]="showModal" title="¿Está seguro de enviar?" subtitle="¿Está seguro de enviar?"
     [showSubtitle]="false" [message]="'Una vez enviado, no podrá cambiar la información.'" buttonText="Enviar"
@@ -1340,12 +1353,6 @@
     (closeByButton1)="currentContractIteration == totalContracts ? sendAllContracts() : handleCloseByButton1()"
     (closeByButton2)="handleCloseByButton2()" (closeByIcon)="handleCloseByIcon()"
     (closeByBackdrop)="handleCloseByBackdrop()" (close)="showModal = false"></app-alert>
-
-
-<!-- modal de loading -->
-<app-alert [showModal]="ShowLoadingModal" title="Verificando datos" subtitle="Un momento por favor."
-    message="Se está guardando los datos enviados" [showFirstButton]="false" [showCancelButton]="false"
-    TypeAlert="loader"></app-alert>
 
 
 <!-- modal final -->

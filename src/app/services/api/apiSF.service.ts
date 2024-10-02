@@ -64,6 +64,11 @@ export class ApiSFService {
     return this.http.get(`${this.baseUrl}/documentos/${id}`);
   }
 
+  //GET solicitud-contratos by ID
+  getContratosByID(id: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}/documentos/${id}`);
+  }
+
   //validator nit
   getSolicitudByNIT(nit: string): Observable<any> {
     return this.http.get(`${this.baseUrl}/api/formulario/verificar-nit/${nit}`);
@@ -87,6 +92,13 @@ export class ApiSFService {
     });
   }
 
+  // POST solicitud primer contratos
+  createContratos(data2: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}/api/formularioContratoPasos/paso4`, data2, {
+      responseType: 'text',
+    });
+  }
+
   // PUT solicitud paso 1
   SolicitudPaso1(id: string, data1: any): Observable<any> {
     return this.http.put(`${this.baseUrl}/api/formularioContratoPasos/paso1/${id}`, data1, {
@@ -101,14 +113,12 @@ export class ApiSFService {
     });
   }
 
-  // PUT solicitud paso 2
+  // PUT solicitud paso 3
   SolicitudPaso3(id: string, data3: any): Observable<any> {
     return this.http.put(`${this.baseUrl}/api/formularioContratoPasos/paso3/${id}`, data3, {
       responseType: 'text',
     });
   }
-
-
 
   // PUT solicitud paso 4 contratos
   SolicitudPaso4(id: string, data4: any): Observable<any> {
