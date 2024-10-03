@@ -17,6 +17,8 @@ import {
   FormGroup,
   Validators,
   ReactiveFormsModule,
+  AbstractControl,
+  FormArray,
 } from '@angular/forms';
 import { SelectComponent } from '../../../components/select/select.component';
 import { MESES } from '../../../shared/data/meses';
@@ -120,6 +122,9 @@ export default class FijacionComponent {
   //identificador de actualización de file
   isActuFile: [number] = [-1];
 
+  //si es valido el form en operativo
+  IsvalidOperativo: boolean = false;
+
   //manejo de varios contratos guardados
   currentIndex = 0;
   maxVisibleFiles = 2;
@@ -137,6 +142,9 @@ export default class FijacionComponent {
   contractDataArray: any[] = []; // Array para almacenar la información de cada iteración
   currentContractIteration: number = 0; // Contador para las iteraciones
   totalContracts: number = 0; // Número total de contratos
+
+  //form dinamico num vehiculos
+  activeHeader: number | null = null;
 
   //nombre contratos
   fileNames: { [key: number]: string[] } = [];
@@ -286,6 +294,8 @@ export default class FijacionComponent {
             //GET DOCUMENTOS
             this.apiSFService.getDocumentosByID(response.nit).subscribe(
               (response1) => {
+                console.log(response1);
+
                 this.loadingInicio = false;
                 // Crear un array de contratos
                 const contratosArray = response1.map((element: any) => ({
@@ -316,8 +326,10 @@ export default class FijacionComponent {
             //GET CONTRATOS
             this.apiSFService.getContratosByID(response.id).subscribe(
               (response2) => {
+                console.log(response2);
+
                 this.loadingInicio = false;
-                this.contratosSolicitud = response;
+                this.contratosSolicitud = response2;
               },
               (error) => {
                 console.error('Error fetching user data', error);
@@ -443,19 +455,35 @@ export default class FijacionComponent {
         idFormaPago: ['', Validators.required],
         idAreaOperacion: ['', Validators.required],
         disponibilidadVehiculosEstimada: ['', Validators.required],
+        idClaseVehiculos: this.fb.array([]), // FormArray para manejar las clases de vehículos seleccionadas
       },
       { validators: [dateRangeValidator, NoNegativeGlobal] }
     );
   }
 
-  deleteFile(num: number) {
+  // Obtener el FormArray de clases de vehículos
+  get idClaseVehiculos(): FormArray {
+    return this.formGroup4.get('idClaseVehiculos') as FormArray;
+  }
+
+  // Función para crear un nuevo FormGroup para cada clase de vehículo
+  createVehiculoFormGroup(): FormGroup {
+    return this.fb.group({
+      idClaseVehiculo: ['', [Validators.required, NoNegativeGlobal]], // Aquí se puede agregar más validación si es necesario
+      cantidadVehiculos: ['', [Validators.required, Validators.min(1)]],
+    });
+  }
+
+  deleteFile(num: number, index?: number) {
     switch (num) {
       case 1:
         this.formGroup1.get(num.toString())?.setValue('');
         break;
 
       case 2:
-        this.formGroup1.get(num.toString())?.setValue('');
+        const posicion = index ?? 0;
+
+        this.formGroup1.get(num.toString())?.value[posicion] == '';
         break;
 
       case 3:
@@ -521,12 +549,14 @@ export default class FijacionComponent {
         this.selectedOptionsClase = this.selectedOptionsClase.filter(
           (selected) => selected.value !== option.value
         );
+        this.removeVehiculoControl(option); // Eliminar el control del FormArray
       }
     } else {
       if (nameForm == 'idAreaOperacion') {
         this.selectedOptionsDeparts.push(option);
       } else {
         this.selectedOptionsClase.push(option);
+        this.addVehiculoControl(option); // Añadir el control al FormArray
       }
     }
 
@@ -537,6 +567,25 @@ export default class FijacionComponent {
     } else {
       this.formGroup4.get(nameForm)?.setValue(this.selectedOptionsClase);
       console.log('Opciones seleccionadas:', this.selectedOptionsClase);
+    }
+  }
+
+  // Añadir control dinámico para la clase de vehículo seleccionada
+  addVehiculoControl(option: any) {
+    const vehiculoGroup = this.fb.group({
+      idClaseVehiculo: [option.value, Validators.required],
+      cantidadVehiculos: ['', [Validators.required, Validators.min(1)]],
+    });
+    this.idClaseVehiculos.push(vehiculoGroup);
+  }
+
+  // Eliminar control dinámico cuando se deselecciona una clase
+  removeVehiculoControl(option: any) {
+    const index = this.idClaseVehiculos.controls.findIndex(
+      (ctrl) => ctrl.value.idClaseVehiculo === option.value
+    );
+    if (index !== -1) {
+      this.idClaseVehiculos.removeAt(index);
     }
   }
 
@@ -560,8 +609,18 @@ export default class FijacionComponent {
         .map((option) => option.label)
         .join(', ');
     } else {
+      console.log(this.selectedOptionsClase.map((option) => option.label).join(', '));
+      
       return this.selectedOptionsClase.map((option) => option.label).join(', ');
     }
+  }
+
+  getSelectedLabelsHeaders(): any {
+    
+      console.log(this.selectedOptionsClase.map((option) => option.label).join(', '));
+      
+      return this.selectedOptionsClase.map((option) => option.label);
+    
   }
 
   selectMultipleOption(index: number, option: any, name: string) {
@@ -858,10 +917,16 @@ export default class FijacionComponent {
   //datos paso 1
   async datosPaso1() {
     // Rellenar el array de documentos con una conversión asíncrona para cada Blob
+    console.log(this.formGroup1.value[2]);
+
     const documentoPromises = this.formGroup1.value[2].map(
       async (item: any) => {
-        if (item.documento instanceof Blob) {
+        let documento = item.documento ?? item;
+        console.log(documento instanceof Blob);
+
+        if (documento instanceof Blob) {
           // Convertir Blob a base64
+          console.log('entro: ' + documento);
 
           const base64String = await this.convertirBlob(item.documento);
           return {
@@ -870,11 +935,10 @@ export default class FijacionComponent {
             id: item.id,
           };
         } else {
-          console.log(item);
           // Si no es Blob, lo añadimos directamente
           return {
             nit: this.nit,
-            documento: item.documento,
+            documento: item.documento ?? item,
           };
         }
       }
@@ -926,6 +990,8 @@ export default class FijacionComponent {
     this.isActuFile = [-1];
     switch (num) {
       case 1:
+        console.log(data);
+
         //put paso 1 actualizar - cargue 1
         this.apiSFService.SolicitudPaso1(this.idSolicitud, data).subscribe(
           (response) => {
@@ -1125,6 +1191,7 @@ export default class FijacionComponent {
               }__`;
               return firstPart;
             });
+            console.log(file);
 
             console.log(this.fileNames[1]);
           }
@@ -1184,26 +1251,10 @@ export default class FijacionComponent {
     }
   }
 
-  //CONVERTIR DE BLOB A BASE64
-  blobToBase64(blob: Blob): Promise<string> {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-
-      reader.onloadend = () => {
-        // Elimina el prefijo 'data:[mime-type];base64,' para obtener solo el contenido base64
-        const base64String = (reader.result as string).split(',')[1];
-        resolve(base64String);
-      };
-
-      reader.onerror = (error) => {
-        reject(error);
-      };
-
-      reader.readAsDataURL(blob); // Convierte el blob a base64
-    });
-  }
   // Función para manejar los diferentes casos de acceso a los valores (Blob o Base64)
   convertirSiEsBlob(valor: any) {
+    console.log(valor);
+
     // Si es Blob, convertimos a Base64
     if (valor instanceof Blob) {
       return this.convertirBlob(valor); // Convertir Blob a Base64
@@ -1218,6 +1269,8 @@ export default class FijacionComponent {
   //FUNCION PARA CONVERTIR BLOB - BASE64
 
   convertirBlob(blob: Blob): Promise<string> {
+    console.log(blob);
+
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -1330,61 +1383,111 @@ export default class FijacionComponent {
 
   //fin MODAL
 
+  // Cambia el header activo
+  setActiveHeader(index: number): void {
+    this.activeHeader = index;
+  }
+
   // Método para enviar los formularios
   onSubmitAllForms() {
     this.ShowLoadingModal = true;
     this.processContractIteration();
-    
-    // Inicializar contratos como un array vacío
-    let contratos: Array<{
-      consecutivo: number;
-      numeroContrato: any;
-      contratante: any;
-      fechaInicio: any;
-      fechaFin: any;
-      duracionMeses: any;
-      numeroVehiculos: any;
-      vehiculos: any;
-      valorContrato: any;
-      idFormaPago: any;
-      areasOperacion: any;
-      disponibilidadVehiculosEstimada: any;
-      estado: boolean;
-      idEstadoSolicitud: any;
-    }> = [];
 
-    
-    this.contractDataArray.forEach((item, index) => {
-      contratos.push({
-        consecutivo: index,
-        numeroContrato: item.numeroContrato,
-        contratante: item.contratante,
-        fechaInicio: item.fecha_inicio,
-        fechaFin: item.fecha_terminacion,
-        duracionMeses: item.duracionMeses,
-        numeroVehiculos: item.numeroVehiculos,
-        vehiculos: [
-          item.idClaseVehiculo.map((i: { value: any }) => i.value),
-        ],
-        valorContrato: item.valorContrato,
-        idFormaPago: item.idFormaPago.value,
-        areasOperacion: item.idAreaOperacion.map(
-          (i: { value: any }) => i.value
-        ),
-        disponibilidadVehiculosEstimada: item.disponibilidadVehiculosEstimada,
-        estado: true,
-        idEstadoSolicitud: 149,
+    if (this.IsvalidOperativo) {
+      // Inicializar contratos como un array vacío
+      let contratos: Array<{
+        consecutivo: number;
+        numeroContrato: any;
+        contratante: any;
+        fechaInicio: any;
+        fechaFin: any;
+        duracionMeses: any;
+        numeroVehiculos: any;
+        vehiculos: any;
+        valorContrato: any;
+        idFormaPago: any;
+        areasOperacion: any;
+        disponibilidadVehiculosEstimada: any;
+        estado: boolean;
+        idEstadoSolicitud: any;
+        idFormulario: any;
+      }> = [];
+
+      this.contractDataArray.forEach((item, index) => {
+        contratos.push({
+          consecutivo: index,
+          numeroContrato: item.numeroContrato,
+          contratante: item.contratante,
+          fechaInicio: item.fecha_inicio,
+          fechaFin: item.fecha_terminacion,
+          duracionMeses: item.duracionMeses,
+          numeroVehiculos: item.numeroVehiculos,
+          vehiculos: item.idClaseVehiculo.map((i: { value: any }) => {
+            return {
+              id: this.contratosSolicitud
+                ? this.contratosSolicitud.vehiculos.find(
+                    (item: { idClaseVehiculo: any }) =>
+                      (item.idClaseVehiculo = i.value)
+                  ).id
+                : '',
+              idClaseVehiculo: i.value,
+              cantidadVehiculos: 0,
+            };
+          }),
+          valorContrato: item.valorContrato,
+          idFormaPago: item.idFormaPago.value,
+          areasOperacion: item.idAreaOperacion.map((i: { value: any }) => {
+            return {
+              id: this.contratosSolicitud
+                ? this.contratosSolicitud.areasOperacion.find(
+                    (item: { idMunicipioArea: any }) =>
+                      (item.idMunicipioArea = i.value)
+                  ).id
+                : '',
+              idMunicipioArea: i.value,
+            };
+          }),
+          disponibilidadVehiculosEstimada:
+            item.disponibilidadVehiculosEstimada.value,
+          estado: true,
+          idEstadoSolicitud: 149,
+          idFormulario: this.idSolicitud,
+        });
       });
-    });
 
-    if (this.contratosSolicitud) {
+      if (this.contratosSolicitud) {
+        contratos.forEach((element) => {
+          this.ShowLoadingModal = true;
+          this.apiSFService
+            .SolicitudPaso4(this.contratosSolicitud.id, element)
+            .subscribe(
+              (response) => {
+                const parsedData = JSON.parse(response);
 
-      contratos.forEach(element => {
-        this.ShowLoadingModal = true;
-        this.apiSFService.SolicitudPaso4(this.contratosSolicitud.id, element).subscribe(
+                // Aquí puedes manejar la respuesta, por ejemplo:
+                this.ShowLoadingModal = false;
+                console.log('Datos enviados exitosamente:', parsedData);
+              },
+              (error) => {
+                this.ShowLoadingModal = false;
+                this.showErrorModal = true;
+                // Manejo del error
+                console.error('Error al enviar los datos:', error);
+              }
+            );
+        });
+      } else if (
+        this.idSolicitud == '' ||
+        this.idSolicitud === 'undefined' ||
+        this.idSolicitud === undefined
+      ) {
+        this.sendAllContracts();
+      } else {
+        //CREA SOLICITUD
+        this.apiSFService.createContratos(contratos[0]).subscribe(
           (response) => {
             const parsedData = JSON.parse(response);
-  
+
             // Aquí puedes manejar la respuesta, por ejemplo:
             this.ShowLoadingModal = false;
             console.log('Datos enviados exitosamente:', parsedData);
@@ -1396,39 +1499,18 @@ export default class FijacionComponent {
             console.error('Error al enviar los datos:', error);
           }
         );
-      });
-      
-
-    } else if (
-      this.idSolicitud == '' ||
-      this.idSolicitud === 'undefined' ||
-      this.idSolicitud === undefined
-    ) {
-      this.sendAllContracts();
+      }
     } else {
-      //CREA SOLICITUD
-      this.apiSFService.createContratos(this.contractDataArray[0]).subscribe(
-        (response) => {
-          const parsedData = JSON.parse(response);
-
-          // Aquí puedes manejar la respuesta, por ejemplo:
-          this.ShowLoadingModal = false;
-          console.log('Datos enviados exitosamente:', parsedData);
-        },
-        (error) => {
-          this.ShowLoadingModal = false;
-          this.showErrorModal = true;
-          // Manejo del error
-          console.error('Error al enviar los datos:', error);
-        }
-      );
+      this.ShowLoadingModal = false;
     }
   }
 
   changeContratoInfo(isContinue: boolean) {
     if (isContinue) {
-      this.currentContractIteration += 1;
       this.processContractIteration();
+      if (this.IsvalidOperativo) {
+        this.currentContractIteration += 1;
+      }
     } else {
       this.currentContractIteration -= 1;
     }
@@ -1439,6 +1521,7 @@ export default class FijacionComponent {
     console.log(this.currentContractIteration);
 
     if (this.formGroup4.valid) {
+      this.IsvalidOperativo = true;
       // Guardar los datos del formulario en el array
       this.formGroup4.get('duracionMeses')?.enable();
       this.contractDataArray.push(this.formGroup4.value);
@@ -1475,6 +1558,10 @@ export default class FijacionComponent {
       this.cdr.detectChanges();
     } else {
       console.log('Formulario de contrato no válido');
+      this.submitted = true;
+      this.formGroup4.markAllAsTouched();
+      this.IsvalidOperativo = false;
+      return;
     }
   }
 

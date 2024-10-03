@@ -105,7 +105,7 @@
                             </button>
 
                             <!-- Archivos Visibles -->
-                            <div *ngFor="let file of this.formGroup1.get('2')?.value; let index = index"
+                            <div *ngFor="let file of this.visibleFiles; let index = index"
                                 class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto z-1">
 
                                 <!-- document -->
@@ -128,11 +128,6 @@
                                     </p>
                                 </div>
 
-                                <!-- button borrar -->
-                                <button class="m-auto w-full z-10" (click)="deleteFile(2)">
-                                    <span
-                                        class="pi pi-trash w-full h-full sm:text-xl text-base text-primary2 text-medium"></span>
-                                </button>
 
                             </div>
 
@@ -1035,45 +1030,7 @@
             </div>
 
             <!-- content 3 -->
-            <div class="content1 md:grid sm:grid-cols-2 md:grid-cols-3 md:gap-x-24 md:flex items-center h-full">
-                <!-- input N° de Vehículos / Contrato* -->
-                <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
-                    <p class="text-primary3 font-semibold h-full">
-                        N° de Vehículos / Contrato*
-                    </p>
-                    <!-- input -->
-                    <div class="mt-2 relative w-full">
-                        <input
-                            class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent"
-                            type="number" formControlName="numeroVehiculos" required
-                            placeholder="N° de Vehículos / Contrato">
-                        <div class="w-full relative">
-                            <!-- Icono de error (rojo) -->
-                            <span
-                                *ngIf="formGroup4.get('numeroVehiculos')?.invalid && (formGroup4.get('numeroVehiculos')?.touched || submitted)"
-                                class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
-                                <span class="pi pi-exclamation-circle text-error text-[24px]"></span>
-                            </span>
-
-                            <!-- Icono de éxito (verde) -->
-                            <span
-                                *ngIf="formGroup4.get('numeroVehiculos')?.valid && (formGroup4.get('numeroVehiculos')?.touched || submitted)"
-                                class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
-                                <span class="pi pi-check-circle text-success text-[24px]"></span>
-                            </span>
-                        </div>
-                        <span *ngIf="submitted && formGroup4.get('numeroVehiculos')?.errors?.['required']"
-                            class="text-error">
-                            N° de Vehículos / Contrato es obligatorio
-                        </span>
-                        <span
-                            *ngIf="formGroup4.get('numeroVehiculos')?.hasError('negativeNumber') && (formGroup4.get('numeroVehiculos')?.touched || submitted)"
-                            class="text-error">
-                            El numeró no puede ser negativo
-                        </span>
-                    </div>
-
-                </div>
+            <div class="content1 md:grid md:grid-cols-3 md:gap-x-24 md:flex items-center h-full">
 
                 <!-- select3 Clase de vehículo* -->
                 <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
@@ -1126,45 +1083,71 @@
 
                 </div>
 
+                <!-- Contenedor principal del FormArray -->
+                <div class="w-full md:col-span-2" formArrayName="idClaseVehiculos">
 
-                <!-- input 10 Valor del Contrato* -->
-                <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
-                    <p class="text-primary3 font-semibold h-full">
-                        Valor del Contrato*
-                    </p>
-                    <!-- input -->
-                    <div class="mt-2 relative w-full">
-                        <input
-                            class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent"
-                            type="text" formControlName="valorContrato" placeholder="$"
-                            (input)="onCurrencyInput($event, 'valorContrato', formGroup4)"
-                            (focus)="onCurrencyFocus($event)" />
-                        <div class="w-full relative">
-                            <!-- Icono de error (rojo) -->
-                            <span
-                                *ngIf="formGroup4.get('valorContrato')?.invalid && (formGroup4.get('valorContrato')?.touched || submitted)"
-                                class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
-                                <span class="pi pi-exclamation-circle text-error text-[24px]"></span>
-                            </span>
+                    <!-- Headers dinámicos -->
+                    <div class="headers-container flex flex-wrap gap-4 mt-2">
+                        <button *ngFor="let vehiculo of idClaseVehiculos.controls; let i = index"
+                            (click)="setActiveHeader(i)"
+                            [ngClass]="{'active-header': activeHeader === i, 'inactive-header': activeHeader !== i}"
+                            class="p-2 text-primary1 border-b-2">
+                            {{ getSelectedLabelsHeaders()[i] || 'Clase Vehículo ' + (i + 1) }}
+                        </button>
+                    </div>
 
-                            <!-- Icono de éxito (verde) -->
-                            <span
-                                *ngIf="formGroup4.get('valorContrato')?.valid && (formGroup4.get('valorContrato')?.touched || submitted)"
-                                class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
-                                <span class="pi pi-check-circle text-success text-[24px]"></span>
-                            </span>
+                    <!-- Inputs dinámicos basados en el header activo -->
+                    <div class="inputs-container mt-2">
+                        <div *ngIf="activeHeader !== null" [formGroupName]="activeHeader"
+                            class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+
+                            <!-- Input para el número de vehículos -->
+                            <div class="mt-2 relative w-full">
+                                <input
+                                    class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent"
+                                    type="number" formControlName="cantidadVehiculos" required
+                                    placeholder="N° de Vehículos / Contrato">
+
+                                <div class="w-full relative">
+                                    <!-- Icono de error (rojo) -->
+                                    <span
+                                        *ngIf="formGroup4.get('idClaseVehiculos')?.get(activeHeader.toString())?.get('cantidadVehiculos')?.invalid && (formGroup4.get('idClaseVehiculos')?.get(activeHeader.toString())?.get('cantidadVehiculos')?.touched || submitted)"
+                                        class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
+                                        <span class="pi pi-exclamation-circle text-error text-[24px]"></span>
+                                    </span>
+
+                                    <!-- Icono de éxito (verde) -->
+                                    <span
+                                        *ngIf="formGroup4.get('idClaseVehiculos')?.get(activeHeader.toString())?.get('cantidadVehiculos')?.valid && (formGroup4.get('idClaseVehiculos')?.get(activeHeader.toString())?.get('cantidadVehiculos')?.touched || submitted)"
+                                        class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
+                                        <span class="pi pi-check-circle text-success text-[24px]"></span>
+                                    </span>
+                                </div>
+
+                                <!-- Mensajes de error -->
+                                <span
+                                    *ngIf="submitted && formGroup4.get('idClaseVehiculos')?.get(activeHeader.toString())?.get('cantidadVehiculos')?.errors?.['required']"
+                                    class="text-error">
+                                    N° de Vehículos es obligatorio para {{
+                                    getSelectedLabels('idClaseVehiculo')[activeHeader] || 'Clase Vehículo ' +
+                                    (activeHeader + 1) }}
+                                </span>
+
+                                <span
+                                    *ngIf="formGroup4.get('idClaseVehiculos')?.get(activeHeader.toString())?.get('cantidadVehiculos')?.hasError('negativeNumber') && (formGroup4.get('idClaseVehiculos')?.get(activeHeader.toString())?.get('cantidadVehiculos')?.touched || submitted)"
+                                    class="text-error">
+                                    El número de vehículos no puede ser negativo para {{
+                                    getSelectedLabels('idClaseVehiculo')[activeHeader] || 'Clase Vehículo ' +
+                                    (activeHeader + 1) }}
+                                </span>
+                            </div>
                         </div>
-                        <span *ngIf="submitted && formGroup4.get('valorContrato')?.errors?.['required']"
-                            class="text-error">
-                            Valor del Contrato es obligatorio
-                        </span>
-                        <span
-                            *ngIf="formGroup4.get('valorContrato')?.hasError('negativeNumber') && (formGroup4.get('valorContrato')?.touched || submitted)"
-                            class="text-error">
-                            El numeró no puede ser negativo
-                        </span>
                     </div>
                 </div>
+
+
+
+
             </div>
 
             <!-- content 4 -->
@@ -1302,6 +1285,47 @@
 
                 </div>
             </div>
+            <!-- content 5 -->
+            <div class="content5 md:grid sm:grid-cols-2 md:grid-cols-3 md:gap-x-24 md:flex items-center h-full">
+                <!-- input 10 Valor del Contrato* -->
+                <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+                    <p class="text-primary3 font-semibold h-full">
+                        Valor del Contrato*
+                    </p>
+                    <!-- input -->
+                    <div class="mt-2 relative w-full">
+                        <input
+                            class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent"
+                            type="text" formControlName="valorContrato" placeholder="$"
+                            (input)="onCurrencyInput($event, 'valorContrato', formGroup4)"
+                            (focus)="onCurrencyFocus($event)" />
+                        <div class="w-full relative">
+                            <!-- Icono de error (rojo) -->
+                            <span
+                                *ngIf="formGroup4.get('valorContrato')?.invalid && (formGroup4.get('valorContrato')?.touched || submitted)"
+                                class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
+                                <span class="pi pi-exclamation-circle text-error text-[24px]"></span>
+                            </span>
+
+                            <!-- Icono de éxito (verde) -->
+                            <span
+                                *ngIf="formGroup4.get('valorContrato')?.valid && (formGroup4.get('valorContrato')?.touched || submitted)"
+                                class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
+                                <span class="pi pi-check-circle text-success text-[24px]"></span>
+                            </span>
+                        </div>
+                        <span *ngIf="submitted && formGroup4.get('valorContrato')?.errors?.['required']"
+                            class="text-error">
+                            Valor del Contrato es obligatorio
+                        </span>
+                        <span
+                            *ngIf="formGroup4.get('valorContrato')?.hasError('negativeNumber') && (formGroup4.get('valorContrato')?.touched || submitted)"
+                            class="text-error">
+                            El numeró no puede ser negativo
+                        </span>
+                    </div>
+                </div>
+            </div>
 
 
 
@@ -1311,7 +1335,8 @@
                     Regresar
                 </button>
                 <app-primary-button type="submit" class="">Guardar</app-primary-button>
-                <app-primary-button type="button" (click)="showModalContinuar1 = true" *ngIf="this.fileNames[1].length != currentContractIteration+1">Continuar</app-primary-button>
+                <app-primary-button type="button" (click)="showModalContinuar1 = true"
+                    *ngIf="this.fileNames[1].length != currentContractIteration+1">Continuar</app-primary-button>
             </div>
 
         </form>
