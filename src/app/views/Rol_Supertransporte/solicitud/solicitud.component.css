@@ -1,0 +1,8 @@
+.govco-download {
+    background-image: url('../../../../assets/gobierno/assets/icons/download.svg');
+    min-width: 1rem;
+    min-height: 1rem;
+    display: inline-block;
+    background-repeat: no-repeat;
+    background-size: 1rem 1rem;
+}

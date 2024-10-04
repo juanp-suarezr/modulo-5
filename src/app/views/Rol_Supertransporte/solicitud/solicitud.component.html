@@ -184,25 +184,56 @@
     <!-- PASO 2 -->
     <div class="px-4 md:pl-16 md:pe-16 mt-6 active1 mb-6" *ngIf="activeStep == 2">
       <!-- contenido 1 -->
-      <div class="content2 md:grid sm:grid-cols-2 md:grid-cols-3 md:gap-x-24 md:flex items-start h-full">
+      <div class="content2 md:grid md:grid-cols-2 md:gap-x-24 md:flex items-start h-full">
 
-        <!-- FECHA SOLICITUD -->
+        <!--  Solicitud de fijación de capacidad transportadora -->
         <div class="w-full flex flex-col justify-start items-stretch pt-6 my-auto h-full">
-          <p class="text-primary3 font-semibold h-full m-auto">
-            Fecha solicitud
+          <p class="text-primary3 font-semibold h-full my-auto">
+            Solicitud de fijación de capacidad transportadora
           </p>
-          <!-- input -->
-          <div class="mt-2 relative w-full h-full flex items-center">
-            <div
-              class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border focus:outline-none focus:border-primary1 bg-secondary3 border-secondary2 text-primary3 flex items-center justify-center">
-              {{ formatField(solicitud?.fechaSolicitud) }}
+          <div class="w-full flex gap-2 mt-4">
+
+            <div class="flex items-center cursor-pointer" (click)="viewDocument(solicitud?.solicitudFijacionCapacidad)">
+
+              <!-- Archivos Visibles -->
+              <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
+
+                <!-- document -->
+                <div class="w-auto m-auto">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto" viewBox="0 0 384 512">
+                    <path
+                      d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z" />
+                  </svg>
+                </div>
+
+                <!-- texto info file -->
+                <div class="px-2 w-auto">
+                  <p class="truncate text-[8px] font-semibold">
+                    Solicitud de fijación
+                  </p>
+                  <p class="truncate text-[8px]">{{ (getDocumentSize(solicitud?.solicitudFijacionCapacidad) ?? 0 /
+                    1024).toFixed(2) }} Kb</p>
+                </div>
+
+              </div>
+
             </div>
+            <div class="flex-1 items-center w-full">
+              <button
+                class="inline-flex items-center justify-center px-2 py-1 text-white bg-primary1 hover:bg-primary2 font-medium rounded-full text-[9px] work-sans text-center disabled:bg-primary4"
+                (click)="downloadPDF(solicitud?.solicitudFijacionCapacidad, 'Solicitud de fijación')"> <span
+                  class="govco-download"></span> Descargar archivo adjunto</button>
+            </div>
+
+
+
           </div>
+
         </div>
 
         <!-- NOMBRE EMPRESA -->
         <div class="w-full flex flex-col justify-start items-stretch pt-6 my-auto h-full">
-          <p class="text-primary3 font-semibold h-full m-auto">
+          <p class="text-primary3 font-semibold h-full my-auto">
             Nombre de la empresa que realiza solicitud
           </p>
           <!-- input -->
@@ -333,6 +364,15 @@
           </div>
         </div>
 
+      </div>
+
+      <div class="mt-8 w-full flex justify-between gap-4">
+
+        <button type="button" (click)="changeActiveStep(2)"
+          class="inline-flex items-center justify-center px-6 py-1 text-white bg-primary4 hover:bg-primary2 focus:bg-primary2 font-medium rounded-full text-[16px] work-sans text-center">
+          Regresar
+        </button>
+        <app-primary-button type="button" class="" (click)="changeActiveStep(3)">Continuar</app-primary-button>
       </div>
 
 

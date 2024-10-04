@@ -30,6 +30,7 @@ import { ApiSFService } from '../../../services/api/apiSF.service';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { BehaviorSubject } from 'rxjs';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { blob } from 'stream/consumers';
 
 @Component({
   selector: 'app-solicitud',
@@ -306,18 +307,6 @@ export default class SolicitudComponent {
     console.log(this.errorStates);
   }
 
-  //Metodo para guardar el archivo seleccionado
-  onFileSelected(file: File[], formControlName: number) {
-    const formControlMap: { [key: number]: FormGroup } = {
-      9: this.formGroup4,
-    };
-
-    const formGroup = formControlMap[formControlName];
-    if (formGroup) {
-      formGroup.patchValue({ [formControlName]: file });
-    }
-  }
-
   //Metodo para mostrar el pdf
   truncatedFileName(fileName: string, maxLength: number = 20): string {
     if (fileName.length <= maxLength) {
@@ -327,17 +316,79 @@ export default class SolicitudComponent {
     return truncated;
   }
 
-  //Metodo para descargar pdf
-  downloadPdf() {
-    fetch(this.pdfUrl, { mode: 'no-cors' })
-      .then((response) => response.blob())
-      .then((blob) => {
-        const link = document.createElement('a');
-        link.href = window.URL.createObjectURL(blob);
-        link.download = this.fileName;
+  // Detectar si el archivo es PDF o XLSX desde Base64
+  detectMimeType(base64: string): string {
+    if (base64.startsWith('JVBERi0')) {
+      return 'application/pdf'; // PDF
+    } else if (base64.startsWith('UEsFB') || base64.startsWith('UEsDB')) {
+      return 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'; // XLSX
+    }
+    return 'application/octet-stream'; // Tipo por defecto si no se detecta
+  }
+
+  // Convertir Base64 a Blob y asignar el tipo MIME detectado
+  convertBase64ToBlob(base64: string): Blob {
+    const byteCharacters = atob(base64);
+    const byteNumbers = new Array(byteCharacters.length);
+
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+
+    const byteArray = new Uint8Array(byteNumbers);
+    const mimeType = this.detectMimeType(base64); // Detectar el tipo MIME
+
+    return new Blob([byteArray], { type: mimeType });
+  }
+
+  getDocumentSize(base64File: string) {
+    if (base64File == null || base64File == '') {
+      return;
+    }
+    const blob = this.convertBase64ToBlob(base64File);
+    const url = URL.createObjectURL(blob);
+
+    return blob.size;
+  }
+
+  // Crear un enlace para descargar o mostrar el archivo
+  displayFile(base64File: string) {
+    if (base64File == null || base64File == '') {
+      return;
+    }
+    const blob = this.convertBase64ToBlob(base64File);
+    const url = URL.createObjectURL(blob);
+
+    return blob;
+  }
+
+  viewDocument(blob: Blob) {
+    let url;
+    if (blob instanceof Blob) {
+      url = URL.createObjectURL(blob);
+    } else {
+      const blobData = this.convertBase64ToBlob(blob);
+      url = URL.createObjectURL(blobData);
+    }
+
+    window.open(url);
+  }
+
+  downloadPDF(blob: Blob, name:string) {
+    let url;
+    if (blob instanceof Blob) {
+      url = URL.createObjectURL(blob);
+    } else {
+      const blobData = this.convertBase64ToBlob(blob);
+      url = URL.createObjectURL(blobData);
+    }
+
+    const link = document.createElement('a');
+        link.href = url;
+        link.download = name;
         link.click();
-      })
-      .catch((error) => console.error('Error al descargar el archivo:', error));
+
+  
   }
 
   //Metodos Modal
