@@ -68,20 +68,20 @@ export default class SolicitudComponent {
   ) {
     this.user = this.authService.currentUser; // Almacena el usuario actual desde el servicio de autenticación
 
-        // TRAER ID DESDE NAVEGACIÓN O LOCALSTORAGE
-        const navigation = this.router.getCurrentNavigation();
-        const state = navigation?.extras.state as { id: string };
-        console.log(state);
-        
-        if (state && state.id) {
-          console.log(state.id);
-          this.setId(state.id); // Establecer nuevo ID
-        } else {
-          const storedId = localStorage.getItem('id');
-          if (storedId) {
-            this.setId(storedId); // Establecer ID desde localStorage
-          }
-        }
+    // TRAER ID DESDE NAVEGACIÓN O LOCALSTORAGE
+    const navigation = this.router.getCurrentNavigation();
+    const state = navigation?.extras.state as { id: string };
+    console.log(state);
+
+    if (state && state.id) {
+      console.log(state.id);
+      this.setId(state.id); // Establecer nuevo ID
+    } else {
+      const storedId = localStorage.getItem('id');
+      if (storedId) {
+        this.setId(storedId); // Establecer ID desde localStorage
+      }
+    }
   }
 
   //LOADING PAGE
@@ -200,8 +200,6 @@ export default class SolicitudComponent {
     this.setId(newId); // Actualiza el ID usando el método setId
   }
 
-  
-
   loadOptions() {
     //GET SOLICITUD
     this.apiSFService.getSolicitudByID(this.idSubject.getValue()).subscribe(
@@ -286,9 +284,7 @@ export default class SolicitudComponent {
       case 1:
         break;
       case 2:
-        if (this.formGroup1) {
-          this.stepperService.setActiveNum(newValue);
-        }
+        this.stepperService.setActiveNum(newValue);
         break;
       case 3:
         if (this.formGroup2) {

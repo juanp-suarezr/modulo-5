@@ -16,6 +16,7 @@ import {
   FormBuilder,
   FormGroup,
   Validators,
+  FormsModule,
   ReactiveFormsModule,
   AbstractControl,
   FormArray,
@@ -463,16 +464,11 @@ export default class FijacionComponent {
 
   // Obtener el FormArray de clases de vehículos
   get idClaseVehiculos(): FormArray {
+    console.log(this.formGroup4);
+    
     return this.formGroup4.get('idClaseVehiculos') as FormArray;
   }
 
-  // Función para crear un nuevo FormGroup para cada clase de vehículo
-  createVehiculoFormGroup(): FormGroup {
-    return this.fb.group({
-      idClaseVehiculo: ['', [Validators.required, NoNegativeGlobal]], // Aquí se puede agregar más validación si es necesario
-      cantidadVehiculos: ['', [Validators.required, Validators.min(1)]],
-    });
-  }
 
   deleteFile(num: number, index?: number) {
     switch (num) {
@@ -577,6 +573,8 @@ export default class FijacionComponent {
       cantidadVehiculos: ['', [Validators.required, Validators.min(1)]],
     });
     this.idClaseVehiculos.push(vehiculoGroup);
+    console.log(this.idClaseVehiculos);
+    
   }
 
   // Eliminar control dinámico cuando se deselecciona una clase
@@ -609,15 +607,12 @@ export default class FijacionComponent {
         .map((option) => option.label)
         .join(', ');
     } else {
-      console.log(this.selectedOptionsClase.map((option) => option.label).join(', '));
       
       return this.selectedOptionsClase.map((option) => option.label).join(', ');
     }
   }
 
   getSelectedLabelsHeaders(): any {
-    
-      console.log(this.selectedOptionsClase.map((option) => option.label).join(', '));
       
       return this.selectedOptionsClase.map((option) => option.label);
     
@@ -1386,12 +1381,15 @@ export default class FijacionComponent {
   // Cambia el header activo
   setActiveHeader(index: number): void {
     this.activeHeader = index;
+    this.cdr.detectChanges();
   }
 
   // Método para enviar los formularios
   onSubmitAllForms() {
     this.ShowLoadingModal = true;
     this.processContractIteration();
+    console.log(this.formGroup4);
+    
 
     if (this.IsvalidOperativo) {
       // Inicializar contratos como un array vacío

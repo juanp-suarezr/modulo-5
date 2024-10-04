@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ApiService {
-  private baseUrl = 'http://48.216.166.9/transversales/datos-maestros/';
+  private baseUrl = environment.MAESTROS;
 
   constructor(private http: HttpClient) {}
 

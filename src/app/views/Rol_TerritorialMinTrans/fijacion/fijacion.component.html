@@ -1085,16 +1085,20 @@
 
                 <!-- Contenedor principal del FormArray -->
                 <div class="w-full md:col-span-2" formArrayName="idClaseVehiculos">
-
+                    <p class="text-primary3 font-semibold h-full">
+                        Cantidad vehículo / contrato*
+                    </p>
                     <!-- Headers dinámicos -->
                     <div class="headers-container flex flex-wrap gap-4 mt-2">
-                        <button *ngFor="let vehiculo of idClaseVehiculos.controls; let i = index"
+                        <button type="button" *ngFor="let vehiculo of idClaseVehiculos.controls; let i = index"
                             (click)="setActiveHeader(i)"
                             [ngClass]="{'active-header': activeHeader === i, 'inactive-header': activeHeader !== i}"
                             class="p-2 text-primary1 border-b-2">
                             {{ getSelectedLabelsHeaders()[i] || 'Clase Vehículo ' + (i + 1) }}
                         </button>
+
                     </div>
+                    
 
                     <!-- Inputs dinámicos basados en el header activo -->
                     <div class="inputs-container mt-2">
@@ -1103,6 +1107,7 @@
 
                             <!-- Input para el número de vehículos -->
                             <div class="mt-2 relative w-full">
+
                                 <input
                                     class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent"
                                     type="number" formControlName="cantidadVehiculos" required
@@ -1129,7 +1134,7 @@
                                     *ngIf="submitted && formGroup4.get('idClaseVehiculos')?.get(activeHeader.toString())?.get('cantidadVehiculos')?.errors?.['required']"
                                     class="text-error">
                                     N° de Vehículos es obligatorio para {{
-                                    getSelectedLabels('idClaseVehiculo')[activeHeader] || 'Clase Vehículo ' +
+                                    getSelectedLabelsHeaders()[activeHeader] || 'Clase Vehículo ' +
                                     (activeHeader + 1) }}
                                 </span>
 
@@ -1137,7 +1142,7 @@
                                     *ngIf="formGroup4.get('idClaseVehiculos')?.get(activeHeader.toString())?.get('cantidadVehiculos')?.hasError('negativeNumber') && (formGroup4.get('idClaseVehiculos')?.get(activeHeader.toString())?.get('cantidadVehiculos')?.touched || submitted)"
                                     class="text-error">
                                     El número de vehículos no puede ser negativo para {{
-                                    getSelectedLabels('idClaseVehiculo')[activeHeader] || 'Clase Vehículo ' +
+                                    getSelectedLabelsHeaders()[activeHeader] || 'Clase Vehículo ' +
                                     (activeHeader + 1) }}
                                 </span>
                             </div>

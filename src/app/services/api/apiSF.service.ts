@@ -1,12 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
+import { environment } from '../../../environments/environment';
+
 
 @Injectable({
   providedIn: 'root',
 })
 export class ApiSFService {
-  private baseUrl = 'http://localhost:9090';
+  private baseUrl = environment.API_URL;
+  private baseUrlRues = environment.RUES;
 
   constructor(private http: HttpClient) {}
   
@@ -77,7 +80,7 @@ export class ApiSFService {
   //get data by nit
   getDataByNIT(nit: string): Observable<any> {
     return this.http.post(
-      `http://104.211.39.160:8000/getConfecamaras`,
+      `${this.baseUrlRues}/getConfecamaras`,
       { document: nit },
       {
         responseType: 'text',
