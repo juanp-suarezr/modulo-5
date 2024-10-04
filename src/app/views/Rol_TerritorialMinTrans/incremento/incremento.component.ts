@@ -26,7 +26,6 @@ import { SelectComponent } from '../../../components/select/select.component';
 import { AlertComponent } from '../../../components/alert/alert.component';
 import { Router } from '@angular/router';
 import { MESES } from '../../../shared/data/meses';
-import { FORMAPAGO } from '../../../shared/data/formapago';
 import { HORAS } from '../../../shared/data/horas';
 import { dateRangeValidator } from '../../../validator/date.validator';
 import { NoNegativeGlobal } from '../../../validator/noNegative.validator';
@@ -337,16 +336,16 @@ export default class IncrementoComponent implements AfterViewInit {
       this.updateDuration();
     });
 
-    this.formGroup3.get('nombreEmpresa')?.disable();
+    this.formGroup1.get('nombreEmpresa')?.disable();
 
-    this.formGroup3
+    this.formGroup1
       .get('nit')
       ?.valueChanges.pipe(
       debounceTime(500),
       distinctUntilChanged(),
       switchMap((value: string) => {
         this.isProcessing = true;
-        this.formGroup3
+        this.formGroup1
           .get('nombreEmpresa')
           ?.setValue('');
         if (value && value.length >= 9) {
@@ -354,7 +353,7 @@ export default class IncrementoComponent implements AfterViewInit {
             catchError((error) => {
               console.error('Error al enviar los datos:', error);
               this.showModalWarning1 = true;
-              this.formGroup3.get('nombreEmpresa')?.enable();
+              this.formGroup1.get('nombreEmpresa')?.enable();
               return of(null); // Retorna null si hay un error
             })
           );
@@ -375,7 +374,7 @@ export default class IncrementoComponent implements AfterViewInit {
               console.log('Empresa activa');
               // Actualizar el campo 'nombreEmpresa'
               this.isProcessing = false;
-              this.formGroup3
+              this.formGroup1
                 .get('nombreEmpresa')
                 ?.setValue(parsedData.registros[0].razonSocialEmpresa);
               console.log(
@@ -397,6 +396,8 @@ export default class IncrementoComponent implements AfterViewInit {
   initializeForm() {
     //Validaciones segun el formulario
     this.formGroup1 = this.fb.group({
+      nombreEmpresa: ['', [Validators.required, NoNegativeGlobal]],
+      nit: ['', [Validators.required, NoNegativeGlobal]],
       1: [null, Validators.required],
       2: [null, Validators.required],
       3: [null, Validators.required],
@@ -418,9 +419,7 @@ export default class IncrementoComponent implements AfterViewInit {
     this.formGroup3 = this.fb.group({
       12: [null, Validators.required],
       capital_social: ['', [Validators.required, NoNegativeGlobal]],
-      patrimonio_liquido: ['', [Validators.required, NoNegativeGlobal]],
-      nombreEmpresa: ['', [Validators.required, NoNegativeGlobal]],
-      nit: ['', [Validators.required, NoNegativeGlobal]],
+      patrimonio_liquido: ['', [Validators.required, NoNegativeGlobal]]
     });
 
     this.formGroup4 = this.fb.group(
@@ -560,7 +559,7 @@ export default class IncrementoComponent implements AfterViewInit {
             }> = [];
 
             // Rellenar el array documentos
-            this.formGroup1.value[2].forEach((item: any) => {
+            this.formGroup1.value[1].forEach((item: any) => {
               documentos.push({
                 nit: this.nit,
                 documento: item,
@@ -572,6 +571,8 @@ export default class IncrementoComponent implements AfterViewInit {
                 fechaSolicitud: new Date(),
                 territorial: 'Medellin',
                 idCategoriaSolicitud: 150,
+                nombreEmpresa: this.formGroup1.get('nombreEmpresa')?.value,
+                nit: this.formGroup1.get('nit')?.value,
                 documentos: documentos,
                 planRodamiento: this.formGroup1.value[2][0],
                 estructuraCostosBasicos: this.formGroup1.value[3][0],
@@ -742,9 +743,7 @@ export default class IncrementoComponent implements AfterViewInit {
                   territorial: 'Medellin',
                   idCategoriaSolicitud: 150,
                   capitalSocial: this.formGroup3.get('capital_social')?.value,
-                  patrimonioLiquido: this.formGroup3.get('patrimonio_liquido')?.value,
-                  nombreEmpresa: this.formGroup3.get('nombreEmpresa')?.value,
-                  nit: this.formGroup3.get('nit')?.value,
+                  patrimonioLiquido: this.formGroup3.get('patrimonio_liquido')?.value
                 };
 
                 this.apiSFService.createSolicitud(data1).subscribe(
