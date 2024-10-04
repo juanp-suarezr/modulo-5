@@ -26,6 +26,78 @@
         <!-- contenido 1 -->
         <div class="content1 lg:grid lg:grid-cols-2 md:gap-x-24 lg:gap-x-36 md:flex md:flex-wrap items-center h-full">
 
+          <!-- input 3 -->
+          <div class="w-full flex flex-col justify-center pt-6">
+
+            <p class="text-primary3 font-semibold">
+              NIT de empresa que realiza la solicitud*
+            </p>
+
+            <!-- input -->
+            <div class="mt-2 relative w-full">
+              <input
+                class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent"
+                type="text" formControlName="nit" required placeholder="Ingrese NIT">
+              <div class="w-full relative">
+                <!-- Icono de error (rojo) -->
+                <span *ngIf="formGroup1.get('nit')?.invalid && (formGroup1.get('nit')?.touched || submitted)"
+                      class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
+                            <span class="pi pi-exclamation-circle text-error text-[24px]"></span>
+                        </span>
+
+                <!-- Icono de éxito (verde) -->
+                <span *ngIf="formGroup1.get('nit')?.valid && (formGroup1.get('nit')?.touched || submitted)"
+                      class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
+                            <span class="pi pi-check-circle text-success text-[24px]"></span>
+                        </span>
+              </div>
+              <span *ngIf="submitted && formGroup1.get('nit')?.errors?.['required']" class="text-error">
+                        NIT de empresa es obligatorio
+                    </span>
+            </div>
+
+          </div>
+
+          <!-- input 1 -->
+          <div class="w-full flex flex-col justify-center pt-6">
+
+            <p class="text-primary3 font-semibold">
+              Nombre de empresa que realiza la solicitud*
+            </p>
+
+            <!-- input -->
+            <div class="mt-2 relative w-full">
+              <input
+                class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent disabled:bg-secondary3 disabled:border-secondary2 disabled:text-secondary2 disabled:font-bold"
+                type="text" formControlName="nombreEmpresa" required placeholder="Nombre empresa">
+              <div class="w-full relative">
+                <!-- Icono de error (rojo) -->
+                <span
+                  *ngIf="formGroup1.get('nombreEmpresa')?.invalid && (formGroup1.get('nombreEmpresa')?.touched || submitted)"
+                  class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
+                            <span class="pi pi-exclamation-circle text-error text-[24px]"></span>
+                        </span>
+
+                <!-- Icono de éxito (verde) -->
+                <span
+                  *ngIf="formGroup1.get('nombreEmpresa')?.valid && (formGroup1.get('nombreEmpresa')?.touched || submitted)"
+                  class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
+                            <span class="pi pi-check-circle text-success text-[24px]"></span>
+                </span>
+
+              </div>
+              <span *ngIf="submitted && formGroup1.get('nombreEmpresa')?.errors?.['required']" class="text-error">
+                        Nombre de empresa es obligatorio
+              </span>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- contenido 1 -->
+        <div class="content1 lg:grid lg:grid-cols-2 md:gap-x-24 lg:gap-x-36 md:flex md:flex-wrap items-center h-full">
+
           <!-- cargue 1 -->
           <div class="w-full flex flex-col justify-center items-start pt-6 my-auto mb-2 h-full">
 
@@ -427,80 +499,7 @@
 
           </div>
 
-          <!-- input 3 -->
-          <div class="w-full flex flex-col justify-center pt-6">
-
-            <p class="text-primary3 font-semibold">
-              NIT de empresa que realiza la solicitud*
-            </p>
-
-            <!-- input -->
-            <div class="mt-2 relative w-full">
-              <input
-                class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent"
-                type="text" formControlName="nit" required placeholder="Ingrese NIT">
-              <div class="w-full relative">
-                <!-- Icono de error (rojo) -->
-                <span *ngIf="formGroup3.get('nit')?.invalid && (formGroup3.get('nit')?.touched || submitted)"
-                      class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
-                            <span class="pi pi-exclamation-circle text-error text-[24px]"></span>
-                        </span>
-
-                <!-- Icono de éxito (verde) -->
-                <span *ngIf="formGroup3.get('nit')?.valid && (formGroup3.get('nit')?.touched || submitted)"
-                      class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
-                            <span class="pi pi-check-circle text-success text-[24px]"></span>
-                        </span>
-              </div>
-              <span *ngIf="submitted && formGroup3.get('nit')?.errors?.['required']" class="text-error">
-                        NIT de empresa es obligatorio
-                    </span>
-            </div>
-
-          </div>
-
         </div>
-
-        <!-- contenido 2 -->
-        <div class="content2 md:grid sm:grid-cols-2 md:gap-x-36 md:flex items-center h-full pt-6">
-
-          <!-- input 1 -->
-          <div class="w-full flex flex-col justify-center pt-6">
-
-            <p class="text-primary3 font-semibold">
-              Nombre de empresa que realiza la solicitud*
-            </p>
-
-            <!-- input -->
-            <div class="mt-2 relative w-full">
-              <input
-                class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent disabled:bg-secondary3 disabled:border-secondary2 disabled:text-secondary2 disabled:font-bold"
-                type="text" formControlName="nombreEmpresa" required placeholder="Nombre empresa">
-              <div class="w-full relative">
-                <!-- Icono de error (rojo) -->
-                <span
-                  *ngIf="formGroup3.get('nombreEmpresa')?.invalid && (formGroup3.get('nombreEmpresa')?.touched || submitted)"
-                  class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
-                            <span class="pi pi-exclamation-circle text-error text-[24px]"></span>
-                        </span>
-
-                <!-- Icono de éxito (verde) -->
-                <span
-                  *ngIf="formGroup3.get('nombreEmpresa')?.valid && (formGroup3.get('nombreEmpresa')?.touched || submitted)"
-                  class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
-                            <span class="pi pi-check-circle text-success text-[24px]"></span>
-                </span>
-
-              </div>
-              <span *ngIf="submitted && formGroup3.get('nombreEmpresa')?.errors?.['required']" class="text-error">
-                        Nombre de empresa es obligatorio
-              </span>
-            </div>
-
-          </div>
-
-        </div>
-
 
         <div class="mt-6 w-full flex justify-between">
           <button type="button" (click)="changeActiveStep(2, false, true)"
