@@ -32,7 +32,7 @@ export class ApiSFService {
     // Agregar parámetros de búsqueda si existen
     if (search) {
       const searchParam = !isNaN(+search)
-        ?  search.length > 8 ? `nit=${search}` :`id=${search}`
+        ?  search.length > 7 ? `nit=${search}` :`id=${search}`
         : `nombreEmpresa=${search}`;
       params.push(searchParam);
     }

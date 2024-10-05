@@ -263,6 +263,15 @@ export default class DashboardComponent {
       );
   }
 
+  onKeyDown(event: KeyboardEvent) {
+    if (event.key === 'Enter') {
+      console.log(event.key);
+      
+      this.applyFilters();
+    }
+  }
+  
+
   // Método para aplicar filtros
   applyFilters() {
     console.log('Aplicando filtros:', {

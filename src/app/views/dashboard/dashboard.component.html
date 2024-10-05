@@ -22,7 +22,7 @@
         <!-- Input de búsqueda -->
         <div class="w-full">
           <label for="search" class="text-primary3 font-medium h-full text-xs">Buscar</label>
-          <input [(ngModel)]="searchQuery" (keydown)="applyFilters()"
+          <input [(ngModel)]="searchQuery" (keydown)="onKeyDown($event)"
             class="mt-1 shadow-sm rounded-md w-full p-2 border-2 border-secondary1 focus:outline-none focus:border-primary1 bg-transparent"
             type="text" placeholder="Buscar por ID, NIT o empresa solicitante">
         </div>
@@ -59,7 +59,7 @@
           Limpiar Filtros
         </button>
 
-        <app-primary-button class="" type="button" (click)="applyFilters()" (keydown)="applyFilters()">Aplicar
+        <app-primary-button class="" type="button" (click)="applyFilters()" (keydown)="onKeyDown($event)">Aplicar
           Filtros</app-primary-button>
       </div>
     </div>
