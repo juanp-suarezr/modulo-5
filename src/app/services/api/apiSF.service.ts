@@ -69,7 +69,12 @@ export class ApiSFService {
 
   //GET solicitud-contratos by ID
   getContratosByID(id: string): Observable<any> {
-    return this.http.get(`${this.baseUrl}/documentos/${id}`);
+    return this.http.get(`${this.baseUrl}/api/detalle-contratos/${id}`);
+  }
+
+  //GET solicitud-contratos by ID SOLICITUD
+  getContratosByIDSolicitud(id: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}/api/detalle-contratos/by-solicitud/${id}`);
   }
 
   //validator nit
