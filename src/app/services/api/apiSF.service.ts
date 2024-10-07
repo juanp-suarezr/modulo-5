@@ -147,6 +147,11 @@ export class ApiSFService {
     });
   }
   
-  
+  // PUT Radicado entrada
+  RadicadoSalida(id: string, data2: any): Observable<any> {
+    return this.http.put(`${this.baseUrl}/api/formulario/radicado-salida/${id}`, data2, {
+      responseType: 'text',
+    });
+  }
 
 }

@@ -122,6 +122,20 @@ export default class DashboardComponent {
           ];
         }
       });
+
+    if (
+      this.user.roles.some((role: any) =>
+        role.roleName.includes('ROLE_ESCRITURA_GESDOC')
+      )
+    ) {
+      this.filterStatus = 'Asignar';
+    } else if (
+      this.user.roles.some((role: any) =>
+        role.roleName.includes('ROLE_SUPERTRANSPORTE')
+      )
+    ) {
+      // this.filterStatus = '124';
+    }
   }
 
   onPageChange(page: number) {

@@ -86,6 +86,10 @@ export default class SolicitudComponent {
     }
   }
 
+  //forms
+  submitted: boolean = false;
+  //identificador de actualización de file
+  isActuFile: [number] = [-1];
   //estado requerimiento
   smlmmv: number = 1300000;
 
@@ -123,8 +127,11 @@ export default class SolicitudComponent {
   //respuesta clase vehiculos
   claseVehiculos: any;
 
-  //Control para mostrar el modal intermedio
+  //Control para mostrar modales
   showModal: boolean = false;
+  showModal1: boolean = false;
+  ShowLoadingModal: boolean = false;
+  showErrorModal: boolean = false;
 
   //Menu left
   infoMenu = [
@@ -162,6 +169,18 @@ export default class SolicitudComponent {
     },
   ];
 
+  //Menu stepper1
+  infoStepper1 = [
+    {
+      num: 1,
+      info: 'Visualizar información operativo',
+    },
+    {
+      num: 2,
+      info: 'Cargue de documentación',
+    },
+  ];
+
   //Props o datos para input upload
   dataClass = {
     textSize: 'xs',
@@ -187,6 +206,13 @@ export default class SolicitudComponent {
     this.stepperService.activeStep$.subscribe((step) => {
       this.activeStep = step;
       console.log('Active step:', step);
+    });
+    this.formGroup1 = this.fb.group({
+      1: [null, Validators.required],
+    });
+    this.formGroup2 = this.fb.group({
+      2: [null, Validators.required],
+      'rentaNeta': ['', Validators.required],
     });
 
     //Suscribirse al servicio de manejo de errores
@@ -351,6 +377,56 @@ export default class SolicitudComponent {
     return !isNaN(Date.parse(value));
   }
 
+  //validate error
+  validateFormGroup(
+    formGroup: FormGroup,
+    errorStates: { [key: number]: boolean }
+  ): boolean {
+    let isValid = true;
+    for (const key in formGroup.controls) {
+      if (formGroup.controls.hasOwnProperty(key)) {
+        const control = formGroup.controls[key];
+        if (!control.value || control.invalid) {
+          const errorKey = parseInt(key, 10); // Convierte la clave a número
+          errorStates[errorKey] = true;
+          isValid = false;
+        }
+      }
+    }
+
+    this.errorService.updateErrorStates(errorStates);
+    return isValid;
+  }
+
+  convertFilesToBase64(files: File[]): Promise<string[]> {
+    return new Promise((resolve, reject) => {
+      const base64Array: string[] = [];
+
+      files.forEach((file, index) => {
+        const reader = new FileReader();
+
+        reader.onload = (event: any) => {
+          // Extraer solo la parte del código base64 sin el prefijo 'data:application/pdf;base64,'
+          const base64String = event.target.result.split(',')[1];
+          base64Array.push(base64String);
+
+          // Si ya hemos procesado todos los archivos, resolvemos la promesa
+          if (base64Array.length === files.length) {
+            resolve(base64Array);
+          }
+        };
+
+        reader.onerror = () => {
+          reject(
+            new Error(`Error al convertir el archivo ${file.name} a base64.`)
+          );
+        };
+
+        reader.readAsDataURL(file);
+      });
+    });
+  }
+
   //METODO PARA SEMAFORO
   diferencias(): number {
     if (this.solicitud) {
@@ -390,30 +466,63 @@ export default class SolicitudComponent {
     return 'gray'; // Default para valores inesperados
   }
 
+  //OBTENER MEDIDOR (ALTO, MEDIO,BAJO)
+  getMedidor(porcentaje:number, name:string): string {
+    let text = '';
+    switch (name) {
+      case 'renta':
+        if (porcentaje > 3.1) {
+          text = 'Bajo'
+        } else if(porcentaje > 2.1 || porcentaje <= 3.1) {
+          text = 'Medio'
+        } else {
+          text = 'Alto'
+        }
+        break;
+    
+      default:
+        break;
+    }
+    return text;
+  }
+
   //Metodo para cambiar el valor del menuleft
-  changeActiveNum(newValue: string) {
-    this.stateService.setActiveNum(newValue);
+  changeActiveNum(newValue: string, saved?: any) {
+    if (this.solicitud.formulario.radicadoSalida) {
+      saved = true;
+    }
+    if (newValue == '2') {
+      if (saved) {
+        this.stateService.setActiveNum(newValue);
+      }
+    } else if(newValue == '3') {
+      if (saved && this.solicitud.formulario.excelModeloTransporte) {
+        this.stateService.setActiveNum(newValue);
+      }
+      
+    } else {
+      this.stateService.setActiveNum(newValue);
+    }
   }
 
   //Metodo para cambiar el valor del stepper
   changeActiveStep(newValue: number) {
     switch (newValue) {
       case 1:
+        this.stepperService.setActiveNum(newValue);
         break;
       case 2:
         this.stepperService.setActiveNum(newValue);
         break;
       case 3:
-        if (this.formGroup2) {
-          this.changeActiveNum('1');
-          this.stepperService.setActiveNum(newValue);
-        }
+        this.stepperService.setActiveNum(newValue);
         break;
       case 4:
-        if (this.formGroup3) {
-          this.changeActiveNum('2');
-          this.stepperService.setActiveNum(newValue);
-        }
+        this.stepperService.setActiveNum(newValue);
+        break;
+      case 5:
+        this.changeActiveNum('1');
+        this.stepperService.setActiveNum(1);
         break;
 
       default:
@@ -421,6 +530,54 @@ export default class SolicitudComponent {
     }
 
     console.log(this.errorStates);
+  }
+
+  //Metodo para cambiar el valor del stepper 1
+  changeActiveStep1(newValue: number) {
+    switch (newValue) {
+      case 1:
+        this.stepperService.setActiveNum(newValue);
+        break;
+      case 2:
+        this.stepperService.setActiveNum(newValue);
+        break;
+      case 3:
+        this.stepperService.setActiveNum(1);
+        break;
+
+      default:
+        break;
+    }
+
+    console.log(this.errorStates);
+  }
+
+  //metodo para guardar el archivo seleccionado
+  onFileSelected(file: File[], formControlName: number) {
+    this.ActuFileGuardado(formControlName);
+
+    this.convertFilesToBase64(file)
+      .then((base64Array) => {
+        const formControlMap: { [key: number]: FormGroup } = {
+          1: this.formGroup1,
+          2: this.formGroup2,
+        };
+
+        const formGroup = formControlMap[formControlName];
+
+        if (formGroup) {
+          // Parchamos el form con los archivos en base64
+          formGroup.patchValue({ [formControlName]: base64Array });
+        }
+      })
+      .catch((error) => {
+        console.error('Error al convertir los archivos:', error);
+      });
+  }
+
+  //Actualizar archivos guardados
+  ActuFileGuardado(num: number) {
+    this.isActuFile.push(num);
   }
 
   //Metodo para mostrar el pdf
@@ -575,5 +732,76 @@ export default class SolicitudComponent {
     this.router.navigate(['/dashboard']).then(() => {
       location.reload();
     });
+  }
+
+  //Metodo para guardar el formulario
+  onSubmitAllForms() {
+    if (this.validateFormGroup(this.formGroup1, this.errorStates)) {
+      this.ShowLoadingModal = true; // Mostrar modal
+      console.log(this.formGroup1.get('1')?.value);
+      console.log(this.formGroup1);
+
+      const data = {
+        radicadoSalida: this.formGroup1.get('1')?.value[0],
+      };
+      // put paso 2 actualizar - cargue 2
+      this.apiSFService
+        .RadicadoSalida(this.solicitud.formulario.id, data)
+        .subscribe(
+          (response) => {
+            // Aquí puedes manejar la respuesta, por ejemplo:
+            this.showModal = true;
+
+            console.log('Datos enviados exitosamente:', response);
+          },
+          (error) => {
+            this.ShowLoadingModal = false;
+            this.showErrorModal = true;
+            // Manejo del error
+            console.error('Error al enviar los datos:', error);
+          }
+        );
+    } else {
+      this.ShowLoadingModal = false; // Mostrar modal
+      this.submitted = true;
+      this.formGroup1.markAllAsTouched();
+    }
+  }
+
+  SaveInfo() {
+    if (this.validateFormGroup(this.formGroup2, this.errorStates)) {
+      this.ShowLoadingModal = true; // Mostrar modal
+      console.log(this.formGroup1.get('2')?.value);
+      console.log(this.formGroup1);
+
+      const data = {
+        excelModeloTransporte: this.formGroup2.get('2')?.value[0],
+        rentaNeta: '',
+        solidez: '',
+        liquidez: '',
+        rentaOperacional: '',
+      };
+      // put paso 2 actualizar - cargue 2
+      this.apiSFService
+        .RadicadoSalida(this.solicitud.formulario.id, data)
+        .subscribe(
+          (response) => {
+            // Aquí puedes manejar la respuesta, por ejemplo:
+            this.showModal1 = true;
+
+            console.log('Datos enviados exitosamente:', response);
+          },
+          (error) => {
+            this.ShowLoadingModal = false;
+            this.showErrorModal = true;
+            // Manejo del error
+            console.error('Error al enviar los datos:', error);
+          }
+        );
+    } else {
+      this.ShowLoadingModal = false; // Mostrar modal
+      this.submitted = true;
+      this.formGroup1.markAllAsTouched();
+    }
   }
 }

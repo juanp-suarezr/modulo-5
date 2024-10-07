@@ -1,5 +1,5 @@
 <div class="sm:grid sm:grid-cols-10 gap-4 pb-16" xmlns="http://www.w3.org/1999/html"
-  *ngIf="user.roles[0].roleName == 'ROLE_ESCRITURA_MIN'">
+  *ngIf="user.roles[0].roleName == 'ROLE_SUPERTRANSPORTE'">
 
   <div class="md:col-span-2 sm:col-span-3 w-auto sm:mt-16 mt-12">
     <app-left-nav [data]="infoMenu" active="{{activeNum}}" (changed)="changeActiveNum($event)"></app-left-nav>
@@ -847,7 +847,7 @@
 
       <div class="mt-8 w-full flex justify-between gap-4">
 
-        <button type="button" (click)="changeActiveStep(2)"
+        <button type="button" (click)="changeActiveStep(1)"
           class="inline-flex items-center justify-center px-6 py-1 text-white bg-primary4 hover:bg-primary2 focus:bg-primary2 font-medium rounded-full text-[16px] work-sans text-center">
           Regresar
         </button>
@@ -961,7 +961,7 @@
 
       <div class="mt-8 w-full flex justify-between gap-4">
 
-        <button type="button" (click)="changeActiveStep(3)"
+        <button type="button" (click)="changeActiveStep(2)"
           class="inline-flex items-center justify-center px-6 py-1 text-white bg-primary4 hover:bg-primary2 focus:bg-primary2 font-medium rounded-full text-[16px] work-sans text-center">
           Regresar
         </button>
@@ -970,9 +970,512 @@
 
 
     </div>
+    <!-- PASO 4 -->
+    <div class="px-4 md:pl-16 md:pe-16 mt-6 active1 mb-6" *ngIf="activeStep == 4">
+
+      <!-- formulario 1 -->
+      <div class="px-4 md:pl-12 md:pe-12 mt-6 active1 mb-6">
+
+        <!-- contenido 1 -->
+        <div class="content1 md:grid md:grid-cols-7 md:gap-x-4 md:flex items-center h-full mb-4">
+
+          <!-- documento 1 -->
+          <div class="w-full flex flex-col justify-center items-start h-full md:col-span-3">
+
+            <p class="text-primary3 font-semibold pt-4">
+              Radicado de entrada*
+            </p>
+
+            <div class="w-full h-full flex md:gap-4 lg:gap-6 mt-4">
+
+              <div class="flex items-center cursor-pointer"
+                (click)="viewDocument(solicitud?.formulario.radicadoEntrada)">
+
+                <!-- Archivos Visibles -->
+                <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
+
+                  <!-- document -->
+                  <div class="w-auto m-auto">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto" viewBox="0 0 384 512">
+                      <path
+                        d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z" />
+                    </svg>
+                  </div>
+
+                  <!-- texto info file -->
+                  <div class="px-2 w-auto">
+                    <p class="truncate text-[8px] font-semibold">
+                      Radicado entrada
+                    </p>
+                    <p class="truncate text-[8px]">{{ (getDocumentSize(solicitud?.formulario.radicadoEntrada)
+                      ?? 0 /
+                      1024).toFixed(2) }} Kb</p>
+                  </div>
+
+                </div>
+
+              </div>
+              <div class="inline-flex m-auto w-full">
+                <button
+                  class="inline-flex items-center justify-center px-2 py-1 text-white bg-primary2 hover:bg-primary1 font-medium rounded-full text-[9px] work-sans text-center disabled:bg-primary4"
+                  (click)="downloadPDF(solicitud?.formulario.radicadoEntrada, 'radicado_entrada')">
+                  <span class="govco-download me-2 py-2 h-[70%] m-auto"></span> Descargar archivo adjunto</button>
+              </div>
 
 
 
+            </div>
+
+          </div>
+          <!-- radicado info -->
+          <div class="w-full p-0 flex flex-col justify-start items-strech h-full md:col-span-4">
+            <div class="w-full md:flex gap-4 mt-4">
+              <!-- input 2 -->
+              <div class="w-full flex flex-col items-start my-auto h-full">
+
+                <p class="text-primary3 font-semibold">
+                  Fecha de radicado*
+                </p>
+
+                <!-- input -->
+                <div class="mt-2 relative w-full h-full flex items-center">
+                  <div
+                    class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border focus:outline-none focus:border-primary1 bg-secondary3 border-secondary2 text-primary3 flex items-center justify-center">
+                    {{ formatField(solicitud?.formulario.fechaRadicado) }}
+                  </div>
+                </div>
+              </div>
+
+              <!-- input 3 -->
+              <div class="w-full flex flex-col items-start my-auto h-full">
+
+                <p class="text-primary3 font-semibold">
+                  Número de radicado*
+                </p>
+                <!-- input -->
+                <div class="mt-2 relative w-full h-full flex items-center">
+                  <div
+                    class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border focus:outline-none focus:border-primary1 bg-secondary3 border-secondary2 text-primary3 flex items-center justify-center">
+                    {{ solicitud?.formulario.numeroRadicado }}
+                  </div>
+                </div>
+
+
+              </div>
+            </div>
+
+          </div>
+
+
+        </div>
+
+      </div>
+      <!-- botones -->
+      <div class="mt-8 w-full flex justify-between gap-4">
+
+        <button type="button" (click)="changeActiveStep(3)"
+          class="inline-flex items-center justify-center px-6 py-1 text-white bg-primary4 hover:bg-primary2 focus:bg-primary2 font-medium rounded-full text-[16px] work-sans text-center">
+          Regresar
+        </button>
+        <app-primary-button type="button" class="" (click)="changeActiveStep(5)">Continuar</app-primary-button>
+      </div>
+
+    </div>
+
+
+
+  </div>
+
+  <!-- solicitud operativo -->
+  <div class="md:col-span-8 sm:col-span-7 w-auto sm:mt-10 mt-4 md:px-8 px-2"
+    *ngIf="activeNum == '1' && loadingPage == false">
+
+    <h3 class="text-primary1 !font-bold">Solicitud ID {{solicitud?.formulario.id}}</h3>
+
+    <!-- sttepper -->
+    <div class="mt-4 w-full inline-flex justify-center">
+      <app-sttepper [dataStep]="infoStepper1"></app-sttepper>
+    </div>
+
+    <div class="w-full paso1 mb-6" *ngIf="activeStep == 1">
+      <!-- flecha izquierda -->
+      <div *ngIf="currentContractIndex > 0" (click)="prevContract()"
+        class="arrow-left flex items-center justify-center">
+        <i class="pi pi-chevron-left text-primary3 text-2xl"></i>
+      </div>
+
+      <div class="px-4 md:pl-16 md:pe-16 mt-6 active1 mb-6">
+        <div *ngIf="solicitud?.contratos[currentContractIndex]"
+          class="md:grid sm:grid-cols-2 md:grid-cols-3 md:gap-x-24 md:flex items-center h-full">
+
+          <!-- consecutivo -->
+          <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+            <p class="text-primary3 font-semibold h-full m-auto">
+              Consecutivo
+            </p>
+            <p class="text-primary3 font-normal h-full m-auto">
+              contrato_{{ currentContractIndex+1 }}_{{ solicitud?.formulario.nit
+              }}_{{solicitud?.formulario.nombreEmpresa}}
+            </p>
+          </div>
+          <!-- numero del contrato -->
+          <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+            <p class="text-primary3 font-semibold h-full m-auto">
+              N° de contrato
+            </p>
+
+            <!-- input -->
+            <div class="mt-2 relative w-full h-full flex items-center">
+              <div
+                class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border focus:outline-none focus:border-primary1 bg-secondary3 border-secondary2 text-primary3 flex items-center justify-center">
+                {{ solicitud?.contratos[currentContractIndex]?.detalleContrato.numeroContrato }}
+              </div>
+            </div>
+          </div>
+          <!-- contratante -->
+          <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+            <p class="text-primary3 font-semibold h-full m-auto">
+              Contratante
+            </p>
+
+            <!-- input -->
+            <div class="mt-2 relative w-full h-full flex items-center">
+              <div
+                class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border focus:outline-none focus:border-primary1 bg-secondary3 border-secondary2 text-primary3 flex items-center justify-center">
+                {{ solicitud?.contratos[currentContractIndex]?.detalleContrato.contratante }}
+              </div>
+            </div>
+          </div>
+          <!-- Fecha inicio -->
+          <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+            <p class="text-primary3 font-semibold h-full m-auto">
+              Fecha de inicio
+            </p>
+
+            <!-- input -->
+            <div class="mt-2 relative w-full h-full flex items-center">
+              <div
+                class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border focus:outline-none focus:border-primary1 bg-secondary3 border-secondary2 text-primary3 flex items-center justify-center">
+                {{ formatField(solicitud?.contratos[currentContractIndex]?.detalleContrato.fechaInicio) }}
+              </div>
+            </div>
+          </div>
+          <!-- Fecha Fin -->
+          <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+            <p class="text-primary3 font-semibold h-full m-auto">
+              Fecha de terminación
+            </p>
+
+            <!-- input -->
+            <div class="mt-2 relative w-full h-full flex items-center">
+              <div
+                class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border focus:outline-none focus:border-primary1 bg-secondary3 border-secondary2 text-primary3 flex items-center justify-center">
+                {{ formatField(solicitud?.contratos[currentContractIndex]?.detalleContrato.fechaFin) }}
+              </div>
+            </div>
+          </div>
+          <!--  Duración en meses -->
+          <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+            <p class="text-primary3 font-semibold h-full m-auto">
+              Duración en meses
+            </p>
+
+            <!-- input -->
+            <div class="mt-2 relative w-full h-full flex items-center">
+              <div
+                class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border focus:outline-none focus:border-primary1 bg-secondary3 border-secondary2 text-primary3 flex items-center justify-center">
+                {{ formatMonthsAndDays(solicitud?.contratos[currentContractIndex]?.detalleContrato.duracionMeses) }}
+              </div>
+            </div>
+          </div>
+          <!-- Clase de vehículo y cantidad -->
+          <div class="w-full flex flex-col justify-center items-strech pt-6 my-auto h-full sm:col-span-2">
+            <p class="text-primary3 font-semibold h-full m-auto">
+              Clase de vehículo - cantidad / contrato
+            </p>
+
+            <!-- Headers dinámicos -->
+            <div class="headers-container flex flex-wrap gap-4 mt-2">
+              <button type="button"
+                *ngFor="let vehiculo of solicitud?.contratos[currentContractIndex]?.vehiculos; let i = index"
+                (click)="setActiveHeader(i)"
+                [ngClass]="{'active-header': activeHeader === i, 'inactive-header': activeHeader !== i}"
+                class="p-2 text-primary1 border-b-2">
+                {{ getClaseVehiculos(vehiculo.idClaseVehiculo) || 'Clase Vehículo ' + (i + 1) }}
+              </button>
+
+            </div>
+
+
+            <!-- Inputs dinámicos basados en el header activo -->
+            <div *ngIf="activeHeader != null" class="inputs-container mt-1">
+              <div *ngFor="let vehiculo of solicitud?.contratos[currentContractIndex]?.vehiculos; let i = index"
+                [ngClass]="{'hidden': activeHeader != i}" class="w-full items-start pt-2 my-auto h-full">
+
+                <!-- Input para el número de vehículos -->
+                <!-- input -->
+                <div class="relative w-full h-full">
+                  <div
+                    class="shadow-sm rounded-md min-w-[200px] w-full p-[10px] h-[40px] border focus:outline-none focus:border-primary1 bg-secondary3 border-secondary2 text-primary3 flex items-center justify-center">
+                    {{ vehiculo.cantidadVehiculos }}
+                  </div>
+                </div>
+
+
+              </div>
+            </div>
+
+          </div>
+          <!-- Cantidad total -->
+          <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+            <p class="text-primary3 font-semibold h-full m-auto">
+              Cantidad total vehículos / contrato
+            </p>
+
+            <!-- input -->
+            <div class="mt-2 relative w-full h-full flex items-center">
+              <div
+                class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border focus:outline-none focus:border-primary1 bg-secondary3 border-secondary2 text-primary3 flex items-center justify-center">
+                {{ solicitud?.contratos[currentContractIndex]?.detalleContrato.numeroVehiculos }}
+              </div>
+            </div>
+          </div>
+          <!-- Valor del Contrato -->
+          <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+            <p class="text-primary3 font-semibold h-full m-auto">
+              Valor del Contrato
+            </p>
+
+            <!-- input -->
+            <div class="mt-2 relative w-full h-full flex items-center">
+              <div
+                class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border focus:outline-none focus:border-primary1 bg-secondary3 border-secondary2 text-primary3 flex items-center justify-center">
+                {{ formatCurrency(solicitud?.contratos[currentContractIndex]?.detalleContrato.valorContrato) }}
+              </div>
+            </div>
+          </div>
+          <!-- Forma de pago -->
+          <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+            <p class="text-primary3 font-semibold h-full m-auto">
+              Forma de pago
+            </p>
+
+            <!-- input -->
+            <div class="mt-2 relative w-full h-full flex items-center">
+              <div
+                class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border focus:outline-none focus:border-primary1 bg-secondary3 border-secondary2 text-primary3 flex items-center justify-center">
+                {{
+                getFormasPagos(solicitud?.contratos[currentContractIndex]?.detalleContrato.idFormaPago)
+                || 'forma de pago invalida'
+                }}
+              </div>
+            </div>
+          </div>
+          <!-- Áreas de Operación -->
+          <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+            <p class="text-primary3 font-semibold h-full m-auto">
+              Áreas de Operación
+            </p>
+
+            <!-- input -->
+            <div class="mt-2 relative w-full h-full flex items-center">
+              <div
+                class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border focus:outline-none focus:border-primary1 bg-secondary3 border-secondary2 text-primary3 flex items-center justify-center">
+                {{
+                getAreasOperacion(solicitud?.contratos[currentContractIndex]?.areasOperacion)
+                || 'Areas operación invalidas'
+                }}
+              </div>
+            </div>
+          </div>
+          <!-- Tiempos estimados (En horas)-Disponibilidad de Vehículo -->
+          <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+            <p class="text-primary3 font-semibold h-full m-auto">
+              Tiempos estimados (En horas)-Disponibilidad de Vehículo
+            </p>
+
+            <!-- input -->
+            <div class="mt-2 relative w-full h-full flex items-center">
+              <div
+                class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border focus:outline-none focus:border-primary1 bg-secondary3 border-secondary2 text-primary3 flex items-center justify-center">
+                {{ solicitud?.contratos[currentContractIndex]?.detalleContrato.disponibilidadVehiculosEstimada }} horas
+              </div>
+            </div>
+          </div>
+
+
+
+        </div>
+
+        <div class="mt-6 w-full flex justify-end">
+          <app-primary-button type="button" (click)="changeActiveStep1(2)">continuar Cargue de
+            documentación</app-primary-button>
+        </div>
+      </div>
+
+      <!-- flecha derecha -->
+      <div *ngIf="currentContractIndex < totalContracts - 1" (click)="nextContract()"
+        class="arrow-right flex items-center justify-center">
+        <i class="pi pi-chevron-right text-primary3 text-2xl"></i>
+      </div>
+    </div>
+
+    <div class="w-full paso2 mb-6" *ngIf="activeStep == 2">
+      <!-- formulario 1 -->
+      <form [formGroup]="formGroup1" class="px-4 md:pl-12 md:pe-12 mt-6 active1 mb-6">
+
+        <!-- contenido 1 -->
+        <div class="content1 flex items-center h-full mb-4">
+
+          <!-- documento 1 -->
+          <div class="w-full flex flex-col justify-center items-start h-full">
+            <p class="font-bold">Cargue de documentación*</p>
+            <p class="text-primary4 font-[500] pt-4">Los campos marcados con * son obligatorios</p>
+
+            <p class="text-primary3 font-semibold pt-4">
+              Radicado de salida*
+            </p>
+
+            <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" [maxFiles]="1" mimes=".pdf"
+              [error]="errorStates[1]" (fileSelected)="onFileSelected($event, 1)"></app-file-upload>
+
+          </div>
+
+
+
+        </div>
+
+        <div class="mt-4 w-full relative flex justify-center">
+          <app-primary-button (click)="onSubmitAllForms()">Guardar</app-primary-button>
+        </div>
+
+      </form>
+    </div>
+
+  </div>
+  <!-- solicitud financiera -->
+  <div class="md:col-span-8 sm:col-span-7 w-auto sm:mt-10 mt-4 md:px-8 px-2"
+    *ngIf="activeNum == '2' && loadingPage == false">
+    <h3 class="text-primary1 !font-bold">Solicitud ID {{solicitud?.formulario.id}}</h3>
+    <!-- PASO 1 -->
+    <form [formGroup]="formGroup2" class="px-4 md:pl-16 md:pe-16 mt-6 active1 mb-6">
+      <p class="text-primary4 font-[500]">Los campos marcados con * son obligatorios</p>
+
+      <!-- contenido 1 -->
+      <div class="content1 md:grid sm:grid-cols-2 md:gap-x-24 md:flex items-center h-full">
+
+        <!-- Nombre de la empresa* -->
+        <div class="w-full flex flex-col justify-start items-stretch pt-6 my-auto h-full">
+          <p class="font-bold">Digitar los siguientes campos*</p>
+          <p class="text-primary3 font-semibold h-full mt-6">
+            Nombre de la empresa*
+          </p>
+          <!-- input -->
+          <div class="mt-2 relative w-full h-full flex items-center">
+            <div
+              class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border focus:outline-none focus:border-primary1 bg-secondary3 border-secondary2 text-primary3 flex items-center justify-center">
+              {{ solicitud?.formulario.nombreEmpresa }}
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Excel Modelo de Transporte Especial -->
+        <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+          <p class="font-bold">Cargue de documentación*</p>
+          <p class="text-primary3 font-semibold h-full mt-6">
+            Excel Modelo de Transporte Especial*
+          </p>
+
+          <!-- input -->
+          <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" [maxFiles]="1" mimes=".pdf"
+            [error]="errorStates[2]" (fileSelected)="onFileSelected($event, 2)"></app-file-upload>
+
+
+        </div>
+
+        <!-- Nit* -->
+        <div class="w-full flex flex-col justify-start items-stretch pt-4 my-auto h-full">
+          <p class="text-primary3 font-semibold h-full mt-6">
+            Número de NIT*
+          </p>
+          <!-- input -->
+          <div class="mt-2 relative w-full h-full flex items-center">
+            <div
+              class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border focus:outline-none focus:border-primary1 bg-secondary3 border-secondary2 text-primary3 flex items-center justify-center">
+              {{ solicitud?.formulario.nit }}
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- contenido 2 -->
+      <div class="content2 md:grid sm:grid-cols-2 md:gap-x-24 md:flex items-center h-full mt-6 pt-8">
+        <!-- texto inicial -->
+        <div class="w-full">
+          <p class="text-primary3 font-semibold"> Generador de riesgos*</p>
+          <!-- texto informativo -->
+          <div class="flex inline-flex md:gap-3 gap-2 h-full w-full mt-2">
+            <span class="lg:w-[12%] sm:w-[12%] w-[10%] h-full flex justify-center lg:px-1 m-auto">
+              <img class="w-full m-auto" src="assets/iconoInfo.svg">
+            </span>
+            <p class="text-primary1 work-sans text-[11px] mt-2 w-auto">
+              Los siguientes campos serán traídos desde la base de
+              datos financiero.
+            </p>
+          </div>
+        </div>
+        <!-- espacio en blanco -->
+        <div class="w-full"></div>
+        <!-- Renta neta (%) -->
+        <div class="w-full flex flex-col justify-start items-stretch pt-6 my-auto h-full">
+          <!-- input contet -->
+          <div class="mt-2 relative w-full h-full flex gap-2 items-center">
+            <!-- INPUT -->
+            <div
+              class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border focus:outline-none focus:border-primary1 bg-secondary3 border-secondary2 text-primary3 flex items-center justify-center">
+              <!-- titulo -->
+              <div class="flex w-[70%] p-0 m-0">
+                <p class="my-auto"> Renta neta (%)</p>
+              </div>
+              <!-- input -->
+              <div class="flex w-[30%] p-0 m-0 bg-secondary1">
+                <!-- input -->
+                <input
+                    class="shadow-sm rounded-md w-full border bg-transparent"
+                    type="number" formControlName="rentaNeta" required placeholder="Ingrese número contrato">
+              </div>
+            </div>
+            <div class="px-4 py-2 rounded-xl shadow-md">
+              {{ getMedidor(formGroup2.get('rentaNeta')?.value, 'renta') }}
+            </div>
+          </div>
+          <span *ngIf="submitted && formGroup3.get('rentaNeta')?.errors?.['required']" class="text-error">
+            Capital social es obligatorio
+          </span>
+          <span
+            *ngIf="formGroup2.get('rentaNeta')?.hasError('negativeNumber') && (formGroup2.get('rentaNeta')?.touched || submitted)"
+            class="text-error">
+            El numeró no puede ser negativo
+          </span>
+        </div>
+
+
+
+
+      </div>
+
+
+
+      <div class="mt-8 w-full flex justify-center gap-4">
+
+        <app-primary-button type="button" class="" (click)="SaveInfo()">Guardar</app-primary-button>
+      </div>
+
+
+    </form>
   </div>
 
 
@@ -984,9 +1487,28 @@
 
 </div>
 
+<!-- modal de loading -->
+<app-alert [showModal]="ShowLoadingModal" title="Verificando datos" subtitle="Un momento por favor."
+  message="Se está guardando los datos enviados" [showFirstButton]="false" [showCancelButton]="false"
+  TypeAlert="loader"></app-alert>
+
+<!-- modal error -->
+<app-alert [showModal]="showErrorModal" title="Error en el envió de datos" textColor="text-error" [showSubtitle]="false"
+  [message]="'Estamos experimentando inconvenientes técnicos con el envió de la solicitud, por favor intente más tarde'"
+  buttonText="Continuar" [showFirstButton]="true" [showCancelButton]="false" TypeAlert="error"
+  (close)="showErrorModal = false" (closeByButton1)="showErrorModal = false" (closeByIcon)="showErrorModal = false"
+  (closeByBackdrop)="showErrorModal = false" (close)="showErrorModal = false"></app-alert>
+
 <!-- Modal -->
-<app-alert [showModal]="showModal" title="Asignación exitosa" textColor="text-success" [showSubtitle]="false"
-  [message]="'Se ha asignado un radicado a esta solicitud'" buttonText="Continuar" [showFirstButton]="true"
-  [showCancelButton]="false" TypeAlert="success" (close)="handleClose()" (closeByButton1)="finalStep()"
-  (closeByButton2)="handleCloseByButton2()" (closeByIcon)="handleCloseByIcon()"
-  (closeByBackdrop)="handleCloseByBackdrop()" (close)="showModal = false"></app-alert>
+<app-alert [showModal]="showModal" title="Radicado guardado exitosamente" textColor="text-success"
+  [showSubtitle]="false" [message]="'Su radicado de salida ha sido guardado con éxito'" buttonText="Continuar"
+  [isIcon]="false" [showFirstButton]="true" [showCancelButton]="false" TypeAlert="success" (close)="handleClose()"
+  (closeByButton1)="changeActiveNum('2', true)" (closeByButton2)="handleCloseByButton2()"
+  (closeByBackdrop)="changeActiveNum('2', true)" (close)="showModal = true"></app-alert>
+
+<!-- Modal -->
+<app-alert [showModal]="showModal" title="Información guardada" textColor="text-success" [showSubtitle]="false"
+  [message]="' La información se ha cargado correctamente'" buttonText="Continuar" [isIcon]="false"
+  [showFirstButton]="true" [showCancelButton]="false" TypeAlert="success" (close)="handleClose()"
+  (closeByButton1)="changeActiveNum('3', true)" (closeByButton2)="handleCloseByButton2()"
+  (closeByBackdrop)="changeActiveNum('3', true)" (close)="showModal = true"></app-alert>
