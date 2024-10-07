@@ -6,32 +6,33 @@ import {
   AfterViewInit,
   TemplateRef,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {CommonModule} from '@angular/common';
 import {
+  FormArray,
   FormBuilder,
   FormGroup,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { FileUploadComponent } from '../../../components/file-upload/file-upload.component';
-import { InputText } from '../../../components/input/input.component';
-import { LeftNavComponent } from '../../../components/left-nav/left-nav.component';
-import { PrimaryButtonComponent } from '../../../components/primary-button/primary-button.component';
-import { SttepperComponent } from '../../../components/sttepper/sttepper.component';
-import { ActiveNumService } from '../../../services/left-nav/active-num.service';
-import { ActiveNumStepperService } from '../../../services/stepper/active-num.service';
-import { ApiService } from '../../../services/api/api.service';
-import { ErrorService } from '../../../services/error/error.service';
-import { SelectComponent } from '../../../components/select/select.component';
-import { AlertComponent } from '../../../components/alert/alert.component';
-import { Router } from '@angular/router';
-import { MESES } from '../../../shared/data/meses';
-import { HORAS } from '../../../shared/data/horas';
-import { dateRangeValidator } from '../../../validator/date.validator';
-import { NoNegativeGlobal } from '../../../validator/noNegative.validator';
-import { ApiSFService } from '../../../services/api/apiSF.service';
+import {FileUploadComponent} from '../../../components/file-upload/file-upload.component';
+import {InputText} from '../../../components/input/input.component';
+import {LeftNavComponent} from '../../../components/left-nav/left-nav.component';
+import {PrimaryButtonComponent} from '../../../components/primary-button/primary-button.component';
+import {SttepperComponent} from '../../../components/sttepper/sttepper.component';
+import {ActiveNumService} from '../../../services/left-nav/active-num.service';
+import {ActiveNumStepperService} from '../../../services/stepper/active-num.service';
+import {ApiService} from '../../../services/api/api.service';
+import {ErrorService} from '../../../services/error/error.service';
+import {SelectComponent} from '../../../components/select/select.component';
+import {AlertComponent} from '../../../components/alert/alert.component';
+import {Router} from '@angular/router';
+import {MESES} from '../../../shared/data/meses';
+import {HORAS} from '../../../shared/data/horas';
+import {dateRangeValidator} from '../../../validator/date.validator';
+import {NoNegativeGlobal} from '../../../validator/noNegative.validator';
+import {ApiSFService} from '../../../services/api/apiSF.service';
 import {catchError, debounceTime, distinctUntilChanged, switchMap} from "rxjs/operators";
-import {of} from "rxjs";
+import {BehaviorSubject, of} from "rxjs";
 
 @Component({
   selector: 'app-incremento',
@@ -57,7 +58,6 @@ export default class IncrementoComponent implements AfterViewInit {
   formaPago: any = [];
   horas: any = [];
   nit: string = '';
-  idSolicitud: string = '';
   nombreEmpresa: string = '';
 
   // Array para almacenar las opciones seleccionadas
@@ -81,7 +81,23 @@ export default class IncrementoComponent implements AfterViewInit {
     private cdr: ChangeDetectorRef,
     private router: Router,
     private apiSFService: ApiSFService
-  ) {}
+  ) {
+    const navigation = this.router.getCurrentNavigation();
+    const state = navigation?.extras.state as {
+      idSolicitud: string;
+    };
+
+    if (state) {
+      this.idSolicitud = state.idSolicitud;
+      console.log(state.idSolicitud);
+      console.log(this.idSolicitud);
+
+      this.setIdSolicitud(this.idSolicitud);
+    } else {
+      // Recuperar de localStorage si está disponible
+      this.setIdSolicitud(localStorage.getItem('idSolicitud') || '');
+    }
+  }
 
   //Objeto para manejar los active num del left menu y stepper.
   activeNum: string = '0'; //Left menu
@@ -144,6 +160,36 @@ export default class IncrementoComponent implements AfterViewInit {
 
   //number to continue modal
   numberTocontinue: number = 0;
+
+  //identificador de actualización de file
+  isActuFile: [number] = [-1];
+
+  //form dinamico num vehiculos
+  activeHeader: number | null = null;
+
+  //si es valido el form en operativo
+  IsvalidOperativo: boolean = false;
+
+  //observable option
+  private idSolicitudSubject = new BehaviorSubject<string>(''); // Inicializa con un valor vacío
+  idSolicitud$ = this.idSolicitudSubject.asObservable(); // Observable para observar cambios
+  idSolicitud: any;
+
+  //solicitud contratos
+  contratosSolicitud: any;
+
+  //loadingInicial
+  loadingInicio: boolean = true;
+
+  //solicitud guardada
+  solicitudGuardada: any;
+
+  //nombre contratos
+  fileNames: { [key: number]: string[] } = [];
+
+  //manejo de varios contratos guardados
+  currentIndex = 0;
+  maxVisibleFiles = 2;
 
   //Menu left
   infoMenu = [
@@ -247,8 +293,8 @@ export default class IncrementoComponent implements AfterViewInit {
       placeholder: 'Seleccione',
       value: '',
       options: [
-        { value: 7, label: '7%' },
-        { value: 10, label: '10%' },
+        {value: 7, label: '7%'},
+        {value: 10, label: '10%'},
       ],
       good: 'Selección valida',
       error: 'Propiedad de la empresa es requerido',
@@ -294,6 +340,11 @@ export default class IncrementoComponent implements AfterViewInit {
     textInfo: 'Archivo PDF. Peso máximo: 2MB',
   };
 
+  setIdSolicitud(newId: string): void {
+    this.idSolicitudSubject.next(newId); // Cambia el valor del BehaviorSubject
+    this.idSolicitud = newId; // Actualiza la variable local
+  }
+
   ngOnInit(): void {
     //Suscribirse al observable para obtener los cambios reactivos del menuleft
     this.stateService.activeNum$.subscribe((num) => {
@@ -316,6 +367,151 @@ export default class IncrementoComponent implements AfterViewInit {
     //Suscribirse al servicio de manejo de errores
     this.errorService.errorStates$.subscribe((errorStates) => {
       this.errorStates = errorStates;
+    });
+
+    // Suscribirse a los cambios en idSolicitud
+    this.loadingInicio = true;
+    this.idSolicitud$.subscribe((newId) => {
+      localStorage.setItem('idSolicitud', newId);
+      this.loadingInicio = false;
+      if (newId != '' && newId != 'undefined' && newId != undefined) {
+        this.loadingInicio = true;
+        //GET SOLICITUD
+        this.apiSFService.getSolicitudByID(newId).subscribe(
+          (response) => {
+            this.solicitudGuardada = response;
+            this.loadingInicio = true;
+            //GET DOCUMENTOS
+            this.apiSFService.getDocumentosByID(response.nit).subscribe(
+              (response1) => {
+                console.log(response1);
+
+                this.loadingInicio = false;
+                // Crear un array de contratos
+                const contratosArray = response1.map((element: any) => ({
+                  nit: element.nit,
+                  id: element.id,
+                  documento: this.displayFile(element.documento),
+                }));
+
+                // Guardar el array en formGroup1[0]
+                this.formGroup1.patchValue({
+                  [2]: contratosArray,
+                });
+
+                this.fileNames[1] = response1.map((f: any, index: number) => {
+                  const firstPart = `consecutivo_${index + 1}__${this.nit}_${
+                    this.nombreEmpresa
+                  }__`;
+                  return firstPart;
+                });
+              },
+              (error) => {
+                console.error('Error fetching user data', error);
+              }
+            );
+
+            //GET CONTRATOS
+            this.apiSFService.getContratosByIDSolicitud(response.id).subscribe(
+              (response2) => {
+                console.log(response2);
+
+                this.loadingInicio = false;
+                this.contratosSolicitud = response2;
+
+                // Recorremos todos los contratos de la solicitud
+                response2.forEach((contrato: any) => {
+                  console.log(contrato);
+                  // Actualizamos los campos principales del formulario con el valor del primer contrato (solo para campos "globales")
+                  if (response2.indexOf(contrato) === 0) {
+                    console.log('entro1111');
+
+                    this.formGroup4.patchValue({
+                      numeroContrato: contrato.numeroContrato || '',
+                      contratante: contrato.contratante || '',
+                      fecha_inicio: contrato.fechaInicio || '',
+                      fecha_terminacion: contrato.fechaFin || '',
+                      duracionMeses: contrato.duracionMeses || '',
+                      numeroVehiculos: contrato.numeroVehiculos || '',
+                      idClaseVehiculo: contrato.idClaseVehiculo
+                        ? contrato.idClaseVehiculo.map(
+                          (element: any) => element.idClaseVehiculo
+                        )
+                        : '',
+                      valorContrato: contrato.valorContrato || '',
+                      idFormaPago: contrato.idFormaPago || '',
+                      idAreaOperacion: contrato.idAreaOperacion || '',
+                      disponibilidadVehiculosEstimada:
+                        contrato.disponibilidadVehiculosEstimada || '',
+                      idClaseVehiculos: contrato.vehiculos,
+                    });
+
+                    this.selects[1].value = contrato.idFormaPago || '';
+                    this.selects[3].value =
+                      contrato.disponibilidadVehiculosEstimada || '';
+                  }
+
+                  console.log(this.formGroup4);
+                });
+              },
+              (error) => {
+                console.error('Error fetching user data', error);
+              }
+            );
+
+            (this.nombreEmpresa = response.nombreEmpresa),
+              (this.nit = response.nit),
+              this.formGroup1.patchValue({
+                [1]: this.displayFile(response.solicitudFijacionCapacidad),
+              });
+
+            this.formGroup1.patchValue({
+              [3]: this.displayFile(response.planRodamiento),
+            });
+            this.formGroup1.patchValue({
+              [4]: this.displayFile(response.estructuraCostosBasicos),
+            });
+            this.formGroup1.patchValue({
+              [5]: this.displayFile(response.certificadoExistencia),
+            });
+            this.formGroup1.patchValue({
+              [6]: this.displayFile(response.registroUnicoTributario),
+            });
+            this.formGroup2.patchValue({
+              [7]: this.displayFile(response.resolucionHabilitacion),
+            });
+            this.formGroup2.patchValue({
+              [8]: this.displayFile(response.cedulaRepresentante),
+            });
+            this.formGroup2.patchValue({
+              [9]: this.displayFile(response.estadosFinancieros),
+            });
+            this.formGroup2.patchValue({
+              [10]: this.displayFile(response.cedulaContador),
+            });
+            this.formGroup2.patchValue({
+              [11]: this.displayFile(response.tarjetaProfesionalContador),
+            });
+
+            this.formGroup3.patchValue({
+              ['capitalSocial']: response.capitalSocial,
+            });
+
+            this.formGroup3.patchValue({
+              ['patrimonioLiquido']: response.patrimonioLiquido,
+            });
+
+            this.formGroup3.patchValue({
+              ['cantidadVehiculos']: response.cantidadVehiculos,
+            });
+
+            console.log(response);
+          },
+          (error) => {
+            console.error('Error fetching user data', error);
+          }
+        );
+      }
     });
   }
 
@@ -392,6 +588,76 @@ export default class IncrementoComponent implements AfterViewInit {
       });
   }
 
+  //MOSTRAR CONTRATOS GUARDADOS
+  get visibleFiles(): File[] {
+    return this.formGroup1
+      .get('2')
+      ?.value.slice(
+        this.currentIndex,
+        this.currentIndex + this.maxVisibleFiles
+      );
+  }
+
+  moveLeft(): void {
+    if (this.currentIndex > 0) {
+      this.currentIndex--;
+    }
+  }
+
+  moveRight(): void {
+    if (
+      this.currentIndex <
+      this.formGroup1.get('2')?.value.length - this.maxVisibleFiles
+    ) {
+      this.currentIndex++;
+    }
+  }
+
+  viewDocument(blob: Blob) {
+
+    if (blob) {
+      const url = URL.createObjectURL(blob);
+      window.open(url);
+    }
+
+  }
+
+  // Crear un enlace para descargar o mostrar el archivo
+  displayFile(base64File: string) {
+    if (base64File == null || base64File == '') {
+      return;
+    }
+    const blob = this.convertBase64ToBlob(base64File);
+    const url = URL.createObjectURL(blob);
+
+    return blob;
+  }
+
+  // Convertir Base64 a Blob y asignar el tipo MIME detectado
+  convertBase64ToBlob(base64: string): Blob {
+    const byteCharacters = atob(base64);
+    const byteNumbers = new Array(byteCharacters.length);
+
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+
+    const byteArray = new Uint8Array(byteNumbers);
+    const mimeType = this.detectMimeType(base64); // Detectar el tipo MIME
+
+    return new Blob([byteArray], {type: mimeType});
+  }
+
+  // Detectar si el archivo es PDF o XLSX desde Base64
+  detectMimeType(base64: string): string {
+    if (base64.startsWith('JVBERi0')) {
+      return 'application/pdf'; // PDF
+    } else if (base64.startsWith('UEsFB') || base64.startsWith('UEsDB')) {
+      return 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'; // XLSX
+    }
+    return 'application/octet-stream'; // Tipo por defecto si no se detecta
+  }
+
   // Aquí defines tu formulario
   initializeForm() {
     //Validaciones segun el formulario
@@ -425,7 +691,7 @@ export default class IncrementoComponent implements AfterViewInit {
     this.formGroup4 = this.fb.group(
       {
         cantidad_contratos: [
-          { value: '', disabled: false },
+          {value: '', disabled: false},
           Validators.required,
         ],
         contrato: ['', Validators.required],
@@ -434,19 +700,42 @@ export default class IncrementoComponent implements AfterViewInit {
         fecha_terminacion: ['', Validators.required],
         duracionMeses: ['', Validators.required],
         idClaseVehiculo: ['', Validators.required],
-        num_vehiculos: ['', Validators.required],
+        numeroVehiculos: [''],
         valorContrato: ['', Validators.required],
         forma_pago: ['', Validators.required],
         idAreaOperacion: ['', Validators.required],
         disponibilidad: ['', Validators.required],
+        idClaseVehiculos: this.fb.array([]),
       },
-      { validators: [dateRangeValidator, NoNegativeGlobal] }
+      {validators: [dateRangeValidator, NoNegativeGlobal]}
     );
   }
 
-  //Metodo para cambiar el valor del menuleft
+  // Obtener el FormArray de clases de vehículos
+  get idClaseVehiculos(): FormArray {
+    return this.formGroup4.get('idClaseVehiculos') as FormArray;
+  }
+
+  // Obtener Label de los headers
+  getSelectedLabelsHeaders(): any {
+    return this.selectedOptionsClase.map((option) => option.label);
+  }
+
+  // Metodo para cambiar el valor del menuleft
   changeActiveNum(newValue: string) {
-    this.stateService.setActiveNum(newValue);
+    if (
+      this.formGroup1.valid &&
+      this.formGroup2.valid &&
+      this.formGroup3.valid
+    ) {
+      this.stateService.setActiveNum(newValue);
+    }
+  }
+
+  // Cambia el header activo
+  setActiveHeader(index: number): void {
+    this.activeHeader = index;
+    this.cdr.detectChanges();
   }
 
   toggleDropdown(index: number) {
@@ -499,101 +788,55 @@ export default class IncrementoComponent implements AfterViewInit {
     );
   }
 
-  // Detectar si el archivo es PDF o XLSX desde Base64
-  detectMimeType(base64: string): string {
-    if (base64[0].startsWith('JVBERi0')) {
-      return 'application/pdf'; // PDF
-    } else if (base64.startsWith('UEsFB') || base64.startsWith('UEsDB')) {
-      return 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'; // XLSX
-    }
-    return 'application/octet-stream'; // Tipo por defecto si no se detecta
-  }
-
-  // Convertir Base64 a Blob y asignar el tipo MIME detectado
-  convertBase64ToBlob(base64: string): Blob {
-    const byteCharacters = atob(base64);
-    const byteNumbers = new Array(byteCharacters.length);
-
-    for (let i = 0; i < byteCharacters.length; i++) {
-      byteNumbers[i] = byteCharacters.charCodeAt(i);
-    }
-
-    const byteArray = new Uint8Array(byteNumbers);
-    const mimeType = this.detectMimeType(base64); // Detectar el tipo MIME
-
-    return new Blob([byteArray], { type: mimeType });
-  }
-
   //modal continuar sin guardar
   goToModal(num: number) {
     this.showModalContinuar = true;
     this.numberTocontinue = num;
   }
 
-  // Crear un enlace para descargar o mostrar el archivo
-  displayFile(base64File: string) {
-    const blob = this.convertBase64ToBlob(base64File);
-    const url = URL.createObjectURL(blob);
-
-    console.log(blob);
-    console.log(url);
-  }
-
-  // Método para cambiar el valor del stepper
-  changeActiveStep(newValue: number, saved: boolean, back: boolean = false) {
+  //Metodo para cambiar el valor del stepper
+  async changeActiveStep(
+    newValue: number,
+    saved: boolean,
+    back: boolean = false
+  ) {
     switch (newValue) {
       case 1:
         this.stepperService.setActiveNum(newValue);
         break;
       case 2:
         //validator
-        console.log(this.displayFile(this.formGroup1.value[1]));
+
         if (this.validateFormGroup(this.formGroup1, this.errorStates)) {
           //valida si se va a guardar la info
           if (saved) {
             this.ShowLoadingModal = true;
-            // Inicializar contratos como un array vacío
-            let documentos: Array<{
-              nit: string;
-              documento: string;
-            }> = [];
+            const data1 = await this.datosPaso1();
 
-            // Rellenar el array documentos
-            this.formGroup1.value[1].forEach((item: any) => {
-              documentos.push({
-                nit: this.nit,
-                documento: item,
-              });
-            });
             //valida si ya hay una solicitud guardada
-            if (this.idSolicitud == '' || this.idSolicitud === 'undefined') {
-              const data1 = {
-                fechaSolicitud: new Date(),
-                territorial: 'Medellin',
-                idCategoriaSolicitud: 150,
-                nombreEmpresa: this.formGroup1.get('nombreEmpresa')?.value,
-                nit: this.formGroup1.get('nit')?.value,
-                documentos: documentos,
-                planRodamiento: this.formGroup1.value[2][0],
-                estructuraCostosBasicos: this.formGroup1.value[3][0],
-                certificadoCumplimiento: this.formGroup1.value[4][0],
-                certificadoExistencia: this.formGroup1.value[5][0],
-                registroUnicoTributario: this.formGroup1.value[6][0],
-              };
-
+            if (
+              this.idSolicitud == '' ||
+              this.idSolicitud === 'undefined' ||
+              this.idSolicitud === undefined
+            ) {
               //CREA SOLICITUD
               this.apiSFService.createSolicitud(data1).subscribe(
                 (response) => {
+                  this.isActuFile = [-1];
+                  const parsedData = JSON.parse(response);
+
                   // Aquí puedes manejar la respuesta, por ejemplo:
                   this.ShowLoadingModal = false;
-                  console.log('Datos enviados exitosamente:', response.id_solicitud);
-                  this.idSolicitud = response.id_solicitud;
-                  console.log( this.idSolicitud);
+                  console.log('Datos enviados exitosamente:', parsedData);
+                  this.idSolicitud = parsedData.id_solicitud;
+                  localStorage.setItem('idSolicitud', this.idSolicitud);
 
                   this.stepperService.setActiveNum(newValue);
                   this.formGroup4
                     .get('cantidad_contratos')
-                    ?.setValue(this.formGroup1.value[2].length);
+                    ?.setValue(this.formGroup1.value[1].length);
+                  // Forzar detección de cambios
+                  this.cdr.detectChanges();
                 },
                 (error) => {
                   this.ShowLoadingModal = false;
@@ -604,7 +847,8 @@ export default class IncrementoComponent implements AfterViewInit {
               );
             } else {
               //cuando ya hay solicitud creada
-              this.ActualizarSolicitud(1, documentos);
+              console.log('solocitud' + this.idSolicitud);
+              this.ActualizarSolicitud(1, data1);
             }
           } else {
             //Continuar Sin guardar
@@ -612,7 +856,7 @@ export default class IncrementoComponent implements AfterViewInit {
             this.stepperService.setActiveNum(newValue);
             this.formGroup4
               .get('cantidad_contratos')
-              ?.setValue(this.formGroup1.value[2].length);
+              ?.setValue(this.formGroup1.value[1].length);
           }
 
           this.formGroup4.get('cantidad_contratos')?.disable();
@@ -626,53 +870,36 @@ export default class IncrementoComponent implements AfterViewInit {
           //valida si se requiere guardar
           if (saved) {
             this.ShowLoadingModal = true;
-            //valida si se trae el id (ya realizó el primer cargue)
-            if (this.idSolicitud == '' || this.idSolicitud === 'undefined') {
-              // Inicializar contratos como un array vacío
-              let documentos: Array<{
-                nit: string;
-                documento: string;
-              }> = [];
 
-              // Rellenar el array documentos
-              this.formGroup1.value[2].forEach((item: any) => {
-                documentos.push({
-                  nit: this.nit,
-                  documento: item,
-                });
-              });
+            const data1 = await this.datosPaso1();
+            console.log(data1);
 
-              const data1 = {
-                fechaSolicitud: new Date(),
-                territorial: 'Medellin',
-                idCategoriaSolicitud: 150,
-                resolucionHabilitacion: this.formGroup2.value[7][0],
-                cedulaRepresentante: this.formGroup2.value[8][0],
-                estadosFinancieros: this.formGroup2.value[9][0],
-                cedulaContador: this.formGroup2.value[10][0],
-                tarjetaProfesionalContador: this.formGroup2.value[11][0],
-                cantidadVehiculosIncrementar: parseFloat(this.inputs[0].value),
-              };
-
+            // Ahora puedes continuar con el envío de los datos
+            if (
+              this.idSolicitud == '' ||
+              this.idSolicitud === 'undefined' ||
+              this.idSolicitud === undefined
+            ) {
+              //crear solicitud
               this.apiSFService.createSolicitud(data1).subscribe(
                 (response) => {
+                  const parsedData = JSON.parse(response);
+
                   // Aquí puedes manejar la respuesta, por ejemplo:
+                  console.log('Datos enviados exitosamente:', parsedData);
+                  this.idSolicitud = parsedData.id_solicitud;
+                  localStorage.setItem('idSolicitud', this.idSolicitud);
 
-                  console.log('Datos enviados exitosamente:', response);
-
-                  this.idSolicitud = response;
                   this.ActualizarSolicitud(2);
                 },
                 (error) => {
                   this.ShowLoadingModal = false;
                   this.showErrorModal = true;
-                  // Manejo del error
                   console.error('Error al enviar los datos:', error);
                 }
               );
             } else {
-              //envia solo a actualizar el paso2
-              this.ActualizarSolicitud(2);
+              this.ActualizarSolicitud(1, data1, 'opcion2');
             }
           } else {
             //continuar sin guardar
@@ -685,7 +912,6 @@ export default class IncrementoComponent implements AfterViewInit {
         console.log('entro');
 
         if (this.validateFormGroup(this.formGroup3, this.errorStates)) {
-
           if (parseFloat(this.inputs[0].value) <= 50) {
             this.valid1 =
               this.formGroup3.get('capital_social')?.value >= 300 * this.smlmmv;
@@ -723,37 +949,23 @@ export default class IncrementoComponent implements AfterViewInit {
             if (saved) {
               this.ShowLoadingModal = true;
               //valida si se trae el id (ya realizó el primer cargue)
-              if (this.idSolicitud == '' || this.idSolicitud === 'undefined') {
-                // Inicializar contratos como un array vacío
-                let documentos: Array<{
-                  nit: string;
-                  documento: string;
-                }> = [];
-
-                // Rellenar el array documentos
-                this.formGroup1.value[2].forEach((item: any) => {
-                  documentos.push({
-                    nit: this.nit,
-                    documento: item,
-                  });
-                });
-
-                const data1 = {
-                  fechaSolicitud: new Date(),
-                  territorial: 'Medellin',
-                  idCategoriaSolicitud: 150,
-                  capitalSocial: this.formGroup3.get('capital_social')?.value,
-                  patrimonioLiquido: this.formGroup3.get('patrimonio_liquido')?.value
-                };
-
+              const data1 = await this.datosPaso1();
+              if (
+                this.idSolicitud == '' ||
+                this.idSolicitud === 'undefined' ||
+                this.idSolicitud === undefined
+              ) {
                 this.apiSFService.createSolicitud(data1).subscribe(
                   (response) => {
                     // Aquí puedes manejar la respuesta, por ejemplo:
 
-                    console.log('Datos enviados exitosamente:', response);
+                    const parsedData = JSON.parse(response);
 
-                    this.idSolicitud = response;
-                    this.ActualizarSolicitud(3);
+                    // Aquí puedes manejar la respuesta, por ejemplo:
+                    console.log('Datos enviados exitosamente:', parsedData);
+                    this.idSolicitud = parsedData.id_solicitud;
+                    localStorage.setItem('idSolicitud', this.idSolicitud);
+                    this.ActualizarSolicitud(2, 0, 'opcion3');
                   },
                   (error) => {
                     this.ShowLoadingModal = false;
@@ -763,8 +975,8 @@ export default class IncrementoComponent implements AfterViewInit {
                   }
                 );
               } else {
-                //envia solo a actualizar el paso2
-                this.ActualizarSolicitud(3);
+                //envia solo a actualizar el paso1, paso 2, paso3
+                this.ActualizarSolicitud(1, data1, 'opcion3');
               }
             } else {
               //continuar sin guardar
@@ -772,9 +984,6 @@ export default class IncrementoComponent implements AfterViewInit {
               this.stepperService.setActiveNum(3);
               this.changeActiveNum('1');
             }
-
-
-
           } else {
             console.log('no validado');
             this.showModalRequisito = true;
@@ -782,9 +991,6 @@ export default class IncrementoComponent implements AfterViewInit {
         } else {
           this.submitted = true;
           this.formGroup3.markAllAsTouched();
-          console.log(
-            this.formGroup3.get('cantidadVehiculos')?.errors?.['required']
-          );
         }
 
         break;
@@ -792,31 +998,101 @@ export default class IncrementoComponent implements AfterViewInit {
       default:
         break;
     }
+  }
 
-    console.log(this.errorStates);
+  //datos paso 1
+  async datosPaso1() {
+    // Rellenar el array de documentos con una conversión asíncrona para cada Blob
+
+    const documentoPromises = this.formGroup1.value[2].map(
+      async (item: any) => {
+        let documento = item.documento ?? item;
+
+        if (documento instanceof Blob) {
+          // Convertir Blob a base64
+
+          const base64String = await this.convertirBlob(item.documento);
+          return {
+            nit: this.nit,
+            documento: base64String,
+            id: item.id,
+          };
+        } else {
+          // Si no es Blob, lo añadimos directamente
+          return {
+            nit: this.nit,
+            documento: item.documento ?? item,
+          };
+        }
+      }
+    );
+
+    // Convertir los valores que pueden ser Blob a Base64 (sin incluir los documentos, ya procesados)
+    try {
+      const [
+        planRodamiento,
+        estructuraCostosBasicos,
+        certificadoCumplimiento,
+        certificadoExistencia,
+        registroUnicoTributario,
+        documentos,
+      ] = await Promise.all([
+        this.convertirSiEsBlob(this.formGroup1.value[2]),
+        this.convertirSiEsBlob(this.formGroup1.value[3]),
+        this.convertirSiEsBlob(this.formGroup1.value[4]),
+        this.convertirSiEsBlob(this.formGroup1.value[5]),
+        this.convertirSiEsBlob(this.formGroup1.value[6]),
+        Promise.all(documentoPromises), // documentos
+      ]);
+
+      // Creación del objeto data1 con todos los campos procesados
+      const data1 = {
+        fechaSolicitud: new Date(),
+        territorial: 'Territorial de Antioquia',
+        idCategoriaSolicitud: 150,
+        nombreEmpresa: this.formGroup1.get('nombreEmpresa')?.value,
+        nit: this.formGroup1.get('nit')?.value,
+        documentos: documentos,
+        planRodamiento: planRodamiento,
+        estructuraCostosBasicos: estructuraCostosBasicos,
+        certificadoCumplimiento: certificadoCumplimiento,
+        certificadoExistencia: certificadoExistencia,
+        registroUnicoTributario: registroUnicoTributario,
+      };
+
+      return data1; // Retorna el objeto data1
+    } catch (error) {
+      console.error('Error en la conversión de archivos:', error);
+      this.ShowLoadingModal = false;
+      throw error; // Propaga el error si lo hay
+    }
   }
 
   //actualizar solicitudes
-  ActualizarSolicitud(num: number, contr?: any) {
+  ActualizarSolicitud(
+    num: number,
+    data?: any,
+    opcion?: string,
+    notChange?: boolean
+  ) {
+    this.isActuFile = [-1];
     switch (num) {
       case 1:
-        const data1 = {
-          fechaSolicitud: new Date(),
-          territorial: 'Bogota',
-          idCategoriaSolicitud: 149,
-          solicitudFijacionCapacidad: this.formGroup1.value[1][0],
-          planRodamiento: this.formGroup1.value[3][0],
-          estructuraCostosBasicos: this.formGroup1.value[4][0],
-          certificadoExistencia: this.formGroup1.value[5][0],
-          registroUnicoTributario: this.formGroup1.value[6][0],
-          documentos: contr,
-        };
+        console.log(data);
+
         //put paso 1 actualizar - cargue 1
-        this.apiSFService.SolicitudPaso1(this.idSolicitud, data1).subscribe(
+        this.apiSFService.SolicitudPaso1(this.idSolicitud, data).subscribe(
           (response) => {
             // Aquí puedes manejar la respuesta, por ejemplo:
-            this.ShowLoadingModal = false;
-            this.stepperService.setActiveNum(num + 1);
+
+            if (opcion == 'opcion2') {
+              this.ActualizarSolicitud(2);
+            } else if (opcion == 'opcion3') {
+              this.ActualizarSolicitud(2, 0, 'opcion3');
+            } else {
+              this.ShowLoadingModal = false;
+              this.stepperService.setActiveNum(num + 1);
+            }
             console.log('Datos enviados exitosamente:', response);
           },
           (error) => {
@@ -829,36 +1105,73 @@ export default class IncrementoComponent implements AfterViewInit {
         break;
 
       case 2:
-        const data2 = {
-          resolucionHabilitacion: this.formGroup2.value[7][0],
-          cedulaRepresentante: this.formGroup2.value[8][0],
-          estadosFinancieros: this.formGroup2.value[9][0],
-          cedulaContador: this.formGroup2.value[10][0],
-          tarjetaProfesionalContador: this.formGroup2.value[11][0],
-        };
-        //put paso 2 actualizar - cargue 2
-        this.apiSFService.SolicitudPaso2(this.idSolicitud, data2).subscribe(
-          (response) => {
-            // Aquí puedes manejar la respuesta, por ejemplo:
+        // Convertir valores que pueden ser Blob a Base64 (para los archivos en data2)
+        Promise.all([
+          this.convertirSiEsBlob(this.formGroup2.value[7]),
+          this.convertirSiEsBlob(this.formGroup2.value[8]),
+          this.convertirSiEsBlob(this.formGroup2.value[9]),
+          this.convertirSiEsBlob(this.formGroup2.value[10]),
+          this.convertirSiEsBlob(this.formGroup2.value[11]),
+        ])
+          .then(
+            ([
+               resolucionHabilitacion,
+               cedulaRepresentante,
+               estadosFinancieros,
+               cedulaContador,
+               tarjetaProfesionalContador,
+             ]) => {
+              const data2 = {
+                fechaSolicitud: new Date(),
+                territorial: 'Territorial de Antioquia',
+                idCategoriaSolicitud: 150,
+                resolucionHabilitacion: resolucionHabilitacion,
+                cedulaRepresentante: cedulaRepresentante,
+                estadosFinancieros: estadosFinancieros,
+                cedulaContador: cedulaContador,
+                tarjetaProfesionalContador: tarjetaProfesionalContador,
+                cantidadVehiculosIncrementar: parseFloat(this.inputs[0].value),
+              };
+
+              // put paso 2 actualizar - cargue 2
+              this.apiSFService
+                .SolicitudPaso2(this.idSolicitud, data2)
+                .subscribe(
+                  (response) => {
+                    // Aquí puedes manejar la respuesta, por ejemplo:
+
+                    if (opcion == 'opcion3') {
+                      this.ActualizarSolicitud(3);
+                    } else {
+                      this.ShowLoadingModal = false;
+                      this.stepperService.setActiveNum(num + 1);
+                    }
+                    // this.ActuFileGuardado(7, 8, 9, 10, 11);
+                    console.log('Datos enviados exitosamente:', response);
+                  },
+                  (error) => {
+                    this.ShowLoadingModal = false;
+                    this.showErrorModal = true;
+                    // Manejo del error
+                    console.error('Error al enviar los datos:', error);
+                  }
+                );
+            }
+          )
+          .catch((error) => {
+            console.error('Error en la conversión de archivos:', error);
             this.ShowLoadingModal = false;
-            this.stepperService.setActiveNum(num + 1);
-            console.log('Datos enviados exitosamente:', response);
-          },
-          (error) => {
-            this.ShowLoadingModal = false;
-            this.showErrorModal = true;
-            // Manejo del error
-            console.error('Error al enviar los datos:', error);
-          }
-        );
+          });
 
         break;
 
       case 3:
         const data3 = {
-          capitalSocial: this.formGroup3.get('capitalSocial')?.value,
-          patrimonioLiquido: this.formGroup3.get('patrimonioLiquido')?.value,
-          cantidadVehiculos: this.formGroup3.get('cantidadVehiculos')?.value,
+          fechaSolicitud: new Date(),
+          territorial: 'Territorial de Antioquia',
+          idCategoriaSolicitud: 150,
+          capitalSocial: this.formGroup3.get('capital_social')?.value,
+          patrimonioLiquido: this.formGroup3.get('patrimonio_liquido')?.value
         };
         //put paso 3 actualizar - cargue 3
         this.apiSFService.SolicitudPaso3(this.idSolicitud, data3).subscribe(
@@ -866,6 +1179,9 @@ export default class IncrementoComponent implements AfterViewInit {
             // Aquí puedes manejar la respuesta, por ejemplo:
             this.ShowLoadingModal = false;
             this.stepperService.setActiveNum(num);
+            if (!notChange) {
+              this.changeActiveNum('1');
+            }
             console.log('Datos enviados exitosamente:', response);
           },
           (error) => {
@@ -881,6 +1197,41 @@ export default class IncrementoComponent implements AfterViewInit {
       default:
         break;
     }
+  }
+
+  //Actualizar archivos guardados
+  ActuFileGuardado(num: number) {
+    this.isActuFile.push(num);
+  }
+
+  //Función para manejar los diferentes casos de acceso a los valores (Blob o Base64)
+  convertirSiEsBlob(valor: any) {
+    // Si es Blob, convertimos a Base64
+    if (valor instanceof Blob) {
+      return this.convertirBlob(valor); // Convertir Blob a Base64
+    } else if (Array.isArray(valor) && valor.length > 0) {
+      // Si es un array (Base64), retornamos el primer valor del array
+      return Promise.resolve(valor[0]);
+    } else {
+      // Si no es ni Blob ni un array, devolvemos el valor como está
+      return Promise.resolve(valor);
+    }
+  }
+
+  //FUNCION PARA CONVERTIR BLOB - BASE64
+  convertirBlob(blob: Blob): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        // Extraemos la parte base64 sin el prefijo 'data:...;base64,'
+        const base64String = reader.result?.toString().split(',')[1] || '';
+        resolve(base64String);
+      };
+      reader.onerror = (error) => {
+        reject(`Error al convertir Blob a base64: ${error}`);
+      };
+      reader.readAsDataURL(blob); // Leemos el blob como DataURL
+    });
   }
 
   //Validador error
@@ -905,7 +1256,26 @@ export default class IncrementoComponent implements AfterViewInit {
     return isValid;
   }
 
-  // Método para alternar la selección de una opción
+  // Añadir control dinámico para la clase de vehículo seleccionada
+  addVehiculoControl(option: any) {
+    const vehiculoGroup = this.fb.group({
+      idClaseVehiculo: [option.value, Validators.required],
+      cantidadVehiculos: ['', [Validators.required, Validators.min(1)]],
+    });
+    this.idClaseVehiculos.push(vehiculoGroup);
+  }
+
+  // Eliminar control dinámico cuando se deselecciona una clase
+  removeVehiculoControl(option: any) {
+    const index = this.idClaseVehiculos.controls.findIndex(
+      (ctrl) => ctrl.value.idClaseVehiculo === option.value
+    );
+    if (index !== -1) {
+      this.idClaseVehiculos.removeAt(index);
+    }
+  }
+
+  // Metodo para alternar la selección de una opción
   toggleOption(option: any, nameForm: string) {
     if (this.isSelected(option, nameForm)) {
       if (nameForm == 'idAreaOperacion') {
@@ -916,22 +1286,22 @@ export default class IncrementoComponent implements AfterViewInit {
         this.selectedOptionsClase = this.selectedOptionsClase.filter(
           (selected) => selected.value !== option.value
         );
+        this.removeVehiculoControl(option); // Eliminar el control del FormArray
       }
     } else {
       if (nameForm == 'idAreaOperacion') {
         this.selectedOptionsDeparts.push(option);
       } else {
         this.selectedOptionsClase.push(option);
+        this.addVehiculoControl(option); // Añadir el control al FormArray
       }
     }
 
     // Actualiza el control del formulario
     if (nameForm == 'idAreaOperacion') {
       this.formGroup4.get(nameForm)?.setValue(this.selectedOptionsDeparts);
-      console.log('Opciones seleccionadas:', this.selectedOptionsDeparts);
     } else {
       this.formGroup4.get(nameForm)?.setValue(this.selectedOptionsClase);
-      console.log('Opciones seleccionadas:', this.selectedOptionsClase);
     }
   }
 
@@ -961,6 +1331,8 @@ export default class IncrementoComponent implements AfterViewInit {
 
   //Metodo para guardar el archivo seleccionado
   onFileSelected(file: File[], formControlName: number) {
+    this.ActuFileGuardado(formControlName);
+
     this.convertFilesToBase64(file)
       .then((base64Array) => {
         const formControlMap: { [key: number]: FormGroup } = {
@@ -981,7 +1353,7 @@ export default class IncrementoComponent implements AfterViewInit {
         const formGroup = formControlMap[formControlName];
         if (formGroup) {
           // Parchamos el form con los archivos en base64
-          formGroup.patchValue({ [formControlName]: base64Array });
+          formGroup.patchValue({[formControlName]: base64Array});
         }
       })
       .catch((error) => {
@@ -1050,7 +1422,7 @@ export default class IncrementoComponent implements AfterViewInit {
     this.inputs[index].value = value;
 
     // Actualiza los valores en los formularios reactivos
-    this.formGroup2.patchValue({ [index]: value });
+    this.formGroup2.patchValue({[index]: value});
 
     // Si el índice es 1 (select), actualiza el porcentaje seleccionado
     if (index === 1) {
@@ -1068,7 +1440,7 @@ export default class IncrementoComponent implements AfterViewInit {
     if (numeroVehiculos && porcentaje) {
       const resultado = (numeroVehiculos * porcentaje) / 100;
       this.inputs[2].value = resultado.toFixed(2);
-      this.formGroup2.patchValue({ 2: resultado.toFixed(2) });
+      this.formGroup2.patchValue({2: resultado.toFixed(2)});
     }
 
     //Lógica para cambiar el texto dinámico
@@ -1148,51 +1520,145 @@ export default class IncrementoComponent implements AfterViewInit {
     input.value = this.formatCurrency(numericValue);
   }
 
-  //Metodo para enviar los formularios
-  onSubmitAllForms() {
-    //Obtener el valor de input para determinar la cantidad de contratos
-    if (this.currentContractIteration == 0) {
-      this.totalContracts = parseInt(
-        this.formGroup4.get('cantidad_contratos')?.value,
-        10
-      ); // Valor de cantidad de contratos
-    }
+  // Metodo para enviar los formularios
+  async onSubmitAllForms() {
+    this.ShowLoadingModal = true;
+    this.processContractIteration();
+    console.log(this.formGroup4);
 
-    if (
-      // this.formGroup1.valid &&
-      // this.formGroup2.valid &&
-      // this.formGroup3.valid
-      true
-    ) {
-      //Si el numero de contratos es mayor a 0
-      if (this.totalContracts > 0) {
-        this.submitted = true;
-        this.formGroup4.markAllAsTouched();
+    if (this.IsvalidOperativo) {
+      // Inicializar contratos como un array vacío
+      let contratos: Array<{
+        consecutivo: number;
+        numeroContrato: any;
+        contratante: any;
+        fechaInicio: any;
+        fechaFin: any;
+        duracionMeses: any;
+        numeroVehiculos: any;
+        vehiculos: any;
+        valorContrato: any;
+        idFormaPago: any;
+        areasOperacion: any;
+        disponibilidadVehiculosEstimada: any;
+        estado: boolean;
+        idEstadoSolicitud: any;
+        idFormulario: any;
+      }> = [];
 
-        //Si el form esta lleno con todos los datos
-        if (this.formGroup4.valid) {
-          this.currentContractIteration += 1;
-          //Lógica para múltiples contratos
-          this.showModal = true; // Mostrar modal para cada contrato
-        }
+      console.log(this.contratosSolicitud);
+
+      this.contractDataArray.forEach((item, index) => {
+        contratos.push({
+          consecutivo: index,
+          numeroContrato: item.numeroContrato,
+          contratante: item.contratante,
+          fechaInicio: item.fecha_inicio,
+          fechaFin: item.fecha_terminacion,
+          duracionMeses: item.duracionMeses,
+          numeroVehiculos: item.idClaseVehiculos.reduce(
+            (sum: number, vehiculo: any) => sum + vehiculo.cantidadVehiculos,
+            0
+          ),
+          valorContrato: item.valorContrato,
+          idFormaPago: item.idFormaPago.value,
+          disponibilidadVehiculosEstimada:
+          item.disponibilidadVehiculosEstimada.value,
+          estado: true,
+          idEstadoSolicitud: index + 1 == this.formGroup1.get('1')?.value.length ? 123 : 162,
+          idFormulario: parseInt(this.idSolicitud),
+          vehiculos: item.idClaseVehiculos,
+          areasOperacion: item.idAreaOperacion.map((i: { value: any }) => {
+            return {
+              id: this.contratosSolicitud
+                ? this.contratosSolicitud[index].areasOperacion.find(
+                  (item: { idMunicipioArea: any }) =>
+                    (item.idMunicipioArea = i.value)
+                ).id
+                : '',
+              idMunicipioArea: i.value,
+            };
+          }),
+        });
+      });
+      //valida si existe informacion de Contratos guardados
+      if (this.contratosSolicitud) {
+        console.log('entroo 1');
+        const data1 = await this.datosPaso1();
+        this.ActualizarSolicitud(1, data1, 'opcion3', true);
+        //si existe actualizar segun el array
+        this.actualizarContratos(contratos);
+      } else if (
+        //valida si no existe nada guardado
+        this.idSolicitud == '' ||
+        this.idSolicitud === 'undefined' ||
+        this.idSolicitud === undefined
+      ) {
+        console.log('entrooo 2');
+
+        //proceso para guardar
+        this.sendAllContracts();
       } else {
-        //cuando ya llego al tope
-        this.submitted = true;
-        this.formGroup4.markAllAsTouched();
+        const data1 = await this.datosPaso1();
+        this.ActualizarSolicitud(1, data1, 'opcion3', true);
+        console.log('entro segurooo');
+
+        //CREA SOLICITUD
+        this.apiSFService.createContratos(contratos[0]).subscribe(
+          (response4) => {
+            const parsedData = JSON.parse(response4);
+            console.log('Datos enviados exitosamente:', parsedData);
+            localStorage.setItem(
+              'contratosSolicitudID',
+              parsedData.idDetalleContrato
+            );
+            this.contratosSolicitud = parsedData;
+            this.actualizarContratos(contratos);
+            // Aquí puedes manejar la respuesta, por ejemplo:
+            this.ShowLoadingModal = false;
+          },
+          (error) => {
+            this.ShowLoadingModal = false;
+            this.showErrorModal = true;
+            // Manejo del error
+            console.error('Error al enviar los datos:', error);
+          }
+        );
       }
     } else {
-      this.changeActiveNum('0');
-      if (!this.validateFormGroup(this.formGroup1, this.errorStates)) {
-        console.log('entro');
-        this.stepperService.setActiveNum(1);
-      } else if (!this.validateFormGroup(this.formGroup2, this.errorStates)) {
-        console.log('entro1');
-        this.stepperService.setActiveNum(2);
-      } else if (!this.validateFormGroup(this.formGroup3, this.errorStates)) {
-        console.log('entro2');
-        this.stepperService.setActiveNum(3);
-      }
+      this.ShowLoadingModal = false;
     }
+  }
+
+  actualizarContratos(contratos: any) {
+    let contador = 0;
+    contratos.forEach((element: any) => {
+      this.ShowLoadingModal = true;
+      this.apiSFService
+        .SolicitudPaso4(this.contratosSolicitud.id, element)
+        .subscribe(
+          (response) => {
+            contador += 1;
+            const parsedData = JSON.parse(response);
+
+            // Aquí puedes manejar la respuesta, por ejemplo:
+            this.ShowLoadingModal = false;
+            if (contador == this.formGroup1.value[1].length) {
+              localStorage.setItem('idSolicitud', '');
+              this.router.navigate(['/dashboard']).then(() => {
+                location.reload();
+              });
+            }
+            console.log('Datos enviados exitosamente:', parsedData);
+          },
+          (error) => {
+            this.ShowLoadingModal = false;
+            this.showErrorModal = true;
+            // Manejo del error
+            console.error('Error al enviar los datos:', error);
+          }
+        );
+    });
   }
 
   //Metodos Primer Modal
@@ -1370,7 +1836,7 @@ export default class IncrementoComponent implements AfterViewInit {
       fechaSolicitud: new Date(),
       nombreEmpresa: this.formGroup3.get('nombreEmpresa')?.value,
       nit: this.formGroup3.get('nit')?.value,
-      territorial: 'Medellin',
+      territorial: 'Territorial de Antioquia',
       idEstadoSolicitud: 123,
       idCategoriaSolicitud: 150,
       excelModeloTransporte: '',
