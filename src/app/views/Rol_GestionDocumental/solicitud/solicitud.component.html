@@ -131,7 +131,7 @@
                 <div class="inline-flex m-auto w-full">
                   <button
                     class="inline-flex items-center justify-center px-2 py-1 text-white bg-primary2 hover:bg-primary1 font-medium rounded-full text-[9px] work-sans text-center disabled:bg-primary4"
-                    (click)="downloadPDF(doc.documento, 'Solicitud de fijación')">
+                    (click)="downloadPDF(doc.documento, 'Contrato '+currentIndex+1)">
                     <span class="govco-download me-2 py-1 h-[60%] m-auto"></span> Descargar archivo adjunto</button>
                 </div>
 
@@ -186,7 +186,7 @@
               <div class="inline-flex m-auto w-full">
                 <button
                   class="inline-flex items-center justify-center px-2 py-1 text-white bg-primary2 hover:bg-primary1 font-medium rounded-full text-[9px] work-sans text-center disabled:bg-primary4"
-                  (click)="downloadPDF(solicitud?.formulario.planRodamiento, 'Solicitud de fijación')">
+                  (click)="downloadPDF(solicitud?.formulario.planRodamiento, 'Plan rodamiento')">
                   <span class="govco-download me-2 py-2 h-[70%] m-auto"></span> Descargar archivo adjunto</button>
               </div>
 
@@ -234,7 +234,7 @@
               <div class="inline-flex m-auto w-full">
                 <button
                   class="inline-flex items-center justify-center px-2 py-1 text-white bg-primary2 hover:bg-primary1 font-medium rounded-full text-[9px] work-sans text-center disabled:bg-primary4"
-                  (click)="downloadPDF(solicitud?.formulario.estructuraCostosBasicos, 'Solicitud de fijación')">
+                  (click)="downloadPDF(solicitud?.formulario.estructuraCostosBasicos, 'estructura costos basicos')">
                   <span class="govco-download me-2 py-2 h-[70%] m-auto"></span> Descargar archivo adjunto</button>
               </div>
 
@@ -285,7 +285,7 @@
               <div class="inline-flex m-auto w-full">
                 <button
                   class="inline-flex items-center justify-center px-2 py-1 text-white bg-primary2 hover:bg-primary1 font-medium rounded-full text-[9px] work-sans text-center disabled:bg-primary4"
-                  (click)="downloadPDF(solicitud?.formulario.certificadoCumplimiento, 'Solicitud de fijación')">
+                  (click)="downloadPDF(solicitud?.formulario.certificadoCumplimiento, 'certificado cumplimiento')">
                   <span class="govco-download me-2 py-2 h-[70%] m-auto"></span> Descargar archivo adjunto</button>
               </div>
 
@@ -384,7 +384,7 @@
               <div class="inline-flex m-auto w-full">
                 <button
                   class="inline-flex items-center justify-center px-2 py-1 text-white bg-primary2 hover:bg-primary1 font-medium rounded-full text-[9px] work-sans text-center disabled:bg-primary4"
-                  (click)="downloadPDF(solicitud?.formulario.certificadoExistencia, 'Solicitud de fijación')">
+                  (click)="downloadPDF(solicitud?.formulario.certificadoExistencia, 'certificado existencia')">
                   <span class="govco-download me-2 py-2 h-[70%] m-auto"></span> Descargar archivo adjunto</button>
               </div>
 
@@ -432,7 +432,7 @@
               <div class="inline-flex m-auto w-full">
                 <button
                   class="inline-flex items-center justify-center px-2 py-1 text-white bg-primary2 hover:bg-primary1 font-medium rounded-full text-[9px] work-sans text-center disabled:bg-primary4"
-                  (click)="downloadPDF(solicitud?.formulario.registroUnicoTributario, 'Solicitud de fijación')">
+                  (click)="downloadPDF(solicitud?.formulario.registroUnicoTributario, 'Registro único tributario')">
                   <span class="govco-download me-2 py-2 h-[70%] m-auto"></span> Descargar archivo adjunto</button>
               </div>
 
@@ -481,7 +481,7 @@
               <div class="inline-flex m-auto w-full">
                 <button
                   class="inline-flex items-center justify-center px-2 py-1 text-white bg-primary2 hover:bg-primary1 font-medium rounded-full text-[9px] work-sans text-center disabled:bg-primary4"
-                  (click)="downloadPDF(solicitud?.formulario.resolucionHabilitacion, 'Solicitud de fijación')">
+                  (click)="downloadPDF(solicitud?.formulario.resolucionHabilitacion, 'resolución habilitación')">
                   <span class="govco-download me-2 py-2 h-[70%] m-auto"></span> Descargar archivo adjunto</button>
               </div>
 
@@ -529,7 +529,7 @@
               <div class="inline-flex m-auto w-full">
                 <button
                   class="inline-flex items-center justify-center px-2 py-1 text-white bg-primary2 hover:bg-primary1 font-medium rounded-full text-[9px] work-sans text-center disabled:bg-primary4"
-                  (click)="downloadPDF(solicitud?.formulario.cedulaRepresentante, 'Solicitud de fijación')">
+                  (click)="downloadPDF(solicitud?.formulario.cedulaRepresentante, 'cédula representante')">
                   <span class="govco-download me-2 py-2 h-[70%] m-auto"></span> Descargar archivo adjunto</button>
               </div>
 
@@ -578,7 +578,7 @@
               <div class="inline-flex m-auto w-full">
                 <button
                   class="inline-flex items-center justify-center px-2 py-1 text-white bg-primary2 hover:bg-primary1 font-medium rounded-full text-[9px] work-sans text-center disabled:bg-primary4"
-                  (click)="downloadPDF(solicitud?.formulario.estadosFinancieros, 'Solicitud de fijación')">
+                  (click)="downloadPDF(solicitud?.formulario.estadosFinancieros, 'estados financieros')">
                   <span class="govco-download me-2 py-2 h-[70%] m-auto"></span> Descargar archivo adjunto</button>
               </div>
 
@@ -626,7 +626,7 @@
               <div class="inline-flex m-auto w-full">
                 <button
                   class="inline-flex items-center justify-center px-2 py-1 text-white bg-primary2 hover:bg-primary1 font-medium rounded-full text-[9px] work-sans text-center disabled:bg-primary4"
-                  (click)="downloadPDF(solicitud?.formulario.cedulaContador, 'Solicitud de fijación')">
+                  (click)="downloadPDF(solicitud?.formulario.cedulaContador, 'cedula contador')">
                   <span class="govco-download me-2 py-2 h-[70%] m-auto"></span> Descargar archivo adjunto</button>
               </div>
 
@@ -675,7 +675,7 @@
               <div class="inline-flex m-auto w-full">
                 <button
                   class="inline-flex items-center justify-center px-2 py-1 text-white bg-primary2 hover:bg-primary1 font-medium rounded-full text-[9px] work-sans text-center disabled:bg-primary4"
-                  (click)="downloadPDF(solicitud?.formulario.tarjetaProfesionalContador, 'Solicitud de fijación')">
+                  (click)="downloadPDF(solicitud?.formulario.tarjetaProfesionalContador, 'tarjeta profesional contador')">
                   <span class="govco-download me-2 py-2 h-[70%] m-auto"></span> Descargar archivo adjunto</button>
               </div>
 
