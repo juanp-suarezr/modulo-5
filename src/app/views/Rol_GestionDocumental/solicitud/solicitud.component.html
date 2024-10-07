@@ -1,732 +1,1157 @@
-<div class="sm:grid sm:grid-cols-10 gap-4" *ngIf="user.roles[0].roleName == 'ROLE_ESCRITURA_MIN'"
-     xmlns="http://www.w3.org/1999/html">
+<div class="sm:grid sm:grid-cols-10 gap-4 pb-16" *ngIf="user.roles[0].roleName == 'ROLE_ESCRITURA_GESDOC'"
+  xmlns="http://www.w3.org/1999/html">
 
   <div class="md:col-span-2 sm:col-span-3 w-auto sm:mt-16 mt-12">
-    <app-left-nav [data]="infoMenu" active="{{activeNum}}"></app-left-nav>
+    <app-left-nav [data]="infoMenu" active="{{activeNum}}" (changed)="changeActiveNum($event)"></app-left-nav>
   </div>
 
-  <!-- solicitud contenido -->
-  <div class="md:col-span-8 sm:col-span-7 w-auto sm:mt-10 mt-4 md:px-8 px-2" *ngIf="activeNum == '0'">
+  <!-- carga loading -->
+  <div class="md:col-span-8 sm:col-span-7 w-auto h-full sm:mt-10 mt-4 md:px-8 px-2" *ngIf="loadingPage">
+    <div class="card flex justify-center items-center mt-8">
+      <p-progressSpinner styleClass="w-6rem h-6rem" strokeWidth="4" fill="var(--surface-ground)" />
+    </div>
+  </div>
 
-    <h3 class="text-primary1 !font-bold">Solicitud ID {{id}}</h3>
+  <div class="md:col-span-8 sm:col-span-7 w-auto sm:mt-10 mt-4 md:px-8 px-2" *ngIf="loadingPage == false">
 
-    <!-- sttepper -->
-    <div class="mt-4 w-full inline-flex justify-center">
-      <app-sttepper [dataStep]="infoStepper"></app-sttepper>
+    <!-- solicitud contenido -->
+    <div class="w-full" *ngIf="activeNum == '0'">
+
+      <!-- sttepper -->
+      <div class="mt-4 w-full inline-flex justify-center">
+        <app-sttepper [dataStep]="infoStepper"></app-sttepper>
+      </div>
+
+      <h3 class="text-primary1 !font-bold">Solicitud ID {{solicitud?.formulario.id}}</h3>
+
+
+
+      <!-- formulario 1 -->
+      <div class="px-4 md:pl-16 md:pe-16 mt-6 active1 mb-6" *ngIf="activeStep == 1">
+
+        <!-- contenido 1 -->
+        <div class="content1 md:grid md:grid-cols-2 md:gap-x-24 md:flex items-start h-full">
+
+          <!--  Solicitud de fijación de capacidad transportadora -->
+          <div *ngIf="solicitud?.formulario.categoriaSolicitud.descripcion == 'Fijación'"
+            class="w-full flex flex-col justify-start items-stretch pt-6 my-auto h-full">
+            <p class="text-primary3 font-semibold h-full my-auto">
+              Solicitud de fijación de capacidad transportadora
+            </p>
+            <div class="w-full h-full flex md:gap-4 lg:gap-6 mt-4">
+
+              <div class="flex items-center cursor-pointer"
+                (click)="viewDocument(solicitud?.formulario.solicitudFijacionCapacidad)">
+
+                <!-- Archivos Visibles -->
+                <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
+
+                  <!-- document -->
+                  <div class="w-auto m-auto">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto" viewBox="0 0 384 512">
+                      <path
+                        d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z" />
+                    </svg>
+                  </div>
+
+                  <!-- texto info file -->
+                  <div class="px-2 w-auto">
+                    <p class="truncate text-[8px] font-semibold">
+                      Solicitud de fijación
+                    </p>
+                    <p class="truncate text-[8px]">{{ (getDocumentSize(solicitud?.formulario.solicitudFijacionCapacidad)
+                      ?? 0 /
+                      1024).toFixed(2) }} Kb</p>
+                  </div>
+
+                </div>
+
+              </div>
+              <div class="inline-flex m-auto w-full">
+                <button
+                  class="inline-flex items-center justify-center px-2 py-1 text-white bg-primary2 hover:bg-primary1 font-medium rounded-full text-[9px] work-sans text-center disabled:bg-primary4"
+                  (click)="downloadPDF(solicitud?.formulario.solicitudFijacionCapacidad, 'Solicitud de fijación')">
+                  <span class="govco-download me-2 py-2 h-[70%] m-auto"></span> Descargar archivo adjunto</button>
+              </div>
+
+
+
+            </div>
+
+          </div>
+
+          <!--  Contratos -->
+          <div class="w-full flex flex-col justify-start items-stretch pt-6 my-auto h-full">
+            <p class="text-primary3 font-semibold h-full my-auto">
+              Contratos de prestación del servicio de transporte
+              terrestre automotor especial suscritos por la empresa
+              de transporte
+            </p>
+            <!-- contratos con slide -->
+            <div class="w-full h-full flex gap-1 mt-4">
+
+              <!-- left arrow -->
+              <!-- Botón de Navegación Izquierda (visible solo si hay más de 2 archivos) -->
+              <button *ngIf="solicitud?.documentos.length > 2" class="m-auto" (click)="moveLeft()"
+                [disabled]="currentIndex === 0">
+                <span class="pi pi-chevron-left text-primary2 text-xl"></span>
+              </button>
+
+              <!-- contratos info  -->
+              <div *ngFor="let doc of visibleFiles" class="w-full h-full flex md:gap-4 lg:gap-6">
+
+                <div class="flex items-center cursor-pointer" (click)="viewDocument(doc.documento)">
+
+                  <!-- Archivos Visibles -->
+                  <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
+
+                    <!-- document -->
+                    <div class="w-auto m-auto">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto"
+                        viewBox="0 0 384 512">
+                        <path
+                          d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z" />
+                      </svg>
+                    </div>
+
+                    <!-- texto info file -->
+                    <div class="px-2 w-auto">
+                      <p class="truncate text-[8px] font-semibold">
+                        Contrato {{ currentIndex+1 }}
+                      </p>
+                      <p class="truncate text-[8px]">{{
+                        (getDocumentSize(doc.documento)
+                        ?? 0 /
+                        1024).toFixed(2) }} Kb</p>
+                    </div>
+
+                  </div>
+                </div>
+                <!-- descargar button -->
+                <div class="inline-flex m-auto w-full">
+                  <button
+                    class="inline-flex items-center justify-center px-2 py-1 text-white bg-primary2 hover:bg-primary1 font-medium rounded-full text-[9px] work-sans text-center disabled:bg-primary4"
+                    (click)="downloadPDF(doc.documento, 'Solicitud de fijación')">
+                    <span class="govco-download me-2 py-1 h-[60%] m-auto"></span> Descargar archivo adjunto</button>
+                </div>
+
+              </div>
+
+              <!-- Botón de Navegación Derecha (visible solo si hay más de 2 archivos) -->
+              <button *ngIf="solicitud?.documentos.length > 2" class="m-auto" (click)="moveRight()"
+                [disabled]="currentIndex >= solicitud?.documentos.length - maxVisibleFiles">
+                <span class="pi pi-chevron-right text-primary2 text-xl"></span>
+              </button>
+
+            </div>
+
+
+          </div>
+
+          <!--  Plan de Rodamiento -->
+          <div class="w-full flex flex-col justify-start items-stretch pt-6 my-auto h-full">
+            <p class="text-primary3 font-semibold h-full my-auto">
+              Plan de Rodamiento
+            </p>
+            <!-- documento y boton -->
+            <div class="w-full h-full flex md:gap-4 lg:gap-6 mt-4">
+
+              <div class="flex items-center cursor-pointer"
+                (click)="viewDocument(solicitud?.formulario.planRodamiento)">
+
+                <!-- Archivos Visibles -->
+                <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
+
+                  <!-- document -->
+                  <div class="w-auto m-auto">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto" viewBox="0 0 384 512">
+                      <path
+                        d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z" />
+                    </svg>
+                  </div>
+
+                  <!-- texto info file -->
+                  <div class="px-2 w-auto">
+                    <p class="truncate text-[8px] font-semibold">
+                      Plan de Rodamiento
+                    </p>
+                    <p class="truncate text-[8px]">{{ (getDocumentSize(solicitud?.formulario.planRodamiento)
+                      ?? 0 /
+                      1024).toFixed(2) }} Kb</p>
+                  </div>
+
+                </div>
+
+              </div>
+              <div class="inline-flex m-auto w-full">
+                <button
+                  class="inline-flex items-center justify-center px-2 py-1 text-white bg-primary2 hover:bg-primary1 font-medium rounded-full text-[9px] work-sans text-center disabled:bg-primary4"
+                  (click)="downloadPDF(solicitud?.formulario.planRodamiento, 'Solicitud de fijación')">
+                  <span class="govco-download me-2 py-2 h-[70%] m-auto"></span> Descargar archivo adjunto</button>
+              </div>
+
+
+
+            </div>
+
+          </div>
+
+          <!--   Estructura costos básicos contratante y contratista -->
+          <div class="w-full flex flex-col justify-start items-stretch pt-6 my-auto h-full">
+            <p class="text-primary3 font-semibold h-full my-auto">
+              Estructura costos básicos contratante y contratista
+            </p>
+            <!-- documento y boton -->
+            <div class="w-full h-full flex md:gap-4 lg:gap-6 mt-4">
+
+              <div class="flex items-center cursor-pointer"
+                (click)="viewDocument(solicitud?.formulario.estructuraCostosBasicos)">
+
+                <!-- Archivos Visibles -->
+                <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
+
+                  <!-- document -->
+                  <div class="w-auto m-auto">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto" viewBox="0 0 384 512">
+                      <path
+                        d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z" />
+                    </svg>
+                  </div>
+
+                  <!-- texto info file -->
+                  <div class="px-2 w-auto">
+                    <p class="truncate text-[8px] font-semibold">
+                      Estructura costos básicos
+                    </p>
+                    <p class="truncate text-[8px]">{{ (getDocumentSize(solicitud?.formulario.estructuraCostosBasicos)
+                      ?? 0 /
+                      1024).toFixed(2) }} Kb</p>
+                  </div>
+
+                </div>
+
+              </div>
+              <div class="inline-flex m-auto w-full">
+                <button
+                  class="inline-flex items-center justify-center px-2 py-1 text-white bg-primary2 hover:bg-primary1 font-medium rounded-full text-[9px] work-sans text-center disabled:bg-primary4"
+                  (click)="downloadPDF(solicitud?.formulario.estructuraCostosBasicos, 'Solicitud de fijación')">
+                  <span class="govco-download me-2 py-2 h-[70%] m-auto"></span> Descargar archivo adjunto</button>
+              </div>
+
+
+
+            </div>
+
+
+          </div>
+
+          <!--   Certificado de cumplimiento -->
+          <div *ngIf="solicitud?.formulario.categoriaSolicitud.descripcion == 'Incremento'"
+            class="w-full flex flex-col justify-start items-stretch pt-6 my-auto h-full">
+            <p class="text-primary3 font-semibold h-full my-auto">
+              Certificado de cumplimiento del 10% o 7% de flota de la
+              contratadas y las tarifas establecidas por el servicio
+            </p>
+            <!-- documento y boton -->
+            <div class="w-full h-full flex md:gap-4 lg:gap-6 mt-4">
+
+              <div class="flex items-center cursor-pointer"
+                (click)="viewDocument(solicitud?.formulario.certificadoCumplimiento)">
+
+                <!-- Archivos Visibles -->
+                <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
+
+                  <!-- document -->
+                  <div class="w-auto m-auto">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto" viewBox="0 0 384 512">
+                      <path
+                        d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z" />
+                    </svg>
+                  </div>
+
+                  <!-- texto info file -->
+                  <div class="px-2 w-auto">
+                    <p class="truncate text-[8px] font-semibold">
+                      Certificado de Cumplimiento
+                    </p>
+                    <p class="truncate text-[8px]">{{ (getDocumentSize(solicitud?.formulario.certificadoCumplimiento)
+                      ?? 0 /
+                      1024).toFixed(2) }} Kb</p>
+                  </div>
+
+                </div>
+
+              </div>
+              <div class="inline-flex m-auto w-full">
+                <button
+                  class="inline-flex items-center justify-center px-2 py-1 text-white bg-primary2 hover:bg-primary1 font-medium rounded-full text-[9px] work-sans text-center disabled:bg-primary4"
+                  (click)="downloadPDF(solicitud?.formulario.certificadoCumplimiento, 'Solicitud de fijación')">
+                  <span class="govco-download me-2 py-2 h-[70%] m-auto"></span> Descargar archivo adjunto</button>
+              </div>
+
+
+
+            </div>
+
+          </div>
+
+          <!--    Certificado de propiedad de la empresa -->
+          <div *ngIf="solicitud?.formulario.categoriaSolicitud.descripcion == 'Incremento'"
+            class="w-full flex flex-col justify-start items-stretch pt-6 my-auto h-full">
+            <p class="text-primary3 font-semibold h-full my-auto">
+              Certificado del 10% o 7% de propiedad de la empresa
+            </p>
+            <!-- documento y boton -->
+            <div class="w-full h-full flex md:gap-4 lg:gap-6 mt-4">
+
+              <div class="flex items-center cursor-pointer"
+                (click)="viewDocument(solicitud?.formulario.certificadoPropiedadEmpresa)">
+
+                <!-- Archivos Visibles -->
+                <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
+
+                  <!-- document -->
+                  <div class="w-auto m-auto">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto" viewBox="0 0 384 512">
+                      <path
+                        d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z" />
+                    </svg>
+                  </div>
+
+                  <!-- texto info file -->
+                  <div class="px-2 w-auto">
+                    <p class="truncate text-[8px] font-semibold">
+                      Certificado de propiedad empresa
+                    </p>
+                    <p class="truncate text-[8px]">{{
+                      (getDocumentSize(solicitud?.formulario.certificadoPropiedadEmpresa)
+                      ?? 0 /
+                      1024).toFixed(2) }} Kb</p>
+                  </div>
+
+                </div>
+
+              </div>
+              <div class="inline-flex m-auto w-full">
+                <button
+                  class="inline-flex items-center justify-center px-2 py-1 text-white bg-primary2 hover:bg-primary1 font-medium rounded-full text-[9px] work-sans text-center disabled:bg-primary4"
+                  (click)="downloadPDF(solicitud?.formulario.certificadoPropiedadEmpresa, 'Solicitud de fijación')">
+                  <span class="govco-download me-2 py-2 h-[70%] m-auto"></span> Descargar archivo adjunto</button>
+              </div>
+
+
+
+            </div>
+
+          </div>
+
+          <!--  Certificado de Existencia y Representación legal no menos a 30 días* -->
+          <div class="w-full flex flex-col justify-start items-stretch pt-6 my-auto h-full">
+            <p class="text-primary3 font-semibold h-full my-auto">
+              Certificado de Existencia y Representación legal no
+              menos a 30 días*
+            </p>
+            <!-- documento y boton -->
+            <div class="w-full h-full flex md:gap-4 lg:gap-6 mt-4">
+
+              <div class="flex items-center cursor-pointer"
+                (click)="viewDocument(solicitud?.formulario.certificadoExistencia)">
+
+                <!-- Archivos Visibles -->
+                <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
+
+                  <!-- document -->
+                  <div class="w-auto m-auto">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto" viewBox="0 0 384 512">
+                      <path
+                        d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z" />
+                    </svg>
+                  </div>
+
+                  <!-- texto info file -->
+                  <div class="px-2 w-auto">
+                    <p class="truncate text-[8px] font-semibold">
+                      Certificado de Existencia
+                    </p>
+                    <p class="truncate text-[8px]">{{ (getDocumentSize(solicitud?.formulario.certificadoExistencia)
+                      ?? 0 /
+                      1024).toFixed(2) }} Kb</p>
+                  </div>
+
+                </div>
+
+              </div>
+              <div class="inline-flex m-auto w-full">
+                <button
+                  class="inline-flex items-center justify-center px-2 py-1 text-white bg-primary2 hover:bg-primary1 font-medium rounded-full text-[9px] work-sans text-center disabled:bg-primary4"
+                  (click)="downloadPDF(solicitud?.formulario.certificadoExistencia, 'Solicitud de fijación')">
+                  <span class="govco-download me-2 py-2 h-[70%] m-auto"></span> Descargar archivo adjunto</button>
+              </div>
+
+
+
+            </div>
+
+          </div>
+
+          <!--    Registro Único Tributario -->
+          <div class="w-full flex flex-col justify-start items-stretch pt-6 my-auto h-full">
+            <p class="text-primary3 font-semibold h-full my-auto">
+              Registro Único Tributario
+            </p>
+            <!-- documento y boton -->
+            <div class="w-full h-full flex md:gap-4 lg:gap-6 mt-4">
+
+              <div class="flex items-center cursor-pointer"
+                (click)="viewDocument(solicitud?.formulario.registroUnicoTributario)">
+
+                <!-- Archivos Visibles -->
+                <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
+
+                  <!-- document -->
+                  <div class="w-auto m-auto">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto" viewBox="0 0 384 512">
+                      <path
+                        d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z" />
+                    </svg>
+                  </div>
+
+                  <!-- texto info file -->
+                  <div class="px-2 w-auto">
+                    <p class="truncate text-[8px] font-semibold">
+                      Registro Único Tributario
+                    </p>
+                    <p class="truncate text-[8px]">{{ (getDocumentSize(solicitud?.formulario.registroUnicoTributario)
+                      ?? 0 /
+                      1024).toFixed(2) }} Kb</p>
+                  </div>
+
+                </div>
+
+              </div>
+              <div class="inline-flex m-auto w-full">
+                <button
+                  class="inline-flex items-center justify-center px-2 py-1 text-white bg-primary2 hover:bg-primary1 font-medium rounded-full text-[9px] work-sans text-center disabled:bg-primary4"
+                  (click)="downloadPDF(solicitud?.formulario.registroUnicoTributario, 'Solicitud de fijación')">
+                  <span class="govco-download me-2 py-2 h-[70%] m-auto"></span> Descargar archivo adjunto</button>
+              </div>
+
+
+
+            </div>
+
+
+          </div>
+
+          <!--   Resolución de habilitación -->
+          <div class="w-full flex flex-col justify-start items-stretch pt-6 my-auto h-full">
+            <p class="text-primary3 font-semibold h-full my-auto">
+              Resolución de habilitación
+            </p>
+            <!-- documento y boton -->
+            <div class="w-full h-full flex md:gap-4 lg:gap-6 mt-4">
+
+              <div class="flex items-center cursor-pointer"
+                (click)="viewDocument(solicitud?.formulario.resolucionHabilitacion)">
+
+                <!-- Archivos Visibles -->
+                <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
+
+                  <!-- document -->
+                  <div class="w-auto m-auto">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto" viewBox="0 0 384 512">
+                      <path
+                        d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z" />
+                    </svg>
+                  </div>
+
+                  <!-- texto info file -->
+                  <div class="px-2 w-auto">
+                    <p class="truncate text-[8px] font-semibold">
+                      Resolución de habilitación
+                    </p>
+                    <p class="truncate text-[8px]">{{ (getDocumentSize(solicitud?.formulario.resolucionHabilitacion)
+                      ?? 0 /
+                      1024).toFixed(2) }} Kb</p>
+                  </div>
+
+                </div>
+
+              </div>
+              <div class="inline-flex m-auto w-full">
+                <button
+                  class="inline-flex items-center justify-center px-2 py-1 text-white bg-primary2 hover:bg-primary1 font-medium rounded-full text-[9px] work-sans text-center disabled:bg-primary4"
+                  (click)="downloadPDF(solicitud?.formulario.resolucionHabilitacion, 'Solicitud de fijación')">
+                  <span class="govco-download me-2 py-2 h-[70%] m-auto"></span> Descargar archivo adjunto</button>
+              </div>
+
+
+
+            </div>
+
+          </div>
+
+          <!--    Cédula de Ciudadanía del Representante Legal -->
+          <div class="w-full flex flex-col justify-start items-stretch pt-6 my-auto h-full">
+            <p class="text-primary3 font-semibold h-full my-auto">
+              Cédula de Ciudadanía del Representante Legal
+            </p>
+            <!-- documento y boton -->
+            <div class="w-full h-full flex md:gap-4 lg:gap-6 mt-4">
+
+              <div class="flex items-center cursor-pointer"
+                (click)="viewDocument(solicitud?.formulario.cedulaRepresentante)">
+
+                <!-- Archivos Visibles -->
+                <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
+
+                  <!-- document -->
+                  <div class="w-auto m-auto">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto" viewBox="0 0 384 512">
+                      <path
+                        d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z" />
+                    </svg>
+                  </div>
+
+                  <!-- texto info file -->
+                  <div class="px-2 w-auto">
+                    <p class="truncate text-[8px] font-semibold">
+                      Cédula Representante
+                    </p>
+                    <p class="truncate text-[8px]">{{ (getDocumentSize(solicitud?.formulario.cedulaRepresentante)
+                      ?? 0 /
+                      1024).toFixed(2) }} Kb</p>
+                  </div>
+
+                </div>
+
+              </div>
+              <div class="inline-flex m-auto w-full">
+                <button
+                  class="inline-flex items-center justify-center px-2 py-1 text-white bg-primary2 hover:bg-primary1 font-medium rounded-full text-[9px] work-sans text-center disabled:bg-primary4"
+                  (click)="downloadPDF(solicitud?.formulario.cedulaRepresentante, 'Solicitud de fijación')">
+                  <span class="govco-download me-2 py-2 h-[70%] m-auto"></span> Descargar archivo adjunto</button>
+              </div>
+
+
+
+            </div>
+
+
+          </div>
+
+          <!--    Estados financieros de la empresa -->
+          <div class="w-full flex flex-col justify-start items-stretch pt-6 my-auto h-full">
+            <p class="text-primary3 font-semibold h-full my-auto">
+              Estados financieros de la empresa
+            </p>
+            <!-- documento y boton -->
+            <div class="w-full h-full flex md:gap-4 lg:gap-6 mt-4">
+
+              <div class="flex items-center cursor-pointer"
+                (click)="viewDocument(solicitud?.formulario.estadosFinancieros)">
+
+                <!-- Archivos Visibles -->
+                <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
+
+                  <!-- document -->
+                  <div class="w-auto m-auto">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto" viewBox="0 0 384 512">
+                      <path
+                        d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z" />
+                    </svg>
+                  </div>
+
+                  <!-- texto info file -->
+                  <div class="px-2 w-auto">
+                    <p class="truncate text-[8px] font-semibold">
+                      Estados financieros
+                    </p>
+                    <p class="truncate text-[8px]">{{ (getDocumentSize(solicitud?.formulario.estadosFinancieros)
+                      ?? 0 /
+                      1024).toFixed(2) }} Kb</p>
+                  </div>
+
+                </div>
+
+              </div>
+              <div class="inline-flex m-auto w-full">
+                <button
+                  class="inline-flex items-center justify-center px-2 py-1 text-white bg-primary2 hover:bg-primary1 font-medium rounded-full text-[9px] work-sans text-center disabled:bg-primary4"
+                  (click)="downloadPDF(solicitud?.formulario.estadosFinancieros, 'Solicitud de fijación')">
+                  <span class="govco-download me-2 py-2 h-[70%] m-auto"></span> Descargar archivo adjunto</button>
+              </div>
+
+
+
+            </div>
+
+          </div>
+
+          <!--     Cédula del contador que firma los estados financieros -->
+          <div class="w-full flex flex-col justify-start items-stretch pt-6 my-auto h-full">
+            <p class="text-primary3 font-semibold h-full my-auto">
+              Cédula del contador que firma los estados financieros
+            </p>
+            <!-- documento y boton -->
+            <div class="w-full h-full flex md:gap-4 lg:gap-6 mt-4">
+
+              <div class="flex items-center cursor-pointer"
+                (click)="viewDocument(solicitud?.formulario.cedulaContador)">
+
+                <!-- Archivos Visibles -->
+                <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
+
+                  <!-- document -->
+                  <div class="w-auto m-auto">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto" viewBox="0 0 384 512">
+                      <path
+                        d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z" />
+                    </svg>
+                  </div>
+
+                  <!-- texto info file -->
+                  <div class="px-2 w-auto">
+                    <p class="truncate text-[8px] font-semibold">
+                      Cédula Contador
+                    </p>
+                    <p class="truncate text-[8px]">{{ (getDocumentSize(solicitud?.formulario.cedulaContador)
+                      ?? 0 /
+                      1024).toFixed(2) }} Kb</p>
+                  </div>
+
+                </div>
+
+              </div>
+              <div class="inline-flex m-auto w-full">
+                <button
+                  class="inline-flex items-center justify-center px-2 py-1 text-white bg-primary2 hover:bg-primary1 font-medium rounded-full text-[9px] work-sans text-center disabled:bg-primary4"
+                  (click)="downloadPDF(solicitud?.formulario.cedulaContador, 'Solicitud de fijación')">
+                  <span class="govco-download me-2 py-2 h-[70%] m-auto"></span> Descargar archivo adjunto</button>
+              </div>
+
+
+
+            </div>
+
+
+          </div>
+
+          <!--     Tarjeta profesional contador que firma estados financieros -->
+          <div class="w-full flex flex-col justify-start items-stretch pt-6 my-auto h-full">
+            <p class="text-primary3 font-semibold h-full my-auto">
+              Tarjeta profesional contador que firma estados financieros
+            </p>
+            <!-- documento y boton -->
+            <div class="w-full h-full flex md:gap-4 lg:gap-6 mt-4">
+
+              <div class="flex items-center cursor-pointer"
+                (click)="viewDocument(solicitud?.formulario.tarjetaProfesionalContador)">
+
+                <!-- Archivos Visibles -->
+                <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
+
+                  <!-- document -->
+                  <div class="w-auto m-auto">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto" viewBox="0 0 384 512">
+                      <path
+                        d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z" />
+                    </svg>
+                  </div>
+
+                  <!-- texto info file -->
+                  <div class="px-2 w-auto">
+                    <p class="truncate text-[8px] font-semibold">
+                      Tarjeta profesional contador
+                    </p>
+                    <p class="truncate text-[8px]">{{ (getDocumentSize(solicitud?.formulario.tarjetaProfesionalContador)
+                      ?? 0 /
+                      1024).toFixed(2) }} Kb</p>
+                  </div>
+
+                </div>
+
+              </div>
+              <div class="inline-flex m-auto w-full">
+                <button
+                  class="inline-flex items-center justify-center px-2 py-1 text-white bg-primary2 hover:bg-primary1 font-medium rounded-full text-[9px] work-sans text-center disabled:bg-primary4"
+                  (click)="downloadPDF(solicitud?.formulario.tarjetaProfesionalContador, 'Solicitud de fijación')">
+                  <span class="govco-download me-2 py-2 h-[70%] m-auto"></span> Descargar archivo adjunto</button>
+              </div>
+
+
+
+            </div>
+
+          </div>
+
+
+        </div>
+
+
+        <div class="mt-8 w-full flex justify-end gap-4">
+
+          <app-primary-button type="button" class="" (click)="changeActiveStep(2)">Continuar</app-primary-button>
+        </div>
+
+      </div>
+
+      <!-- formulario 2 -->
+      <div class="px-4 md:pl-16 md:pe-16 mt-6 active1 mb-6" *ngIf="activeStep == 2">
+
+        <!-- contenido 1 -->
+        <div class="content1 md:grid sm:grid-cols-2 md:gap-x-36 md:flex items-center h-full">
+
+          <!-- Capital Social -->
+          <div class="w-full flex flex-col justify-start items-stretch pt-6 my-auto h-full">
+            <p class="text-primary3 font-semibold h-full m-auto">
+              Capital Social en SMLV
+            </p>
+            <!-- input -->
+            <div class="mt-2 relative w-full h-full flex items-center">
+              <div
+                class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border focus:outline-none focus:border-primary1 bg-secondary3 border-secondary2 text-primary3 flex items-center justify-center">
+                {{ formatCurrency(solicitud?.formulario.capitalSocial / smlmmv) }}
+              </div>
+            </div>
+            <!-- texto informativo -->
+            <div class="flex inline-flex md:gap-3 gap-2 h-full w-full mt-2">
+              <span class="lg:w-[12%] sm:w-[12%] w-[10%] h-full flex justify-center lg:px-1 m-auto">
+                <img class="w-full m-auto" src="assets/iconoInfo.svg">
+              </span>
+              <p class="text-primary1 work-sans text-[11px] mt-2 w-auto">
+                Empresa con capacidad transportadora operacional autorizada de
+                hasta 51 y 300 vehículos: Capital pagado mínimo: 400 SMLMV –
+                Patrimonio líquido mínimo > 280 SMLMV
+              </p>
+            </div>
+          </div>
+
+          <!-- Patrimonio Líquido -->
+          <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+            <p class="text-primary3 font-semibold h-full m-auto">
+              Patrimonio Líquido en SMLV
+            </p>
+
+            <!-- input -->
+            <div class="mt-2 relative w-full h-full flex items-center">
+              <div
+                class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border focus:outline-none focus:border-primary1 bg-secondary3 border-secondary2 text-primary3 flex items-center justify-center">
+                {{ formatCurrency(solicitud?.formulario.patrimonioLiquido / smlmmv) }}
+              </div>
+            </div>
+
+            <!-- texto informativo -->
+            <div class="flex inline-flex md:gap-3 gap-2 h-full w-full mt-2">
+              <span class="lg:w-[12%] sm:w-[12%] w-[10%] h-full flex justify-center lg:px-1 m-auto">
+                <img class="w-full m-auto" src="assets/iconoInfo.svg">
+              </span>
+              <p class="text-primary1 work-sans text-[11px] mt-2 w-auto">
+                Empresa con capacidad transportadora operacional autorizada de
+                hasta 51 y 300 vehículos: Capital pagado mínimo: 400 SMLMV –
+                Patrimonio líquido mínimo > 280 SMLMV
+              </p>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- contenido 2 -->
+        <div class="content2 md:grid sm:grid-cols-2 md:gap-x-36 md:flex items-center h-full pt-6">
+
+          <!--  Cantidad de vehículos que está requiriendo fijar -->
+          <div *ngIf="solicitud?.formulario.categoriaSolicitud.descripcion == 'Fijación'"
+            class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+            <p class="text-primary3 font-semibold h-full m-auto">
+              Cantidad de vehículos que está requiriendo fijar
+            </p>
+
+            <!-- input -->
+            <div class="mt-2 relative w-full h-full flex items-center">
+              <div
+                class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border focus:outline-none focus:border-primary1 bg-secondary3 border-secondary2 text-primary3 flex items-center justify-center">
+                {{ solicitud?.formulario.cantidadVehiculos }}
+              </div>
+            </div>
+
+
+          </div>
+
+          <!--  Cantidad de vehículos que está requiriendo incrementar -->
+          <div *ngIf="solicitud?.formulario.categoriaSolicitud.descripcion == 'Incremento'"
+            class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+            <p class="text-primary3 font-semibold h-full m-auto">
+              Cantidad de vehículos que está requiriendo incrementar
+            </p>
+
+            <!-- input -->
+            <div class="mt-2 relative w-full h-full flex items-center">
+              <div
+                class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border focus:outline-none focus:border-primary1 bg-secondary3 border-secondary2 text-primary3 flex items-center justify-center">
+                {{ solicitud?.formulario.cantidadVehiculosIncrementar }}
+              </div>
+            </div>
+
+
+          </div>
+
+        </div>
+
+
+        <div class="mt-8 w-full flex justify-between gap-4">
+
+          <button type="button" (click)="changeActiveStep(1)"
+            class="inline-flex items-center justify-center px-6 py-1 text-white bg-primary4 hover:bg-primary2 focus:bg-primary2 font-medium rounded-full text-[16px] work-sans text-center">
+            Regresar
+          </button>
+          <app-primary-button type="button" class="" (click)="changeActiveStep(3)">Continuar</app-primary-button>
+        </div>
+
+      </div>
+
     </div>
 
-    <!-- formulario 1 -->
-    <form [formGroup]="formGroup1" class="px-4 md:pl-16 md:pe-16 mt-6 active1 mb-6" *ngIf="activeStep == 1">
 
-      <!-- contenido 1 -->
-      <div class="content1 md:grid sm:grid-cols-2 md:gap-x-36 md:flex items-center h-full">
 
-        <!-- descarga 1 -->
-        <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
-
-          <p class="text-primary3 font-semibold">
-            Solicitud de fijación de capacidad transportadora
-          </p>
-
-          <!-- documento y boton -->
-          <div class="flex flex-row justify-center items-start pt-6 my-auto">
-
-            <div class="mt-4 bg-white border-2 border-secondary2 p-2 flex inline-flex justify-center w-auto">
-
-              <!-- documento -->
-              <div class="w-auto m-auto">
-                <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto" viewBox="0 0 384 512">
-                  <path
-                    d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z"/>
-                </svg>
-              </div>
-
-              <!-- texto info file -->
-              <div class="px-2 w-auto">
-                <p class="truncate text-[8px] font-semibold">
-                  {{ truncatedFileName(fileName) }}
-                </p>
-                <p class="truncate text-[8px]">{{ fileSizeInKB }} Kb</p>
-              </div>
-
-            </div>
-
-            <!-- boton -->
-            <div class="w-auto m-auto mb-2 px-6">
-              <button type="button" (click)="downloadPdf()"
-                      class="inline-flex items-center justify-center px-4 py-2 text-white bg-primary4 hover:bg-primary2 focus:bg-primary2 font-medium rounded-full text-[16px] work-sans text-center"
-                      [ngClass]="'text-' + dataClass.textSize">
-                Descargar archivo adjunto
-              </button>
-            </div>
-
-          </div>
-
-        </div>
-
-        <!-- descarga 2 -->
-        <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
-
-          <p class="text-primary3 font-semibold">
-            Contratos de prestación del servicio de transporte
-            terrestre automotor especial suscritos por la empresa
-            de transporte
-          </p>
-
-          <!-- documento y boton -->
-          <div class="flex flex-row justify-center items-start pt-6 my-auto">
-
-            <div class="mt-4 bg-white border-2 border-secondary2 p-2 flex inline-flex justify-center w-auto">
-
-              <!-- documento -->
-              <div class="w-auto m-auto">
-                <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto" viewBox="0 0 384 512">
-                  <path
-                    d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z"/>
-                </svg>
-              </div>
-
-              <!-- texto info file -->
-              <div class="px-2 w-auto">
-                <p class="truncate text-[8px] font-semibold">
-                  {{ truncatedFileName(fileName) }}
-                </p>
-                <p class="truncate text-[8px]">{{ fileSizeInKB }} Kb</p>
-              </div>
-
-            </div>
-
-            <!-- boton -->
-            <div class="w-auto m-auto mb-2 px-6">
-              <button type="button" (click)="downloadPdf()"
-                      class="inline-flex items-center justify-center px-4 py-2 text-white bg-primary4 hover:bg-primary2 focus:bg-primary2 font-medium rounded-full text-[16px] work-sans text-center"
-                      [ngClass]="'text-' + dataClass.textSize">
-                Descargar archivo adjunto
-              </button>
-            </div>
-
-          </div>
-
-        </div>
-
+    <!-- contenido operativo -->
+    <div class="w-full" *ngIf="activeNum == '1'">
+      <h3 class="text-primary1 !font-bold">Solicitud ID {{solicitud?.formulario.id}}</h3>
+      <!-- flecha izquierda -->
+      <div *ngIf="currentContractIndex > 0" (click)="prevContract()" class="arrow-left">
+        <span class="prev-page-text-govco">Anterior</span>
       </div>
 
-      <!-- contenido 2 -->
-      <div class="content2 md:grid sm:grid-cols-2 md:gap-x-36 md:flex items-center h-full pt-6">
-
-        <!-- descarga 3 -->
-        <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
-
-          <p class="text-primary3 font-semibold">
-            Plan de Rodamiento
-          </p>
-
-          <!-- documento y boton -->
-          <div class="flex flex-row justify-center items-start pt-6 my-auto">
-
-            <div class="mt-4 bg-white border-2 border-secondary2 p-2 flex inline-flex justify-center w-auto">
-
-              <!-- documento -->
-              <div class="w-auto m-auto">
-                <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto" viewBox="0 0 384 512">
-                  <path
-                    d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z"/>
-                </svg>
-              </div>
-
-              <!-- texto info file -->
-              <div class="px-2 w-auto">
-                <p class="truncate text-[8px] font-semibold">
-                  {{ truncatedFileName(fileName) }}
-                </p>
-                <p class="truncate text-[8px]">{{ fileSizeInKB }} Kb</p>
-              </div>
-
-            </div>
-
-            <!-- boton -->
-            <div class="w-auto m-auto mb-2 px-6">
-              <button type="button" (click)="downloadPdf()"
-                      class="inline-flex items-center justify-center px-4 py-2 text-white bg-primary4 hover:bg-primary2 focus:bg-primary2 font-medium rounded-full text-[16px] work-sans text-center"
-                      [ngClass]="'text-' + dataClass.textSize">
-                Descargar archivo adjunto
-              </button>
-            </div>
-
-          </div>
-
-        </div>
-
-        <!-- descarga 4 -->
-        <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
-
-          <p class="text-primary3 font-semibold">
-            Estructura costos básicos contratante y contratista
-          </p>
-
-          <!-- documento y boton -->
-          <div class="flex flex-row justify-center items-start pt-6 my-auto">
-
-            <div class="mt-4 bg-white border-2 border-secondary2 p-2 flex inline-flex justify-center w-auto">
-
-              <!-- documento -->
-              <div class="w-auto m-auto">
-                <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto" viewBox="0 0 384 512">
-                  <path
-                    d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z"/>
-                </svg>
-              </div>
-
-              <!-- texto info file -->
-              <div class="px-2 w-auto">
-                <p class="truncate text-[8px] font-semibold">
-                  {{ truncatedFileName(fileName) }}
-                </p>
-                <p class="truncate text-[8px]">{{ fileSizeInKB }} Kb</p>
-              </div>
-
-            </div>
-
-            <!-- boton -->
-            <div class="w-auto m-auto mb-2 px-6">
-              <button type="button" (click)="downloadPdf()"
-                      class="inline-flex items-center justify-center px-4 py-2 text-white bg-primary4 hover:bg-primary2 focus:bg-primary2 font-medium rounded-full text-[16px] work-sans text-center"
-                      [ngClass]="'text-' + dataClass.textSize">
-                Descargar archivo adjunto
-              </button>
-            </div>
-
-          </div>
-
-        </div>
-
-      </div>
-
-      <!-- contenido 3 -->
-      <div class="content1 md:grid sm:grid-cols-2 md:gap-x-36 md:flex items-center h-full pt-6">
-
-        <!-- descarga 5 -->
-        <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
-
-          <p class="text-primary3 font-semibold">
-            Certificado de Existencia y Representación legal no
-            menos a 30 días
-          </p>
-
-          <!-- documento y boton -->
-          <div class="flex flex-row justify-center items-start pt-6 my-auto">
-
-            <div class="mt-4 bg-white border-2 border-secondary2 p-2 flex inline-flex justify-center w-auto">
-
-              <!-- documento -->
-              <div class="w-auto m-auto">
-                <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto" viewBox="0 0 384 512">
-                  <path
-                    d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z"/>
-                </svg>
-              </div>
-
-              <!-- texto info file -->
-              <div class="px-2 w-auto">
-                <p class="truncate text-[8px] font-semibold">
-                  {{ truncatedFileName(fileName) }}
-                </p>
-                <p class="truncate text-[8px]">{{ fileSizeInKB }} Kb</p>
-              </div>
-
-            </div>
-
-            <!-- boton -->
-            <div class="w-auto m-auto mb-2 px-6">
-              <button type="button" (click)="downloadPdf()"
-                      class="inline-flex items-center justify-center px-4 py-2 text-white bg-primary4 hover:bg-primary2 focus:bg-primary2 font-medium rounded-full text-[16px] work-sans text-center"
-                      [ngClass]="'text-' + dataClass.textSize">
-                Descargar archivo adjunto
-              </button>
-            </div>
-
-          </div>
-
-        </div>
-
-        <!-- descarga 6 -->
-        <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
-
-          <p class="text-primary3 font-semibold">
-            Registro Único Tributario
-          </p>
-
-          <!-- documento y boton -->
-          <div class="flex flex-row justify-center items-start pt-6 my-auto">
-
-            <div class="mt-4 bg-white border-2 border-secondary2 p-2 flex inline-flex justify-center w-auto">
-
-              <!-- documento -->
-              <div class="w-auto m-auto">
-                <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto" viewBox="0 0 384 512">
-                  <path
-                    d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z"/>
-                </svg>
-              </div>
-
-              <!-- texto info file -->
-              <div class="px-2 w-auto">
-                <p class="truncate text-[8px] font-semibold">
-                  {{ truncatedFileName(fileName) }}
-                </p>
-                <p class="truncate text-[8px]">{{ fileSizeInKB }} Kb</p>
-              </div>
-
-            </div>
-
-            <!-- boton -->
-            <div class="w-auto m-auto mb-2 px-6">
-              <button type="button" (click)="downloadPdf()"
-                      class="inline-flex items-center justify-center px-4 py-2 text-white bg-primary4 hover:bg-primary2 focus:bg-primary2 font-medium rounded-full text-[16px] work-sans text-center"
-                      [ngClass]="'text-' + dataClass.textSize">
-                Descargar archivo adjunto
-              </button>
-            </div>
-
-          </div>
-
-        </div>
-
-      </div>
-
-      <!-- contenido 4 -->
-      <div class="content1 md:grid sm:grid-cols-2 md:gap-x-36 md:flex items-center h-full pt-6">
-
-        <!-- descarga 7 -->
-        <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
-
-          <p class="text-primary3 font-semibold">
-            Resolución de habilitación
-          </p>
-
-          <!-- documento y boton -->
-          <div class="flex flex-row justify-center items-start pt-6 my-auto">
-
-            <div class="mt-4 bg-white border-2 border-secondary2 p-2 flex inline-flex justify-center w-auto">
-
-              <!-- documento -->
-              <div class="w-auto m-auto">
-                <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto" viewBox="0 0 384 512">
-                  <path
-                    d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z"/>
-                </svg>
-              </div>
-
-              <!-- texto info file -->
-              <div class="px-2 w-auto">
-                <p class="truncate text-[8px] font-semibold">
-                  {{ truncatedFileName(fileName) }}
-                </p>
-                <p class="truncate text-[8px]">{{ fileSizeInKB }} Kb</p>
-              </div>
-
-            </div>
-
-            <!-- boton -->
-            <div class="w-auto m-auto mb-2 px-6">
-              <button type="button" (click)="downloadPdf()"
-                      class="inline-flex items-center justify-center px-4 py-2 text-white bg-primary4 hover:bg-primary2 focus:bg-primary2 font-medium rounded-full text-[16px] work-sans text-center"
-                      [ngClass]="'text-' + dataClass.textSize">
-                Descargar archivo adjunto
-              </button>
-            </div>
-
-          </div>
-
-        </div>
-
-        <!-- descarga 8 -->
-        <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
-
-          <p class="text-primary3 font-semibold">
-            Cédula de Ciudadanía del Representante Legal
-          </p>
-
-          <!-- documento y boton -->
-          <div class="flex flex-row justify-center items-start pt-6 my-auto">
-
-            <div class="mt-4 bg-white border-2 border-secondary2 p-2 flex inline-flex justify-center w-auto">
-
-              <!-- documento -->
-              <div class="w-auto m-auto">
-                <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto" viewBox="0 0 384 512">
-                  <path
-                    d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z"/>
-                </svg>
-              </div>
-
-              <!-- texto info file -->
-              <div class="px-2 w-auto">
-                <p class="truncate text-[8px] font-semibold">
-                  {{ truncatedFileName(fileName) }}
-                </p>
-                <p class="truncate text-[8px]">{{ fileSizeInKB }} Kb</p>
-              </div>
-
-            </div>
-
-            <!-- boton -->
-            <div class="w-auto m-auto mb-2 px-6">
-              <button type="button" (click)="downloadPdf()"
-                      class="inline-flex items-center justify-center px-4 py-2 text-white bg-primary4 hover:bg-primary2 focus:bg-primary2 font-medium rounded-full text-[16px] work-sans text-center"
-                      [ngClass]="'text-' + dataClass.textSize">
-                Descargar archivo adjunto
-              </button>
-            </div>
-
-          </div>
-
-        </div>
-
-      </div>
-
-      <div class="mt-6 w-full flex justify-end">
-        <app-primary-button class="" (click)="changeActiveStep(2)">continuar</app-primary-button>
-      </div>
-
-    </form>
-
-    <!-- formulario 2 -->
-    <form [formGroup]="formGroup2" class="px-4 md:pl-16 md:pe-16 mt-6 active1 mb-6" *ngIf="activeStep == 2">
-
-      <!-- contenido 1 -->
-      <div class="content1 md:grid sm:grid-cols-2 md:gap-x-36 md:flex items-center h-full">
-
-        <!-- input 1 -->
-        <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
-
-          <p class="text-primary3 font-semibold h-full">
-            Capital Social en SMLV
-          </p>
-
-          <input-text class="w-full mt-2 cursor-pointer" [input]="inputs[0]" [index]="0" [disabled]="true"
-                      (inputChange)="onInputChange($event.index, $event.event)"></input-text>
-
-          <!-- texto informativo -->
-          <div class="flex inline-flex md:gap-3 gap-2 h-full w-full mt-2">
-
-                        <span class="lg:w-[12%] sm:w-[12%] w-[10%] h-full flex justify-center lg:px-1 m-auto">
-                            <img class="w-full m-auto" src="assets/iconoInfo.svg">
-                        </span>
-            <p class="text-primary1 work-sans text-[11px] mt-2 w-auto">
-              Empresa con capacidad transportadora operacional autorizada de
-              hasta 51 y 300 vehículos: Capital pagado mínimo: 400 SMLMV –
-              Patrimonio líquido mínimo > 280 SMLMV
+      <div class="px-4 md:pl-16 md:pe-16 mt-6 active1 mb-6">
+        <div *ngIf="solicitud?.contratos[currentContractIndex]"
+          class="md:grid sm:grid-cols-2 md:grid-cols-3 md:gap-x-24 md:flex items-center h-full">
+
+          <!-- consecutivo -->
+          <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+            <p class="text-primary3 font-semibold h-full m-auto">
+              Consecutivo
             </p>
-
-          </div>
-
-        </div>
-
-        <!-- input 2 -->
-        <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
-          <p class="text-primary3 font-semibold h-full">
-            Patrimonio Líquido en SMLV
-          </p>
-
-          <input-text class="w-full mt-2 cursor-pointer" [input]="inputs[1]" [index]="1" [disabled]="true"
-                      (inputChange)="onInputChange($event.index, $event.event)"></input-text>
-
-          <!-- texto informativo -->
-          <div class="flex inline-flex md:gap-3 gap-2 h-full w-full mt-2">
-                        <span class="lg:w-[12%] sm:w-[12%] w-[10%] h-full flex justify-center lg:px-1 m-auto">
-                            <img class="w-full m-auto" src="assets/iconoInfo.svg">
-                        </span>
-            <p class="text-primary1 work-sans text-[11px] mt-2 w-auto">
-              Empresa con capacidad transportadora operacional autorizada de
-              hasta 51 y 300 vehículos: Capital pagado mínimo: 400 SMLMV –
-              Patrimonio líquido mínimo > 280 SMLMV
+            <p class="text-primary3 font-normal h-full m-auto">
+              contrato_{{ currentContractIndex+1 }}_{{ solicitud?.formulario.nit
+              }}_{{solicitud?.formulario.nombreEmpresa}}
             </p>
           </div>
+          <!-- numero del contrato -->
+          <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+            <p class="text-primary3 font-semibold h-full m-auto">
+              N° de contrato
+            </p>
+
+            <!-- input -->
+            <div class="mt-2 relative w-full h-full flex items-center">
+              <div
+                class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border focus:outline-none focus:border-primary1 bg-secondary3 border-secondary2 text-primary3 flex items-center justify-center">
+                {{ solicitud?.contratos[currentContractIndex]?.detalleContrato.numeroContrato }}
+              </div>
+            </div>
+          </div>
+          <!-- contratante -->
+          <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+            <p class="text-primary3 font-semibold h-full m-auto">
+              Contratante
+            </p>
+
+            <!-- input -->
+            <div class="mt-2 relative w-full h-full flex items-center">
+              <div
+                class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border focus:outline-none focus:border-primary1 bg-secondary3 border-secondary2 text-primary3 flex items-center justify-center">
+                {{ solicitud?.contratos[currentContractIndex]?.detalleContrato.contratante }}
+              </div>
+            </div>
+          </div>
+          <!-- Fecha inicio -->
+          <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+            <p class="text-primary3 font-semibold h-full m-auto">
+              Fecha de inicio
+            </p>
+
+            <!-- input -->
+            <div class="mt-2 relative w-full h-full flex items-center">
+              <div
+                class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border focus:outline-none focus:border-primary1 bg-secondary3 border-secondary2 text-primary3 flex items-center justify-center">
+                {{ formatField(solicitud?.contratos[currentContractIndex]?.detalleContrato.fechaInicio) }}
+              </div>
+            </div>
+          </div>
+          <!-- Fecha Fin -->
+          <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+            <p class="text-primary3 font-semibold h-full m-auto">
+              Fecha de terminación
+            </p>
+
+            <!-- input -->
+            <div class="mt-2 relative w-full h-full flex items-center">
+              <div
+                class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border focus:outline-none focus:border-primary1 bg-secondary3 border-secondary2 text-primary3 flex items-center justify-center">
+                {{ formatField(solicitud?.contratos[currentContractIndex]?.detalleContrato.fechaFin) }}
+              </div>
+            </div>
+          </div>
+          <!--  Duración en meses -->
+          <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+            <p class="text-primary3 font-semibold h-full m-auto">
+              Duración en meses
+            </p>
+
+            <!-- input -->
+            <div class="mt-2 relative w-full h-full flex items-center">
+              <div
+                class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border focus:outline-none focus:border-primary1 bg-secondary3 border-secondary2 text-primary3 flex items-center justify-center">
+                {{ formatMonthsAndDays(solicitud?.contratos[currentContractIndex]?.detalleContrato.duracionMeses) }}
+              </div>
+            </div>
+          </div>
+          <!-- Clase de vehículo y cantidad -->
+          <div class="w-full flex flex-col justify-center items-strech pt-6 my-auto h-full sm:col-span-2">
+            <p class="text-primary3 font-semibold h-full m-auto">
+              Clase de vehículo - cantidad / contrato
+            </p>
+
+            <!-- Headers dinámicos -->
+            <div class="headers-container flex flex-wrap gap-4 mt-2">
+              <button type="button"
+                *ngFor="let vehiculo of solicitud?.contratos[currentContractIndex]?.vehiculos; let i = index"
+                (click)="setActiveHeader(i)"
+                [ngClass]="{'active-header': activeHeader === i, 'inactive-header': activeHeader !== i}"
+                class="p-2 text-primary1 border-b-2">
+                {{ getClaseVehiculos(vehiculo.idClaseVehiculo) || 'Clase Vehículo ' + (i + 1) }}
+              </button>
+
+            </div>
+
+
+            <!-- Inputs dinámicos basados en el header activo -->
+            <div *ngIf="activeHeader != null" class="inputs-container mt-1">
+              <div *ngFor="let vehiculo of solicitud?.contratos[currentContractIndex]?.vehiculos; let i = index"
+                [ngClass]="{'hidden': activeHeader != i}" class="w-full items-start pt-2 my-auto h-full">
+
+                <!-- Input para el número de vehículos -->
+                <!-- input -->
+                <div class="relative w-full h-full">
+                  <div
+                    class="shadow-sm rounded-md min-w-[200px] w-full p-[10px] h-[40px] border focus:outline-none focus:border-primary1 bg-secondary3 border-secondary2 text-primary3 flex items-center justify-center">
+                    {{ vehiculo.cantidadVehiculos }}
+                  </div>
+                </div>
+
+
+              </div>
+            </div>
+
+          </div>
+          <!-- Cantidad total -->
+          <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+            <p class="text-primary3 font-semibold h-full m-auto">
+              Cantidad total vehículos / contrato
+            </p>
+
+            <!-- input -->
+            <div class="mt-2 relative w-full h-full flex items-center">
+              <div
+                class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border focus:outline-none focus:border-primary1 bg-secondary3 border-secondary2 text-primary3 flex items-center justify-center">
+                {{ solicitud?.contratos[currentContractIndex]?.detalleContrato.numeroVehiculos }}
+              </div>
+            </div>
+          </div>
+          <!-- Valor del Contrato -->
+          <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+            <p class="text-primary3 font-semibold h-full m-auto">
+              Valor del Contrato
+            </p>
+
+            <!-- input -->
+            <div class="mt-2 relative w-full h-full flex items-center">
+              <div
+                class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border focus:outline-none focus:border-primary1 bg-secondary3 border-secondary2 text-primary3 flex items-center justify-center">
+                {{ formatCurrency(solicitud?.contratos[currentContractIndex]?.detalleContrato.valorContrato) }}
+              </div>
+            </div>
+          </div>
+          <!-- Forma de pago -->
+          <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+            <p class="text-primary3 font-semibold h-full m-auto">
+              Forma de pago
+            </p>
+
+            <!-- input -->
+            <div class="mt-2 relative w-full h-full flex items-center">
+              <div
+                class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border focus:outline-none focus:border-primary1 bg-secondary3 border-secondary2 text-primary3 flex items-center justify-center">
+                {{
+                getFormasPagos(solicitud?.contratos[currentContractIndex]?.detalleContrato.idFormaPago)
+                || 'forma de pago invalida'
+                }}
+              </div>
+            </div>
+          </div>
+          <!-- Áreas de Operación -->
+          <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+            <p class="text-primary3 font-semibold h-full m-auto">
+              Áreas de Operación
+            </p>
+
+            <!-- input -->
+            <div class="mt-2 relative w-full h-full flex items-center">
+              <div
+                class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border focus:outline-none focus:border-primary1 bg-secondary3 border-secondary2 text-primary3 flex items-center justify-center">
+                {{
+                getAreasOperacion(solicitud?.contratos[currentContractIndex]?.areasOperacion)
+                || 'Areas operación invalidas'
+                }}
+              </div>
+            </div>
+          </div>
+          <!-- Tiempos estimados (En horas)-Disponibilidad de Vehículo -->
+          <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+            <p class="text-primary3 font-semibold h-full m-auto">
+              Tiempos estimados (En horas)-Disponibilidad de Vehículo
+            </p>
+
+            <!-- input -->
+            <div class="mt-2 relative w-full h-full flex items-center">
+              <div
+                class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border focus:outline-none focus:border-primary1 bg-secondary3 border-secondary2 text-primary3 flex items-center justify-center">
+                {{ solicitud?.contratos[currentContractIndex]?.detalleContrato.disponibilidadVehiculosEstimada }} horas
+              </div>
+            </div>
+          </div>
+
+
 
         </div>
 
+        <div class="mt-6 w-full flex justify-end">
+          <app-primary-button type="button" (click)="changeActiveStep(4)">continuar Radicado</app-primary-button>
+        </div>
       </div>
 
-      <!-- contenido 2 -->
-      <div class="content2 md:grid sm:grid-cols-2 md:gap-x-36 md:flex items-center h-full pt-6">
+      <!-- flecha derecha -->
+      <div *ngIf="currentContractIndex < totalContracts - 1" (click)="nextContract()" class="arrow-right">
+        <span class="next-page-text-govco">Siguiente</span>
+      </div>
 
-        <!-- input 2 -->
-        <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
-          <p class="text-primary3 font-semibold h-full">
-            Cantidad de vehículos que está requiriendo fijar
-          </p>
+    </div>
 
-          <input-text class="w-full mt-2 cursor-pointer" [input]="inputs[2]" [index]="2" [disabled]="true"
-                      (inputChange)="onInputChange($event.index, $event.event)"></input-text>
+    <!-- contenido radicado -->
+    <div class="w-full" *ngIf="activeNum == '2'">
+      <h3 class="text-primary1 !font-bold">Solicitud ID {{solicitud?.formulario.id}}</h3>
+
+      <!-- formulario 1 -->
+      <form [formGroup]="formGroup1" class="px-4 md:pl-12 md:pe-12 mt-6 active1 mb-6" (ngSubmit)="onSubmitAllForms()">
+
+        <!-- contenido 1 -->
+        <div class="content1 md:grid md:grid-cols-7 md:gap-x-4 md:flex items-center h-full mb-4">
+
+          <!-- documento 1 -->
+          <div class="w-full flex flex-col justify-center items-start h-full md:col-span-3">
+            <p class="font-bold">Cargue de documentación*</p>
+            <p class="text-primary4 font-[500] pt-4">Los campos marcados con * son obligatorios</p>
+
+            <p class="text-primary3 font-semibold pt-4">
+              Radicado de entrada*
+            </p>
+
+            <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" [maxFiles]="1" mimes=".pdf"
+              [error]="errorStates[1]" (fileSelected)="onFileSelected($event, 1)"></app-file-upload>
+
+          </div>
+          <!-- radicado info -->
+          <div class="w-full p-0 flex flex-col justify-start items-strech h-full md:col-span-4">
+            <p class="font-bold">Digite la documentación*</p>
+            <div class="w-full md:flex gap-4 mt-6">
+              <!-- input 2 -->
+              <div class="w-full flex flex-col items-start pt-8 my-auto h-full">
+
+                <p class="text-primary3 font-semibold">
+                  Fecha de radicado*
+                </p>
+
+                <!-- input -->
+                <div class="mt-2 relative w-full">
+                  <input
+                    class="shadow-sm rounded-md w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent"
+                    type="datetime-local" formControlName="fechaRadicado" required placeholder="dd/mm/aaaa">
+
+                  <span *ngIf="submitted && formGroup4.get('fechaRadicado')?.errors?.['required']" class="text-error">
+                    Fecha y hora de radicado son obligatorias
+                  </span>
+                </div>
+              </div>
+
+              <!-- input 3 -->
+              <div class="w-full flex flex-col items-start pt-8 my-auto h-full">
+
+                <p class="text-primary3 font-semibold">
+                  Número de radicado*
+                </p>
+                <!-- input -->
+                <div class="mt-2 w-full relative">
+                  <input
+                    class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent"
+                    type="text" formControlName="numeroRadicado" required placeholder="Ingrese número contrato">
+                  <div class="w-full relative">
+                    <!-- Icono de error (rojo) -->
+                    <span
+                      *ngIf="formGroup1.get('numeroRadicado')?.invalid && (formGroup1.get('numeroRadicado')?.touched || submitted)"
+                      class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
+                      <span class="pi pi-exclamation-circle text-error text-[24px]"></span>
+                    </span>
+
+                    <!-- Icono de éxito (verde) -->
+                    <span
+                      *ngIf="formGroup1.get('numeroRadicado')?.valid && (formGroup1.get('numeroRadicado')?.touched || submitted)"
+                      class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
+                      <span class="pi pi-check-circle text-success text-[24px]"></span>
+                    </span>
+                  </div>
+                  <span *ngIf="submitted && formGroup1.get('numeroRadicado')?.errors?.['required']" class="text-error">
+                    El numero de radicado es obligatorio
+                  </span>
+
+                </div>
+
+
+              </div>
+            </div>
+
+          </div>
+
 
         </div>
 
-      </div>
+        <div class="mt-4 w-full relative flex justify-center">
+          <app-primary-button>Guardar</app-primary-button>
+        </div>
 
+      </form>
 
-      <div class="mt-6 w-full flex justify-end">
-        <app-primary-button type="button" class="" (click)="changeActiveStep(3)">continuar</app-primary-button>
-      </div>
-
-    </form>
+    </div>
 
   </div>
 
-  <!-- contenido operativo -->
-  <div class="md:col-span-8 sm:col-span-7 w-auto sm:mt-10 mt-4 md:px-8 px-2" *ngIf="activeNum == '1'">
-    <h3 class="text-primary1 !font-bold">Solicitud ID {{id}}</h3>
 
-    <!-- formulario 3 -->
-    <form [formGroup]="formGroup3" class="px-4 md:pl-16 md:pe-16 mt-6 active1 mb-6">
-
-      <!-- contenido 1 -->
-      <div class="content1 md:grid sm:grid-cols-2 md:grid-cols-3 md:gap-x-24 md:flex items-center h-full">
-
-        <!--input 1 -->
-        <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
-
-          <p class="text-primary3 font-semibold h-full">
-            Cantidad de contratos
-          </p>
-
-          <input-text class="w-full mt-2" [input]="inputs[3]" [index]="3" [disabled]="true"
-                      (inputChange)="onInputChange($event.index, $event.event)"></input-text>
-
-        </div>
-
-        <!-- input 2 -->
-        <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
-
-          <p class="text-primary3 font-semibold h-full">
-            N° de contrato
-          </p>
-
-          <input-text class="w-full mt-2" [input]="inputs[4]" [index]="4" [disabled]="true"
-                      (inputChange)="onInputChange($event.index, $event.event)"></input-text>
-
-        </div>
-
-        <!-- input 3 -->
-        <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
-
-          <p class="text-primary3 font-semibold h-full">
-            Contratante
-          </p>
-
-          <input-text class="w-full mt-2" [input]="inputs[5]" [index]="5" [disabled]="true"
-                      (inputChange)="onInputChange($event.index, $event.event)"></input-text>
-
-        </div>
-
-      </div>
-
-      <!-- contenido 2 -->
-      <div class="content1 md:grid sm:grid-cols-2 md:grid-cols-3 md:gap-x-24 md:flex items-center h-full">
-
-        <!--input 1 -->
-        <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
-
-          <p class="text-primary3 font-semibold h-full">
-            Fecha de inicio
-          </p>
-
-          <input-text class="w-full mt-2" [input]="inputs[6]" [index]="6" [disabled]="true"
-                      (inputChange)="onInputChange($event.index, $event.event)"></input-text>
-
-        </div>
-
-        <!-- input 2 -->
-        <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
-
-          <p class="text-primary3 font-semibold h-full">
-            Fecha de terminación
-          </p>
-
-          <input-text class="w-full mt-2" [input]="inputs[7]" [index]="7" [disabled]="true"
-                      (inputChange)="onInputChange($event.index, $event.event)"></input-text>
-
-        </div>
-
-        <!-- input 3 -->
-        <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
-
-          <p class="text-primary3 font-semibold h-full">
-            Duración en meses
-          </p>
-
-          <input-text class="w-full mt-2" [input]="inputs[8]" [index]="8" [disabled]="true"
-                      (inputChange)="onInputChange($event.index, $event.event)"></input-text>
-
-        </div>
-
-      </div>
-
-      <!-- contenido 3 -->
-      <div class="content1 md:grid sm:grid-cols-2 md:grid-cols-3 md:gap-x-24 md:flex items-center h-full">
-
-        <!--input 1 -->
-        <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
-
-          <p class="text-primary3 font-semibold h-full">
-            N° de Vehículos / Contrato
-          </p>
-
-          <input-text class="w-full mt-2" [input]="inputs[9]" [index]="9" [disabled]="true"
-                      (inputChange)="onInputChange($event.index, $event.event)"></input-text>
-
-        </div>
-
-        <!-- input 2 -->
-        <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
-
-          <p class="text-primary3 font-semibold h-full">
-            Clase de vehículo
-          </p>
-
-          <input-text class="w-full mt-2" [input]="inputs[10]" [index]="10" [disabled]="true"
-                      (inputChange)="onInputChange($event.index, $event.event)"></input-text>
-
-        </div>
-
-        <!-- input 3 -->
-        <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
-
-          <p class="text-primary3 font-semibold h-full">
-            Valor del Contrato
-          </p>
-
-          <input-text class="w-full mt-2" [input]="inputs[11]" [index]="11" [disabled]="true"
-                      (inputChange)="onInputChange($event.index, $event.event)"></input-text>
-
-        </div>
-
-      </div>
-
-      <!-- contenido 4 -->
-      <div class="content1 md:grid sm:grid-cols-2 md:grid-cols-3 md:gap-x-24 md:flex items-center h-full">
-
-        <!--input 1 -->
-        <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
-
-          <p class="text-primary3 font-semibold h-full">
-            Forma de pago
-          </p>
-
-          <input-text class="w-full mt-2" [input]="inputs[12]" [index]="12" [disabled]="true"
-                      (inputChange)="onInputChange($event.index, $event.event)"></input-text>
-
-        </div>
-
-        <!-- input 2 -->
-        <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
-
-          <p class="text-primary3 font-semibold h-full">
-            Áreas de Operación
-          </p>
-
-          <input-text class="w-full mt-2" [input]="inputs[13]" [index]="13" [disabled]="true"
-                      (inputChange)="onInputChange($event.index, $event.event)"></input-text>
-
-        </div>
-
-        <!-- input 3 -->
-        <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
-
-          <p class="text-primary3 font-semibold h-full">
-            Tiempos estimados (En horas)
-            - Disponibilidad de Vehículo
-          </p>
-
-          <input-text class="w-full mt-2" [input]="inputs[14]" [index]="14" [disabled]="true"
-                      (inputChange)="onInputChange($event.index, $event.event)"></input-text>
-
-        </div>
-
-      </div>
-
-      <div class="mt-6 w-full flex justify-end">
-        <app-primary-button type="button" class="" (click)="changeActiveStep(4)">continuar</app-primary-button>
-      </div>
-
-    </form>
-
-  </div>
-
-  <!-- contenido radicado -->
-  <div class="md:col-span-8 sm:col-span-7 w-auto sm:mt-10 mt-4 md:px-8 px-2" *ngIf="activeNum == '2'">
-    <h3 class="text-primary1 !font-bold">Solicitud ID {{id}}</h3>
-
-    <!-- formulario 4 -->
-    <form [formGroup]="formGroup4" class="px-4 md:pl-16 md:pe-16 mt-6 active1 mb-6">
-
-      <div class="flex flex-row my-auto">
-
-        <div class="col-span-2">
-          <p class="font-bold">Digitar los siguientes campos*</p>
-          <p class="text-primary4 font-[500] pt-4">Los campos marcados con * son obligatorios</p>
-        </div>
-
-        <p class="font-bold">Digite la documentación*</p>
-
-      </div>
-
-      <!-- contenido 1 -->
-      <div class="content1 md:grid sm:grid-cols-2 md:grid-cols-3 md:gap-x-24 md:flex items-center h-full">
-
-        <!-- documento 1 -->
-        <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
-
-          <p class="text-primary3 font-semibold"
-             [ngClass]="{'!text-error !font-normal': errorStates[9]}">
-            Radicado de entrada*
-          </p>
-
-          <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" mimes=".pdf" [maxFiles]="1"
-                           [error]="errorStates[9]" (fileSelected)="onFileSelected($event, 9)"></app-file-upload>
-
-        </div>
-
-        <!-- input 2 -->
-        <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
-
-          <p class="text-primary3 font-semibold"
-             [ngClass]="{'!text-error !font-normal': errorStates[15]}">
-            Fecha de radicado*
-          </p>
-
-          <input-text class="w-full mt-2 cursor-pointer h-full" [input]="inputs[15]" [index]="15"
-                      [error]="errorStates[15]" (inputChange)="onInputChange($event.index, $event.event)"></input-text>
-        </div>
-
-        <!-- input 3 -->
-        <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
-
-          <p class="text-primary3 font-semibold"
-             [ngClass]="{'!text-error !font-normal': errorStates[16]}">
-            Número de radicado*
-          </p>
-
-          <input-text class="w-full mt-2 cursor-pointer h-full" [input]="inputs[16]" [index]="16"
-                      [error]="errorStates[16]" (inputChange)="onInputChange($event.index, $event.event)"></input-text>
-
-        </div>
-
-      </div>
-
-      <div class="mt-40 w-full flex justify-center">
-        <app-primary-button (click)="onSubmitAllForms()">Guardar</app-primary-button>
-      </div>
-
-    </form>
-
-  </div>
 
 </div>
 
+<!-- modal de loading -->
+<app-alert [showModal]="ShowLoadingModal" title="Verificando datos" subtitle="Un momento por favor."
+  message="Se está guardando los datos enviados" [showFirstButton]="false" [showCancelButton]="false"
+  TypeAlert="loader"></app-alert>
+
+<!-- modal error -->
+<app-alert [showModal]="showErrorModal" title="Error en el envió de datos" textColor="text-error" [showSubtitle]="false"
+  [message]="'Estamos experimentando inconvenientes técnicos con el envió de la solicitud, por favor intente más tarde'"
+  buttonText="Continuar" [showFirstButton]="true" [showCancelButton]="false" TypeAlert="error"
+  (close)="showErrorModal = false" (closeByButton1)="showErrorModal = false" (closeByIcon)="showErrorModal = false"
+  (closeByBackdrop)="showErrorModal = false" (close)="showErrorModal = false"></app-alert>
 <!-- Modal -->
 <app-alert [showModal]="showModal" title="Asignación exitosa" textColor="text-success" [showSubtitle]="false"
-           [message]="'Se ha asignado un radicado a esta solicitud'" buttonText="Continuar" [showFirstButton]="true"
-           [showCancelButton]="false" TypeAlert="success" (close)="handleClose()" (closeByButton1)="finalStep()"
-           (closeByButton2)="handleCloseByButton2()" (closeByIcon)="handleCloseByIcon()"
-           (closeByBackdrop)="handleCloseByBackdrop()" (close)="showModal = false"></app-alert>
+  [message]="'Se ha asignado un radicado a esta solicitud'" buttonText="Continuar" [showFirstButton]="true"
+  [showCancelButton]="false" TypeAlert="success" (close)="handleClose()" (closeByButton1)="finalStep()"
+  (closeByButton2)="handleCloseByButton2()" (closeByIcon)="handleCloseByIcon()"
+  (closeByBackdrop)="handleCloseByBackdrop()" (close)="showModal = false"></app-alert>

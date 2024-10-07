@@ -47,6 +47,7 @@ export class AlertComponent {
   @Input() showFirstButton: boolean = true;
   @Input() showCancelButton: boolean = true;
   @Input() TypeAlert: AlertType = 'info';
+  @Input() isIcon: boolean = true;
   @Output() close = new EventEmitter<void>();
   @Output() closeByButton1 = new EventEmitter<void>();
   @Output() closeByButton2 = new EventEmitter<void>();

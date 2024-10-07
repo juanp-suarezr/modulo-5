@@ -68,6 +68,12 @@ export class ApiSFService {
   }
 
   //GET solicitud-documentos by ID
+  //GET solicitud by ID completo
+  getAllSolicitudByID(id: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}/api/formularioContratoPasos/detalle/${id}`);
+  }
+
+  //GET solicitud-documentos by ID NIT
   getDocumentosByID(id: string): Observable<any> {
     return this.http.get(`${this.baseUrl}/documentos-contratos/${id}`);
   }
@@ -140,6 +146,18 @@ export class ApiSFService {
     });
   }
 
-
+  // PUT Radicado entrada
+  RadicadoEntrada(id: string, data2: any): Observable<any> {
+    return this.http.put(`${this.baseUrl}/api/formulario/radicado-entrada/${id}`, data2, {
+      responseType: 'text',
+    });
+  }
+  
+  // PUT Radicado entrada
+  RadicadoSalida(id: string, data2: any): Observable<any> {
+    return this.http.put(`${this.baseUrl}/api/formulario/radicado-salida/${id}`, data2, {
+      responseType: 'text',
+    });
+  }
 
 }

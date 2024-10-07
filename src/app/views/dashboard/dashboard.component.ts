@@ -99,7 +99,43 @@ export default class DashboardComponent {
         localStorage.setItem('idSolicitud', '');
         // Cuando la aplicación esté estable, comienza a cargar los datos
         this.loadInitialData();
+        if (
+          this.user.roles.some(
+            (role: any) =>
+              role.roleName.includes('ROLE_SUPERTRANSPORTE') ||
+              role.roleName.includes('ROLE_ESCRITURA_GESDOC')
+          )
+        ) {
+          this.headers = [
+            { id: 1, titulo: 'ID' },
+            { id: 2, titulo: 'Fecha solicitud <br> (dd/mm/aaaa)' },
+            { id: 3, titulo: 'NIT empresa' },
+            {
+              id: 4,
+              titulo: 'Nombre de la empresa <br> que realiza solicitud',
+            },
+            { id: 5, titulo: 'Territorial que <br> emitió la solicitud' },
+            { id: 6, titulo: 'Estado <br> solicitud' },
+            { id: 7, titulo: 'Categoría de<br> solicitud' },
+            { id: 8, titulo: 'Semáforo <br> alerta' },
+            { id: 9, titulo: 'Número<br> radicado' },
+          ];
+        }
       });
+
+    if (
+      this.user.roles.some((role: any) =>
+        role.roleName.includes('ROLE_ESCRITURA_GESDOC')
+      )
+    ) {
+      this.filterStatus = 'Asignar';
+    } else if (
+      this.user.roles.some((role: any) =>
+        role.roleName.includes('ROLE_SUPERTRANSPORTE')
+      )
+    ) {
+      // this.filterStatus = '124';
+    }
   }
 
   onPageChange(page: number) {
@@ -112,7 +148,7 @@ export default class DashboardComponent {
       this.searchQuery,
       this.fechaSolicitud,
       this.pageSize,
-      this.currentPage,
+      this.currentPage
     );
   }
 
@@ -148,7 +184,7 @@ export default class DashboardComponent {
       this.searchQuery,
       this.fechaSolicitud,
       this.pageSize,
-      this.currentPage,
+      this.currentPage
     ); // Llama a otro método para manejar los datos de solicitudes
   }
 
@@ -167,14 +203,22 @@ export default class DashboardComponent {
 
     // traer los datos de la consulta
     this.apiSFService
-      .getSolicitudes(estado, categoria, search, fechaSolicitud, pageSize, currentPage)
+      .getSolicitudes(
+        estado,
+        categoria,
+        search,
+        fechaSolicitud,
+        pageSize,
+        currentPage
+      )
       .subscribe(
         (response) => {
-
           // Validar roles y generar headers después de cargar los datos
           if (
-            this.user.roles.some((role: any) =>
-              role.roleName.includes('ROLE_SUPERTRANSPORTE')
+            this.user.roles.some(
+              (role: any) =>
+                role.roleName.includes('ROLE_SUPERTRANSPORTE') ||
+                role.roleName.includes('ROLE_ESCRITURA_GESDOC')
             )
           ) {
             this.headers = [
@@ -220,7 +264,7 @@ export default class DashboardComponent {
                       ? 'Incremento de Capacidad Transportadora'
                       : 'Sin categoría',
                 semaforo: diferenciaDias, // Diferencia en días entre la fecha actual y la fecha de solicitud
-                radicado: clase.numeroRadicado,
+                radicado: clase.estadoSolicitudDescripcion == 'En estudio' ? '23454333' : '',
               };
             });
 
@@ -271,7 +315,6 @@ export default class DashboardComponent {
     }
   }
 
-
   // Método para aplicar filtros
   applyFilters() {
     console.log('Aplicando filtros:', {
@@ -292,7 +335,7 @@ export default class DashboardComponent {
         this.searchQuery,
         this.fechaSolicitud,
         this.pageSize,
-        this.currentPage,
+        this.currentPage
       );
     }
     // Lógica para filtrar los datos
@@ -303,8 +346,7 @@ export default class DashboardComponent {
     this.filterCategory = '';
     this.filterStatus = '';
     this.searchQuery = '';
-    this.fechaSolicitud = '',
-      this.currentPage = 1;
+    (this.fechaSolicitud = ''), (this.currentPage = 1);
     console.log('Filtros limpiados');
 
     // Llamar a getSolicitudes sin filtros, sin volver a cargar las categorías
@@ -316,7 +358,7 @@ export default class DashboardComponent {
         this.searchQuery,
         this.fechaSolicitud,
         this.pageSize,
-        this.currentPage,
+        this.currentPage
       );
     }
   }
@@ -325,7 +367,22 @@ export default class DashboardComponent {
   onIdClicked(id: number): void {
     console.log(id);
 
-    this.router.navigate(['/solicitudAprobacion'], {
+    let router;
+    if (
+      this.user.roles.some((role: any) =>
+        role.roleName.includes('ROLE_SUPERTRANSPORTE')
+      )
+    ) {
+      router = 'solicitudAprobacion';
+    } else if (
+      this.user.roles.some((role: any) =>
+        role.roleName.includes('ROLE_ESCRITURA_GESDOC')
+      )
+    ) {
+      router = 'solicitudRadicacion';
+    }
+
+    this.router.navigate([router], {
       state: {
         id: id,
       },
@@ -345,5 +402,4 @@ export default class DashboardComponent {
       },
     });
   }
-
 }

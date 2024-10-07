@@ -63,6 +63,7 @@ export default class SolicitudComponent {
     private fb: FormBuilder,
     private errorService: ErrorService,
     private apiSFService: ApiSFService,
+    private apiService: ApiService,
     private router: Router,
     private route: ActivatedRoute,
     private cdr: ChangeDetectorRef // Inyectar ChangeDetectorRef
@@ -84,6 +85,13 @@ export default class SolicitudComponent {
       }
     }
   }
+
+  //forms
+  submitted: boolean = false;
+  //identificador de actualización de file
+  isActuFile: [number] = [-1];
+  //estado requerimiento
+  smlmmv: number = 1300000;
 
   //LOADING PAGE
   loadingPage: boolean = true;
@@ -112,14 +120,18 @@ export default class SolicitudComponent {
 
   //Respuesta de user activo y rol
   user: any;
+  //respuesta formas de pago
+  formasPago: any;
+  //respuesta id operacion
+  departamentos: any;
+  //respuesta clase vehiculos
+  claseVehiculos: any;
 
-  //Control para mostrar el modal intermedio
+  //Control para mostrar modales
   showModal: boolean = false;
-
-  //Variables de pdf
-  pdfUrl: string = 'https://www.orimi.com/pdf-test.pdf';
-  fileName: string = 'archivo-prueba.pdf';
-  fileSizeInKB: number = 123.45;
+  showModal1: boolean = false;
+  ShowLoadingModal: boolean = false;
+  showErrorModal: boolean = false;
 
   //Menu left
   infoMenu = [
@@ -157,11 +169,32 @@ export default class SolicitudComponent {
     },
   ];
 
+  //Menu stepper1
+  infoStepper1 = [
+    {
+      num: 1,
+      info: 'Visualizar información operativo',
+    },
+    {
+      num: 2,
+      info: 'Cargue de documentación',
+    },
+  ];
+
   //Props o datos para input upload
   dataClass = {
     textSize: 'xs',
     textInfo: 'Archivo PDF. Peso máximo: 2MB',
   };
+
+  currentIndex: number = 0;
+  maxVisibleFiles: number = 1;
+
+  //slide contratos
+  currentContractIndex: number = 0; // Empieza en el primer contrato
+
+  //form dinamico num vehiculos
+  activeHeader: number | null = 0;
 
   ngOnInit(): void {
     //Suscribirse al observable para obtener los cambios reactivos del menuleft
@@ -173,6 +206,13 @@ export default class SolicitudComponent {
     this.stepperService.activeStep$.subscribe((step) => {
       this.activeStep = step;
       console.log('Active step:', step);
+    });
+    this.formGroup1 = this.fb.group({
+      1: [null, Validators.required],
+    });
+    this.formGroup2 = this.fb.group({
+      2: [null, Validators.required],
+      'rentaNeta': ['', Validators.required],
     });
 
     //Suscribirse al servicio de manejo de errores
@@ -203,17 +243,87 @@ export default class SolicitudComponent {
 
   loadOptions() {
     //GET SOLICITUD
-    this.apiSFService.getSolicitudByID(this.idSubject.getValue()).subscribe(
+    this.apiSFService.getAllSolicitudByID(this.idSubject.getValue()).subscribe(
       (response) => {
+        //respuesta formas de pago
+        this.apiService.getFormasPago().subscribe((response1) => {
+          this.formasPago = response1.detalle;
+        });
+        //respuesta clase vehiculos
+        this.apiService.getClaseVehiculo().subscribe((response2) => {
+          this.claseVehiculos = response2.detalle;
+        });
+        //respuesta areas de operacion
+        this.apiService.getDeparts().subscribe((response3) => {
+          this.departamentos = response3;
+        });
+
         this.solicitud = response;
         console.log(response);
         this.loadingPage = false;
       },
       (error) => {
+        this.loadingPage = false;
         console.error('Error fetching user data', error);
       }
     );
   }
+
+  //Get formas de pago
+  getFormasPagos(idPago: number) {
+    // Busca el elemento que coincida con el id
+    const formaPago = this.formasPago.find((element: any) => {
+      return parseInt(element.id) === idPago; // Compara ambos como números
+    });
+
+    // Asegúrate de que formaPago no sea undefined
+    if (formaPago) {
+      return formaPago.descripcion;
+    } else {
+      console.log('No se encontró el id:', idPago); // Para depurar si no encuentra coincidencia
+      return; // Valor por defecto
+    }
+  }
+
+  //Get areas de operacion
+  getAreasOperacion(Areas: any) {
+    let found: any[] | undefined = [];
+    Areas.filter((area: any) => {
+      found.push(
+        this.departamentos.find((element: any) => {
+          // console.log('Area ID:', area.idMunicipioArea); // Para verificar el ID del municipio en Areas
+          return parseInt(area.idMunicipioArea) === element.id;
+        }).descripcion
+      );
+
+      return found !== undefined; // Retorna verdadero si se encuentra coincidencia
+    });
+
+    // Asegúrate de que areasOp no sea undefined
+    if (found) {
+      return found.map((depto: any) => depto).join(', ');
+    } else {
+      console.log('No se encontró el id:'); // Para depurar si no encuentra coincidencia
+      return; // Valor por defecto
+    }
+  }
+
+  //Get clase vehiculos
+  getClaseVehiculos(clase: any) {
+    // Busca el elemento que coincida con el id
+    const claseVehiculo = this.claseVehiculos.find((element: any) => {
+      return parseInt(element.id) === clase; // Compara ambos como números
+    });
+
+    // Asegúrate de que claseVehiculo no sea undefined
+    if (claseVehiculo) {
+      return claseVehiculo.descripcion;
+    } else {
+      console.log('No se encontró el id:', clase); // Para depurar si no encuentra coincidencia
+      return; // Valor por defecto
+    }
+  }
+
   //FORMATO FECHA
   formatField(value: any): string {
     // Si el valor es una fecha válida, formatearlo
@@ -222,6 +332,36 @@ export default class SolicitudComponent {
       return formatDate(value, 'dd/MM/yyyy', 'en-US', 'UTC');
     }
     return value;
+  }
+
+  //formatear decimales a meses y dias
+  formatMonthsAndDays(decimalMonths: number): string {
+    const months = Math.floor(decimalMonths); // Parte entera, representa los meses completos
+    const fractionalMonths = decimalMonths - months; // Parte fraccionaria, representa la fracción de mes
+
+    // Supongamos que cada mes tiene 30 días (puedes ajustar esto si necesitas mayor precisión)
+    const days = Math.round(fractionalMonths * 30); // Convierte la fracción en días
+
+    // Formatear el resultado
+    let result = '';
+    if (months > 0) {
+      result += `${months} mes${months !== 1 ? 'es' : ''}`;
+    }
+    if (days > 0) {
+      if (months > 0) result += ' y ';
+      result += `${days} día${days !== 1 ? 's' : ''}`;
+    }
+
+    return result || '0 días';
+  }
+
+  //FORMATO MONEDA
+  formatCurrency(value: number): string {
+    return new Intl.NumberFormat('es-CO', {
+      style: 'currency',
+      currency: 'COP',
+      minimumFractionDigits: 0,
+    }).format(value);
   }
 
   isDateTime(value: any): boolean {
@@ -237,12 +377,64 @@ export default class SolicitudComponent {
     return !isNaN(Date.parse(value));
   }
 
+  //validate error
+  validateFormGroup(
+    formGroup: FormGroup,
+    errorStates: { [key: number]: boolean }
+  ): boolean {
+    let isValid = true;
+    for (const key in formGroup.controls) {
+      if (formGroup.controls.hasOwnProperty(key)) {
+        const control = formGroup.controls[key];
+        if (!control.value || control.invalid) {
+          const errorKey = parseInt(key, 10); // Convierte la clave a número
+          errorStates[errorKey] = true;
+          isValid = false;
+        }
+      }
+    }
+
+    this.errorService.updateErrorStates(errorStates);
+    return isValid;
+  }
+
+  convertFilesToBase64(files: File[]): Promise<string[]> {
+    return new Promise((resolve, reject) => {
+      const base64Array: string[] = [];
+
+      files.forEach((file, index) => {
+        const reader = new FileReader();
+
+        reader.onload = (event: any) => {
+          // Extraer solo la parte del código base64 sin el prefijo 'data:application/pdf;base64,'
+          const base64String = event.target.result.split(',')[1];
+          base64Array.push(base64String);
+
+          // Si ya hemos procesado todos los archivos, resolvemos la promesa
+          if (base64Array.length === files.length) {
+            resolve(base64Array);
+          }
+        };
+
+        reader.onerror = () => {
+          reject(
+            new Error(`Error al convertir el archivo ${file.name} a base64.`)
+          );
+        };
+
+        reader.readAsDataURL(file);
+      });
+    });
+  }
+
   //METODO PARA SEMAFORO
   diferencias(): number {
     if (this.solicitud) {
       // Convertir las fechas a milisegundos
       const fechaHoy = new Date().valueOf(); // Fecha actual en milisegundos
-      const fechaSolicitud = new Date(this.solicitud.fechaSolicitud).valueOf(); // Fecha de solicitud en milisegundos
+      const fechaSolicitud = new Date(
+        this.solicitud.formulario.fechaSolicitud
+      ).valueOf(); // Fecha de solicitud en milisegundos
 
       // Calcular la diferencia en milisegundos
       const diferenciaMilisegundos = fechaHoy - fechaSolicitud;
@@ -274,30 +466,63 @@ export default class SolicitudComponent {
     return 'gray'; // Default para valores inesperados
   }
 
+  //OBTENER MEDIDOR (ALTO, MEDIO,BAJO)
+  getMedidor(porcentaje:number, name:string): string {
+    let text = '';
+    switch (name) {
+      case 'renta':
+        if (porcentaje > 3.1) {
+          text = 'Bajo'
+        } else if(porcentaje > 2.1 || porcentaje <= 3.1) {
+          text = 'Medio'
+        } else {
+          text = 'Alto'
+        }
+        break;
+    
+      default:
+        break;
+    }
+    return text;
+  }
+
   //Metodo para cambiar el valor del menuleft
-  changeActiveNum(newValue: string) {
-    this.stateService.setActiveNum(newValue);
+  changeActiveNum(newValue: string, saved?: any) {
+    if (this.solicitud.formulario.radicadoSalida) {
+      saved = true;
+    }
+    if (newValue == '2') {
+      if (saved) {
+        this.stateService.setActiveNum(newValue);
+      }
+    } else if(newValue == '3') {
+      if (saved && this.solicitud.formulario.excelModeloTransporte) {
+        this.stateService.setActiveNum(newValue);
+      }
+      
+    } else {
+      this.stateService.setActiveNum(newValue);
+    }
   }
 
   //Metodo para cambiar el valor del stepper
   changeActiveStep(newValue: number) {
     switch (newValue) {
       case 1:
+        this.stepperService.setActiveNum(newValue);
         break;
       case 2:
         this.stepperService.setActiveNum(newValue);
         break;
       case 3:
-        if (this.formGroup2) {
-          this.changeActiveNum('1');
-          this.stepperService.setActiveNum(newValue);
-        }
+        this.stepperService.setActiveNum(newValue);
         break;
       case 4:
-        if (this.formGroup3) {
-          this.changeActiveNum('2');
-          this.stepperService.setActiveNum(newValue);
-        }
+        this.stepperService.setActiveNum(newValue);
+        break;
+      case 5:
+        this.changeActiveNum('1');
+        this.stepperService.setActiveNum(1);
         break;
 
       default:
@@ -305,6 +530,54 @@ export default class SolicitudComponent {
     }
 
     console.log(this.errorStates);
+  }
+
+  //Metodo para cambiar el valor del stepper 1
+  changeActiveStep1(newValue: number) {
+    switch (newValue) {
+      case 1:
+        this.stepperService.setActiveNum(newValue);
+        break;
+      case 2:
+        this.stepperService.setActiveNum(newValue);
+        break;
+      case 3:
+        this.stepperService.setActiveNum(1);
+        break;
+
+      default:
+        break;
+    }
+
+    console.log(this.errorStates);
+  }
+
+  //metodo para guardar el archivo seleccionado
+  onFileSelected(file: File[], formControlName: number) {
+    this.ActuFileGuardado(formControlName);
+
+    this.convertFilesToBase64(file)
+      .then((base64Array) => {
+        const formControlMap: { [key: number]: FormGroup } = {
+          1: this.formGroup1,
+          2: this.formGroup2,
+        };
+
+        const formGroup = formControlMap[formControlName];
+
+        if (formGroup) {
+          // Parchamos el form con los archivos en base64
+          formGroup.patchValue({ [formControlName]: base64Array });
+        }
+      })
+      .catch((error) => {
+        console.error('Error al convertir los archivos:', error);
+      });
+  }
+
+  //Actualizar archivos guardados
+  ActuFileGuardado(num: number) {
+    this.isActuFile.push(num);
   }
 
   //Metodo para mostrar el pdf
@@ -374,7 +647,7 @@ export default class SolicitudComponent {
     window.open(url);
   }
 
-  downloadPDF(blob: Blob, name:string) {
+  downloadPDF(blob: Blob, name: string) {
     let url;
     if (blob instanceof Blob) {
       url = URL.createObjectURL(blob);
@@ -384,11 +657,57 @@ export default class SolicitudComponent {
     }
 
     const link = document.createElement('a');
-        link.href = url;
-        link.download = name;
-        link.click();
+    link.href = url;
+    link.download = name;
+    link.click();
+  }
 
-  
+  //MOSTRAR CONTRATOS GUARDADOS
+  get visibleFiles(): any[] {
+    return this.solicitud?.documentos.slice(
+      this.currentIndex,
+      this.currentIndex + this.maxVisibleFiles
+    );
+  }
+
+  moveLeft(): void {
+    if (this.currentIndex > 0) {
+      this.currentIndex--;
+    }
+  }
+
+  moveRight(): void {
+    if (
+      this.currentIndex <
+      this.solicitud?.documentos.length - this.maxVisibleFiles
+    ) {
+      this.currentIndex++;
+    }
+  }
+
+  //MOSTRAR INFO CONTRATOS SLIDER
+  get totalContracts() {
+    return this.solicitud?.contratos?.length || 0;
+  }
+
+  // Avanzar al siguiente contrato
+  nextContract() {
+    if (this.currentContractIndex < this.totalContracts - 1) {
+      this.currentContractIndex++;
+    }
+  }
+
+  // Retroceder al contrato anterior
+  prevContract() {
+    if (this.currentContractIndex > 0) {
+      this.currentContractIndex--;
+    }
+  }
+
+  // Cambia el header activo en clase vehiculos / cantidad
+  setActiveHeader(index: number): void {
+    this.activeHeader = index;
+    this.cdr.detectChanges();
   }
 
   //Metodos Modal
@@ -413,5 +732,76 @@ export default class SolicitudComponent {
     this.router.navigate(['/dashboard']).then(() => {
       location.reload();
     });
+  }
+
+  //Metodo para guardar el formulario
+  onSubmitAllForms() {
+    if (this.validateFormGroup(this.formGroup1, this.errorStates)) {
+      this.ShowLoadingModal = true; // Mostrar modal
+      console.log(this.formGroup1.get('1')?.value);
+      console.log(this.formGroup1);
+
+      const data = {
+        radicadoSalida: this.formGroup1.get('1')?.value[0],
+      };
+      // put paso 2 actualizar - cargue 2
+      this.apiSFService
+        .RadicadoSalida(this.solicitud.formulario.id, data)
+        .subscribe(
+          (response) => {
+            // Aquí puedes manejar la respuesta, por ejemplo:
+            this.showModal = true;
+
+            console.log('Datos enviados exitosamente:', response);
+          },
+          (error) => {
+            this.ShowLoadingModal = false;
+            this.showErrorModal = true;
+            // Manejo del error
+            console.error('Error al enviar los datos:', error);
+          }
+        );
+    } else {
+      this.ShowLoadingModal = false; // Mostrar modal
+      this.submitted = true;
+      this.formGroup1.markAllAsTouched();
+    }
+  }
+
+  SaveInfo() {
+    if (this.validateFormGroup(this.formGroup2, this.errorStates)) {
+      this.ShowLoadingModal = true; // Mostrar modal
+      console.log(this.formGroup1.get('2')?.value);
+      console.log(this.formGroup1);
+
+      const data = {
+        excelModeloTransporte: this.formGroup2.get('2')?.value[0],
+        rentaNeta: '',
+        solidez: '',
+        liquidez: '',
+        rentaOperacional: '',
+      };
+      // put paso 2 actualizar - cargue 2
+      this.apiSFService
+        .RadicadoSalida(this.solicitud.formulario.id, data)
+        .subscribe(
+          (response) => {
+            // Aquí puedes manejar la respuesta, por ejemplo:
+            this.showModal1 = true;
+
+            console.log('Datos enviados exitosamente:', response);
+          },
+          (error) => {
+            this.ShowLoadingModal = false;
+            this.showErrorModal = true;
+            // Manejo del error
+            console.error('Error al enviar los datos:', error);
+          }
+        );
+    } else {
+      this.ShowLoadingModal = false; // Mostrar modal
+      this.submitted = true;
+      this.formGroup1.markAllAsTouched();
+    }
   }
 }

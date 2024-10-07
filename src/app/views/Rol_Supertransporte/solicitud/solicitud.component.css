@@ -1,8 +1,19 @@
 .govco-download {
-    background-image: url('../../../../assets/gobierno/assets/icons/download.svg');
+    background-image: url('../../../../assets/gobierno/assets/icons/download_white.svg');
     min-width: 1rem;
     min-height: 1rem;
     display: inline-block;
     background-repeat: no-repeat;
     background-size: 1rem 1rem;
 }
+
+.active-header {
+    border-color: #0d6efd;
+    font-weight: bold;
+    color: #0d6efd;
+  }
+  
+  .inactive-header {
+    border-color: transparent;
+    color: #6c757d;
+  }
