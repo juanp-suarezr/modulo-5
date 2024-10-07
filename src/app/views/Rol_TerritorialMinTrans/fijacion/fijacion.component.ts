@@ -1,17 +1,17 @@
-import { first, BehaviorSubject } from 'rxjs';
-import { OnlyNumberGlobal } from './../../../validator/onlyNumber.validator';
-import { ErrorService } from '../../../services/error/error.service';
-import { PrimaryButtonComponent } from '../../../components/primary-button/primary-button.component';
-import { ActiveNumService } from '../../../services/left-nav/active-num.service';
-import { ActiveNumStepperService } from '../../../services/stepper/active-num.service';
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
-import { LeftNavComponent } from '../../../components/left-nav/left-nav.component';
-import { SttepperComponent } from '../../../components/sttepper/sttepper.component';
-import { FileUploadComponent } from '../../../components/file-upload/file-upload.component';
-import { CommonModule } from '@angular/common';
+import {first, BehaviorSubject} from 'rxjs';
+import {OnlyNumberGlobal} from './../../../validator/onlyNumber.validator';
+import {ErrorService} from '../../../services/error/error.service';
+import {PrimaryButtonComponent} from '../../../components/primary-button/primary-button.component';
+import {ActiveNumService} from '../../../services/left-nav/active-num.service';
+import {ActiveNumStepperService} from '../../../services/stepper/active-num.service';
+import {ChangeDetectorRef, Component, OnInit, ViewChild} from '@angular/core';
+import {LeftNavComponent} from '../../../components/left-nav/left-nav.component';
+import {SttepperComponent} from '../../../components/sttepper/sttepper.component';
+import {FileUploadComponent} from '../../../components/file-upload/file-upload.component';
+import {CommonModule} from '@angular/common';
 //servicios de consultas api
-import { ApiService } from '../../../services/api/api.service';
-import { InputText } from '../../../components/input/input.component';
+import {ApiService} from '../../../services/api/api.service';
+import {InputText} from '../../../components/input/input.component';
 import {
   FormBuilder,
   FormGroup,
@@ -21,17 +21,17 @@ import {
   AbstractControl,
   FormArray,
 } from '@angular/forms';
-import { SelectComponent } from '../../../components/select/select.component';
-import { MESES } from '../../../shared/data/meses';
-import { AlertComponent } from '../../../components/alert/alert.component';
-import { Router } from '@angular/router';
-import { dateRangeValidator } from '../../../validator/date.validator';
-import { HORAS } from '../../../shared/data/horas';
-import { NoNegativeGlobal } from '../../../validator/noNegative.validator';
-import { ApiSFService } from '../../../services/api/apiSF.service';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { DialogModule } from 'primeng/dialog';
-import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import {SelectComponent} from '../../../components/select/select.component';
+import {MESES} from '../../../shared/data/meses';
+import {AlertComponent} from '../../../components/alert/alert.component';
+import {Router} from '@angular/router';
+import {dateRangeValidator} from '../../../validator/date.validator';
+import {HORAS} from '../../../shared/data/horas';
+import {NoNegativeGlobal} from '../../../validator/noNegative.validator';
+import {ApiSFService} from '../../../services/api/apiSF.service';
+import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
+import {DialogModule} from 'primeng/dialog';
+import {ProgressSpinnerModule} from 'primeng/progressspinner';
 
 @Component({
   selector: 'app-fijacion',
@@ -256,6 +256,7 @@ export default class FijacionComponent {
     this.idSolicitudSubject.next(newId); // Cambia el valor del BehaviorSubject
     this.idSolicitud = newId; // Actualiza la variable local
   }
+
   ngOnInit(): void {
     // Suscribirse al observable para obtener los cambios reactivos del menuleft
     this.stateService.activeNum$.subscribe((num) => {
@@ -291,9 +292,9 @@ export default class FijacionComponent {
             this.solicitudGuardada = response;
             this.loadingInicio = true;
             //GET DOCUMENTOS
-            this.apiSFService.getDocumentosByID(response.nit).subscribe(
+            this.apiSFService.getDocumentosByID(response.id).subscribe(
               (response1) => {
-                console.log(response1);
+                console.log("respuesta contratos:::::::::", response1);
 
                 this.loadingInicio = false;
                 // Crear un array de contratos
@@ -323,7 +324,7 @@ export default class FijacionComponent {
             //GET CONTRATOS
             this.apiSFService.getContratosByIDSolicitud(response.id).subscribe(
               (response2) => {
-                console.log(response2);
+                console.log('respuesta 2:::::::::::', response2);
 
                 this.loadingInicio = false;
                 this.contratosSolicitud = response2;
@@ -344,8 +345,8 @@ export default class FijacionComponent {
                       numeroVehiculos: contrato.numeroVehiculos || '',
                       idClaseVehiculo: contrato.idClaseVehiculo
                         ? contrato.idClaseVehiculo.map(
-                            (element: any) => element.idClaseVehiculo
-                          )
+                          (element: any) => element.idClaseVehiculo
+                        )
                         : '',
                       valorContrato: contrato.valorContrato || '',
                       idFormaPago: contrato.idFormaPago || '',
@@ -466,13 +467,13 @@ export default class FijacionComponent {
         patrimonioLiquido: ['', Validators.required],
         cantidadVehiculos: ['', Validators.required],
       },
-      { validators: [NoNegativeGlobal] }
+      {validators: [NoNegativeGlobal]}
     );
 
     this.formGroup4 = this.fb.group(
       {
         cantidad_contratos: [
-          { value: '', disabled: false },
+          {value: '', disabled: false},
           Validators.required,
         ],
         numeroContrato: ['', Validators.required],
@@ -488,7 +489,7 @@ export default class FijacionComponent {
         disponibilidadVehiculosEstimada: ['', Validators.required],
         idClaseVehiculos: this.fb.array([]), // FormArray para manejar las clases de vehículos seleccionadas
       },
-      { validators: [dateRangeValidator, NoNegativeGlobal] }
+      {validators: [dateRangeValidator, NoNegativeGlobal]}
     );
   }
 
@@ -686,7 +687,7 @@ export default class FijacionComponent {
 
   // Generar opciones de numeros para los selects
   generateOptions(max: number) {
-    return Array.from({ length: max }, (_, i) => ({
+    return Array.from({length: max}, (_, i) => ({
       value: i + 1,
       label: i + 1,
     }));
@@ -985,7 +986,7 @@ export default class FijacionComponent {
         fechaSolicitud: new Date(),
         nombreEmpresa: this.nombreEmpresa,
         nit: this.nit,
-        territorial: 'Bogota',
+        territorial: 'Territorial de Antioquia',
         idCategoriaSolicitud: 149,
         solicitudFijacionCapacidad,
         planRodamiento,
@@ -1050,12 +1051,12 @@ export default class FijacionComponent {
         ])
           .then(
             ([
-              resolucionHabilitacion,
-              cedulaRepresentante,
-              estadosFinancieros,
-              cedulaContador,
-              tarjetaProfesionalContador,
-            ]) => {
+               resolucionHabilitacion,
+               cedulaRepresentante,
+               estadosFinancieros,
+               cedulaContador,
+               tarjetaProfesionalContador,
+             ]) => {
               // Creación del objeto data2 con todos los campos procesados
               const data2 = {
                 resolucionHabilitacion,
@@ -1205,7 +1206,7 @@ export default class FijacionComponent {
 
         if (formGroup) {
           // Parchamos el form con los archivos en base64
-          formGroup.patchValue({ [formControlName]: base64Array });
+          formGroup.patchValue({[formControlName]: base64Array});
 
           // Solo para el cargador de archivos del formGroup1 y el control específico
           if (formControlName === 2 && formGroup === this.formGroup1) {
@@ -1251,7 +1252,7 @@ export default class FijacionComponent {
     const byteArray = new Uint8Array(byteNumbers);
     const mimeType = this.detectMimeType(base64); // Detectar el tipo MIME
 
-    return new Blob([byteArray], { type: mimeType });
+    return new Blob([byteArray], {type: mimeType});
   }
 
   // Crear un enlace para descargar o mostrar el archivo
@@ -1286,6 +1287,7 @@ export default class FijacionComponent {
       return Promise.resolve(valor);
     }
   }
+
   //FUNCION PARA CONVERTIR BLOB - BASE64
 
   convertirBlob(blob: Blob): Promise<string> {
@@ -1434,18 +1436,18 @@ export default class FijacionComponent {
           valorContrato: item.valorContrato,
           idFormaPago: item.idFormaPago.value,
           disponibilidadVehiculosEstimada:
-            item.disponibilidadVehiculosEstimada.value,
+          item.disponibilidadVehiculosEstimada.value,
           estado: true,
-          idEstadoSolicitud: 162, //estado pendiente
+          idEstadoSolicitud: index + 1 == this.formGroup1.get('2')?.value.length ? 123 : 162,
           idFormulario: parseInt(this.idSolicitud),
           vehiculos: item.idClaseVehiculos,
           areasOperacion: item.idAreaOperacion.map((i: { value: any }) => {
             return {
               id: this.contratosSolicitud
                 ? this.contratosSolicitud[index].areasOperacion.find(
-                    (item: { idMunicipioArea: any }) =>
-                      (item.idMunicipioArea = i.value)
-                  ).id
+                  (item: { idMunicipioArea: any }) =>
+                    (item.idMunicipioArea = i.value)
+                ).id
                 : '',
               idMunicipioArea: i.value,
             };
@@ -1476,17 +1478,17 @@ export default class FijacionComponent {
 
         //CREA SOLICITUD
         this.apiSFService.createContratos(contratos[0]).subscribe(
-          (response) => {
-            const parsedData = JSON.parse(response);
-
+          (response4) => {
+            const parsedData = JSON.parse(response4);
+            console.log('Datos enviados exitosamente:', parsedData);
             localStorage.setItem(
               'contratosSolicitudID',
-              response.idDetalleContrato
+              parsedData.idDetalleContrato
             );
+            this.contratosSolicitud = parsedData;
             this.actualizarContratos(contratos);
             // Aquí puedes manejar la respuesta, por ejemplo:
             this.ShowLoadingModal = false;
-            console.log('Datos enviados exitosamente:', parsedData);
           },
           (error) => {
             this.ShowLoadingModal = false;
@@ -1659,7 +1661,7 @@ export default class FijacionComponent {
         valorContrato: item.valorContrato,
         idFormaPago: item.idFormaPago.value,
         disponibilidadVehiculosEstimada:
-          item.disponibilidadVehiculosEstimada.value,
+        item.disponibilidadVehiculosEstimada.value,
         estado: true,
 
         vehiculos: item.idClaseVehiculos,
@@ -1667,9 +1669,9 @@ export default class FijacionComponent {
           return {
             id: this.contratosSolicitud
               ? this.contratosSolicitud.areasOperacion.find(
-                  (item: { idMunicipioArea: any }) =>
-                    (item.idMunicipioArea = i.value)
-                ).id
+                (item: { idMunicipioArea: any }) =>
+                  (item.idMunicipioArea = i.value)
+              ).id
               : '',
             idMunicipioArea: i.value,
           };
@@ -1691,7 +1693,7 @@ export default class FijacionComponent {
       fechaSolicitud: new Date(),
       nombreEmpresa: this.nombreEmpresa,
       nit: this.nit,
-      territorial: 'Bogota',
+      territorial: 'Territorial de Antioquia',
       idEstadoSolicitud: 123,
       idCategoriaSolicitud: 149,
       excelModeloTransporte: '',

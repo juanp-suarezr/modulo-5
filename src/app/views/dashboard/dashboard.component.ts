@@ -1,24 +1,24 @@
-import { AuthService } from './../../services/auth/auth.service';
+import {AuthService} from './../../services/auth/auth.service';
 import {
   Component,
   OnInit,
   ApplicationRef,
   ChangeDetectorRef,
 } from '@angular/core';
-import { ButtonModule } from 'primeng/button';
-import { RippleModule } from 'primeng/ripple';
-import { CommonModule } from '@angular/common';
-import { AccordionModule } from 'primeng/accordion';
-import { BadgeModule } from 'primeng/badge';
-import { PaginatorComponent } from '../../components/paginator/paginator.component';
-import { TableComponent } from '../../components/table/table.component';
-import { ApiService } from '../../services/api/api.service';
-import { ApiSFService } from '../../services/api/apiSF.service';
-import { SkeletonModule } from 'primeng/skeleton';
-import { Router } from '@angular/router';
-import { first } from 'rxjs';
-import { PrimaryButtonComponent } from '../../components/primary-button/primary-button.component';
-import { FormsModule } from '@angular/forms';
+import {ButtonModule} from 'primeng/button';
+import {RippleModule} from 'primeng/ripple';
+import {CommonModule} from '@angular/common';
+import {AccordionModule} from 'primeng/accordion';
+import {BadgeModule} from 'primeng/badge';
+import {PaginatorComponent} from '../../components/paginator/paginator.component';
+import {TableComponent} from '../../components/table/table.component';
+import {ApiService} from '../../services/api/api.service';
+import {ApiSFService} from '../../services/api/apiSF.service';
+import {SkeletonModule} from 'primeng/skeleton';
+import {Router} from '@angular/router';
+import {first} from 'rxjs';
+import {PrimaryButtonComponent} from '../../components/primary-button/primary-button.component';
+import {FormsModule} from '@angular/forms';
 
 @Component({
   selector: 'app-dashboard',
@@ -45,7 +45,7 @@ export default class DashboardComponent {
   loading: boolean = true; // Estado de carga
 
   //paginator datas
-  
+
   currentPage: number = 1;
   pageSize: number = 4;
   totalPages: number = 1;
@@ -60,15 +60,15 @@ export default class DashboardComponent {
   fechaSolicitud: string = '';
 
   headers = [
-    { id: 1, titulo: 'ID' },
-    { id: 2, titulo: 'Fecha solicitud <br> (dd/mm/aaaa)' },
-    { id: 3, titulo: 'NIT empresa' },
-    { id: 4, titulo: 'Nombre de la empresa <br> que realiza solicitud' },
-    { id: 5, titulo: 'Territorial que <br> emitió la solicitud' },
-    { id: 6, titulo: 'Categoría de <br> solicitud' },
-    { id: 7, titulo: 'Estado <br> solicitud' },
-    { id: 8, titulo: 'concepto <br> solicitud' },
-    { id: 9, titulo: 'Acciones' },
+    {id: 1, titulo: 'ID'},
+    {id: 2, titulo: 'Fecha solicitud <br> (dd/mm/aaaa)'},
+    {id: 3, titulo: 'NIT empresa'},
+    {id: 4, titulo: 'Nombre de la empresa <br> que realiza solicitud'},
+    {id: 5, titulo: 'Territorial que <br> emitió la solicitud'},
+    {id: 6, titulo: 'Categoría de <br> solicitud'},
+    {id: 7, titulo: 'Estado <br> solicitud'},
+    {id: 8, titulo: 'concepto <br> solicitud'},
+    {id: 9, titulo: 'Acciones'},
   ];
 
   constructor(
@@ -178,18 +178,18 @@ export default class DashboardComponent {
             )
           ) {
             this.headers = [
-              { id: 1, titulo: 'ID' },
-              { id: 2, titulo: 'Fecha solicitud <br> (dd/mm/aaaa)' },
-              { id: 3, titulo: 'NIT empresa' },
+              {id: 1, titulo: 'ID'},
+              {id: 2, titulo: 'Fecha solicitud <br> (dd/mm/aaaa)'},
+              {id: 3, titulo: 'NIT empresa'},
               {
                 id: 4,
                 titulo: 'Nombre de la empresa <br> que realiza solicitud',
               },
-              { id: 5, titulo: 'Territorial que <br> emitió la solicitud' },
-              { id: 6, titulo: 'Estado <br> solicitud' },
-              { id: 7, titulo: 'Categoría de<br> solicitud' },
-              { id: 8, titulo: 'Semáforo <br> alerta' },
-              { id: 9, titulo: 'Número<br> radicado' },
+              {id: 5, titulo: 'Territorial que <br> emitió la solicitud'},
+              {id: 6, titulo: 'Estado <br> solicitud'},
+              {id: 7, titulo: 'Categoría de<br> solicitud'},
+              {id: 8, titulo: 'Semáforo <br> alerta'},
+              {id: 9, titulo: 'Número<br> radicado'},
             ];
 
             this.totalPages = response.totalPages;
@@ -217,8 +217,8 @@ export default class DashboardComponent {
                   clase.categoriaSolicitudDescripcion === 'Fijación'
                     ? 'Fijación de Capacidad Transportadora'
                     : clase.categoriaSolicitudDescripcion === 'Incremento'
-                    ? 'Incremento de Capacidad Transportadora'
-                    : 'Sin categoría',
+                      ? 'Incremento de Capacidad Transportadora'
+                      : 'Sin categoría',
                 semaforo: diferenciaDias, // Diferencia en días entre la fecha actual y la fecha de solicitud
                 radicado: clase.numeroRadicado,
               };
@@ -231,7 +231,7 @@ export default class DashboardComponent {
           } else {
             this.totalPages = response.totalPages;
             console.log(this.totalPages);
-            
+
             console.log(response);
             this.response = response.content.map((clase: any) => ({
               id: clase.id,
@@ -243,11 +243,11 @@ export default class DashboardComponent {
                 clase.categoriaSolicitudDescripcion === 'Fijación'
                   ? 'Fijación de Capacidad Transportadora'
                   : clase.categoriaSolicitudDescripcion === 'Incremento'
-                  ? 'Incremento de Capacidad Transportadora'
-                  : 'Sin categoría',
-                  estadoSolicitud: clase.estadoSolicitudDescripcion,
-                  conceptoSolicitud: clase.estadoSolicitudDescripcion,
-                  estadoSolicitudDescripcion: clase.estadoSolicitudDescripcion,
+                    ? 'Incremento de Capacidad Transportadora'
+                    : 'Sin categoría',
+              estadoSolicitud: clase.estadoSolicitudDescripcion,
+              conceptoSolicitud: clase.estadoSolicitudDescripcion,
+              estadoSolicitudDescripcion: clase.estadoSolicitudDescripcion,
             }));
 
             this.loading = false; // Termina la carga de datos
@@ -266,11 +266,11 @@ export default class DashboardComponent {
   onKeyDown(event: KeyboardEvent) {
     if (event.key === 'Enter') {
       console.log(event.key);
-      
+
       this.applyFilters();
     }
   }
-  
+
 
   // Método para aplicar filtros
   applyFilters() {
@@ -293,7 +293,6 @@ export default class DashboardComponent {
         this.fechaSolicitud,
         this.pageSize,
         this.currentPage,
-        
       );
     }
     // Lógica para filtrar los datos
@@ -305,7 +304,7 @@ export default class DashboardComponent {
     this.filterStatus = '';
     this.searchQuery = '';
     this.fechaSolicitud = '',
-    this.currentPage = 1;
+      this.currentPage = 1;
     console.log('Filtros limpiados');
 
     // Llamar a getSolicitudes sin filtros, sin volver a cargar las categorías
@@ -335,8 +334,9 @@ export default class DashboardComponent {
 
   solicitudGuardadaClick(solicitud: any): void {
     console.log(solicitud.id);
+    console.log(solicitud.categoria);
     let router =
-      solicitud.categoria == 'Incremento'
+      solicitud.categoria == 'Incremento de Capacidad Transportadora'
         ? '/incrementocapacidadtransportadora'
         : 'fijacioncapacidadtransportadora';
     this.router.navigate([router], {
@@ -346,5 +346,4 @@ export default class DashboardComponent {
     });
   }
 
-  
 }

@@ -12,7 +12,7 @@ export class ApiSFService {
   private baseUrlRues = environment.RUES;
 
   constructor(private http: HttpClient) {}
-  
+
   // Ejemplo de método DELETE
   deleteItem(id: number): Observable<any> {
     return this.http.delete(`${this.baseUrl}/items/${id}`);
@@ -22,7 +22,7 @@ export class ApiSFService {
   getSolicitudes(
     estado: string,
     categoria: string,
-    search: string, 
+    search: string,
     fechaSolicitud: string,
     pageSize: number,
     currentPage: number,
@@ -51,7 +51,7 @@ export class ApiSFService {
 
     // Unir todos los parámetros con '&'
     let allParams = params.join('&');
-    
+
 
     // Realizar la solicitud HTTP con los parámetros construidos
     return this.http.get(`${this.baseUrl}/api/formulario?size=${pageSize}&page=${currentPage}&${allParams}`);
@@ -62,9 +62,14 @@ export class ApiSFService {
     return this.http.get(`${this.baseUrl}/api/formulario/${id}`);
   }
 
-  //GET solicitud-documentos by ID NIT
+  //GET solicitud-documentos by NIT
+  getDocumentosByNIT(nit: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}/documentos/${nit}`);
+  }
+
+  //GET solicitud-documentos by ID
   getDocumentosByID(id: string): Observable<any> {
-    return this.http.get(`${this.baseUrl}/documentos/${id}`);
+    return this.http.get(`${this.baseUrl}/documentos-contratos/${id}`);
   }
 
   //GET solicitud-contratos by ID
@@ -134,7 +139,7 @@ export class ApiSFService {
       responseType: 'text',
     });
   }
-  
-  
+
+
 
 }

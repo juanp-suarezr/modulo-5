@@ -109,6 +109,56 @@
 
             <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" mimes=".pdf"
                              [error]="errorStates[1]" (fileSelected)="onFileSelected($event, 1)"></app-file-upload>
+
+            <div class="w-full"
+                 *ngIf="(this.formGroup1.get('1')?.value != '' && this.formGroup1.get('1')?.value != null) && this.solicitudGuardada && !isActuFile.includes(2)">
+
+              <div class="mt-2 flex gap-2 items-center">
+                <!-- Botón de Navegación Izquierda (visible solo si hay más de 2 archivos) -->
+                <button *ngIf="this.formGroup1.get('1')?.value.length > 2" class="m-auto"
+                        (click)="moveLeft()" [disabled]="currentIndex === 0">
+                  <span class="pi pi-chevron-left text-primary2 text-xl"></span>
+                </button>
+
+                <!-- Archivos Visibles -->
+                <div *ngFor="let file of this.visibleFiles; let index = index"
+                     class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto z-1">
+
+                  <!-- document -->
+                  <div class="w-full m-auto cursor-pointer z-1"
+                       (click)="viewDocument(formGroup1.get('1')?.value[index].documento)">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto"
+                         viewBox="0 0 384 512">
+                      <path
+                        d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z"/>
+                    </svg>
+                  </div>
+
+                  <!-- texto info file -->
+                  <div class="px-2 w-auto">
+                    <p class="truncate text-[8px] font-semibold">
+                      Contrato {{ index + 1 }}
+                    </p>
+                    <p class="truncate text-[8px]">{{
+                        (this.formGroup1.get('1')?.value[index].documento.size / 1024).toFixed(2)
+                      }} Kb
+                    </p>
+                  </div>
+
+
+                </div>
+
+                <!-- Botón de Navegación Derecha (visible solo si hay más de 2 archivos) -->
+                <button *ngIf="this.formGroup1.get('2')?.value.length > 2" class="m-auto"
+                        (click)="moveRight()"
+                        [disabled]="currentIndex >= this.formGroup1.get('2')?.value.length - maxVisibleFiles">
+                  <span class="pi pi-chevron-right text-primary2 text-xl"></span>
+                </button>
+
+              </div>
+
+            </div>
+
           </div>
 
           <!-- cargue 2 -->
@@ -728,16 +778,13 @@
       <!-- contenido 3 -->
       <div class="content1 md:grid sm:grid-cols-2 md:grid-cols-3 md:gap-x-24 md:flex items-center h-full">
 
-        <!-- select -->
+        <!-- select3 Clase de vehículo* -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
-
           <p class="text-primary3 font-semibold h-full">
             Clase de vehículo*
           </p>
-
           <!-- select -->
           <div class="w-full relative mt-2">
-
             <!-- Selector principal -->
             <div (click)="toggleDropdown(0)"
                  [ngClass]="{'text-error !border border-error': formGroup4.get('idClaseVehiculo')?.invalid && (formGroup4.get('idClaseVehiculo')?.touched || formGroup4.get('idClaseVehiculo')?.dirty)}"
@@ -746,6 +793,7 @@
               <span *ngIf="selectedOptionsClase.length" class="text-normal">{{
                   getSelectedLabels('idClaseVehiculo')
                 }}</span>
+
               <i class="pi pi-chevron-down text-primary2 text-xs"
                  [ngClass]="{'!text-error': formGroup4.get('idClaseVehiculo')?.invalid && (formGroup4.get('idClaseVehiculo')?.touched || formGroup4.get('idClaseVehiculo')?.dirty)}"></i>
             </div>
@@ -762,6 +810,8 @@
                   <span *ngIf="isSelected(option, 'idClaseVehiculo')"> &#10003; </span>
                 </div>
                 {{ option.label }}
+
+
               </li>
             </ul>
 
@@ -769,99 +819,83 @@
             <span class="text-sm text-success"
                   *ngIf="formGroup4.get('idClaseVehiculo')?.valid && formGroup4.get('idClaseVehiculo')?.touched">
                             Selección válida
-              </span>
-
+                        </span>
             <span class="text-sm text-error"
                   *ngIf="formGroup4.get('idClaseVehiculo')?.invalid && (formGroup4.get('idClaseVehiculo')?.touched || formGroup4.get('idClaseVehiculo')?.dirty)">
                             {{ selects[0].errorMessage }}
-              </span>
+                        </span>
 
           </div>
 
+
         </div>
 
-        <!-- input num vehiculos -->
-        <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
-
+        <!-- Contenedor principal del FormArray -->
+        <div class="w-full md:col-span-2" formArrayName="idClaseVehiculos">
           <p class="text-primary3 font-semibold h-full">
-            N° de Vehículos / Contrato*
+            Cantidad vehículo / contrato*
           </p>
+          <!-- Headers dinámicos -->
+          <div class="headers-container flex flex-wrap gap-4 mt-2">
+            <button type="button" *ngFor="let vehiculo of idClaseVehiculos.controls; let i = index"
+                    (click)="setActiveHeader(i)"
+                    [ngClass]="{'active-header': activeHeader === i, 'inactive-header': activeHeader !== i}"
+                    class="p-2 text-primary1 border-b-2">
+              {{ getSelectedLabelsHeaders()[i] }}
+            </button>
 
-          <!-- input -->
-          <div class="mt-2 relative w-full">
-            <input
-              class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent"
-              type="number" formControlName="num_vehiculos" required placeholder="N° de Vehículos / Contrato">
-            <div class="w-full relative">
-              <!-- Icono de error (rojo) -->
-              <span
-                *ngIf="formGroup4.get('num_vehiculos')?.invalid && (formGroup4.get('num_vehiculos')?.touched || submitted)"
-                class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
-                <span class="pi pi-exclamation-circle text-error text-[24px]"></span>
-              </span>
-
-              <!-- Icono de éxito (verde) -->
-              <span
-                *ngIf="formGroup4.get('num_vehiculos')?.valid && (formGroup4.get('num_vehiculos')?.touched || submitted)"
-                class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
-                <span class="pi pi-check-circle text-success text-[24px]"></span>
-              </span>
-            </div>
-            <span *ngIf="submitted && formGroup4.get('num_vehiculos')?.errors?.['required']" class="text-error">
-              N° de Vehículos / Contrato es obligatorio
-            </span>
-            <span
-              *ngIf="formGroup4.get('num_vehiculos')?.hasError('negativeNumber') && (formGroup4.get('num_vehiculos')?.touched || submitted)"
-              class="text-error">
-              El numeró no puede ser negativo
-            </span>
           </div>
 
-        </div>
 
-        <!-- input 6 -->
-        <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+          <!-- Inputs dinámicos basados en el header activo -->
+          <div *ngIf="activeHeader != null" class="inputs-container mt-2">
+            <div *ngFor="let vehiculo of idClaseVehiculos.controls; let i = index" [formGroupName]="i"
+                 [ngClass]="{'hidden': activeHeader != i}"
+                 class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
 
-          <p class="text-primary3 font-semibold h-full" [ngClass]="{'!text-error !font-normal': errorStates[13]}">
-            Valor del Contrato*
-          </p>
+              <!-- Input para el número de vehículos -->
+              <div class="mt-2 relative w-full">
 
-          <!-- input -->
-          <div class="mt-2 relative w-full">
-            <input
-              class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent"
-              type="text" formControlName="valorContrato" placeholder="$"
-              (input)="onCurrencyInput($event, 'valorContrato', formGroup4)"
-              (focus)="onCurrencyFocus($event)"/>
-            <div class="w-full relative">
-              <!-- Icono de error (rojo) -->
-              <span
-                *ngIf="formGroup4.get('valorContrato')?.invalid && (formGroup4.get('valorContrato')?.touched || submitted)"
-                class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
-                                <span class="pi pi-exclamation-circle text-error text-[24px]"></span>
-                            </span>
+                <input
+                  class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent"
+                  type="number" formControlName="cantidadVehiculos" required
+                  placeholder="N° de Vehículos / Contrato">
 
-              <!-- Icono de éxito (verde) -->
-              <span
-                *ngIf="formGroup4.get('valorContrato')?.valid && (formGroup4.get('valorContrato')?.touched || submitted)"
-                class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
-                                <span class="pi pi-check-circle text-success text-[24px]"></span>
-                            </span>
-            </div>
+                <div class="w-full relative">
+                  <!-- Icono de error (rojo) -->
+                  <span
+                    *ngIf="formGroup4.get('idClaseVehiculos')?.get(activeHeader.toString())?.get('cantidadVehiculos')?.invalid && (formGroup4.get('idClaseVehiculos')?.get(activeHeader.toString())?.get('cantidadVehiculos')?.touched || submitted)"
+                    class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
+                                        <span class="pi pi-exclamation-circle text-error text-[24px]"></span>
+                                    </span>
 
-            <span *ngIf="submitted && formGroup4.get('valorContrato')?.errors?.['required']"
+                  <!-- Icono de éxito (verde) -->
+                  <span
+                    *ngIf="formGroup4.get('idClaseVehiculos')?.get(activeHeader.toString())?.get('cantidadVehiculos')?.valid && (formGroup4.get('idClaseVehiculos')?.get(activeHeader.toString())?.get('cantidadVehiculos')?.touched || submitted)"
+                    class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
+                                        <span class="pi pi-check-circle text-success text-[24px]"></span>
+                                    </span>
+                </div>
+
+                <!-- Mensajes de error -->
+                <span
+                  *ngIf="submitted && formGroup4.get('idClaseVehiculos')?.get(activeHeader.toString())?.get('cantidadVehiculos')?.errors?.['required']"
                   class="text-error">
-                            Valor Contrato es obligatorio
-            </span>
+                                    N° de Vehículos es obligatorio para {{
+                    getSelectedLabelsHeaders()[activeHeader]
+                  }}
+                                </span>
 
-            <span
-              *ngIf="formGroup4.get('valorContrato')?.hasError('negativeNumber') && (formGroup4.get('valorContrato')?.touched || submitted)"
-              class="text-error">
-                            El numeró no puede ser negativo
-            </span>
-
+                <span
+                  *ngIf="formGroup4.get('idClaseVehiculos')?.get(activeHeader.toString())?.get('cantidadVehiculos')?.hasError('negativeNumber') && (formGroup4.get('idClaseVehiculos')?.get(activeHeader.toString())?.get('cantidadVehiculos')?.touched || submitted)"
+                  class="text-error">
+                                    El número de vehículos no puede ser negativo para {{
+                    getSelectedLabelsHeaders()[activeHeader]
+                  }}
+                                </span>
+              </div>
+            </div>
           </div>
-
         </div>
 
       </div>
@@ -1007,6 +1041,57 @@
           </div>
 
         </div>
+
+      </div>
+
+      <!-- contenido 5 -->
+      <div class="content1 md:grid sm:grid-cols-2 md:grid-cols-3 md:gap-x-24 md:flex items-center h-full">
+
+        <!-- input 6 -->
+        <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+
+          <p class="text-primary3 font-semibold h-full" [ngClass]="{'!text-error !font-normal': errorStates[13]}">
+            Valor del Contrato*
+          </p>
+
+          <!-- input -->
+          <div class="mt-2 relative w-full">
+            <input
+              class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent"
+              type="text" formControlName="valorContrato" placeholder="$"
+              (input)="onCurrencyInput($event, 'valorContrato', formGroup4)"
+              (focus)="onCurrencyFocus($event)"/>
+            <div class="w-full relative">
+              <!-- Icono de error (rojo) -->
+              <span
+                *ngIf="formGroup4.get('valorContrato')?.invalid && (formGroup4.get('valorContrato')?.touched || submitted)"
+                class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
+                                <span class="pi pi-exclamation-circle text-error text-[24px]"></span>
+                            </span>
+
+              <!-- Icono de éxito (verde) -->
+              <span
+                *ngIf="formGroup4.get('valorContrato')?.valid && (formGroup4.get('valorContrato')?.touched || submitted)"
+                class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
+                                <span class="pi pi-check-circle text-success text-[24px]"></span>
+                            </span>
+            </div>
+
+            <span *ngIf="submitted && formGroup4.get('valorContrato')?.errors?.['required']"
+                  class="text-error">
+                            Valor Contrato es obligatorio
+            </span>
+
+            <span
+              *ngIf="formGroup4.get('valorContrato')?.hasError('negativeNumber') && (formGroup4.get('valorContrato')?.touched || submitted)"
+              class="text-error">
+                            El numeró no puede ser negativo
+            </span>
+
+          </div>
+
+        </div>
+
       </div>
 
       <div class="mt-8 w-full flex justify-center">
@@ -1071,17 +1156,20 @@
 <!-- modal de error en data -->
 <app-alert [showModal]="showModalWarning1" title="inconvenientes registros RUES" subtitle=""
            message="Estamos experimentando inconvenientes técnicos con la consulta del NIT en rues. Se le habilitará el espacio para añadir de manera manual la razón social."
-           cancelButtonText="Cerrar" [showCancelButton]="true" [showFirstButton]="false" (close)="showModalWarning1 = false"
+           cancelButtonText="Cerrar" [showCancelButton]="true" [showFirstButton]="false"
+           (close)="showModalWarning1 = false"
            textColor="text-waring" TypeAlert="warning"></app-alert>
 
 <!-- modal de error en data -->
 <app-alert [showModal]="showModalAlerta" title="No se encuentra registro en RUES" subtitle=""
            message="Se recomienda solicitar realizar registro RUES, para poder tramitar solicitudes."
-           cancelButtonText="Cerrar" [showCancelButton]="true" [showFirstButton]="false" (close)="showModalAlerta = false"
+           cancelButtonText="Cerrar" [showCancelButton]="true" [showFirstButton]="false"
+           (close)="showModalAlerta = false"
            textColor="text-waring" TypeAlert="warning"></app-alert>
 
 <!-- modal de error en data -->
 <app-alert [showModal]="showModalAlerta1" title="Registro con matricula cancelada" subtitle=""
            message="Se recomienda solicitar actualizar novedad de registro RUES, para poder tramitar solicitudes."
-           cancelButtonText="Cerrar" [showCancelButton]="true" [showFirstButton]="false" (close)="showModalAlerta1 = false"
+           cancelButtonText="Cerrar" [showCancelButton]="true" [showFirstButton]="false"
+           (close)="showModalAlerta1 = false"
            textColor="text-waring" TypeAlert="warning"></app-alert>
