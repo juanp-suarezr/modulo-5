@@ -264,7 +264,7 @@ export default class DashboardComponent {
                     ? 'Incremento de Capacidad Transportadora'
                     : 'Sin categoría',
                 semaforo: diferenciaDias, // Diferencia en días entre la fecha actual y la fecha de solicitud
-                radicado: clase.numeroRadicado,
+                radicado: clase.estadoSolicitudDescripcion == 'En estudio' ? '23454333' : '',
               };
             });
 
