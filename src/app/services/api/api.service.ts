@@ -96,12 +96,12 @@ export class ApiService {
     return this.http.get(`${this.baseUrl}/catalogos/ClaseVehiculo`);
   }
 
-  //clase vehiculo
+  //categorias
   getCategorias(): Observable<any> {
     return this.http.get(`${this.baseUrl}/catalogos/categoriasolicitud`);
   }
 
-  //clase vehiculo
+  //Formas de pago
   getFormasPago(): Observable<any> {
     return this.http.get(`${this.baseUrl}/catalogos/Forma%20de%20Pago`);
   }

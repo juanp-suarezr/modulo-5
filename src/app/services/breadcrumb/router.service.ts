@@ -71,12 +71,12 @@ export class RouterService {
         this.breadcrumbSubject.next([
           { name: 'Visualizar solicitudes', route: 'NA' },
         ]);
-      } else if (url.includes('newurl')) {
+      } else if (url.includes('solicitudRadicacion')) {
         this.breadcrumbSubject.next([
           { name: 'Visualizar solicitudes', route: 'NA' },
           {
             name: 'Asignar radicado',
-            route: 'newurl',
+            route: 'solicitudRadicacion',
           },
         ]);
       } else {
@@ -88,12 +88,12 @@ export class RouterService {
     } else if (this.user.roles[0].roleName == 'ROLE_SUPERTRANSPORTE') {
       if (url.includes('dashboard')) {
         this.breadcrumbSubject.next([{ name: 'Solicitudes', route: 'NA' }]);
-      } else if (url.includes('newurl')) {
+      } else if (url.includes('solicitudAprobacion')) {
         this.breadcrumbSubject.next([
           { name: 'Solicitudes', route: 'NA' },
           {
             name: 'Solicitud',
-            route: 'newurl',
+            route: 'solicitudAprobacion',
           },
         ]);
       } else {

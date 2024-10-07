@@ -57,7 +57,11 @@ export class SidebarComponent {
         role.roleName.includes('ROLE_ESCRITURA_GESDOC')
       )
     ) {
-      this.items = [{ label: 'Inicio', route: '/dashboard' }];
+      this.items = [
+        { 
+          label: 'Inicio', route: '/dashboard' 
+        }
+      ];
     } else if (
       this.user.roles.some((role: any) =>
         role.roleName.includes('ROLE_SUPERTRANSPORTE')

@@ -62,6 +62,11 @@ export class ApiSFService {
     return this.http.get(`${this.baseUrl}/api/formulario/${id}`);
   }
 
+  //GET solicitud by ID completo
+  getAllSolicitudByID(id: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}/api/formularioContratoPasos/detalle/${id}`);
+  }
+
   //GET solicitud-documentos by ID NIT
   getDocumentosByID(id: string): Observable<any> {
     return this.http.get(`${this.baseUrl}/documentos/${id}`);
@@ -131,6 +136,13 @@ export class ApiSFService {
   // PUT solicitud paso 4 contratos
   SolicitudPaso4(id: string, data4: any): Observable<any> {
     return this.http.put(`${this.baseUrl}/api/formularioContratoPasos/paso4/${id}`, data4, {
+      responseType: 'text',
+    });
+  }
+
+  // PUT Radicado entrada
+  RadicadoEntrada(id: string, data2: any): Observable<any> {
+    return this.http.put(`${this.baseUrl}/api/formulario/radicado-entrada/${id}`, data2, {
       responseType: 'text',
     });
   }

@@ -63,6 +63,7 @@ export default class SolicitudComponent {
     private fb: FormBuilder,
     private errorService: ErrorService,
     private apiSFService: ApiSFService,
+    private apiService: ApiService,
     private router: Router,
     private route: ActivatedRoute,
     private cdr: ChangeDetectorRef // Inyectar ChangeDetectorRef
@@ -84,6 +85,9 @@ export default class SolicitudComponent {
       }
     }
   }
+
+  //estado requerimiento
+  smlmmv: number = 1300000;
 
   //LOADING PAGE
   loadingPage: boolean = true;
@@ -112,14 +116,15 @@ export default class SolicitudComponent {
 
   //Respuesta de user activo y rol
   user: any;
+  //respuesta formas de pago
+  formasPago: any;
+  //respuesta id operacion
+  departamentos: any;
+  //respuesta clase vehiculos
+  claseVehiculos: any;
 
   //Control para mostrar el modal intermedio
   showModal: boolean = false;
-
-  //Variables de pdf
-  pdfUrl: string = 'https://www.orimi.com/pdf-test.pdf';
-  fileName: string = 'archivo-prueba.pdf';
-  fileSizeInKB: number = 123.45;
 
   //Menu left
   infoMenu = [
@@ -163,6 +168,15 @@ export default class SolicitudComponent {
     textInfo: 'Archivo PDF. Peso máximo: 2MB',
   };
 
+  currentIndex: number = 0;
+  maxVisibleFiles: number = 1;
+
+  //slide contratos
+  currentContractIndex: number = 0; // Empieza en el primer contrato
+
+  //form dinamico num vehiculos
+  activeHeader: number | null = 0;
+
   ngOnInit(): void {
     //Suscribirse al observable para obtener los cambios reactivos del menuleft
     this.stateService.activeNum$.subscribe((num) => {
@@ -203,17 +217,87 @@ export default class SolicitudComponent {
 
   loadOptions() {
     //GET SOLICITUD
-    this.apiSFService.getSolicitudByID(this.idSubject.getValue()).subscribe(
+    this.apiSFService.getAllSolicitudByID(this.idSubject.getValue()).subscribe(
       (response) => {
+        //respuesta formas de pago
+        this.apiService.getFormasPago().subscribe((response1) => {
+          this.formasPago = response1.detalle;
+        });
+        //respuesta clase vehiculos
+        this.apiService.getClaseVehiculo().subscribe((response2) => {
+          this.claseVehiculos = response2.detalle;
+        });
+        //respuesta areas de operacion
+        this.apiService.getDeparts().subscribe((response3) => {
+          this.departamentos = response3;
+        });
+
         this.solicitud = response;
         console.log(response);
         this.loadingPage = false;
       },
       (error) => {
+        this.loadingPage = false;
         console.error('Error fetching user data', error);
       }
     );
   }
+
+  //Get formas de pago
+  getFormasPagos(idPago: number) {
+    // Busca el elemento que coincida con el id
+    const formaPago = this.formasPago.find((element: any) => {
+      return parseInt(element.id) === idPago; // Compara ambos como números
+    });
+
+    // Asegúrate de que formaPago no sea undefined
+    if (formaPago) {
+      return formaPago.descripcion;
+    } else {
+      console.log('No se encontró el id:', idPago); // Para depurar si no encuentra coincidencia
+      return; // Valor por defecto
+    }
+  }
+
+  //Get areas de operacion
+  getAreasOperacion(Areas: any) {
+    let found: any[] | undefined = [];
+    Areas.filter((area: any) => {
+      found.push(
+        this.departamentos.find((element: any) => {
+          // console.log('Area ID:', area.idMunicipioArea); // Para verificar el ID del municipio en Areas
+          return parseInt(area.idMunicipioArea) === element.id;
+        }).descripcion
+      );
+
+      return found !== undefined; // Retorna verdadero si se encuentra coincidencia
+    });
+
+    // Asegúrate de que areasOp no sea undefined
+    if (found) {
+      return found.map((depto: any) => depto).join(', ');
+    } else {
+      console.log('No se encontró el id:'); // Para depurar si no encuentra coincidencia
+      return; // Valor por defecto
+    }
+  }
+
+  //Get clase vehiculos
+  getClaseVehiculos(clase: any) {
+    // Busca el elemento que coincida con el id
+    const claseVehiculo = this.claseVehiculos.find((element: any) => {
+      return parseInt(element.id) === clase; // Compara ambos como números
+    });
+
+    // Asegúrate de que claseVehiculo no sea undefined
+    if (claseVehiculo) {
+      return claseVehiculo.descripcion;
+    } else {
+      console.log('No se encontró el id:', clase); // Para depurar si no encuentra coincidencia
+      return; // Valor por defecto
+    }
+  }
+
   //FORMATO FECHA
   formatField(value: any): string {
     // Si el valor es una fecha válida, formatearlo
@@ -222,6 +306,36 @@ export default class SolicitudComponent {
       return formatDate(value, 'dd/MM/yyyy', 'en-US', 'UTC');
     }
     return value;
+  }
+
+  //formatear decimales a meses y dias
+  formatMonthsAndDays(decimalMonths: number): string {
+    const months = Math.floor(decimalMonths); // Parte entera, representa los meses completos
+    const fractionalMonths = decimalMonths - months; // Parte fraccionaria, representa la fracción de mes
+
+    // Supongamos que cada mes tiene 30 días (puedes ajustar esto si necesitas mayor precisión)
+    const days = Math.round(fractionalMonths * 30); // Convierte la fracción en días
+
+    // Formatear el resultado
+    let result = '';
+    if (months > 0) {
+      result += `${months} mes${months !== 1 ? 'es' : ''}`;
+    }
+    if (days > 0) {
+      if (months > 0) result += ' y ';
+      result += `${days} día${days !== 1 ? 's' : ''}`;
+    }
+
+    return result || '0 días';
+  }
+
+  //FORMATO MONEDA
+  formatCurrency(value: number): string {
+    return new Intl.NumberFormat('es-CO', {
+      style: 'currency',
+      currency: 'COP',
+      minimumFractionDigits: 0,
+    }).format(value);
   }
 
   isDateTime(value: any): boolean {
@@ -242,7 +356,9 @@ export default class SolicitudComponent {
     if (this.solicitud) {
       // Convertir las fechas a milisegundos
       const fechaHoy = new Date().valueOf(); // Fecha actual en milisegundos
-      const fechaSolicitud = new Date(this.solicitud.fechaSolicitud).valueOf(); // Fecha de solicitud en milisegundos
+      const fechaSolicitud = new Date(
+        this.solicitud.formulario.fechaSolicitud
+      ).valueOf(); // Fecha de solicitud en milisegundos
 
       // Calcular la diferencia en milisegundos
       const diferenciaMilisegundos = fechaHoy - fechaSolicitud;
@@ -374,7 +490,7 @@ export default class SolicitudComponent {
     window.open(url);
   }
 
-  downloadPDF(blob: Blob, name:string) {
+  downloadPDF(blob: Blob, name: string) {
     let url;
     if (blob instanceof Blob) {
       url = URL.createObjectURL(blob);
@@ -384,11 +500,57 @@ export default class SolicitudComponent {
     }
 
     const link = document.createElement('a');
-        link.href = url;
-        link.download = name;
-        link.click();
+    link.href = url;
+    link.download = name;
+    link.click();
+  }
 
-  
+  //MOSTRAR CONTRATOS GUARDADOS
+  get visibleFiles(): any[] {
+    return this.solicitud?.documentos.slice(
+      this.currentIndex,
+      this.currentIndex + this.maxVisibleFiles
+    );
+  }
+
+  moveLeft(): void {
+    if (this.currentIndex > 0) {
+      this.currentIndex--;
+    }
+  }
+
+  moveRight(): void {
+    if (
+      this.currentIndex <
+      this.solicitud?.documentos.length - this.maxVisibleFiles
+    ) {
+      this.currentIndex++;
+    }
+  }
+
+  //MOSTRAR INFO CONTRATOS SLIDER
+  get totalContracts() {
+    return this.solicitud?.contratos?.length || 0;
+  }
+
+  // Avanzar al siguiente contrato
+  nextContract() {
+    if (this.currentContractIndex < this.totalContracts - 1) {
+      this.currentContractIndex++;
+    }
+  }
+
+  // Retroceder al contrato anterior
+  prevContract() {
+    if (this.currentContractIndex > 0) {
+      this.currentContractIndex--;
+    }
+  }
+
+  // Cambia el header activo en clase vehiculos / cantidad
+  setActiveHeader(index: number): void {
+    this.activeHeader = index;
+    this.cdr.detectChanges();
   }
 
   //Metodos Modal

@@ -45,7 +45,7 @@ export default class DashboardComponent {
   loading: boolean = true; // Estado de carga
 
   //paginator datas
-  
+
   currentPage: number = 1;
   pageSize: number = 4;
   totalPages: number = 1;
@@ -99,6 +99,28 @@ export default class DashboardComponent {
         localStorage.setItem('idSolicitud', '');
         // Cuando la aplicación esté estable, comienza a cargar los datos
         this.loadInitialData();
+        if (
+          this.user.roles.some(
+            (role: any) =>
+              role.roleName.includes('ROLE_SUPERTRANSPORTE') ||
+              role.roleName.includes('ROLE_ESCRITURA_GESDOC')
+          )
+        ) {
+          this.headers = [
+            { id: 1, titulo: 'ID' },
+            { id: 2, titulo: 'Fecha solicitud <br> (dd/mm/aaaa)' },
+            { id: 3, titulo: 'NIT empresa' },
+            {
+              id: 4,
+              titulo: 'Nombre de la empresa <br> que realiza solicitud',
+            },
+            { id: 5, titulo: 'Territorial que <br> emitió la solicitud' },
+            { id: 6, titulo: 'Estado <br> solicitud' },
+            { id: 7, titulo: 'Categoría de<br> solicitud' },
+            { id: 8, titulo: 'Semáforo <br> alerta' },
+            { id: 9, titulo: 'Número<br> radicado' },
+          ];
+        }
       });
   }
 
@@ -112,7 +134,7 @@ export default class DashboardComponent {
       this.searchQuery,
       this.fechaSolicitud,
       this.pageSize,
-      this.currentPage,
+      this.currentPage
     );
   }
 
@@ -148,7 +170,7 @@ export default class DashboardComponent {
       this.searchQuery,
       this.fechaSolicitud,
       this.pageSize,
-      this.currentPage,
+      this.currentPage
     ); // Llama a otro método para manejar los datos de solicitudes
   }
 
@@ -167,14 +189,22 @@ export default class DashboardComponent {
 
     // traer los datos de la consulta
     this.apiSFService
-      .getSolicitudes(estado, categoria, search, fechaSolicitud, pageSize, currentPage)
+      .getSolicitudes(
+        estado,
+        categoria,
+        search,
+        fechaSolicitud,
+        pageSize,
+        currentPage
+      )
       .subscribe(
         (response) => {
-
           // Validar roles y generar headers después de cargar los datos
           if (
-            this.user.roles.some((role: any) =>
-              role.roleName.includes('ROLE_SUPERTRANSPORTE')
+            this.user.roles.some(
+              (role: any) =>
+                role.roleName.includes('ROLE_SUPERTRANSPORTE') ||
+                role.roleName.includes('ROLE_ESCRITURA_GESDOC')
             )
           ) {
             this.headers = [
@@ -231,7 +261,7 @@ export default class DashboardComponent {
           } else {
             this.totalPages = response.totalPages;
             console.log(this.totalPages);
-            
+
             console.log(response);
             this.response = response.content.map((clase: any) => ({
               id: clase.id,
@@ -245,9 +275,9 @@ export default class DashboardComponent {
                   : clase.categoriaSolicitudDescripcion === 'Incremento'
                   ? 'Incremento de Capacidad Transportadora'
                   : 'Sin categoría',
-                  estadoSolicitud: clase.estadoSolicitudDescripcion,
-                  conceptoSolicitud: clase.estadoSolicitudDescripcion,
-                  estadoSolicitudDescripcion: clase.estadoSolicitudDescripcion,
+              estadoSolicitud: clase.estadoSolicitudDescripcion,
+              conceptoSolicitud: clase.estadoSolicitudDescripcion,
+              estadoSolicitudDescripcion: clase.estadoSolicitudDescripcion,
             }));
 
             this.loading = false; // Termina la carga de datos
@@ -266,11 +296,10 @@ export default class DashboardComponent {
   onKeyDown(event: KeyboardEvent) {
     if (event.key === 'Enter') {
       console.log(event.key);
-      
+
       this.applyFilters();
     }
   }
-  
 
   // Método para aplicar filtros
   applyFilters() {
@@ -292,8 +321,7 @@ export default class DashboardComponent {
         this.searchQuery,
         this.fechaSolicitud,
         this.pageSize,
-        this.currentPage,
-        
+        this.currentPage
       );
     }
     // Lógica para filtrar los datos
@@ -304,8 +332,7 @@ export default class DashboardComponent {
     this.filterCategory = '';
     this.filterStatus = '';
     this.searchQuery = '';
-    this.fechaSolicitud = '',
-    this.currentPage = 1;
+    (this.fechaSolicitud = ''), (this.currentPage = 1);
     console.log('Filtros limpiados');
 
     // Llamar a getSolicitudes sin filtros, sin volver a cargar las categorías
@@ -317,7 +344,7 @@ export default class DashboardComponent {
         this.searchQuery,
         this.fechaSolicitud,
         this.pageSize,
-        this.currentPage,
+        this.currentPage
       );
     }
   }
@@ -326,7 +353,22 @@ export default class DashboardComponent {
   onIdClicked(id: number): void {
     console.log(id);
 
-    this.router.navigate(['/solicitudAprobacion'], {
+    let router;
+    if (
+      this.user.roles.some((role: any) =>
+        role.roleName.includes('ROLE_SUPERTRANSPORTE')
+      )
+    ) {
+      router = 'solicitudAprobacion';
+    } else if (
+      this.user.roles.some((role: any) =>
+        role.roleName.includes('ROLE_ESCRITURA_GESDOC')
+      )
+    ) {
+      router = 'solicitudRadicacion';
+    }
+
+    this.router.navigate([router], {
       state: {
         id: id,
       },
@@ -345,6 +387,4 @@ export default class DashboardComponent {
       },
     });
   }
-
-  
 }
