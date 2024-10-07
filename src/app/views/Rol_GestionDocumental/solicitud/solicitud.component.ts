@@ -146,6 +146,7 @@ export default class SolicitudComponent {
       num: '2',
       name: 'Radicado',
     },
+    
   ];
 
   //Menu stepper
