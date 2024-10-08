@@ -602,7 +602,8 @@
                 <!-- cargue 11 Tarjeta profesional contador que firma estados financieros* -->
                 <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
                     <p class="text-primary3 font-semibold" [ngClass]="{'!text-error !font-normal': errorStates[11]}">
-                        Tarjeta profesional y certificado de la junta central de contadores del contador que firma estados financieros*
+                        Tarjeta profesional y certificado de la junta central de contadores del contador que firma
+                        estados financieros*
                     </p>
                     <app-file-upload class="mt-2 h-full" [maxFiles]="1" [dataClass]="dataClass" mimes=".pdf"
                         [error]="errorStates[11]" (fileSelected)="onFileSelected($event, 11)"></app-file-upload>
@@ -1098,16 +1099,17 @@
                         </button>
 
                     </div>
-                    
+
 
                     <!-- Inputs dinámicos basados en el header activo -->
                     <div *ngIf="activeHeader != null" class="inputs-container mt-2">
-                        <div  *ngFor="let vehiculo of idClaseVehiculos.controls; let i = index" [formGroupName]="i" [ngClass]="{'hidden': activeHeader != i}"
+                        <div *ngFor="let vehiculo of idClaseVehiculos.controls; let i = index" [formGroupName]="i"
+                            [ngClass]="{'hidden': activeHeader != i}"
                             class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
 
                             <!-- Input para el número de vehículos -->
                             <div class="mt-2 relative w-full">
-                                
+
                                 <input
                                     class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent"
                                     type="number" formControlName="cantidadVehiculos" required
@@ -1369,6 +1371,13 @@
     message="Se está guardando los datos enviados" [showFirstButton]="false" [showCancelButton]="false"
     TypeAlert="loader"></app-alert>
 
+<!-- Modal DE INFORMACION GUARDADA -->
+<app-alert [showModal]="showModalInfoSaved" title="Información guardada" textColor="text-success" [showSubtitle]="false"
+    [message]="' La información se ha cargado correctamente'" buttonText="Continuar" [isIcon]="false"
+    [showFirstButton]="true" [showCancelButton]="false" TypeAlert="success" (close)="showModalInfoSaved = false"
+    (closeByButton1)="numberTocontinueSaved == 5 ? changeActiveNum('1') : changeActiveStep(numberTocontinueSaved, false)"
+    (closeByBackdrop)="numberTocontinueSaved == 5 ? changeActiveNum('1') : changeActiveStep(numberTocontinueSaved, false)" (close)="showModalInfoSaved = true"></app-alert>
+
 <!-- modal de continuar sin guardar operativo -->
 <app-alert [showModal]="showModalContinuar1" title="Continuar sin guardar" subtitle=""
     message="Esta seguro que desea continuar sin guardar." cancelButtonText="Cerrar" [showCancelButton]="true"
@@ -1381,22 +1390,19 @@
     [showFirstButton]="true" cancelButtonText="Cancelar" [showCancelButton]="true" TypeAlert="success"
     (close)="showModal = false"
     (closeByButton1)="currentContractIteration == totalContracts ? sendAllContracts() : handleCloseByButton1()"
-    (closeByIcon)="showModal = false"
-    (closeByBackdrop)="showModal = false" (close)="showModal = false"></app-alert>
+    (closeByIcon)="showModal = false" (closeByBackdrop)="showModal = false" (close)="showModal = false"></app-alert>
 
 
 <!-- modal final -->
 <app-alert [showModal]="showFinalModal" title="Envío exitoso" textColor="text-success" [showSubtitle]="false"
     [message]="'Su solicitud ha sido enviada exitosamente, se le asignará un radicado para su trámite'"
     buttonText="Continuar" [showFirstButton]="true" [showCancelButton]="false" TypeAlert="success"
-    (close)="showFinalModal = false" (closeByButton1)="finalStep()"
-    (closeByIcon)="showFinalModal = false" (closeByBackdrop)="showFinalModal = false"
-    (close)="showFinalModal = false"></app-alert>
+    (close)="showFinalModal = false" (closeByButton1)="finalStep()" (closeByIcon)="showFinalModal = false"
+    (closeByBackdrop)="showFinalModal = false" (close)="showFinalModal = false"></app-alert>
 
 <!-- modal error -->
 <app-alert [showModal]="showErrorModal" title="Error en el envió de datos" textColor="text-error" [showSubtitle]="false"
     [message]="'Estamos experimentando inconvenientes técnicos con el envió de la solicitud, por favor intente más tarde'"
-    buttonText="Continuar" [showFirstButton]="true" [showCancelButton]="false" TypeAlert="error" (close)="showErrorModal = false"
-    (closeByButton1)="showErrorModal = false"
-    (closeByIcon)="showErrorModal = false" (closeByBackdrop)="showErrorModal = false"
-    (close)="showErrorModal = false"></app-alert>
+    buttonText="Continuar" [showFirstButton]="true" [showCancelButton]="false" TypeAlert="error"
+    (close)="showErrorModal = false" (closeByButton1)="showErrorModal = false" (closeByIcon)="showErrorModal = false"
+    (closeByBackdrop)="showErrorModal = false" (close)="showErrorModal = false"></app-alert>

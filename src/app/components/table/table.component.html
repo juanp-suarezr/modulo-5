@@ -27,11 +27,11 @@
                       (click)="onButtonClick(item)">
                       Continuar
                     </button>
-                    <!-- id con rol de escritura gestion doc -->
+                    <!-- id con rol de escritura territorial -->
                     <p *ngIf="key === 'id' && hasRole('ROLE_ESCRITURA_MIN')" class="whitespace-no-wrap">
                       {{ item[key] }}
                     </p>
-                    <!-- id con rol de escritura gestion doc -->
+                    <!-- id con rol de escritura gestion doc  -->
                     <button
                       *ngIf="key === 'id' && (hasRole('ROLE_ESCRITURA_GESDOC') || hasRole('ROLE_SUPERTRANSPORTE'))"
                       class="underline text-primary2 font-semibold cursor-pointer" pTooltip="clic para abrir"

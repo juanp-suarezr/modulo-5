@@ -1,24 +1,24 @@
-import {AuthService} from './../../services/auth/auth.service';
+import { AuthService } from './../../services/auth/auth.service';
 import {
   Component,
   OnInit,
   ApplicationRef,
   ChangeDetectorRef,
 } from '@angular/core';
-import {ButtonModule} from 'primeng/button';
-import {RippleModule} from 'primeng/ripple';
-import {CommonModule} from '@angular/common';
-import {AccordionModule} from 'primeng/accordion';
-import {BadgeModule} from 'primeng/badge';
-import {PaginatorComponent} from '../../components/paginator/paginator.component';
-import {TableComponent} from '../../components/table/table.component';
-import {ApiService} from '../../services/api/api.service';
-import {ApiSFService} from '../../services/api/apiSF.service';
-import {SkeletonModule} from 'primeng/skeleton';
-import {Router} from '@angular/router';
-import {first} from 'rxjs';
-import {PrimaryButtonComponent} from '../../components/primary-button/primary-button.component';
-import {FormsModule} from '@angular/forms';
+import { ButtonModule } from 'primeng/button';
+import { RippleModule } from 'primeng/ripple';
+import { CommonModule } from '@angular/common';
+import { AccordionModule } from 'primeng/accordion';
+import { BadgeModule } from 'primeng/badge';
+import { PaginatorComponent } from '../../components/paginator/paginator.component';
+import { TableComponent } from '../../components/table/table.component';
+import { ApiService } from '../../services/api/api.service';
+import { ApiSFService } from '../../services/api/apiSF.service';
+import { SkeletonModule } from 'primeng/skeleton';
+import { Router } from '@angular/router';
+import { first } from 'rxjs';
+import { PrimaryButtonComponent } from '../../components/primary-button/primary-button.component';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-dashboard',
@@ -60,15 +60,15 @@ export default class DashboardComponent {
   fechaSolicitud: string = '';
 
   headers = [
-    {id: 1, titulo: 'ID'},
-    {id: 2, titulo: 'Fecha solicitud <br> (dd/mm/aaaa)'},
-    {id: 3, titulo: 'NIT empresa'},
-    {id: 4, titulo: 'Nombre de la empresa <br> que realiza solicitud'},
-    {id: 5, titulo: 'Territorial que <br> emitió la solicitud'},
-    {id: 6, titulo: 'Categoría de <br> solicitud'},
-    {id: 7, titulo: 'Estado <br> solicitud'},
-    {id: 8, titulo: 'concepto <br> solicitud'},
-    {id: 9, titulo: 'Acciones'},
+    { id: 1, titulo: 'ID' },
+    { id: 2, titulo: 'Fecha solicitud <br> (dd/mm/aaaa)' },
+    { id: 3, titulo: 'NIT empresa' },
+    { id: 4, titulo: 'Nombre de la empresa <br> que realiza solicitud' },
+    { id: 5, titulo: 'Territorial que <br> emitió la solicitud' },
+    { id: 6, titulo: 'Categoría de <br> solicitud' },
+    { id: 7, titulo: 'Estado <br> solicitud' },
+    { id: 8, titulo: 'concepto <br> solicitud' },
+    { id: 9, titulo: 'Acciones' },
   ];
 
   constructor(
@@ -213,30 +213,15 @@ export default class DashboardComponent {
       )
       .subscribe(
         (response) => {
+          this.totalPages = response.totalPages;
           // Validar roles y generar headers después de cargar los datos
           if (
-            this.user.roles.some(
-              (role: any) =>
-                role.roleName.includes('ROLE_SUPERTRANSPORTE') ||
-                role.roleName.includes('ROLE_ESCRITURA_GESDOC')
+            this.user.roles.some((role: any) =>
+              role.roleName.includes('ROLE_ESCRITURA_GESDOC')
             )
           ) {
-            this.headers = [
-              {id: 1, titulo: 'ID'},
-              {id: 2, titulo: 'Fecha solicitud <br> (dd/mm/aaaa)'},
-              {id: 3, titulo: 'NIT empresa'},
-              {
-                id: 4,
-                titulo: 'Nombre de la empresa <br> que realiza solicitud',
-              },
-              {id: 5, titulo: 'Territorial que <br> emitió la solicitud'},
-              {id: 6, titulo: 'Estado <br> solicitud'},
-              {id: 7, titulo: 'Categoría de<br> solicitud'},
-              {id: 8, titulo: 'Semáforo <br> alerta'},
-              {id: 9, titulo: 'Número<br> radicado'},
-            ];
-
-            this.totalPages = response.totalPages;
+            this.getHeaders();
+            //rol de GESTION DOCUMENTAL
             this.response = response.content.map((clase: any) => {
               // Convertir las fechas a milisegundos
               const fechaHoy = new Date().valueOf(); // Fecha actual en milisegundos
@@ -251,7 +236,9 @@ export default class DashboardComponent {
               );
 
               return {
-                id: clase.id,
+                id:
+                  clase.id + ',' + clase.estadoSolicitudDescripcion ==
+                  'Asignar',
                 fecha: clase.fechaSolicitud,
                 nit: clase.nit,
                 empresa: clase.nombreEmpresa,
@@ -261,10 +248,60 @@ export default class DashboardComponent {
                   clase.categoriaSolicitudDescripcion === 'Fijación'
                     ? 'Fijación de Capacidad Transportadora'
                     : clase.categoriaSolicitudDescripcion === 'Incremento'
-                      ? 'Incremento de Capacidad Transportadora'
-                      : 'Sin categoría',
+                    ? 'Incremento de Capacidad Transportadora'
+                    : 'Sin categoría',
                 semaforo: diferenciaDias, // Diferencia en días entre la fecha actual y la fecha de solicitud
-                radicado: clase.estadoSolicitudDescripcion == 'En estudio' ? '23454333' : '',
+                radicado:
+                  clase.estadoSolicitudDescripcion == 'En estudio'
+                    ? '23454333'
+                    : '',
+              };
+            });
+
+            console.log(this.response);
+
+            this.loading = false; // Termina la carga de datos
+            this.cdRef.detectChanges(); // Forzar la detección de cambios
+          } else if (
+            this.user.roles.some((role: any) =>
+              role.roleName.includes('ROLE_SUPERTRANSPORTE')
+            )
+          ) {
+            this.getHeaders();
+            //rol de SUPERTRANSPORTE
+            this.response = response.content.map((clase: any) => {
+              // Convertir las fechas a milisegundos
+              const fechaHoy = new Date().valueOf(); // Fecha actual en milisegundos
+              const fechaSolicitud = new Date(clase.fechaSolicitud).valueOf(); // Fecha de solicitud en milisegundos
+
+              // Calcular la diferencia en milisegundos
+              const diferenciaMilisegundos = fechaHoy - fechaSolicitud;
+
+              // Convertir la diferencia de milisegundos a días
+              const diferenciaDias = Math.floor(
+                diferenciaMilisegundos / (1000 * 60 * 60 * 24)
+              );
+
+              return {
+                id:
+                  clase.id + ',' + clase.estadoSolicitudDescripcion ==
+                  'Asignar'||clase.estadoSolicitudDescripcion == 'En estudio',
+                fecha: clase.fechaSolicitud,
+                nit: clase.nit,
+                empresa: clase.nombreEmpresa,
+                territorial: clase.territorial,
+                estado: clase.estadoSolicitudDescripcion,
+                categoria:
+                  clase.categoriaSolicitudDescripcion === 'Fijación'
+                    ? 'Fijación de Capacidad Transportadora'
+                    : clase.categoriaSolicitudDescripcion === 'Incremento'
+                    ? 'Incremento de Capacidad Transportadora'
+                    : 'Sin categoría',
+                semaforo: diferenciaDias, // Diferencia en días entre la fecha actual y la fecha de solicitud
+                radicado:
+                  clase.estadoSolicitudDescripcion == 'En estudio'
+                    ? '23454333'
+                    : '',
               };
             });
 
@@ -273,9 +310,6 @@ export default class DashboardComponent {
             this.loading = false; // Termina la carga de datos
             this.cdRef.detectChanges(); // Forzar la detección de cambios
           } else {
-            this.totalPages = response.totalPages;
-            console.log(this.totalPages);
-
             console.log(response);
             this.response = response.content.map((clase: any) => ({
               id: clase.id,
@@ -287,8 +321,8 @@ export default class DashboardComponent {
                 clase.categoriaSolicitudDescripcion === 'Fijación'
                   ? 'Fijación de Capacidad Transportadora'
                   : clase.categoriaSolicitudDescripcion === 'Incremento'
-                    ? 'Incremento de Capacidad Transportadora'
-                    : 'Sin categoría',
+                  ? 'Incremento de Capacidad Transportadora'
+                  : 'Sin categoría',
               estadoSolicitud: clase.estadoSolicitudDescripcion,
               conceptoSolicitud: clase.estadoSolicitudDescripcion,
               estadoSolicitudDescripcion: clase.estadoSolicitudDescripcion,
@@ -305,6 +339,23 @@ export default class DashboardComponent {
           console.error('Error fetching user data', error);
         }
       );
+  }
+
+  getHeaders() {
+    return (this.headers = [
+      { id: 1, titulo: 'ID' },
+      { id: 2, titulo: 'Fecha solicitud <br> (dd/mm/aaaa)' },
+      { id: 3, titulo: 'NIT empresa' },
+      {
+        id: 4,
+        titulo: 'Nombre de la empresa <br> que realiza solicitud',
+      },
+      { id: 5, titulo: 'Territorial que <br> emitió la solicitud' },
+      { id: 6, titulo: 'Estado <br> solicitud' },
+      { id: 7, titulo: 'Categoría de<br> solicitud' },
+      { id: 8, titulo: 'Semáforo <br> alerta' },
+      { id: 9, titulo: 'Número<br> radicado' },
+    ]);
   }
 
   onKeyDown(event: KeyboardEvent) {
