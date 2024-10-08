@@ -78,4 +78,14 @@ export class TableComponent {
     }
     return 'gray'; // Default para valores inesperados
   }
+
+  getId(value: string): number {
+    // Dividimos el string por la coma y retornamos el primer valor (el id)
+    return parseInt(value.split(',')[0]); 
+  }
+  
+  isTrue(value: string): boolean {
+    // Verificamos si el segundo valor es "true"
+    return value.split(',')[1] === 'true';
+  }
 }

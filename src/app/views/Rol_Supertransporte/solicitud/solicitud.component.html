@@ -796,7 +796,8 @@
         <!--     Tarjeta profesional contador que firma estados financieros -->
         <div class="w-full flex flex-col justify-start items-stretch pt-6 my-auto h-full">
           <p class="text-primary3 font-semibold h-full my-auto">
-            Tarjeta profesional y certificado de la junta central de contadores del contador que firma estados financieros
+            Tarjeta profesional y certificado de la junta central de contadores del contador que firma estados
+            financieros
           </p>
           <!-- documento y boton -->
           <div class="w-full h-full flex md:gap-4 lg:gap-6 mt-4">
@@ -1345,7 +1346,11 @@
 
         </div>
 
-        <div class="mt-4 w-full relative flex justify-center">
+        <div class="mt-4 w-full relative flex justify-between">
+          <button type="button" (click)="changeActiveStep(5)"
+            class="inline-flex items-center justify-center px-6 py-1 text-white bg-primary4 hover:bg-primary2 focus:bg-primary2 font-medium rounded-full text-[16px] work-sans text-center">
+            Regresar
+          </button>
           <app-primary-button (click)="onSubmitAllForms()">Guardar</app-primary-button>
         </div>
 
@@ -1443,20 +1448,116 @@
               <!-- input -->
               <div class="flex w-[30%] p-0 m-0 bg-secondary1">
                 <!-- input -->
-                <input
-                    class="shadow-sm rounded-md w-full border bg-transparent"
-                    type="number" formControlName="rentaNeta" required placeholder="Ingrese número contrato">
+                <input class="shadow-sm rounded-md w-full border bg-transparent" type="number"
+                  formControlName="rentaNeta" required placeholder="00"> %
               </div>
             </div>
-            <div class="px-4 py-2 rounded-xl shadow-md">
+            <div class="px-4 py-2 rounded-xl shadow-md font-semibold bg-waring/40 text-waring"
+              [ngClass]="{'!bg-error/40 !text-error': getMedidor(formGroup2.get('rentaNeta')?.value, 'renta') === 'Alto', '!bg-success/40 !text-success': getMedidor(formGroup2.get('rentaNeta')?.value, 'renta') === 'Bajo'}">
               {{ getMedidor(formGroup2.get('rentaNeta')?.value, 'renta') }}
             </div>
           </div>
           <span *ngIf="submitted && formGroup3.get('rentaNeta')?.errors?.['required']" class="text-error">
-            Capital social es obligatorio
+            Renta neta es obligatorio
           </span>
           <span
             *ngIf="formGroup2.get('rentaNeta')?.hasError('negativeNumber') && (formGroup2.get('rentaNeta')?.touched || submitted)"
+            class="text-error">
+            El numeró no puede ser negativo
+          </span>
+        </div>
+        <!-- Liquidez (%) -->
+        <div class="w-full flex flex-col justify-start items-stretch pt-6 my-auto h-full">
+          <!-- input contet -->
+          <div class="mt-2 relative w-full h-full flex gap-2 items-center">
+            <!-- INPUT -->
+            <div
+              class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border focus:outline-none focus:border-primary1 bg-secondary3 border-secondary2 text-primary3 flex items-center justify-center">
+              <!-- titulo -->
+              <div class="flex w-[70%] p-0 m-0">
+                <p class="my-auto"> Liquidez (%)</p>
+              </div>
+              <!-- input -->
+              <div class="flex w-[30%] p-0 m-0 bg-secondary1">
+                <!-- input -->
+                <input class="shadow-sm rounded-md w-full border bg-transparent" type="number"
+                  formControlName="liquidez" required placeholder="00"> %
+              </div>
+            </div>
+            <div class="px-4 py-2 rounded-xl shadow-md font-semibold bg-waring/40 text-waring"
+              [ngClass]="{'!bg-error/40 !text-error': getMedidor(formGroup2.get('liquidez')?.value) === 'Alto', '!bg-success/40 !text-success': getMedidor(formGroup2.get('liquidez')?.value) === 'Bajo'}">
+              {{ getMedidor(formGroup2.get('liquidez')?.value) }}
+            </div>
+          </div>
+          <span *ngIf="submitted && formGroup3.get('liquidez')?.errors?.['required']" class="text-error">
+            Liquidez es obligatorio
+          </span>
+          <span
+            *ngIf="formGroup2.get('liquidez')?.hasError('negativeNumber') && (formGroup2.get('liquidez')?.touched || submitted)"
+            class="text-error">
+            El numeró no puede ser negativo
+          </span>
+        </div>
+        <!-- Renta operacional (%) -->
+        <div class="w-full flex flex-col justify-start items-stretch pt-6 my-auto h-full">
+          <!-- input contet -->
+          <div class="mt-2 relative w-full h-full flex gap-2 items-center">
+            <!-- INPUT -->
+            <div
+              class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border focus:outline-none focus:border-primary1 bg-secondary3 border-secondary2 text-primary3 flex items-center justify-center">
+              <!-- titulo -->
+              <div class="flex w-[70%] p-0 m-0">
+                <p class="my-auto"> Renta operacional (%)</p>
+              </div>
+              <!-- input -->
+              <div class="flex w-[30%] p-0 m-0 bg-secondary1">
+                <!-- input -->
+                <input class="shadow-sm rounded-md w-full border bg-transparent" type="number"
+                  formControlName="rentaOperacional" required placeholder="00"> %
+              </div>
+            </div>
+            <div class="px-4 py-2 rounded-xl shadow-md font-semibold bg-waring/40 text-waring"
+              [ngClass]="{'!bg-error/40 !text-error': getMedidor(formGroup2.get('rentaOperacional')?.value, 'operacional') === 'Alto', '!bg-success/40 !text-success': getMedidor(formGroup2.get('rentaOperacional')?.value, 'operacional') === 'Bajo'}">
+              {{ getMedidor(formGroup2.get('rentaOperacional')?.value, 'operacional') }}
+            </div>
+          </div>
+          <span *ngIf="submitted && formGroup3.get('rentaOperacional')?.errors?.['required']" class="text-error">
+            Renta operacional es obligatorio
+          </span>
+          <span
+            *ngIf="formGroup2.get('rentaOperacional')?.hasError('negativeNumber') && (formGroup2.get('rentaOperacional')?.touched || submitted)"
+            class="text-error">
+            El numeró no puede ser negativo
+          </span>
+        </div>
+        <!-- solidez (%) -->
+        <div class="w-full flex flex-col justify-start items-stretch pt-6 my-auto h-full">
+          <!-- input contet -->
+          <div class="mt-2 relative w-full h-full flex gap-2 items-center">
+            <!-- INPUT -->
+            <div
+              class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border focus:outline-none focus:border-primary1 bg-secondary3 border-secondary2 text-primary3 flex items-center justify-center">
+              <!-- titulo -->
+              <div class="flex w-[70%] p-0 m-0">
+                <p class="my-auto"> Solidez (%)</p>
+              </div>
+              <!-- input -->
+              <div class="flex w-[30%] p-0 m-0 bg-secondary1">
+                <!-- input -->
+                <input class="shadow-sm rounded-md w-full border bg-transparent" type="number" formControlName="solidez"
+                  required placeholder="00"> %
+              </div>
+            </div>
+            <div class="px-4 py-2 rounded-xl shadow-md font-semibold bg-waring/40 text-waring"
+              [ngClass]="{'!bg-error/40 !text-error': getMedidor(formGroup2.get('solidez')?.value) === 'Alto', '!bg-success/40 !text-success': getMedidor(formGroup2.get('solidez')?.value) === 'Bajo'}">
+              {{ getMedidor(formGroup2.get('solidez')?.value) }}
+            </div>
+          </div>
+          <span *ngIf="submitted && formGroup3.get('solidez')?.errors?.['required']" class="text-error">
+            Liquidez es obligatorio
+          </span>
+          <span
+            *ngIf="formGroup2.get('solidez')?.hasError('negativeNumber') && (formGroup2.get('solidez')?.touched || submitted)"
             class="text-error">
             El numeró no puede ser negativo
           </span>
@@ -1476,6 +1577,22 @@
 
 
     </form>
+  </div>
+  <!-- solicitud concepto -->
+  <div class="md:col-span-8 sm:col-span-7 w-auto sm:mt-10 mt-4 md:px-8 px-2"
+    *ngIf="activeNum == '3' && loadingPage == false">
+
+    <h3 class="text-primary1 !font-bold">Solicitud ID {{solicitud?.formulario.id}}</h3>
+
+    <form [formGroup]="formGroup3" class="px-4 md:pl-16 md:pe-16 mt-6 active1 mb-6">
+
+      <div class="mt-8 w-full flex justify-center gap-4">
+
+        <app-primary-button type="button" class="" (click)="SaveInfo()">Guardar</app-primary-button>
+      </div>
+
+    </form>
+
   </div>
 
 
@@ -1507,7 +1624,7 @@
   (closeByBackdrop)="changeActiveNum('2', true)" (close)="showModal = true"></app-alert>
 
 <!-- Modal -->
-<app-alert [showModal]="showModal" title="Información guardada" textColor="text-success" [showSubtitle]="false"
+<app-alert [showModal]="showModal1" title="Información guardada" textColor="text-success" [showSubtitle]="false"
   [message]="' La información se ha cargado correctamente'" buttonText="Continuar" [isIcon]="false"
   [showFirstButton]="true" [showCancelButton]="false" TypeAlert="success" (close)="handleClose()"
   (closeByButton1)="changeActiveNum('3', true)" (closeByButton2)="handleCloseByButton2()"

@@ -147,6 +147,10 @@ export default class SolicitudComponent {
       num: '2',
       name: 'Financiero',
     },
+    {
+      num: '3',
+      name: 'Concepto',
+    },
   ];
 
   //Menu stepper
@@ -212,7 +216,10 @@ export default class SolicitudComponent {
     });
     this.formGroup2 = this.fb.group({
       2: [null, Validators.required],
-      'rentaNeta': ['', Validators.required],
+      rentaNeta: ['', Validators.required],
+      rentaOperacional: ['', Validators.required],
+      liquidez: ['', Validators.required],
+      solidez: ['', Validators.required],
     });
 
     //Suscribirse al servicio de manejo de errores
@@ -327,6 +334,7 @@ export default class SolicitudComponent {
   //FORMATO FECHA
   formatField(value: any): string {
     // Si el valor es una fecha válida, formatearlo
+    console.log(value);
 
     if (this.isDateTime(value)) {
       return formatDate(value, 'dd/MM/yyyy', 'en-US', 'UTC');
@@ -336,11 +344,16 @@ export default class SolicitudComponent {
 
   //formatear decimales a meses y dias
   formatMonthsAndDays(decimalMonths: number): string {
-    const months = Math.floor(decimalMonths); // Parte entera, representa los meses completos
-    const fractionalMonths = decimalMonths - months; // Parte fraccionaria, representa la fracción de mes
+    console.log(decimalMonths);
 
+    const months = Math.floor(decimalMonths); // Parte entera, representa los meses completos
+    console.log(months);
+
+    const fractionalMonths = decimalMonths - months; // Parte fraccionaria, representa la fracción de mes
+    console.log(fractionalMonths);
     // Supongamos que cada mes tiene 30 días (puedes ajustar esto si necesitas mayor precisión)
     const days = Math.round(fractionalMonths * 30); // Convierte la fracción en días
+    console.log(days);
 
     // Formatear el resultado
     let result = '';
@@ -467,22 +480,33 @@ export default class SolicitudComponent {
   }
 
   //OBTENER MEDIDOR (ALTO, MEDIO,BAJO)
-  getMedidor(porcentaje:number, name:string): string {
+  getMedidor(porcentaje: number, name?: string): string {
     let text = '';
+    let min = 1;
+    let max = 1.4;
     switch (name) {
       case 'renta':
-        if (porcentaje > 3.1) {
-          text = 'Bajo'
-        } else if(porcentaje > 2.1 || porcentaje <= 3.1) {
-          text = 'Medio'
-        } else {
-          text = 'Alto'
-        }
+        min = 2.1;
+        max = 3.1;
         break;
-    
+
+      case 'operacional':
+        min = 2.1;
+        max = 6.3;
+        break;
+
       default:
         break;
     }
+
+    if (porcentaje > max) {
+      text = 'Bajo';
+    } else if (porcentaje >= min && porcentaje <= max) {
+      text = 'Medio';
+    } else {
+      text = 'Alto';
+    }
+
     return text;
   }
 
@@ -495,11 +519,10 @@ export default class SolicitudComponent {
       if (saved) {
         this.stateService.setActiveNum(newValue);
       }
-    } else if(newValue == '3') {
+    } else if (newValue == '3') {
       if (saved && this.solicitud.formulario.excelModeloTransporte) {
         this.stateService.setActiveNum(newValue);
       }
-      
     } else {
       this.stateService.setActiveNum(newValue);
     }
@@ -750,6 +773,7 @@ export default class SolicitudComponent {
         .subscribe(
           (response) => {
             // Aquí puedes manejar la respuesta, por ejemplo:
+            this.ShowLoadingModal = false;
             this.showModal = true;
 
             console.log('Datos enviados exitosamente:', response);
@@ -771,23 +795,46 @@ export default class SolicitudComponent {
   SaveInfo() {
     if (this.validateFormGroup(this.formGroup2, this.errorStates)) {
       this.ShowLoadingModal = true; // Mostrar modal
-      console.log(this.formGroup1.get('2')?.value);
-      console.log(this.formGroup1);
+      console.log(this.formGroup2.get('2')?.value);
+      console.log(this.formGroup2);
 
       const data = {
         excelModeloTransporte: this.formGroup2.get('2')?.value[0],
-        rentaNeta: '',
-        solidez: '',
-        liquidez: '',
-        rentaOperacional: '',
+        rentaNeta: this.formGroup2.get('rentaNeta')?.value,
+        solidez: this.formGroup2.get('solidez')?.value,
+        liquidez: this.formGroup2.get('liquidez')?.value,
+        rentaOperacional: this.formGroup2.get('rentaOperacional')?.value,
       };
-      // put paso 2 actualizar - cargue 2
+      // put paso 2 actualizar - cargue 2 excel
       this.apiSFService
-        .RadicadoSalida(this.solicitud.formulario.id, data)
+        .ExcelTransporte(
+          this.solicitud.formulario.id,
+          data.excelModeloTransporte
+        )
         .subscribe(
           (response) => {
-            // Aquí puedes manejar la respuesta, por ejemplo:
-            this.showModal1 = true;
+            // put paso 2 actualizar - cargue 2
+            this.apiSFService
+              .GeneradoresRiesgo(
+                this.solicitud.formulario.id,
+                data
+              )
+              .subscribe(
+                (response) => {
+                  // Aquí puedes manejar la respuesta, por ejemplo:
+
+                  this.ShowLoadingModal = false;
+                  this.showModal1 = true;
+
+                  console.log('Datos enviados exitosamente:', response);
+                },
+                (error) => {
+                  this.ShowLoadingModal = false;
+                  this.showErrorModal = true;
+                  // Manejo del error
+                  console.error('Error al enviar los datos:', error);
+                }
+              );
 
             console.log('Datos enviados exitosamente:', response);
           },
