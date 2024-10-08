@@ -111,6 +111,11 @@ export class ApiService {
     return this.http.get(`${this.baseUrl}/catalogos/Estados%20de%20Solicitud`);
   }
 
+  //estados favorables
+  getConcepto(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/catalogos/SFSolicitud`);
+  }
+
 
 
 

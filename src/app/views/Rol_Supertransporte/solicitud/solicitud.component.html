@@ -1340,6 +1340,45 @@
             <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" [maxFiles]="1" mimes=".pdf"
               [error]="errorStates[1]" (fileSelected)="onFileSelected($event, 1)"></app-file-upload>
 
+            <!-- Opcion que aparece si existe archivo guardado en la solicitud -->
+            <div class="w-full"
+              *ngIf="(this.formGroup1.get('1')?.value != '' && this.formGroup1.get('1')?.value != null) && this.solicitud && !isActuFile.includes(1)">
+              <div class="mt-2 flex gap-2 items-center cursor-pointer"
+                (click)="viewDocument(formGroup1.get('1')?.value)">
+
+                <!-- Archivos Visibles -->
+                <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
+
+                  <!-- document -->
+                  <div class="w-auto m-auto">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto" viewBox="0 0 384 512">
+                      <path
+                        d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z" />
+                    </svg>
+                  </div>
+
+                  <!-- texto info file -->
+                  <div class="px-2 w-auto">
+                    <p class="truncate text-[8px] font-semibold">
+                      Radicado de salida
+                    </p>
+                    <p class="truncate text-[8px]">{{ (this.formGroup1.get('1')?.value.size /
+                      1024).toFixed(2) }} Kb</p>
+                  </div>
+
+                  <!-- button borrar -->
+                  <button class="m-auto w-auto" (click)="deleteFile(1)">
+                    <span class="pi pi-trash w-full h-full sm:text-xl text-base text-primary2 text-medium"></span>
+                  </button>
+
+                </div>
+
+              </div>
+
+
+
+            </div>
+
           </div>
 
 
@@ -1351,7 +1390,8 @@
             class="inline-flex items-center justify-center px-6 py-1 text-white bg-primary4 hover:bg-primary2 focus:bg-primary2 font-medium rounded-full text-[16px] work-sans text-center">
             Regresar
           </button>
-          <app-primary-button (click)="onSubmitAllForms()">Guardar</app-primary-button>
+          <app-primary-button *ngIf="(this.formGroup1.get('1')?.value != '' && this.formGroup1.get('1')?.value != null) && isActuFile.includes(1)" (click)="onSubmitAllForms()">Guardar</app-primary-button>
+          <app-primary-button *ngIf="(this.formGroup1.get('1')?.value != '' && this.formGroup1.get('1')?.value != null) && this.solicitud && !isActuFile.includes(1)" (click)="changeActiveNum('2')">Continuar</app-primary-button>
         </div>
 
       </form>
@@ -1370,7 +1410,7 @@
       <div class="content1 md:grid sm:grid-cols-2 md:gap-x-24 md:flex items-center h-full">
 
         <!-- Nombre de la empresa* -->
-        <div class="w-full flex flex-col justify-start items-stretch pt-6 my-auto h-full">
+        <div class="w-full flex flex-col justify-start items-stretch pt-6 my-auto">
           <p class="font-bold">Digitar los siguientes campos*</p>
           <p class="text-primary3 font-semibold h-full mt-6">
             Nombre de la empresa*
@@ -1395,6 +1435,44 @@
           <!-- input -->
           <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" [maxFiles]="1" mimes=".pdf"
             [error]="errorStates[2]" (fileSelected)="onFileSelected($event, 2)"></app-file-upload>
+
+          <!-- Opcion que aparece si existe archivo guardado en la solicitud -->
+          <div class="w-full"
+            *ngIf="(this.formGroup2.get('2')?.value != '' && this.formGroup2.get('2')?.value != null) && this.solicitud && !isActuFile.includes(2)">
+            <div class="mt-2 flex gap-2 items-center cursor-pointer" (click)="viewDocument(formGroup2.get('2')?.value)">
+
+              <!-- Archivos Visibles -->
+              <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
+
+                <!-- document -->
+                <div class="w-auto m-auto">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto" viewBox="0 0 384 512">
+                    <path
+                      d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z" />
+                  </svg>
+                </div>
+
+                <!-- texto info file -->
+                <div class="px-2 w-auto">
+                  <p class="truncate text-[8px] font-semibold">
+                    Excel Modelo de Transporte Especial
+                  </p>
+                  <p class="truncate text-[8px]">{{ (this.formGroup2.get('2')?.value.size /
+                    1024).toFixed(2) }} Kb</p>
+                </div>
+
+                <!-- button borrar -->
+                <button class="m-auto w-auto" (click)="deleteFile(2)">
+                  <span class="pi pi-trash w-full h-full sm:text-xl text-base text-primary2 text-medium"></span>
+                </button>
+
+              </div>
+
+            </div>
+
+
+
+          </div>
 
 
         </div>
@@ -1570,9 +1648,9 @@
 
 
 
-      <div class="mt-8 w-full flex justify-center gap-4">
-
+      <div class="mt-8 w-full flex justify-between gap-4">
         <app-primary-button type="button" class="" (click)="SaveInfo()">Guardar</app-primary-button>
+        <app-primary-button type="button" (click)="changeActiveNum('3', true)">Continuar</app-primary-button>
       </div>
 
 
@@ -1584,11 +1662,52 @@
 
     <h3 class="text-primary1 !font-bold">Solicitud ID {{solicitud?.formulario.id}}</h3>
 
-    <form [formGroup]="formGroup3" class="px-4 md:pl-16 md:pe-16 mt-6 active1 mb-6">
+    <form [formGroup]="formGroup3" class="px-4 md:pl-24 md:pe-24 mt-6 active1 mb-6">
+      <p class="text-primary4 font-[500]">Los campos marcados con * son obligatorios</p>
+      <p class="font-bold mt-4">Desplegar las opciones y seleccionar*</p>
+
+      <!-- select concepto -->
+      <div class="mt-8 w-full">
+        <p class="text-primary3 font-semibold h-full mt-6">
+          El concepto de sustentabilidad es*
+        </p>
+        <!-- select -->
+        <div class="w-full relative mt-2 sm:w-1/2">
+
+          <div (click)="toggleDropdown(0)"
+            [ngClass]="{'text-error !border border-error': formGroup3.get('concepto')?.invalid && (formGroup3.get('concepto')?.touched || formGroup3.get('concepto')?.dirty)}"
+            class="cursor-pointer shadow-sm min-w-[160px] w-full p-[10px] h-[40px] bg-transparent border-2 border-secondary1 focus:outline-none focus:border-primary1 flex justify-between items-center">
+            <span *ngIf="!selects[0].value" class="font-[500] text-xs">Seleccione</span>
+            <span *ngIf="selects[0].value" class="text-normal">{{
+              formGroup3.get('concepto')?.value.label
+              }}</span>
+
+            <i class="pi pi-chevron-down text-primary2 text-xs"
+              [ngClass]="{'!text-error': formGroup3.get('concepto')?.invalid && (formGroup3.get('concepto')?.touched || formGroup3.get('concepto')?.dirty)}"></i>
+          </div>
+
+          <ul *ngIf="selects[0].isDropdownOpen"
+            class="absolute z-20 bg-secondary4 border border-primary1 shadow-md rounded-bl-md rounded-br-md w-full mt-1 max-h-48 overflow-y-auto">
+            <li *ngFor="let option of conceptos" (click)="selectOption(0, option, 'concepto')"
+              class="cursor-pointer px-4 py-2 hover:bg-primary1 hover:text-white">
+              {{ option.label }}
+            </li>
+          </ul>
+          <!-- Mensajes de validación -->
+          <span class="text-sm text-success"
+            *ngIf="formGroup3.get('concepto')?.valid && formGroup3.get('concepto')?.touched">
+            Selección válida
+          </span>
+          <span class="text-sm text-error"
+            *ngIf="formGroup3.get('concepto')?.invalid && (formGroup3.get('concepto')?.touched || formGroup3.get('concepto')?.dirty)">
+            {{ selects[1].errorMessage }}
+          </span>
+
+        </div>
+      </div>
 
       <div class="mt-8 w-full flex justify-center gap-4">
-
-        <app-primary-button type="button" class="" (click)="SaveInfo()">Guardar</app-primary-button>
+        <app-primary-button type="button" class="" (click)="EmitirConcepto()">Guardar</app-primary-button>
       </div>
 
     </form>
@@ -1629,3 +1748,10 @@
   [showFirstButton]="true" [showCancelButton]="false" TypeAlert="success" (close)="handleClose()"
   (closeByButton1)="changeActiveNum('3', true)" (closeByButton2)="handleCloseByButton2()"
   (closeByBackdrop)="changeActiveNum('3', true)" (close)="showModal = true"></app-alert>
+
+  <!-- Modal FINAL -->
+<app-alert [showModal]="showModalFinal" title="Solicitud guardada con éxito" textColor="text-success" [showSubtitle]="false"
+[message]="'El concepto de la solicitud fue asignado por la Superintendencia de Transporte'" buttonText="Continuar" [isIcon]="false"
+[showFirstButton]="true" [showCancelButton]="false" TypeAlert="success" (close)="handleClose()"
+(closeByButton1)="finalStep()" (closeByButton2)="handleCloseByButton2()"
+(closeByBackdrop)="finalStep()" (close)="showModalFinal = true"></app-alert>

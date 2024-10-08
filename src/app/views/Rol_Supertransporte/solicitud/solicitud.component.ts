@@ -132,6 +132,7 @@ export default class SolicitudComponent {
   showModal1: boolean = false;
   ShowLoadingModal: boolean = false;
   showErrorModal: boolean = false;
+  showModalFinal: boolean = false;
 
   //Menu left
   infoMenu = [
@@ -191,6 +192,22 @@ export default class SolicitudComponent {
     textInfo: 'Archivo PDF. Peso máximo: 2MB',
   };
 
+  conceptos: any = [];
+
+  //info selects
+  selects = [
+    //select concepto
+    {
+      name: 'concepto',
+      required: true,
+      placeholder: 'Seleccione',
+      value: '', // Valor seleccionado
+      good: 'Selección correcta',
+      errorMessage: 'Concepto es requerido',
+      isDropdownOpen: false,
+    },
+  ];
+
   currentIndex: number = 0;
   maxVisibleFiles: number = 1;
 
@@ -220,6 +237,10 @@ export default class SolicitudComponent {
       rentaOperacional: ['', Validators.required],
       liquidez: ['', Validators.required],
       solidez: ['', Validators.required],
+    });
+
+    this.formGroup3 = this.fb.group({
+      concepto: ['', Validators.required],
     });
 
     //Suscribirse al servicio de manejo de errores
@@ -265,7 +286,19 @@ export default class SolicitudComponent {
           this.departamentos = response3;
         });
 
+        //respuesta concepto
+        this.apiService.getConcepto().subscribe((response4) => {
+          this.conceptos = response4.detalle.map((clase: any) => ({
+            value: clase.id,
+            label: clase.descripcion,
+          }));
+          console.log(this.conceptos);
+        });
+
         this.solicitud = response;
+
+        this.ActuForms(response);
+
         console.log(response);
         this.loadingPage = false;
       },
@@ -274,6 +307,27 @@ export default class SolicitudComponent {
         console.error('Error fetching user data', error);
       }
     );
+  }
+
+  ActuForms(info: any) {
+    this.formGroup1.patchValue({
+      [1]: this.displayFile(info.formulario.radicadoSalida),
+    });
+    this.formGroup2.patchValue({
+      [2]: this.displayFile(info.formulario.excelModeloTransporte),
+    });
+    this.formGroup2.patchValue({
+      ['rentaNeta']: info.formulario.rentaNeta,
+    });
+    this.formGroup2.patchValue({
+      ['rentaOperacional']: info.formulario.rentaOperacional,
+    });
+    this.formGroup2.patchValue({
+      ['liquidez']: info.formulario.liquidez,
+    });
+    this.formGroup2.patchValue({
+      ['solidez']: info.formulario.solidez,
+    });
   }
 
   //Get formas de pago
@@ -598,9 +652,33 @@ export default class SolicitudComponent {
       });
   }
 
+  toggleDropdown(index: number) {
+    console.log(this.selects[index]);
+
+    this.selects[index].isDropdownOpen = !this.selects[index].isDropdownOpen;
+  }
+
+  selectOption(index: number, option: any, name: string) {
+    this.selects[index].value = option;
+    this.selects[index].isDropdownOpen = false;
+    this.formGroup3.get(name)?.setValue(option);
+  }
+
   //Actualizar archivos guardados
   ActuFileGuardado(num: number) {
     this.isActuFile.push(num);
+  }
+  //ELIMINAR ARCHIVO QUE ESTA GUARDADO EN SOLICITUD
+  deleteFile(num: number) {
+    switch (num) {
+      case 1:
+        this.formGroup1.get(num.toString())?.setValue('');
+        break;
+
+      case 2:
+        this.formGroup2.get(num.toString())?.setValue('');
+        break;
+    }
   }
 
   //Metodo para mostrar el pdf
@@ -610,6 +688,39 @@ export default class SolicitudComponent {
     }
     const truncated = fileName.substring(0, maxLength - 3) + '...';
     return truncated;
+  }
+
+  // Función para manejar los diferentes casos de acceso a los valores (Blob o Base64)
+  convertirSiEsBlob(valor: any) {
+    console.log(valor);
+
+    // Si es Blob, convertimos a Base64
+    if (valor instanceof Blob) {
+      return this.convertirBlob(valor); // Convertir Blob a Base64
+    } else if (Array.isArray(valor) && valor.length > 0) {
+      // Si es un array (Base64), retornamos el primer valor del array
+      return Promise.resolve(valor[0]);
+    } else {
+      // Si no es ni Blob ni un array, devolvemos el valor como está
+      return Promise.resolve(valor);
+    }
+  }
+
+  //FUNCION PARA CONVERTIR BLOB - BASE64
+
+  convertirBlob(blob: Blob): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        // Extraemos la parte base64 sin el prefijo 'data:...;base64,'
+        const base64String = reader.result?.toString().split(',')[1] || '';
+        resolve(base64String);
+      };
+      reader.onerror = (error) => {
+        reject(`Error al convertir Blob a base64: ${error}`);
+      };
+      reader.readAsDataURL(blob); // Leemos el blob como DataURL
+    });
   }
 
   // Detectar si el archivo es PDF o XLSX desde Base64
@@ -751,7 +862,7 @@ export default class SolicitudComponent {
   }
 
   finalStep() {
-    this.showModal = false;
+    this.showModalFinal = false;
     this.router.navigate(['/dashboard']).then(() => {
       location.reload();
     });
@@ -764,27 +875,39 @@ export default class SolicitudComponent {
       console.log(this.formGroup1.get('1')?.value);
       console.log(this.formGroup1);
 
-      const data = {
-        radicadoSalida: this.formGroup1.get('1')?.value[0],
-      };
-      // put paso 2 actualizar - cargue 2
-      this.apiSFService
-        .RadicadoSalida(this.solicitud.formulario.id, data)
-        .subscribe(
-          (response) => {
-            // Aquí puedes manejar la respuesta, por ejemplo:
-            this.ShowLoadingModal = false;
-            this.showModal = true;
+      // Convertir valores que pueden ser Blob a Base64 (para los archivos en data2)
+      Promise.all([
+        this.convertirSiEsBlob(this.formGroup1.get('1')?.value), // radicadoSalida
+      ])
+        .then(([radicadoSalida]) => {
+          // Creación del objeto data2 con todos los campos procesados
+          const data = {
+            radicadoSalida,
+          };
 
-            console.log('Datos enviados exitosamente:', response);
-          },
-          (error) => {
-            this.ShowLoadingModal = false;
-            this.showErrorModal = true;
-            // Manejo del error
-            console.error('Error al enviar los datos:', error);
-          }
-        );
+          // put paso 2 actualizar - cargue 2
+          this.apiSFService
+            .RadicadoSalida(this.solicitud.formulario.id, data)
+            .subscribe(
+              (response) => {
+                // Aquí puedes manejar la respuesta, por ejemplo:
+                this.ShowLoadingModal = false;
+                this.showModal = true;
+
+                console.log('Datos enviados exitosamente:', response);
+              },
+              (error) => {
+                this.ShowLoadingModal = false;
+                this.showErrorModal = true;
+                // Manejo del error
+                console.error('Error al enviar los datos:', error);
+              }
+            );
+        })
+        .catch((error) => {
+          console.error('Error en la conversión de archivos:', error);
+          this.ShowLoadingModal = false;
+        });
     } else {
       this.ShowLoadingModal = false; // Mostrar modal
       this.submitted = true;
@@ -795,60 +918,110 @@ export default class SolicitudComponent {
   SaveInfo() {
     if (this.validateFormGroup(this.formGroup2, this.errorStates)) {
       this.ShowLoadingModal = true; // Mostrar modal
-      console.log(this.formGroup2.get('2')?.value);
-      console.log(this.formGroup2);
 
-      const data = {
-        excelModeloTransporte: this.formGroup2.get('2')?.value[0],
-        rentaNeta: this.formGroup2.get('rentaNeta')?.value,
-        solidez: this.formGroup2.get('solidez')?.value,
-        liquidez: this.formGroup2.get('liquidez')?.value,
-        rentaOperacional: this.formGroup2.get('rentaOperacional')?.value,
-      };
-      // put paso 2 actualizar - cargue 2 excel
-      this.apiSFService
-        .ExcelTransporte(
-          this.solicitud.formulario.id,
-          data.excelModeloTransporte
-        )
-        .subscribe(
-          (response) => {
-            // put paso 2 actualizar - cargue 2
-            this.apiSFService
-              .GeneradoresRiesgo(
-                this.solicitud.formulario.id,
-                data
-              )
-              .subscribe(
-                (response) => {
-                  // Aquí puedes manejar la respuesta, por ejemplo:
-
-                  this.ShowLoadingModal = false;
-                  this.showModal1 = true;
-
-                  console.log('Datos enviados exitosamente:', response);
-                },
-                (error) => {
-                  this.ShowLoadingModal = false;
-                  this.showErrorModal = true;
-                  // Manejo del error
-                  console.error('Error al enviar los datos:', error);
-                }
-              );
-
-            console.log('Datos enviados exitosamente:', response);
-          },
-          (error) => {
-            this.ShowLoadingModal = false;
-            this.showErrorModal = true;
-            // Manejo del error
-            console.error('Error al enviar los datos:', error);
-          }
-        );
+      this.actualizarFinanciero();
     } else {
       this.ShowLoadingModal = false; // Mostrar modal
       this.submitted = true;
-      this.formGroup1.markAllAsTouched();
+      this.formGroup2.markAllAsTouched();
     }
+  }
+
+  actualizarFinanciero(isConcepto?: boolean) {
+    // Convertir valores que pueden ser Blob a Base64 (para los archivos en data2)
+    Promise.all([
+      this.convertirSiEsBlob(this.formGroup2.get('2')?.value), // radicadoSalida
+    ])
+      .then(([excelModeloTransporte]) => {
+        // Creación del objeto data2 con todos los campos procesados
+        const data = {
+          excelModeloTransporte,
+        };
+
+        // put paso 2 actualizar - cargue 2 excel
+        this.apiSFService
+          .ExcelTransporte(this.solicitud.formulario.id, data)
+          .subscribe(
+            (response) => {
+              // put paso 2 actualizar - cargue 2
+              const data1 = {
+                rentaNeta: this.formGroup2.get('rentaNeta')?.value,
+                solidez: this.formGroup2.get('solidez')?.value,
+                liquidez: this.formGroup2.get('liquidez')?.value,
+                rentaOperacional:
+                  this.formGroup2.get('rentaOperacional')?.value,
+              };
+              this.apiSFService
+                .GeneradoresRiesgo(this.solicitud.formulario.id, data1)
+                .subscribe(
+                  (response) => {
+                    // Aquí puedes manejar la respuesta, por ejemplo:
+
+                    if (isConcepto) {
+                      this.actualizarConcepto();
+                    } else {
+                      this.ShowLoadingModal = false;
+                      this.showModal1 = true;
+                    }
+
+                    console.log('Datos enviados exitosamente:', response);
+                  },
+                  (error) => {
+                    this.ShowLoadingModal = false;
+                    this.showErrorModal = true;
+                    // Manejo del error
+                    console.error('Error al enviar los datos:', error);
+                  }
+                );
+
+              console.log('Datos enviados exitosamente:', response);
+            },
+            (error) => {
+              this.ShowLoadingModal = false;
+              this.showErrorModal = true;
+              // Manejo del error
+              console.error('Error al enviar los datos:', error);
+            }
+          );
+      })
+      .catch((error) => {
+        console.error('Error en la conversión de archivos:', error);
+        this.ShowLoadingModal = false;
+      });
+  }
+
+  EmitirConcepto() {
+    if (this.validateFormGroup(this.formGroup3, this.errorStates)) {
+      this.actualizarFinanciero(true);
+      this.ShowLoadingModal = true; // Mostrar modal
+      console.log(this.formGroup3);
+    } else {
+      this.ShowLoadingModal = false; // Mostrar modal
+      this.submitted = true;
+      this.formGroup3.markAllAsTouched();
+    }
+  }
+
+  actualizarConcepto() {
+    const data = {
+      concepto: this.formGroup3.get('concepto')?.value.value,
+      idEstadoSolicitud: this.formGroup3.get('concepto')?.value.label == 'Favorable' ? 125 : 126,
+    };
+    // put paso final emitir concepto
+    this.apiSFService
+      .emitirConcepto(this.solicitud.formulario.id, data)
+      .subscribe(
+        (response) => {
+          this.ShowLoadingModal = false;
+          this.showModalFinal = true;
+          console.log('Datos enviados exitosamente:', response);
+        },
+        (error) => {
+          this.ShowLoadingModal = false;
+          this.showErrorModal = true;
+          // Manejo del error
+          console.error('Error al enviar los datos:', error);
+        }
+      );
   }
 }
