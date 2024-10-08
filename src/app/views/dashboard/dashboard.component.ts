@@ -272,7 +272,7 @@ export default class DashboardComponent {
 
               return {
                 id:
-                  clase.id + ',' + (clase.estadoSolicitudDescripcion == 'En estudio'),
+                  clase.id + ',' + (clase.estadoSolicitudDescripcion == 'En estudio' || clase.estadoSolicitudDescripcion == 'Aprobado'),
                 fecha: clase.fechaSolicitud,
                 nit: clase.nit,
                 empresa: clase.nombreEmpresa,
