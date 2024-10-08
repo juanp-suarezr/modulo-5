@@ -160,4 +160,18 @@ export class ApiSFService {
     });
   }
 
+  // PUT excel-transporte
+  ExcelTransporte(id: string, data2: any): Observable<any> {
+    return this.http.put(`${this.baseUrl}/api/formulario/excel-trasporte-especial/${id}`, data2, {
+      responseType: 'text',
+    });
+  }
+
+  // PUT generadores riesgo
+  GeneradoresRiesgo(id: string, data2: any): Observable<any> {
+    return this.http.put(`${this.baseUrl}/api/formulario/generado-riesgos/${id}`, data2, {
+      responseType: 'text',
+    });
+  }
+
 }

@@ -123,19 +123,7 @@ export default class DashboardComponent {
         }
       });
 
-    if (
-      this.user.roles.some((role: any) =>
-        role.roleName.includes('ROLE_ESCRITURA_GESDOC')
-      )
-    ) {
-      this.filterStatus = 'Asignar';
-    } else if (
-      this.user.roles.some((role: any) =>
-        role.roleName.includes('ROLE_SUPERTRANSPORTE')
-      )
-    ) {
-      // this.filterStatus = '124';
-    }
+    
   }
 
   onPageChange(page: number) {
@@ -213,6 +201,8 @@ export default class DashboardComponent {
       )
       .subscribe(
         (response) => {
+          console.log(response);
+          
           this.totalPages = response.totalPages;
           // Validar roles y generar headers después de cargar los datos
           if (
@@ -237,8 +227,8 @@ export default class DashboardComponent {
 
               return {
                 id:
-                  clase.id + ',' + clase.estadoSolicitudDescripcion ==
-                  'Asignar',
+                  clase.id + ',' + (clase.estadoSolicitudDescripcion ===
+                  "Asignar"),
                 fecha: clase.fechaSolicitud,
                 nit: clase.nit,
                 empresa: clase.nombreEmpresa,
@@ -284,8 +274,7 @@ export default class DashboardComponent {
 
               return {
                 id:
-                  clase.id + ',' + clase.estadoSolicitudDescripcion ==
-                  'Asignar'||clase.estadoSolicitudDescripcion == 'En estudio',
+                  clase.id + ',' + (clase.estadoSolicitudDescripcion == 'En estudio'),
                 fecha: clase.fechaSolicitud,
                 nit: clase.nit,
                 empresa: clase.nombreEmpresa,
