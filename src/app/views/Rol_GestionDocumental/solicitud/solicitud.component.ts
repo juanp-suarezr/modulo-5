@@ -146,7 +146,6 @@ export default class SolicitudComponent {
       num: '2',
       name: 'Radicado',
     },
-    
   ];
 
   //Menu stepper
@@ -242,6 +241,7 @@ export default class SolicitudComponent {
         });
 
         this.solicitud = response;
+        this.ActuForms(response);
         console.log(response);
         this.loadingPage = false;
       },
@@ -250,6 +250,20 @@ export default class SolicitudComponent {
         console.error('Error fetching user data', error);
       }
     );
+  }
+
+  ActuForms(info: any) {
+    this.formGroup1.patchValue({
+      [1]: this.displayFile(info.formulario.radicadoSalida),
+    });
+    
+    this.formGroup1.patchValue({
+      ['numeroRadicado']: info.formulario.numeroRadicado,
+    });
+    this.formGroup1.patchValue({
+      ['fechaRadicado']: info.formulario.fechaRadicado,
+    });
+    
   }
 
   //Get formas de pago
@@ -465,6 +479,19 @@ export default class SolicitudComponent {
     this.isActuFile.push(num);
   }
 
+  //ELIMINAR ARCHIVO QUE ESTA GUARDADO EN SOLICITUD
+  deleteFile(num: number) {
+    switch (num) {
+      case 1:
+        this.formGroup1.get(num.toString())?.setValue('');
+        break;
+
+      case 2:
+        this.formGroup2.get(num.toString())?.setValue('');
+        break;
+    }
+  }
+
   //Metodo para mostrar el pdf
   truncatedFileName(fileName: string, maxLength: number = 20): string {
     if (fileName.length <= maxLength) {
@@ -472,6 +499,37 @@ export default class SolicitudComponent {
     }
     const truncated = fileName.substring(0, maxLength - 3) + '...';
     return truncated;
+  }
+
+  // Función para manejar los diferentes casos de acceso a los valores (Blob o Base64)
+  convertirSiEsBlob(valor: any) {
+    // Si es Blob, convertimos a Base64
+    if (valor instanceof Blob) {
+      return this.convertirBlob(valor); // Convertir Blob a Base64
+    } else if (Array.isArray(valor) && valor.length > 0) {
+      // Si es un array (Base64), retornamos el primer valor del array
+      return Promise.resolve(valor[0]);
+    } else {
+      // Si no es ni Blob ni un array, devolvemos el valor como está
+      return Promise.resolve(valor);
+    }
+  }
+
+  //FUNCION PARA CONVERTIR BLOB - BASE64
+
+  convertirBlob(blob: Blob): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        // Extraemos la parte base64 sin el prefijo 'data:...;base64,'
+        const base64String = reader.result?.toString().split(',')[1] || '';
+        resolve(base64String);
+      };
+      reader.onerror = (error) => {
+        reject(`Error al convertir Blob a base64: ${error}`);
+      };
+      reader.readAsDataURL(blob); // Leemos el blob como DataURL
+    });
   }
 
   // Detectar si el archivo es PDF o XLSX desde Base64
@@ -599,31 +657,44 @@ export default class SolicitudComponent {
   onSubmitAllForms() {
     if (this.validateFormGroup(this.formGroup1, this.errorStates)) {
       this.ShowLoadingModal = true; // Mostrar modal
-      console.log(this.formGroup1.get('1')?.value);
-      console.log(this.formGroup1);
-      
-      const data = {
-        radicadoEntrada: this.formGroup1.get('1')?.value[0],
-        numeroRadicado: this.formGroup1.get('numeroRadicado')?.value,
-        fechaRadicado: this.formGroup1.get('fechaRadicado')?.value,
-        
-      };
-      // put paso 2 actualizar - cargue 2
-      this.apiSFService.RadicadoEntrada(this.solicitud.formulario.id, data).subscribe(
-        (response) => {
-          // Aquí puedes manejar la respuesta, por ejemplo:
-          this.showModal = true;
 
-          console.log('Datos enviados exitosamente:', response);
-        },
-        (error) => {
+      Promise.all([
+        this.convertirSiEsBlob(this.formGroup1.value[1]), // resolucionHabilitacion
+      ])
+        .then(
+          ([
+            radicadoEntrada,
+          ]) => {
+            // Creación del objeto data2 con todos los campos procesados
+            const data = {
+              radicadoEntrada,
+              numeroRadicado: this.formGroup1.get('numeroRadicado')?.value,
+              fechaRadicado: this.formGroup1.get('fechaRadicado')?.value,
+            };
+
+            // put paso 2 actualizar - cargue 2
+            this.apiSFService
+              .RadicadoEntrada(this.solicitud.formulario.id, data)
+              .subscribe(
+                (response) => {
+                  // Aquí puedes manejar la respuesta, por ejemplo:
+                  this.showModal = true;
+
+                  console.log('Datos enviados exitosamente:', response);
+                },
+                (error) => {
+                  this.ShowLoadingModal = false;
+                  this.showErrorModal = true;
+                  // Manejo del error
+                  console.error('Error al enviar los datos:', error);
+                }
+              );
+          }
+        )
+        .catch((error) => {
+          console.error('Error en la conversión de archivos:', error);
           this.ShowLoadingModal = false;
-          this.showErrorModal = true;
-          // Manejo del error
-          console.error('Error al enviar los datos:', error);
-        }
-      );
-
+        });
     } else {
       this.ShowLoadingModal = false; // Mostrar modal
       this.submitted = true;

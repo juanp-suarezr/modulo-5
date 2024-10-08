@@ -242,9 +242,7 @@ export default class DashboardComponent {
                     : 'Sin categoría',
                 semaforo: diferenciaDias, // Diferencia en días entre la fecha actual y la fecha de solicitud
                 radicado:
-                  clase.estadoSolicitudDescripcion == 'En estudio'
-                    ? '23454333'
-                    : '',
+                  clase.numeroRadicado,
               };
             });
 
@@ -288,9 +286,7 @@ export default class DashboardComponent {
                     : 'Sin categoría',
                 semaforo: diferenciaDias, // Diferencia en días entre la fecha actual y la fecha de solicitud
                 radicado:
-                  clase.estadoSolicitudDescripcion == 'En estudio'
-                    ? '23454333'
-                    : '',
+                  clase.numeroRadicado,
               };
             });
 
@@ -301,7 +297,7 @@ export default class DashboardComponent {
           } else {
             console.log(response);
             this.response = response.content.map((clase: any) => ({
-              id: clase.id,
+              id: clase.id+ ',' + false,
               fecha: clase.fechaSolicitud,
               nit: clase.nit,
               empresa: clase.nombreEmpresa,

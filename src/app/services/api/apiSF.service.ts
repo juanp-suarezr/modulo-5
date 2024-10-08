@@ -174,4 +174,11 @@ export class ApiSFService {
     });
   }
 
+  // PUT generadores riesgo
+  emitirConcepto(id: string, data2: any): Observable<any> {
+    return this.http.put(`${this.baseUrl}/api/formulario/concepto/${id}`, data2, {
+      responseType: 'text',
+    });
+  }
+
 }
