@@ -770,6 +770,7 @@ export default class FijacionComponent {
     saved: boolean,
     back: boolean = false
   ) {
+    this.showModalInfoSaved = false;
     switch (newValue) {
       case 1:
         this.stepperService.setActiveNum(newValue);
@@ -792,7 +793,7 @@ export default class FijacionComponent {
               //CREA SOLICITUD
               this.apiSFService.createSolicitud(data1).subscribe(
                 (response) => {
-                  
+
                   this.isActuFile = [-1];
                   const parsedData = JSON.parse(response);
                   // Aquí puedes manejar la respuesta, por ejemplo:
@@ -884,7 +885,7 @@ export default class FijacionComponent {
           this.valid1 =
             this.formGroup3.get('capitalSocial')?.value >= 300 * this.smlmmv;
           this.valid2 =
-            this.formGroup3.get('patrimonioLiquido')?.value < 180 * this.smlmmv;
+            this.formGroup3.get('patrimonioLiquido')?.value >= 180 * this.smlmmv;
 
           if (this.valid1 && this.valid2) {
             if (saved) {
@@ -1122,7 +1123,7 @@ export default class FijacionComponent {
             this.stepperService.setActiveNum(num);
             if (!notChange) {
               this.showModalSaveInfo(num+1);
-              
+
             }
             console.log('Datos enviados exitosamente:', response);
           },

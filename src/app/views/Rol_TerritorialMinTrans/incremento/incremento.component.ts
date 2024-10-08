@@ -151,9 +151,10 @@ export default class IncrementoComponent implements AfterViewInit {
   ShowLoadingModal: boolean = false;
   showErrorModal: boolean = false;
   showModalContinuar: boolean = false;
+  showModalContinuar1: boolean = false;
   showModalWarning1: boolean = false;
-  showModalAlerta: boolean = false; // Control para mostrar el modal de error cuando no esta registrado
-  showModalAlerta1: boolean = false; // Control para mostrar el modal de error cuando matricula vencida
+  showModalAlerta: boolean = false;
+  showModalAlerta1: boolean = false;
 
   //Control para deshabilitar el botón
   isProcessing: boolean = true;
@@ -190,6 +191,9 @@ export default class IncrementoComponent implements AfterViewInit {
   //manejo de varios contratos guardados
   currentIndex = 0;
   maxVisibleFiles = 2;
+
+  numberTocontinueSaved: number = 0;
+  showModalInfoSaved: boolean = false;
 
   //Menu left
   infoMenu = [
@@ -382,22 +386,19 @@ export default class IncrementoComponent implements AfterViewInit {
             this.solicitudGuardada = response;
             this.loadingInicio = true;
             //GET DOCUMENTOS
-            this.apiSFService.getDocumentosByID(response.nit).subscribe(
+            this.apiSFService.getDocumentosByID(response.id).subscribe(
               (response1) => {
                 console.log(response1);
-
                 this.loadingInicio = false;
                 // Crear un array de contratos
                 const contratosArray = response1.map((element: any) => ({
                   nit: element.nit,
                   id: element.id,
-                  documento: this.displayFile(element.documento),
+                  documentos: this.displayFile(element.documentos),
                 }));
 
                 // Guardar el array en formGroup1[0]
-                this.formGroup1.patchValue({
-                  [2]: contratosArray,
-                });
+                this.formGroup1.patchValue({[1]: contratosArray,});
 
                 this.fileNames[1] = response1.map((f: any, index: number) => {
                   const firstPart = `consecutivo_${index + 1}__${this.nit}_${
@@ -461,15 +462,15 @@ export default class IncrementoComponent implements AfterViewInit {
 
             (this.nombreEmpresa = response.nombreEmpresa),
               (this.nit = response.nit),
-              this.formGroup1.patchValue({
-                [1]: this.displayFile(response.solicitudFijacionCapacidad),
-              });
 
+              this.formGroup1.patchValue({
+                [2]: this.displayFile(response.planRodamiento),
+              });
             this.formGroup1.patchValue({
-              [3]: this.displayFile(response.planRodamiento),
+              [3]: this.displayFile(response.estructuraCostosBasicos),
             });
             this.formGroup1.patchValue({
-              [4]: this.displayFile(response.estructuraCostosBasicos),
+              [4]: this.displayFile(response.certificadoCumplimiento),
             });
             this.formGroup1.patchValue({
               [5]: this.displayFile(response.certificadoExistencia),
@@ -492,17 +493,14 @@ export default class IncrementoComponent implements AfterViewInit {
             this.formGroup2.patchValue({
               [11]: this.displayFile(response.tarjetaProfesionalContador),
             });
-
             this.formGroup3.patchValue({
-              ['capitalSocial']: response.capitalSocial,
+              [12]: this.displayFile(response.certificadoPropiedadEmpresa),
             });
-
             this.formGroup3.patchValue({
-              ['patrimonioLiquido']: response.patrimonioLiquido,
+              ['capital_social']: response.capitalSocial,
             });
-
             this.formGroup3.patchValue({
-              ['cantidadVehiculos']: response.cantidadVehiculos,
+              ['patrimonio_liquido']: response.patrimonioLiquido,
             });
 
             console.log(response);
@@ -590,8 +588,7 @@ export default class IncrementoComponent implements AfterViewInit {
 
   //MOSTRAR CONTRATOS GUARDADOS
   get visibleFiles(): File[] {
-    return this.formGroup1
-      .get('2')
+    return this.formGroup1.get('1')
       ?.value.slice(
         this.currentIndex,
         this.currentIndex + this.maxVisibleFiles
@@ -607,7 +604,7 @@ export default class IncrementoComponent implements AfterViewInit {
   moveRight(): void {
     if (
       this.currentIndex <
-      this.formGroup1.get('2')?.value.length - this.maxVisibleFiles
+      this.formGroup1.get('1')?.value.length - this.maxVisibleFiles
     ) {
       this.currentIndex++;
     }
@@ -788,18 +785,81 @@ export default class IncrementoComponent implements AfterViewInit {
     );
   }
 
+  deleteFile(num: number, index?: number) {
+    switch (num) {
+      case 1:
+        const posicion = index ?? 0;
+        this.formGroup1.get(num.toString())?.value[posicion] == '';
+        break;
+
+      case 2:
+        this.formGroup1.get(num.toString())?.setValue('');
+        break;
+
+      case 3:
+        this.formGroup1.get(num.toString())?.setValue('');
+        break;
+
+      case 4:
+        this.formGroup1.get(num.toString())?.setValue('');
+        break;
+
+      case 5:
+        this.formGroup1.get(num.toString())?.setValue('');
+        break;
+
+      case 6:
+        this.formGroup1.get(num.toString())?.setValue('');
+        break;
+
+      case 7:
+        this.formGroup2.get(num.toString())?.setValue('');
+        break;
+
+      case 8:
+        this.formGroup2.get(num.toString())?.setValue('');
+        break;
+
+      case 9:
+        this.formGroup2.get(num.toString())?.setValue('');
+        break;
+
+      case 10:
+        this.formGroup2.get(num.toString())?.setValue('');
+        break;
+
+      case 11:
+        this.formGroup2.get(num.toString())?.setValue('');
+        break;
+
+      case 12:
+        this.formGroup3.get(num.toString())?.setValue('');
+        break;
+
+      default:
+        break;
+    }
+  }
+
   //modal continuar sin guardar
   goToModal(num: number) {
     this.showModalContinuar = true;
     this.numberTocontinue = num;
   }
 
-  //Metodo para cambiar el valor del stepper
+  //modal continuar despues de guardar
+  showModalSaveInfo(num: number) {
+    this.numberTocontinueSaved = num;
+    this.showModalInfoSaved = true;
+  }
+
+  // Método para cambiar el valor del stepper
   async changeActiveStep(
     newValue: number,
     saved: boolean,
     back: boolean = false
   ) {
+    this.showModalInfoSaved = false;
     switch (newValue) {
       case 1:
         this.stepperService.setActiveNum(newValue);
@@ -822,16 +882,15 @@ export default class IncrementoComponent implements AfterViewInit {
               //CREA SOLICITUD
               this.apiSFService.createSolicitud(data1).subscribe(
                 (response) => {
+
                   this.isActuFile = [-1];
                   const parsedData = JSON.parse(response);
-
                   // Aquí puedes manejar la respuesta, por ejemplo:
                   this.ShowLoadingModal = false;
                   console.log('Datos enviados exitosamente:', parsedData);
                   this.idSolicitud = parsedData.id_solicitud;
                   localStorage.setItem('idSolicitud', this.idSolicitud);
-
-                  this.stepperService.setActiveNum(newValue);
+                  this.showModalSaveInfo(newValue);
                   this.formGroup4
                     .get('cantidad_contratos')
                     ?.setValue(this.formGroup1.value[1].length);
@@ -856,7 +915,7 @@ export default class IncrementoComponent implements AfterViewInit {
             this.stepperService.setActiveNum(newValue);
             this.formGroup4
               .get('cantidad_contratos')
-              ?.setValue(this.formGroup1.value[1].length);
+              ?.setValue(this.formGroup1.value[2].length);
           }
 
           this.formGroup4.get('cantidad_contratos')?.disable();
@@ -916,8 +975,7 @@ export default class IncrementoComponent implements AfterViewInit {
             this.valid1 =
               this.formGroup3.get('capital_social')?.value >= 300 * this.smlmmv;
             this.valid2 =
-              this.formGroup3.get('patrimonio_liquido')?.value <
-              180 * this.smlmmv;
+              this.formGroup3.get('patrimonio_liquido')?.value >= 180 * this.smlmmv;
           } else if (
             parseFloat(this.inputs[0].value) >= 51 &&
             parseFloat(this.inputs[0].value) <= 300
@@ -925,8 +983,7 @@ export default class IncrementoComponent implements AfterViewInit {
             this.valid1 =
               this.formGroup3.get('capital_social')?.value >= 400 * this.smlmmv;
             this.valid2 =
-              this.formGroup3.get('patrimonio_liquido')?.value <
-              280 * this.smlmmv;
+              this.formGroup3.get('patrimonio_liquido')?.value >= 280 * this.smlmmv;
           } else if (
             parseFloat(this.inputs[0].value) >= 301 &&
             parseFloat(this.inputs[0].value) <= 600
@@ -934,15 +991,12 @@ export default class IncrementoComponent implements AfterViewInit {
             this.valid1 =
               this.formGroup3.get('capital_social')?.value >= 700 * this.smlmmv;
             this.valid2 =
-              this.formGroup3.get('patrimonio_liquido')?.value <
-              500 * this.smlmmv;
+              this.formGroup3.get('patrimonio_liquido')?.value >= 500 * this.smlmmv;
           } else if (parseFloat(this.inputs[0].value) >= 601) {
             this.valid1 =
-              this.formGroup3.get('capital_social')?.value >=
-              1000 * this.smlmmv;
+              this.formGroup3.get('capital_social')?.value >= 1000 * this.smlmmv;
             this.valid2 =
-              this.formGroup3.get('patrimonio_liquido')?.value <
-              700 * this.smlmmv;
+              this.formGroup3.get('patrimonio_liquido')?.value >= 700 * this.smlmmv;
           }
 
           if (this.valid1 && this.valid2) {
@@ -991,6 +1045,9 @@ export default class IncrementoComponent implements AfterViewInit {
         } else {
           this.submitted = true;
           this.formGroup3.markAllAsTouched();
+          console.log(
+            this.formGroup3.get('cantidadVehiculos')?.errors?.['required']
+          );
         }
 
         break;
@@ -1772,6 +1829,17 @@ export default class IncrementoComponent implements AfterViewInit {
     return 0;
   }
 
+  changeContratoInfo(isContinue: boolean) {
+    if (isContinue) {
+      this.processContractIteration();
+      if (this.IsvalidOperativo) {
+        this.currentContractIteration += 1;
+      }
+    } else {
+      this.currentContractIteration -= 1;
+    }
+  }
+
   //Metodo para enviar todos los contratos al servidor
   sendAllContracts() {
     this.ShowLoadingModal = true;
@@ -1853,6 +1921,7 @@ export default class IncrementoComponent implements AfterViewInit {
       estadosFinancieros: this.formGroup2.value[9][0],
       cedulaContador: this.formGroup2.value[10][0],
       tarjetaProfesionalContador: this.formGroup2.value[11][0],
+      certificadoPropiedadEmpresa: this.formGroup3.value[12][0],
       capitalSocial: this.formGroup3.get('capital_social')?.value,
       patrimonioLiquido: this.formGroup3.get('patrimonio_liquido')?.value,
       cantidadVehiculosIncrementar: parseFloat(this.inputs[0].value),
