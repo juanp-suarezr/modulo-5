@@ -1308,7 +1308,11 @@
 
         </div>
 
-        <div class="mt-6 w-full flex justify-end">
+        <div class="mt-6 w-full flex justify-between">
+          <button type="button" (click)="descargarExcel()"
+            class="inline-flex items-center justify-center px-6 py-1 text-white bg-primary2 hover:bg-primary1 focus:bg-primary1 font-medium rounded-full text-[16px] work-sans text-center">
+            <span class="govco-download me-2 py-2 h-[70%] m-auto"></span> Descargar archivo adjunto
+          </button>
           <app-primary-button type="button" (click)="changeActiveStep1(2)">continuar Cargue de
             documentación</app-primary-button>
         </div>
@@ -1390,8 +1394,12 @@
             class="inline-flex items-center justify-center px-6 py-1 text-white bg-primary4 hover:bg-primary2 focus:bg-primary2 font-medium rounded-full text-[16px] work-sans text-center">
             Regresar
           </button>
-          <app-primary-button *ngIf="(this.formGroup1.get('1')?.value != '' && this.formGroup1.get('1')?.value != null) && isActuFile.includes(1)" (click)="onSubmitAllForms()">Guardar</app-primary-button>
-          <app-primary-button *ngIf="(this.formGroup1.get('1')?.value != '' && this.formGroup1.get('1')?.value != null) && this.solicitud && !isActuFile.includes(1)" (click)="changeActiveNum('2')">Continuar</app-primary-button>
+          <app-primary-button
+            *ngIf="(this.formGroup1.get('1')?.value != '' && this.formGroup1.get('1')?.value != null) && isActuFile.includes(1)"
+            (click)="onSubmitAllForms()">Guardar</app-primary-button>
+          <app-primary-button
+            *ngIf="(this.formGroup1.get('1')?.value != '' && this.formGroup1.get('1')?.value != null) && this.solicitud && !isActuFile.includes(1)"
+            (click)="changeActiveNum('2')">Continuar</app-primary-button>
         </div>
 
       </form>
@@ -1749,9 +1757,9 @@
   (closeByButton1)="changeActiveNum('3', true)" (closeByButton2)="handleCloseByButton2()"
   (closeByBackdrop)="changeActiveNum('3', true)" (close)="showModal = true"></app-alert>
 
-  <!-- Modal FINAL -->
-<app-alert [showModal]="showModalFinal" title="Solicitud guardada con éxito" textColor="text-success" [showSubtitle]="false"
-[message]="'El concepto de la solicitud fue asignado por la Superintendencia de Transporte'" buttonText="Continuar" [isIcon]="false"
-[showFirstButton]="true" [showCancelButton]="false" TypeAlert="success" (close)="handleClose()"
-(closeByButton1)="finalStep()" (closeByButton2)="handleCloseByButton2()"
-(closeByBackdrop)="finalStep()" (close)="showModalFinal = true"></app-alert>
+<!-- Modal FINAL -->
+<app-alert [showModal]="showModalFinal" title="Solicitud guardada con éxito" textColor="text-success"
+  [showSubtitle]="false" [message]="'El concepto de la solicitud fue asignado por la Superintendencia de Transporte'"
+  buttonText="Continuar" [isIcon]="false" [showFirstButton]="true" [showCancelButton]="false" TypeAlert="success"
+  (close)="handleClose()" (closeByButton1)="finalStep()" (closeByButton2)="handleCloseByButton2()"
+  (closeByBackdrop)="finalStep()" (close)="showModalFinal = true"></app-alert>

@@ -27,8 +27,8 @@
                       (click)="onButtonClick(item)">
                       Continuar
                     </button>
-                    <!-- id con rol de escritura territorial -->
-                    <p *ngIf="key === 'id' && hasRole('ROLE_ESCRITURA_MIN')" class="whitespace-no-wrap">
+                    <!-- id sin click -->
+                    <p *ngIf="key === 'id' && !isTrue(item[key])" class="whitespace-no-wrap">
                       {{ getId(item[key]) }}
                     </p>
                     <!-- id con rol de escritura gestion doc  -->
@@ -38,11 +38,7 @@
                       tooltipPosition="right" (click)="onIdClick( getId(item[key]) )">
                       {{ getId(item[key]) }}
                     </button>
-                    <!-- id con rol de escritura territorial -->
-                    <p *ngIf="key === 'id' && !isTrue(item[key]) && (hasRole('ROLE_ESCRITURA_GESDOC') || hasRole('ROLE_SUPERTRANSPORTE'))"
-                      class="whitespace-no-wrap">
-                      {{ getId(item[key]) }}
-                    </p>
+                    
                     <!-- datos con rol de escritura gestion doc -->
                     <p *ngIf="key !== 'id' && key !== 'semaforo' && (hasRole('ROLE_ESCRITURA_GESDOC') || hasRole('ROLE_SUPERTRANSPORTE'))"
                       class="whitespace-no-wrap">
@@ -122,18 +118,20 @@
                 Continuar
               </button>
 
-              <!-- Condición: id con rol de escritura gestion doc -->
-              <p *ngIf="info[i] === 'id' && hasRole('ROLE_ESCRITURA_MIN')" class="whitespace-no-wrap">
-                {{ item[info[i]] }}
+              <!-- id sin click -->
+              <p *ngIf="info[i] === 'id' && !isTrue(item[info[i]])"
+                class="whitespace-no-wrap">
+                {{ getId(item[info[i]]) }}
               </p>
 
               <!-- Condición: id con rol de escritura gestion doc -->
-              <button *ngIf="info[i] === 'id' && (hasRole('ROLE_ESCRITURA_GESDOC') || hasRole('ROLE_SUPERTRANSPORTE'))"
+              <button *ngIf="info[i] === 'id' && isTrue(item[info[i]]) && (hasRole('ROLE_ESCRITURA_GESDOC') || hasRole('ROLE_SUPERTRANSPORTE'))"
                 class="underline text-primary2 font-semibold cursor-pointer" pTooltip="clic para abrir"
-                tooltipPosition="right" (click)="onIdClick(item[info[i]])">
-                {{ item[info[i]] }}
+                tooltipPosition="right" (click)="onIdClick(getId(item[info[i]]))">
+                {{ getId(item[info[i]]) }}
               </button>
 
+              
               <!-- Condición: datos con rol de escritura gestion doc -->
               <p *ngIf="info[i] !== 'id' && info[i] !== 'semaforo' && (hasRole('ROLE_ESCRITURA_GESDOC') || hasRole('ROLE_SUPERTRANSPORTE'))"
                 class="whitespace-no-wrap">

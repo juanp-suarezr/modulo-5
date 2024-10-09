@@ -868,6 +868,26 @@ export default class SolicitudComponent {
     });
   }
 
+  //DESCARGAR EXCEL CONTRATOS
+  descargarExcel() {
+    // descargar excel
+    this.ShowLoadingModal = true;
+    this.apiSFService.descargarExcel(this.solicitud.formulario.id).subscribe(
+      (response) => {
+        // Aquí puedes manejar la respuesta, por ejemplo:
+        this.ShowLoadingModal = false;
+        
+        console.log('Datos enviados exitosamente:', response);
+      },
+      (error) => {
+        this.ShowLoadingModal = false;
+        this.showErrorModal = true;
+        // Manejo del error
+        console.error('Error al enviar los datos:', error);
+      }
+    );
+  }
+
   //Metodo para guardar el formulario
   onSubmitAllForms() {
     if (this.validateFormGroup(this.formGroup1, this.errorStates)) {
@@ -1005,7 +1025,8 @@ export default class SolicitudComponent {
   actualizarConcepto() {
     const data = {
       concepto: this.formGroup3.get('concepto')?.value.value,
-      idEstadoSolicitud: this.formGroup3.get('concepto')?.value.label == 'Favorable' ? 125 : 126,
+      idEstadoSolicitud:
+        this.formGroup3.get('concepto')?.value.label == 'Favorable' ? 125 : 126,
     };
     // put paso final emitir concepto
     this.apiSFService
