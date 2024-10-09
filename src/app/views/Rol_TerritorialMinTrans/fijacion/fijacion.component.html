@@ -1376,7 +1376,15 @@
     [message]="' La información se ha cargado correctamente'" buttonText="Continuar" [isIcon]="false"
     [showFirstButton]="true" [showCancelButton]="false" TypeAlert="success" (close)="showModalInfoSaved = false"
     (closeByButton1)="numberTocontinueSaved == 5 ? changeActiveNum('1') : changeActiveStep(numberTocontinueSaved, false)"
-    (closeByBackdrop)="numberTocontinueSaved == 5 ? changeActiveNum('1') : changeActiveStep(numberTocontinueSaved, false)" (close)="showModalInfoSaved = true"></app-alert>
+    (closeByBackdrop)="numberTocontinueSaved == 5 ? changeActiveNum('1') : changeActiveStep(numberTocontinueSaved, false)"
+    (close)="showModalInfoSaved = true"></app-alert>
+
+<!-- Modal DE INFORMACION GUARDADA OPERATIVO -->
+<app-alert [showModal]="showModalInfoSaved1" title="Información guardada" textColor="text-success"
+    [showSubtitle]="false" [message]="' La información se ha cargado correctamente'" buttonText="Continuar"
+    [isIcon]="false" [showFirstButton]="true" [showCancelButton]="false" TypeAlert="success"
+    (close)="showModalInfoSaved = false" (closeByButton1)="continueContract()"
+    (closeByBackdrop)="continueContract()" (close)="showModalInfoSaved1 = true"></app-alert>
 
 <!-- modal de continuar sin guardar operativo -->
 <app-alert [showModal]="showModalContinuar1" title="Continuar sin guardar" subtitle=""

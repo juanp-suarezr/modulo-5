@@ -159,6 +159,7 @@ export default class FijacionComponent {
   showModalRequisito: boolean = false; //control para mostrar modal de alerta requerimiento de patrimonio y capital
   showModal: boolean = false; // Control para mostrar el modal intermedio
   showModalInfoSaved: boolean = false; //Control para mostrar el modal de guardado info y continuar
+  showModalInfoSaved1: boolean = false; //Control para mostrar el modal de guardado info y continuar
   ShowLoadingModal: boolean = false; // Control para mostrar el modal loading
   showErrorModal: boolean = false; // Control para mostrar el modal error
   showFinalModal: boolean = false; // Control para mostrar el modal final
@@ -284,153 +285,173 @@ export default class FijacionComponent {
       this.errorStates = errorStates;
     });
 
-    // Suscribirse a los cambios en idSolicitud
-    this.loadingInicio = true;
     this.idSolicitud$.subscribe((newId) => {
       localStorage.setItem('idSolicitud', newId);
       this.loadingInicio = false;
       if (newId != '' && newId != 'undefined' && newId != undefined) {
+        console.log(newId);
+
+        this.ObtenerSolicitud(newId);
         this.loadingInicio = true;
-        //GET SOLICITUD
-        this.apiSFService.getSolicitudByID(newId).subscribe(
-          (response) => {
-            this.solicitudGuardada = response;
-            this.loadingInicio = true;
-            //GET DOCUMENTOS
-            this.apiSFService.getDocumentosByID(response.id).subscribe(
-              (response1) => {
-                console.log('respuesta contratos:::::::::', response1);
-
-                this.loadingInicio = false;
-                // Crear un array de contratos
-                const contratosArray = response1.map((element: any) => ({
-                  nit: element.nit,
-                  id: element.id,
-                  documento: this.displayFile(element.documento),
-                }));
-
-                // Guardar el array en formGroup1[0]
-                this.formGroup1.patchValue({
-                  [2]: contratosArray,
-                });
-
-                this.fileNames[1] = response1.map((f: any, index: number) => {
-                  const firstPart = `consecutivo_${index + 1}__${this.nit}_${
-                    this.nombreEmpresa
-                  }__`;
-                  return firstPart;
-                });
-              },
-              (error) => {
-                console.error('Error fetching user data', error);
-              }
-            );
-
-            //GET CONTRATOS
-            this.apiSFService.getContratosByIDSolicitud(response.id).subscribe(
-              (response2) => {
-                console.log('respuesta 2:::::::::::', response2);
-
-                this.loadingInicio = false;
-                this.contratosSolicitud = response2;
-
-                // Recorremos todos los contratos de la solicitud
-                response2.forEach((contrato: any) => {
-                  console.log(contrato);
-                  // Actualizamos los campos principales del formulario con el valor del primer contrato (solo para campos "globales")
-                  if (response2.indexOf(contrato) === 0) {
-                    console.log('entro1111');
-
-                    this.formGroup4.patchValue({
-                      numeroContrato: contrato.numeroContrato || '',
-                      contratante: contrato.contratante || '',
-                      fecha_inicio: contrato.fechaInicio || '',
-                      fecha_terminacion: contrato.fechaFin || '',
-                      duracionMeses: contrato.duracionMeses || '',
-                      numeroVehiculos: contrato.numeroVehiculos || '',
-                      idClaseVehiculo: contrato.idClaseVehiculo
-                        ? contrato.idClaseVehiculo.map(
-                            (element: any) => element.idClaseVehiculo
-                          )
-                        : '',
-                      valorContrato: contrato.valorContrato || '',
-                      idFormaPago: contrato.idFormaPago || '',
-                      idAreaOperacion: contrato.idAreaOperacion || '',
-                      disponibilidadVehiculosEstimada:
-                        contrato.disponibilidadVehiculosEstimada || '',
-                      idClaseVehiculos: contrato.vehiculos,
-                    });
-
-                    this.selects[1].value = contrato.idFormaPago || '';
-                    this.selects[3].value =
-                      contrato.disponibilidadVehiculosEstimada || '';
-                  }
-
-                  console.log(this.formGroup4);
-                });
-              },
-              (error) => {
-                console.error('Error fetching user data', error);
-              }
-            );
-
-            (this.nombreEmpresa = response.nombreEmpresa),
-              (this.nit = response.nit),
-              this.formGroup1.patchValue({
-                [1]: this.displayFile(response.solicitudFijacionCapacidad),
-              });
-
-            this.formGroup1.patchValue({
-              [3]: this.displayFile(response.planRodamiento),
-            });
-            this.formGroup1.patchValue({
-              [4]: this.displayFile(response.estructuraCostosBasicos),
-            });
-            this.formGroup1.patchValue({
-              [5]: this.displayFile(response.certificadoExistencia),
-            });
-            this.formGroup1.patchValue({
-              [6]: this.displayFile(response.registroUnicoTributario),
-            });
-            this.formGroup2.patchValue({
-              [7]: this.displayFile(response.resolucionHabilitacion),
-            });
-            this.formGroup2.patchValue({
-              [8]: this.displayFile(response.cedulaRepresentante),
-            });
-            this.formGroup2.patchValue({
-              [9]: this.displayFile(response.estadosFinancieros),
-            });
-            this.formGroup2.patchValue({
-              [10]: this.displayFile(response.cedulaContador),
-            });
-            this.formGroup2.patchValue({
-              [11]: this.displayFile(response.tarjetaProfesionalContador),
-            });
-
-            this.formGroup3.patchValue({
-              ['capitalSocial']: response.capitalSocial,
-            });
-
-            this.formGroup3.patchValue({
-              ['patrimonioLiquido']: response.patrimonioLiquido,
-            });
-
-            this.formGroup3.patchValue({
-              ['cantidadVehiculos']: response.cantidadVehiculos,
-            });
-
-            console.log(response);
-          },
-          (error) => {
-            console.error('Error fetching user data', error);
-          }
-        );
       }
     });
+  }
+
+  ObtenerSolicitud(newId: string) {
+    //GET SOLICITUD
+    this.apiSFService.getSolicitudByID(newId).subscribe(
+      (response) => {
+        this.solicitudGuardada = response;
+        this.loadingInicio = true;
+
+        //OBTENER DOCS
+        this.ObtenerDocumentos(response.id);
+
+        //OBTENER Contratos
+        this.ObtenerContratos(response.id);
+
+        (this.nombreEmpresa = response.nombreEmpresa),
+          (this.nit = response.nit),
+          this.formGroup1.patchValue({
+            [1]: this.displayFile(response.solicitudFijacionCapacidad),
+          });
+
+        this.formGroup1.patchValue({
+          [3]: this.displayFile(response.planRodamiento),
+        });
+        this.formGroup1.patchValue({
+          [4]: this.displayFile(response.estructuraCostosBasicos),
+        });
+        this.formGroup1.patchValue({
+          [5]: this.displayFile(response.certificadoExistencia),
+        });
+        this.formGroup1.patchValue({
+          [6]: this.displayFile(response.registroUnicoTributario),
+        });
+        this.formGroup2.patchValue({
+          [7]: this.displayFile(response.resolucionHabilitacion),
+        });
+        this.formGroup2.patchValue({
+          [8]: this.displayFile(response.cedulaRepresentante),
+        });
+        this.formGroup2.patchValue({
+          [9]: this.displayFile(response.estadosFinancieros),
+        });
+        this.formGroup2.patchValue({
+          [10]: this.displayFile(response.cedulaContador),
+        });
+        this.formGroup2.patchValue({
+          [11]: this.displayFile(response.tarjetaProfesionalContador),
+        });
+
+        this.formGroup3.patchValue({
+          ['capitalSocial']: response.capitalSocial,
+        });
+
+        this.formGroup3.patchValue({
+          ['patrimonioLiquido']: response.patrimonioLiquido,
+        });
+
+        this.formGroup3.patchValue({
+          ['cantidadVehiculos']: response.cantidadVehiculos,
+        });
+
+        console.log(response);
+      },
+      (error) => {
+        console.error('Error fetching user data', error);
+      }
+    );
 
     // Forzar detección de cambios
     this.cdr.detectChanges();
+  }
+
+  ObtenerDocumentos(id: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+      //GET DOCUMENTOS
+      this.apiSFService.getDocumentosByID(id).subscribe(
+        (response1) => {
+          console.log('respuesta contratos:::::::::', response1);
+
+          this.loadingInicio = false;
+          // Crear un array de contratos
+          const contratosArray = response1.map((element: any) => ({
+            nit: element.nit,
+            id: element.id,
+            documento: this.displayFile(element.documento),
+          }));
+
+          // Guardar el array en formGroup1[0]
+          this.formGroup1.patchValue({
+            [2]: contratosArray,
+          });
+
+          this.fileNames[1] = response1.map((f: any, index: number) => {
+            const firstPart = `consecutivo_${index + 1}__${this.nit}_${
+              this.nombreEmpresa
+            }__`;
+            return firstPart;
+          });
+
+          resolve(response1); // Resuelve la promesa cuando se haya procesado todo
+        },
+        (error) => {
+          console.error('Error fetching user data', error);
+          reject(error); // Rechaza la promesa si hay un error
+        }
+      );
+    });
+  }
+
+  ObtenerContratos(id: string) {
+    //GET CONTRATOS
+    this.apiSFService.getContratosByIDSolicitud(id).subscribe(
+      (response2) => {
+        console.log('respuesta 2:::::::::::', response2);
+
+        this.loadingInicio = false;
+        this.contratosSolicitud = response2;
+
+        // Recorremos todos los contratos de la solicitud
+        response2.forEach((contrato: any) => {
+          console.log(contrato);
+          // Actualizamos los campos principales del formulario con el valor del primer contrato (solo para campos "globales")
+          if (response2.indexOf(contrato) === 0) {
+            console.log('entro1111');
+
+            this.formGroup4.patchValue({
+              numeroContrato: contrato.numeroContrato || '',
+              contratante: contrato.contratante || '',
+              fecha_inicio: contrato.fechaInicio || '',
+              fecha_terminacion: contrato.fechaFin || '',
+              duracionMeses: contrato.duracionMeses || '',
+              numeroVehiculos: contrato.numeroVehiculos || '',
+              idClaseVehiculo: contrato.idClaseVehiculo
+                ? contrato.idClaseVehiculo.map(
+                    (element: any) => element.idClaseVehiculo
+                  )
+                : '',
+              valorContrato: contrato.valorContrato || '',
+              idFormaPago: contrato.idFormaPago || '',
+              idAreaOperacion: contrato.idAreaOperacion || '',
+              disponibilidadVehiculosEstimada:
+                contrato.disponibilidadVehiculosEstimada || '',
+              idClaseVehiculos: contrato.vehiculos,
+            });
+
+            this.selects[1].value = contrato.idFormaPago || '';
+            this.selects[3].value =
+              contrato.disponibilidadVehiculosEstimada || '';
+          }
+
+          console.log(this.formGroup4);
+        });
+      },
+      (error) => {
+        console.error('Error fetching user data', error);
+      }
+    );
   }
 
   ngAfterViewInit() {
@@ -762,6 +783,7 @@ export default class FijacionComponent {
 
   //modal continuar despues de guardar
   showModalSaveInfo(num: number) {
+    this.ObtenerSolicitud(this.idSolicitud);
     this.numberTocontinueSaved = num;
     this.showModalInfoSaved = true;
   }
@@ -947,33 +969,42 @@ export default class FijacionComponent {
 
   //datos paso 1
   async datosPaso1() {
-    // Rellenar el array de documentos con una conversión asíncrona para cada Blob
-
-    const documentoPromises = this.formGroup1.value[2].map(
-      async (item: any) => {
-        let documento = item.documento ?? item;
-
-        if (documento instanceof Blob) {
-          // Convertir Blob a base64
-
-          const base64String = await this.convertirBlob(item.documento);
-          return {
-            nit: this.nit,
-            documento: base64String,
-            id: item.id,
-          };
-        } else {
-          // Si no es Blob, lo añadimos directamente
-          return {
-            nit: this.nit,
-            documento: item.documento ?? item,
-          };
-        }
-      }
-    );
-
-    // Convertir los valores que pueden ser Blob a Base64 (sin incluir los documentos, ya procesados)
     try {
+      // Si el idSolicitud existe, obtener los documentos, sino continuar el proceso sin obtener documentos
+      if (this.idSolicitud != '' && this.idSolicitud != 'undefined' && this.idSolicitud != undefined) {
+        await this.ObtenerDocumentos(this.idSolicitud); // Solo si existe idSolicitud
+      } else {
+        console.log(
+          'No hay idSolicitud, se continuará sin obtener documentos.'
+        );
+      }
+
+      // Rellenar el array de documentos con una conversión asíncrona para cada Blob, solo si hay documentos
+      const documentoPromises =
+        this.formGroup1.value[2]?.map(async (item: any) => {
+          console.log(item);
+
+          let documento = item.documento ?? item;
+          console.log('documento en datos: ', documento);
+
+          if (documento instanceof Blob) {
+            // Convertir Blob a base64
+            const base64String = await this.convertirBlob(item.documento);
+            return {
+              nit: this.nit,
+              documento: base64String,
+              id: item.id,
+            };
+          } else {
+            // Si no es Blob, lo añadimos directamente
+            return {
+              nit: this.nit,
+              documento: item.documento ?? item,
+            };
+          }
+        }) || []; // Si no hay documentos, dejamos un array vacío
+
+      // Convertir los valores que pueden ser Blob a Base64 (sin incluir los documentos, ya procesados)
       const [
         solicitudFijacionCapacidad,
         planRodamiento,
@@ -1123,6 +1154,8 @@ export default class FijacionComponent {
             this.stepperService.setActiveNum(num);
             if (!notChange) {
               this.showModalSaveInfo(num + 1);
+            } else {
+              this.ObtenerSolicitud(this.idSolicitud);
             }
             console.log('Datos enviados exitosamente:', response);
           },
@@ -1237,6 +1270,7 @@ export default class FijacionComponent {
   //Actualizar archivos guardados
   ActuFileGuardado(num: number) {
     this.isActuFile.push(num);
+    this.cdr.detectChanges();
   }
 
   // Detectar si el archivo es PDF o XLSX desde Base64
@@ -1527,10 +1561,12 @@ export default class FijacionComponent {
             // Aquí puedes manejar la respuesta, por ejemplo:
             this.ShowLoadingModal = false;
             if (contador == this.formGroup1.value[2].length) {
-              localStorage.setItem('idSolicitud', '');
-              this.router.navigate(['/dashboard']).then(() => {
-                location.reload();
-              });
+              this.showFinalModal = true;
+            } else if (this.currentContractIteration == contador - 1) {
+              this.currentContractIteration += 1;
+              this.showModalInfoSaved1 = true;
+            }
+            {
             }
             console.log('Datos enviados exitosamente:', parsedData);
           },
@@ -1553,6 +1589,10 @@ export default class FijacionComponent {
     } else {
       this.currentContractIteration -= 1;
     }
+  }
+  //continuar despues de guardado
+  continueContract() {
+    this.currentContractIteration += 1;
   }
 
   logFormErrors(form: FormGroup | FormArray): void {
@@ -1597,6 +1637,7 @@ export default class FijacionComponent {
           const selectItem = this.selects.find((item) => item.name == key);
           if (selectItem) {
             selectItem.value = '';
+            selectItem.selectedOption = '';
           } else {
             console.error(`No se encontró un elemento con name ${key}`);
           }
