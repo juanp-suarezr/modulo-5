@@ -591,6 +591,7 @@ export default class SolicitudComponent {
         this.stateService.setActiveNum(newValue);
       }
     } else if (newValue == '3') {
+      this.loadOptions();
       if (saved && this.solicitud.formulario.excelModeloTransporte) {
         this.stateService.setActiveNum(newValue);
       }
