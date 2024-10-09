@@ -41,7 +41,45 @@ export const routes: Routes = [
         redirectTo: 'dashboard',
         pathMatch: 'full'
 
-      }
+      },
+      //INDICADORES
+      //1 Comparativo contractual de vehículos y placas
+      {
+        path: 'comparativoVehiculo-placas',
+        loadComponent: () => import('./views/Rol_Supertransporte/indicadores/comparativo-veh-placas/comparativo-veh-placas.component'),
+        canActivate: [AuthGuard],
+      },
+      //2 Solicitudes enviadas por territoriales
+      {
+        path: 'solicitudxterritorial',
+        loadComponent: () => import('./views/Rol_Supertransporte/indicadores/solicitudes-enviadas-territorial/solicitudes-enviadas-territorial.component'),
+        canActivate: [AuthGuard],
+      },
+      //3 Vehículos requeridos por territorial
+      {
+        path: 'vehiculosxterritorial',
+        loadComponent: () => import('./views/Rol_Supertransporte/indicadores/comparativo-veh-placas/comparativo-veh-placas.component'),
+        canActivate: [AuthGuard],
+      },
+      //4 Capacidad de un departamento para cierta cantidad de vehículos
+      {
+        path: 'capacidadDepartamentoxvehiculos',
+        loadComponent: () => import('./views/Rol_Supertransporte/indicadores/comparativo-veh-placas/comparativo-veh-placas.component'),
+        canActivate: [AuthGuard],
+      },
+      //5 Solicitudes realizadas año a año
+      {
+        path: 'solicitudesxaño',
+        loadComponent: () => import('./views/Rol_Supertransporte/indicadores/comparativo-veh-placas/comparativo-veh-placas.component'),
+        canActivate: [AuthGuard],
+      },
+      //6 Solicitudes realizadas mes a mes
+      {
+        path: 'solicitudesxmes',
+        loadComponent: () => import('./views/Rol_Supertransporte/indicadores/comparativo-veh-placas/comparativo-veh-placas.component'),
+        canActivate: [AuthGuard],
+      },
+      
     ]
   },
   {

@@ -86,20 +86,74 @@ export class RouterService {
       }
       //rol ROLE_SUPERTRANSPORTE
     } else if (this.user.roles[0].roleName == 'ROLE_SUPERTRANSPORTE') {
-      if (url.includes('dashboard')) {
-        this.breadcrumbSubject.next([{ name: 'Solicitudes', route: 'NA' }]);
-      } else if (url.includes('solicitudAprobacion')) {
+      switch (true) {
+        //routeo dashboard
+        case url.includes('dashboard'):
+          this.breadcrumbSubject.next([{ name: 'Solicitudes', route: 'NA' }]);
+          break;
+
+        //routeo solicitud especifica
+        case url.includes('solicitudAprobacion'):
+          this.breadcrumbSubject.next([
+            { name: 'Solicitudes', route: 'NA' },
+            { name: 'Solicitud', route: 'solicitudAprobacion' },
+          ]);
+          break;
+        //INDICADORES
+        // 1 routeo comparativoVehiculo-placas
+        case url.includes('comparativoVehiculo-placas'):
+          this.breadcrumbSubject.next([
+            { name: 'Indicadores', route: 'NA' },
+            {
+              name: 'Comparativo contractual de vehículos y placas',
+              route: 'comparativoVehiculo-placas',
+            },
+          ]);
+          break;
+
+        //2 Solicitudes enviadas por territoriales
+        case url.includes('solicitudxterritorial'):
+          this.breadcrumbSubject.next([
+            { name: 'Indicadores', route: 'NA' },
+            {
+              name: 'Solicitudes enviadas por territoriales',
+              route: 'solicitudxterritorial',
+            },
+          ]);
+          break;
+
+        //3 Vehículos requeridos por territorial
+        case url.includes('vehiculosxterritorial'):
+          this.breadcrumbSubject.next([
+            { name: 'Indicadores', route: 'NA' },
+            {
+              name: 'Vehículos requeridos por territorial',
+              route: 'vehiculosxterritorial',
+            },
+          ]);
+          break;
+
+          //4 Solicitudes realizadas año a año
+        case url.includes('solicitudesxaño'):
         this.breadcrumbSubject.next([
-          { name: 'Solicitudes', route: 'NA' },
-          {
-            name: 'Solicitud',
-            route: 'solicitudAprobacion',
-          },
+          { name: 'Indicadores', route: 'NA' },
+          { name: 'Solicitudes realizadas año a año', route: 'solicitudesxaño' },
         ]);
-      } else {
-        this.breadcrumbSubject.next([
-          { name: 'Ruta no reconocida', route: 'NA' },
-        ]);
+        break;
+
+        //5 routeo Solicitudes realizadas mes a mes
+        case url.includes('solicitudesxmes'):
+          this.breadcrumbSubject.next([
+            { name: 'Indicadores', route: 'NA' },
+            { name: 'Solicitudes realizadas mes a mes', route: 'solicitudesxmes' },
+          ]);
+          break;
+
+        default:
+          this.breadcrumbSubject.next([
+            { name: 'Ruta no reconocida', route: 'NA' },
+          ]);
+          break;
       }
     }
   }

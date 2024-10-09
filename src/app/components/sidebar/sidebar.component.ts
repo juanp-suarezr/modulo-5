@@ -75,7 +75,7 @@ export class SidebarComponent {
           subItems: [
             {
               label: 'Comparativo contractual de vehículos y placas',
-              route: '/vehículosplacas',
+              route: '/comparativoVehiculo-placas',
             },
             {
               label: 'Solicitudes enviadas por territoriales',
