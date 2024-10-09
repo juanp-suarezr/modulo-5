@@ -56,6 +56,7 @@ import { blob } from 'stream/consumers';
   styleUrl: './solicitud.component.css',
 })
 export default class SolicitudComponent {
+  item: any;
   constructor(
     private stateService: ActiveNumService,
     private stepperService: ActiveNumStepperService,
@@ -218,6 +219,8 @@ export default class SolicitudComponent {
   activeHeader: number | null = 0;
 
   ngOnInit(): void {
+    this.stateService.setActiveNum('0');
+    this.stepperService.setActiveNum(1);
     //Suscribirse al observable para obtener los cambios reactivos del menuleft
     this.stateService.activeNum$.subscribe((num) => {
       this.activeNum = num;
@@ -328,6 +331,16 @@ export default class SolicitudComponent {
     this.formGroup2.patchValue({
       ['solidez']: info.formulario.solidez,
     });
+
+    this.checked = info.formulario.subsanar;
+
+    if (info.formulario.concepto) {
+      this.formGroup2.get('rentaNeta')?.disable();
+      this.formGroup2.get('solidez')?.disable();
+      this.formGroup2.get('liquidez')?.disable();
+      this.formGroup2.get('rentaOperacional')?.disable();
+      
+    }
   }
 
   //Get formas de pago
@@ -388,7 +401,6 @@ export default class SolicitudComponent {
   //FORMATO FECHA
   formatField(value: any): string {
     // Si el valor es una fecha válida, formatearlo
-    console.log(value);
 
     if (this.isDateTime(value)) {
       return formatDate(value, 'dd/MM/yyyy', 'en-US', 'UTC');
@@ -495,13 +507,18 @@ export default class SolicitudComponent {
   }
 
   //METODO PARA SEMAFORO
-  diferencias(): number {
+  diferencias(subsanar?: boolean): number {
     if (this.solicitud) {
       // Convertir las fechas a milisegundos
       const fechaHoy = new Date().valueOf(); // Fecha actual en milisegundos
-      const fechaSolicitud = new Date(
+      let fechaSolicitud = new Date(
         this.solicitud.formulario.fechaSolicitud
       ).valueOf(); // Fecha de solicitud en milisegundos
+      if (subsanar) {
+        fechaSolicitud = new Date(
+          this.solicitud.formulario.fechaSubsanar
+        ).valueOf();
+      }
 
       // Calcular la diferencia en milisegundos
       const diferenciaMilisegundos = fechaHoy - fechaSolicitud;
@@ -876,8 +893,16 @@ export default class SolicitudComponent {
       (response) => {
         // Aquí puedes manejar la respuesta, por ejemplo:
         this.ShowLoadingModal = false;
-        
+
         console.log('Datos enviados exitosamente:', response);
+        const url = window.URL.createObjectURL(response);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `detalles_contrato_${this.solicitud.formulario.id}.xlsx`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
       },
       (error) => {
         this.ShowLoadingModal = false;
@@ -886,6 +911,31 @@ export default class SolicitudComponent {
         console.error('Error al enviar los datos:', error);
       }
     );
+  }
+
+  //Metodo para activar estado subsanación
+  ActiveSubsanacion() {
+    const data = {
+      subsanar: this.checked,
+      fechaSubsanar: new Date(),
+    };
+    // put subsanar
+    this.apiSFService
+      .ActivarSubsanar(this.solicitud.formulario.id, data)
+      .subscribe(
+        (response) => {
+          // Aquí puedes manejar la respuesta, por ejemplo:
+          this.ShowLoadingModal = false;
+
+          console.log('Datos enviados exitosamente:', response);
+        },
+        (error) => {
+          this.ShowLoadingModal = false;
+          this.showErrorModal = true;
+          // Manejo del error
+          console.error('Error al enviar los datos:', error);
+        }
+      );
   }
 
   //Metodo para guardar el formulario
@@ -1033,6 +1083,8 @@ export default class SolicitudComponent {
       .emitirConcepto(this.solicitud.formulario.id, data)
       .subscribe(
         (response) => {
+          this.checked = false;
+          this.ActiveSubsanacion();
           this.ShowLoadingModal = false;
           this.showModalFinal = true;
           console.log('Datos enviados exitosamente:', response);
@@ -1044,5 +1096,10 @@ export default class SolicitudComponent {
           console.error('Error al enviar los datos:', error);
         }
       );
+  }
+
+  setConceptoLabel() {
+    const concepto = this.conceptos.find((item: any) => item.value === this.solicitud.formulario.concepto);
+    return concepto ? concepto.label : 'Valor no encontrado';
   }
 }

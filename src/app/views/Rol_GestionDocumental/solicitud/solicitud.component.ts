@@ -177,6 +177,8 @@ export default class SolicitudComponent {
   activeHeader: number | null = 0;
 
   ngOnInit(): void {
+    this.stateService.setActiveNum('0');
+    this.stepperService.setActiveNum(1);
     //Suscribirse al observable para obtener los cambios reactivos del menuleft
     this.stateService.activeNum$.subscribe((num) => {
       this.activeNum = num;
@@ -256,14 +258,13 @@ export default class SolicitudComponent {
     this.formGroup1.patchValue({
       [1]: this.displayFile(info.formulario.radicadoSalida),
     });
-    
+
     this.formGroup1.patchValue({
       ['numeroRadicado']: info.formulario.numeroRadicado,
     });
     this.formGroup1.patchValue({
       ['fechaRadicado']: info.formulario.fechaRadicado,
     });
-    
   }
 
   //Get formas de pago
@@ -661,36 +662,32 @@ export default class SolicitudComponent {
       Promise.all([
         this.convertirSiEsBlob(this.formGroup1.value[1]), // resolucionHabilitacion
       ])
-        .then(
-          ([
+        .then(([radicadoEntrada]) => {
+          // Creación del objeto data2 con todos los campos procesados
+          const data = {
             radicadoEntrada,
-          ]) => {
-            // Creación del objeto data2 con todos los campos procesados
-            const data = {
-              radicadoEntrada,
-              numeroRadicado: this.formGroup1.get('numeroRadicado')?.value,
-              fechaRadicado: this.formGroup1.get('fechaRadicado')?.value,
-            };
+            numeroRadicado: this.formGroup1.get('numeroRadicado')?.value,
+            fechaRadicado: this.formGroup1.get('fechaRadicado')?.value,
+          };
 
-            // put paso 2 actualizar - cargue 2
-            this.apiSFService
-              .RadicadoEntrada(this.solicitud.formulario.id, data)
-              .subscribe(
-                (response) => {
-                  // Aquí puedes manejar la respuesta, por ejemplo:
-                  this.showModal = true;
+          // put paso 2 actualizar - cargue 2
+          this.apiSFService
+            .RadicadoEntrada(this.solicitud.formulario.id, data)
+            .subscribe(
+              (response) => {
+                // Aquí puedes manejar la respuesta, por ejemplo:
+                this.showModal = true;
 
-                  console.log('Datos enviados exitosamente:', response);
-                },
-                (error) => {
-                  this.ShowLoadingModal = false;
-                  this.showErrorModal = true;
-                  // Manejo del error
-                  console.error('Error al enviar los datos:', error);
-                }
-              );
-          }
-        )
+                console.log('Datos enviados exitosamente:', response);
+              },
+              (error) => {
+                this.ShowLoadingModal = false;
+                this.showErrorModal = true;
+                // Manejo del error
+                console.error('Error al enviar los datos:', error);
+              }
+            );
+        })
         .catch((error) => {
           console.error('Error en la conversión de archivos:', error);
           this.ShowLoadingModal = false;

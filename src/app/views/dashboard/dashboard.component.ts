@@ -19,6 +19,8 @@ import { Router } from '@angular/router';
 import { first } from 'rxjs';
 import { PrimaryButtonComponent } from '../../components/primary-button/primary-button.component';
 import { FormsModule } from '@angular/forms';
+import { ActiveNumService } from '../../services/left-nav/active-num.service';
+import { ActiveNumStepperService } from '../../services/stepper/active-num.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -78,7 +80,9 @@ export default class DashboardComponent {
     private apiSFService: ApiSFService,
     private authService: AuthService,
     private appRef: ApplicationRef, // Servicio para manejar el estado de la aplicación
-    private cdRef: ChangeDetectorRef // Inyecta el ChangeDetectorRef
+    private cdRef: ChangeDetectorRef, // Inyecta el ChangeDetectorRef
+    private stateService: ActiveNumService,
+    private stepperService: ActiveNumStepperService,
   ) {
     this.user = this.authService.currentUser; // Almacena el usuario actual desde el servicio de autenticación
   }
@@ -98,8 +102,11 @@ export default class DashboardComponent {
       .pipe(first((isStable) => isStable)) // `first(isStable => isStable)` toma el primer valor `true` emitido
       .subscribe(() => {
         localStorage.setItem('idSolicitud', '');
+        this.stateService.setActiveNum('0');
+        this.stepperService.setActiveNum(1);
+        
         // Cuando la aplicación esté estable, comienza a cargar los datos
-
+        
         if (
           this.user.roles.some(
             (role: any) =>

@@ -124,7 +124,7 @@ export class ApiSFService {
     return this.http.get(
       `${this.baseUrl}/api/detalle-contratos/export/excel/{idFormulario}?idFormulario=${id}`,
       {
-        responseType: 'text',
+        responseType: 'blob' as 'json',
       }
     );
   }
@@ -189,6 +189,17 @@ export class ApiSFService {
     return this.http.put(
       `${this.baseUrl}/api/formularioContratoPasos/paso4/${id}`,
       data4,
+      {
+        responseType: 'text',
+      }
+    );
+  }
+
+  // PUT Subsanar
+  ActivarSubsanar(id: string, data: any): Observable<any> {
+    return this.http.put(
+      `${this.baseUrl}/api/formulario/subsanar/${id}`,
+      data,
       {
         responseType: 'text',
       }

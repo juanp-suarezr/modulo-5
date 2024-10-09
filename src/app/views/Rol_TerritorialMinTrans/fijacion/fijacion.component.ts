@@ -262,6 +262,8 @@ export default class FijacionComponent {
 
   ngOnInit(): void {
     // Suscribirse al observable para obtener los cambios reactivos del menuleft
+    this.stateService.setActiveNum('0');
+    this.stepperService.setActiveNum(1);
     this.stateService.activeNum$.subscribe((num) => {
       this.activeNum = num;
     });
@@ -792,7 +794,6 @@ export default class FijacionComponent {
               //CREA SOLICITUD
               this.apiSFService.createSolicitud(data1).subscribe(
                 (response) => {
-                  
                   this.isActuFile = [-1];
                   const parsedData = JSON.parse(response);
                   // Aquí puedes manejar la respuesta, por ejemplo:
@@ -1086,7 +1087,7 @@ export default class FijacionComponent {
                       this.ActualizarSolicitud(3);
                     } else {
                       this.ShowLoadingModal = false;
-                      this.showModalSaveInfo(num+1);
+                      this.showModalSaveInfo(num + 1);
                     }
                     // this.ActuFileGuardado(7, 8, 9, 10, 11);
                     console.log('Datos enviados exitosamente:', response);
@@ -1121,8 +1122,7 @@ export default class FijacionComponent {
             this.ShowLoadingModal = false;
             this.stepperService.setActiveNum(num);
             if (!notChange) {
-              this.showModalSaveInfo(num+1);
-              
+              this.showModalSaveInfo(num + 1);
             }
             console.log('Datos enviados exitosamente:', response);
           },

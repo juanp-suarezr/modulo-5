@@ -75,19 +75,22 @@
       <div class="content2 md:grid sm:grid-cols-2 md:grid-cols-3 md:gap-x-24 md:flex items-start h-full mt-6">
 
         <!--Estado de subsanacion -->
-        <div class="w-full flex flex-col justify-start items-stretch pt-6 my-auto h-full mb-6">
+        <div class="w-full flex flex-col justify-start items-stretch pt-6 my-auto h-full mb-6"
+          *ngIf="!solicitud.formulario.concepto">
           <p class="text-primary3 font-semibold h-full m-auto">
             Estado de subsanación
           </p>
           <!-- input -->
           <div class="mt-2 relative w-full h-full flex justify-center items-center">
             <p class="my-auto me-2 flex intems-center font-bold text-primary1 sm:text-base">Activar</p>
-            <p-inputSwitch class="my-auto h-auto flex items-center" [(ngModel)]="checked" />
+            <p-inputSwitch class="my-auto h-auto flex items-center" [(ngModel)]="checked"
+              (click)="ActiveSubsanacion()" />
           </div>
         </div>
 
         <!-- SEMAFORO SUBSANACION -->
-        <div class="w-full flex flex-col justify-start items-stretch pt-6 my-auto h-full mb-6" *ngIf="checked">
+        <div class="w-full flex flex-col justify-start items-stretch pt-6 my-auto h-full mb-6"
+          *ngIf="checked && !solicitud.formulario.concepto">
           <p class="text-primary3 font-semibold h-full m-auto">
             Semáforo de subsanación
           </p>
@@ -1341,7 +1344,7 @@
               Radicado de salida*
             </p>
 
-            <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" [maxFiles]="1" mimes=".pdf"
+            <app-file-upload *ngIf="!solicitud.formulario.concepto" class="mt-2 h-full" [dataClass]="dataClass" [maxFiles]="1" mimes=".pdf"
               [error]="errorStates[1]" (fileSelected)="onFileSelected($event, 1)"></app-file-upload>
 
             <!-- Opcion que aparece si existe archivo guardado en la solicitud -->
@@ -1441,7 +1444,7 @@
           </p>
 
           <!-- input -->
-          <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" [maxFiles]="1" mimes=".pdf"
+          <app-file-upload *ngIf="!solicitud.formulario.concepto" class="mt-2 h-full" [dataClass]="dataClass" [maxFiles]="1" mimes=".pdf"
             [error]="errorStates[2]" (fileSelected)="onFileSelected($event, 2)"></app-file-upload>
 
           <!-- Opcion que aparece si existe archivo guardado en la solicitud -->
@@ -1680,7 +1683,7 @@
           El concepto de sustentabilidad es*
         </p>
         <!-- select -->
-        <div class="w-full relative mt-2 sm:w-1/2">
+        <div class="w-full relative mt-2 sm:w-1/2" *ngIf="!solicitud.formulario.concepto">
 
           <div (click)="toggleDropdown(0)"
             [ngClass]="{'text-error !border border-error': formGroup3.get('concepto')?.invalid && (formGroup3.get('concepto')?.touched || formGroup3.get('concepto')?.dirty)}"
@@ -1711,6 +1714,16 @@
             {{ selects[1].errorMessage }}
           </span>
 
+        </div>
+        <!-- mostrar concepto -->
+        <div class="w-full relative mt-2 sm:w-1/2" *ngIf="solicitud.formulario.concepto == 155">
+          <!-- input -->
+          <div class="mt-2 relative w-full h-full flex items-center">
+            <div
+              class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border focus:outline-none focus:border-primary1 bg-secondary3 border-secondary2 text-primary3 flex items-center justify-center">
+              {{setConceptoLabel()}}
+            </div>
+          </div>
         </div>
       </div>
 
