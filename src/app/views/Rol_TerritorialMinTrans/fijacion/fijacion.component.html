@@ -159,7 +159,7 @@
 
                         <span
                             class="lg:w-[11%] md:w-[8%] sm:w-[8%] w-[6%] h-full flex flex-initial justify-center md:px-2 m-auto">
-                            <img class="w-full m-auto flex" src="assets/iconoInfo.svg">
+                            <img class="w-full m-auto flex" src="/assets/iconoInfo.svg">
                         </span>
                         <p class="text-primary1 work-sans text-[11px] m-auto w-full flex-1">
                             Con cuadro detallado de cantidad de pasajeros movilizados por
@@ -714,7 +714,7 @@
                     <div class="flex inline-flex md:gap-3 gap-2 h-full w-full mt-2">
 
                         <span class="lg:w-[12%] sm:w-[12%] w-[10%] h-full flex justify-center lg:px-1 m-auto">
-                            <img class="w-full m-auto" src="assets/iconoInfo.svg">
+                            <img class="w-full m-auto" src="/assets/iconoInfo.svg">
                         </span>
                         <p class="text-primary1 work-sans text-[11px] mt-2 w-auto">
                             Empresa con capacidad transportadora operacional autorizada de
@@ -767,7 +767,7 @@
                     <div class="flex inline-flex md:gap-3 gap-2 h-full w-full mt-2">
 
                         <span class="lg:w-[12%] sm:w-[12%] w-[10%] h-full flex justify-center lg:px-1 m-auto">
-                            <img class="w-full m-auto" src="assets/iconoInfo.svg">
+                            <img class="w-full m-auto" src="/assets/iconoInfo.svg">
                         </span>
                         <p class="text-primary1 work-sans text-[11px] mt-2 w-auto">
                             Empresa con capacidad transportadora operacional autorizada de
@@ -853,7 +853,7 @@
                 <div class="md:w-4/6 flex inline-flex md:gap-3 gap-2 h-full w-full mt-2">
 
                     <span class="lg:w-[7%] sm:w-[8%] w-[10%] h-full flex justify-center lg:px-1 m-auto">
-                        <img class="w-full m-auto" src="assets/iconoInfo.svg">
+                        <img class="w-full m-auto" src="/assets/iconoInfo.svg">
                     </span>
                     <p class="text-primary1 work-sans text-[11px] mt-2 w-auto">
                         Con el fin de identificar cuantas veces tiene que digitar la siguiente información, teniendo en
@@ -1341,9 +1341,8 @@
                     class="inline-flex items-center justify-center px-6 py-1 text-white bg-primary4 hover:bg-primary2 focus:bg-primary2 font-medium rounded-full text-[16px] work-sans text-center">
                     Regresar
                 </button>
-                <app-primary-button type="submit" class="">Guardar</app-primary-button>
-                <app-primary-button type="button" (click)="showModalContinuar1 = true"
-                    *ngIf="this.fileNames[1].length != currentContractIteration+1">Continuar</app-primary-button>
+                <app-primary-button type="submit" class="">Guardar y continuar</app-primary-button>
+                
             </div>
 
         </form>

@@ -121,7 +121,7 @@
           <div class="flex inline-flex md:gap-3 gap-2 h-full w-full mt-2">
 
             <span class="lg:w-[12%] sm:w-[12%] w-[10%] h-full flex justify-center lg:px-1 m-auto">
-              <img class="w-full m-auto" src="assets/iconoInfo.svg">
+              <img class="w-full m-auto" src="/assets/iconoInfo.svg">
             </span>
             <p class="text-primary1 work-sans text-[11px] mt-2 w-auto">
               Se tienen 30 días para subsanar
@@ -881,7 +881,7 @@
           <!-- texto informativo -->
           <div class="flex inline-flex md:gap-3 gap-2 h-full w-full mt-2">
             <span class="lg:w-[12%] sm:w-[12%] w-[10%] h-full flex justify-center lg:px-1 m-auto">
-              <img class="w-full m-auto" src="assets/iconoInfo.svg">
+              <img class="w-full m-auto" src="/assets/iconoInfo.svg">
             </span>
             <p class="text-primary1 work-sans text-[11px] mt-2 w-auto">
               Empresa con capacidad transportadora operacional autorizada de
@@ -908,7 +908,7 @@
           <!-- texto informativo -->
           <div class="flex inline-flex md:gap-3 gap-2 h-full w-full mt-2">
             <span class="lg:w-[12%] sm:w-[12%] w-[10%] h-full flex justify-center lg:px-1 m-auto">
-              <img class="w-full m-auto" src="assets/iconoInfo.svg">
+              <img class="w-full m-auto" src="/assets/iconoInfo.svg">
             </span>
             <p class="text-primary1 work-sans text-[11px] mt-2 w-auto">
               Empresa con capacidad transportadora operacional autorizada de
@@ -1399,10 +1399,8 @@
           </button>
           <app-primary-button
             *ngIf="(this.formGroup1.get('1')?.value != '' && this.formGroup1.get('1')?.value != null) && isActuFile.includes(1)"
-            (click)="onSubmitAllForms()">Guardar</app-primary-button>
-          <app-primary-button
-            *ngIf="(this.formGroup1.get('1')?.value != '' && this.formGroup1.get('1')?.value != null) && this.solicitud && !isActuFile.includes(1)"
-            (click)="changeActiveNum('2')">Continuar</app-primary-button>
+            (click)="onSubmitAllForms()">Guardar y continuar</app-primary-button>
+          
         </div>
 
       </form>
@@ -1513,7 +1511,7 @@
           <!-- texto informativo -->
           <div class="flex inline-flex md:gap-3 gap-2 h-full w-full mt-2">
             <span class="lg:w-[12%] sm:w-[12%] w-[10%] h-full flex justify-center lg:px-1 m-auto">
-              <img class="w-full m-auto" src="assets/iconoInfo.svg">
+              <img class="w-full m-auto" src="/assets/iconoInfo.svg">
             </span>
             <p class="text-primary1 work-sans text-[11px] mt-2 w-auto">
               Los siguientes campos serán traídos desde la base de

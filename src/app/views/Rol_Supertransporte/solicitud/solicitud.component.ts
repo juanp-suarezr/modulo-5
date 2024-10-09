@@ -273,43 +273,47 @@ export default class SolicitudComponent {
   }
 
   loadOptions() {
-    //GET SOLICITUD
-    this.apiSFService.getAllSolicitudByID(this.idSubject.getValue()).subscribe(
-      (response) => {
-        //respuesta formas de pago
-        this.apiService.getFormasPago().subscribe((response1) => {
-          this.formasPago = response1.detalle;
-        });
-        //respuesta clase vehiculos
-        this.apiService.getClaseVehiculo().subscribe((response2) => {
-          this.claseVehiculos = response2.detalle;
-        });
-        //respuesta areas de operacion
-        this.apiService.getDeparts().subscribe((response3) => {
-          this.departamentos = response3;
-        });
+    return new Promise((resolve, reject) => {
+      //GET SOLICITUD
+      this.apiSFService
+        .getAllSolicitudByID(this.idSubject.getValue())
+        .subscribe(
+          (response) => {
+            //respuesta formas de pago
+            this.apiService.getFormasPago().subscribe((response1) => {
+              this.formasPago = response1.detalle;
+            });
+            //respuesta clase vehiculos
+            this.apiService.getClaseVehiculo().subscribe((response2) => {
+              this.claseVehiculos = response2.detalle;
+            });
+            //respuesta areas de operacion
+            this.apiService.getDeparts().subscribe((response3) => {
+              this.departamentos = response3;
+            });
 
-        //respuesta concepto
-        this.apiService.getConcepto().subscribe((response4) => {
-          this.conceptos = response4.detalle.map((clase: any) => ({
-            value: clase.id,
-            label: clase.descripcion,
-          }));
-          console.log(this.conceptos);
-        });
+            //respuesta concepto
+            this.apiService.getConcepto().subscribe((response4) => {
+              this.conceptos = response4.detalle.map((clase: any) => ({
+                value: clase.id,
+                label: clase.descripcion,
+              }));
+              console.log(this.conceptos);
+            });
 
-        this.solicitud = response;
+            this.solicitud = response;
 
-        this.ActuForms(response);
+            this.ActuForms(response);
 
-        console.log(response);
-        this.loadingPage = false;
-      },
-      (error) => {
-        this.loadingPage = false;
-        console.error('Error fetching user data', error);
-      }
-    );
+            console.log(response);
+            this.loadingPage = false;
+          },
+          (error) => {
+            this.loadingPage = false;
+            console.error('Error fetching user data', error);
+          }
+        );
+    });
   }
 
   ActuForms(info: any) {
@@ -339,7 +343,6 @@ export default class SolicitudComponent {
       this.formGroup2.get('solidez')?.disable();
       this.formGroup2.get('liquidez')?.disable();
       this.formGroup2.get('rentaOperacional')?.disable();
-      
     }
   }
 
@@ -1100,7 +1103,9 @@ export default class SolicitudComponent {
   }
 
   setConceptoLabel() {
-    const concepto = this.conceptos.find((item: any) => item.value === this.solicitud.formulario.concepto);
+    const concepto = this.conceptos.find(
+      (item: any) => item.value === this.solicitud.formulario.concepto
+    );
     return concepto ? concepto.label : 'Valor no encontrado';
   }
 }

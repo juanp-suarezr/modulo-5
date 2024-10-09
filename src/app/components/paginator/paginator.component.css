@@ -1,7 +1,7 @@
 /* /* Fuente iconografica / */
 @font-face {
     font-family: "govco-font";
-    src: url("../../../assets/govco-font-icons.ttf") format("truetype");
+    src: url("/assets/govco-font-icons.ttf") format("truetype");
     font-weight: normal;
     font-style: normal;
 }
@@ -9,25 +9,25 @@
 /* / WorkSans-Regular / */
 @font-face {
     font-family: 'WorkSans-Regular';
-    src: url('../../../assets/fonts/Work_Sans/static/WorkSans-Regular.ttf');
+    src: url('/assets/fonts/Work_Sans/static/WorkSans-Regular.ttf');
 }
 
 /* / WorkSans-Regular / */
 @font-face {
     font-family: 'WorkSans-Medium';
-    src: url('../../../assets/fonts/Work_Sans/static/WorkSans-Medium.ttf');
+    src: url('/assets/fonts/Work_Sans/static/WorkSans-Medium.ttf');
 }
 
 /* / Montserrat-SemiBold / */
 @font-face {
     font-family: 'Montserrat-SemiBold';
-    src: url('../../../assets/fonts/Montserrat/Montserrat-SemiBold.ttf');
+    src: url('/assets/fonts/Montserrat/Montserrat-SemiBold.ttf');
 }
 
 /* / Montserrat-Medium */
 @font-face {
     font-family: 'Montserrat-Medium';
-    src: url('../../../assets/fonts/Montserrat/Montserrat-Medium.ttf');
+    src: url('/assets/fonts/Montserrat/Montserrat-Medium.ttf');
 }
 
 .pagination-container-govco {
