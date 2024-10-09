@@ -4,7 +4,7 @@ import {
   QueryList,
   ViewChildren,
   AfterViewInit,
-  TemplateRef,
+  TemplateRef, OnInit,
 } from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {
@@ -51,7 +51,7 @@ import {BehaviorSubject, of} from "rxjs";
   templateUrl: './incremento.component.html',
   styleUrl: './incremento.component.css',
 })
-export default class IncrementoComponent implements AfterViewInit {
+export default class IncrementoComponent implements AfterViewInit, OnInit {
   departs: any = [];
   ClaseVehiculo: any = [];
   meses: { value: string; label: string }[] = [];
@@ -460,12 +460,15 @@ export default class IncrementoComponent implements AfterViewInit {
               }
             );
 
-            (this.nombreEmpresa = response.nombreEmpresa),
-              (this.nit = response.nit),
-
-              this.formGroup1.patchValue({
-                [2]: this.displayFile(response.planRodamiento),
-              });
+            this.formGroup1.patchValue({
+              ['nit']: response.nit,
+            });
+            this.formGroup1.patchValue({
+              ['nombreEmpresa']: response.nombreEmpresa,
+            });
+            this.formGroup1.patchValue({
+              [2]: this.displayFile(response.planRodamiento),
+            });
             this.formGroup1.patchValue({
               [3]: this.displayFile(response.estructuraCostosBasicos),
             });
@@ -492,6 +495,9 @@ export default class IncrementoComponent implements AfterViewInit {
             });
             this.formGroup2.patchValue({
               [11]: this.displayFile(response.tarjetaProfesionalContador),
+            });
+            this.formGroup2.patchValue({
+              ['cantidadVehiculo']: response.cantidadVehiculosIncrementar,
             });
             this.formGroup3.patchValue({
               [12]: this.displayFile(response.certificadoPropiedadEmpresa),
@@ -866,7 +872,6 @@ export default class IncrementoComponent implements AfterViewInit {
         break;
       case 2:
         //validator
-
         if (this.validateFormGroup(this.formGroup1, this.errorStates)) {
           //valida si se va a guardar la info
           if (saved) {
@@ -1045,9 +1050,6 @@ export default class IncrementoComponent implements AfterViewInit {
         } else {
           this.submitted = true;
           this.formGroup3.markAllAsTouched();
-          console.log(
-            this.formGroup3.get('cantidadVehiculos')?.errors?.['required']
-          );
         }
 
         break;
@@ -1061,7 +1063,7 @@ export default class IncrementoComponent implements AfterViewInit {
   async datosPaso1() {
     // Rellenar el array de documentos con una conversión asíncrona para cada Blob
 
-    const documentoPromises = this.formGroup1.value[2].map(
+    const documentoPromises = this.formGroup1.value[1].map(
       async (item: any) => {
         let documento = item.documento ?? item;
 
@@ -1109,12 +1111,12 @@ export default class IncrementoComponent implements AfterViewInit {
         idCategoriaSolicitud: 150,
         nombreEmpresa: this.formGroup1.get('nombreEmpresa')?.value,
         nit: this.formGroup1.get('nit')?.value,
-        documentos: documentos,
-        planRodamiento: planRodamiento,
-        estructuraCostosBasicos: estructuraCostosBasicos,
-        certificadoCumplimiento: certificadoCumplimiento,
-        certificadoExistencia: certificadoExistencia,
-        registroUnicoTributario: registroUnicoTributario,
+        documentos,
+        planRodamiento,
+        estructuraCostosBasicos,
+        certificadoCumplimiento,
+        certificadoExistencia,
+        registroUnicoTributario,
       };
 
       return data1; // Retorna el objeto data1
@@ -1223,31 +1225,47 @@ export default class IncrementoComponent implements AfterViewInit {
         break;
 
       case 3:
-        const data3 = {
-          fechaSolicitud: new Date(),
-          territorial: 'Territorial de Antioquia',
-          idCategoriaSolicitud: 150,
-          capitalSocial: this.formGroup3.get('capital_social')?.value,
-          patrimonioLiquido: this.formGroup3.get('patrimonio_liquido')?.value
-        };
-        //put paso 3 actualizar - cargue 3
-        this.apiSFService.SolicitudPaso3(this.idSolicitud, data3).subscribe(
-          (response) => {
-            // Aquí puedes manejar la respuesta, por ejemplo:
-            this.ShowLoadingModal = false;
-            this.stepperService.setActiveNum(num);
-            if (!notChange) {
-              this.changeActiveNum('1');
+
+        Promise.all([
+          this.convertirSiEsBlob(this.formGroup3.value[12])
+        ])
+          .then(
+            ([
+               certificadoPropiedadEmpresa
+             ]) => {
+              const data3 = {
+                fechaSolicitud: new Date(),
+                territorial: 'Territorial de Antioquia',
+                idCategoriaSolicitud: 150,
+                capitalSocial: this.formGroup3.get('capital_social')?.value,
+                patrimonioLiquido: this.formGroup3.get('patrimonio_liquido')?.value,
+                certificadoPropiedadEmpresa: certificadoPropiedadEmpresa
+              };
+
+              // put paso 3 actualizar - cargue 3
+              this.apiSFService.SolicitudPaso3(this.idSolicitud, data3).subscribe(
+                (response) => {
+                  // Aquí puedes manejar la respuesta, por ejemplo:
+                  this.ShowLoadingModal = false;
+                  this.stepperService.setActiveNum(num);
+                  if (!notChange) {
+                    this.changeActiveNum('1');
+                  }
+                  console.log('Datos enviados exitosamente:', response);
+                },
+                (error) => {
+                  this.ShowLoadingModal = false;
+                  this.showErrorModal = true;
+                  // Manejo del error
+                  console.error('Error al enviar los datos:', error);
+                }
+              );
             }
-            console.log('Datos enviados exitosamente:', response);
-          },
-          (error) => {
+          )
+          .catch((error) => {
+            console.error('Error en la conversión de archivos:', error);
             this.ShowLoadingModal = false;
-            this.showErrorModal = true;
-            // Manejo del error
-            console.error('Error al enviar los datos:', error);
-          }
-        );
+          });
 
         break;
 
@@ -1263,6 +1281,7 @@ export default class IncrementoComponent implements AfterViewInit {
 
   //Función para manejar los diferentes casos de acceso a los valores (Blob o Base64)
   convertirSiEsBlob(valor: any) {
+    console.log('VALOR:::::::', valor)
     // Si es Blob, convertimos a Base64
     if (valor instanceof Blob) {
       return this.convertirBlob(valor); // Convertir Blob a Base64
@@ -1408,9 +1427,21 @@ export default class IncrementoComponent implements AfterViewInit {
         };
 
         const formGroup = formControlMap[formControlName];
+
         if (formGroup) {
           // Parchamos el form con los archivos en base64
           formGroup.patchValue({[formControlName]: base64Array});
+
+          // Solo para el cargador de archivos del formGroup1 y el control específico
+          if (formControlName === 1 && formGroup === this.formGroup1) {
+            // Inicializamos el array para almacenar los nombres de archivos truncados
+            this.fileNames[1] = file.map((f, index) => {
+              const firstPart = `consecutivo_${index + 1}__${this.nit}_${
+                this.nombreEmpresa
+              }__`;
+              return firstPart;
+            });
+          }
         }
       })
       .catch((error) => {
@@ -1618,9 +1649,8 @@ export default class IncrementoComponent implements AfterViewInit {
             0
           ),
           valorContrato: item.valorContrato,
-          idFormaPago: item.idFormaPago.value,
-          disponibilidadVehiculosEstimada:
-          item.disponibilidadVehiculosEstimada.value,
+          idFormaPago: item.forma_pago.value,
+          disponibilidadVehiculosEstimada: item.disponibilidad.value,
           estado: true,
           idEstadoSolicitud: index + 1 == this.formGroup1.get('1')?.value.length ? 123 : 162,
           idFormulario: parseInt(this.idSolicitud),
@@ -1718,26 +1748,21 @@ export default class IncrementoComponent implements AfterViewInit {
     });
   }
 
-  //Metodos Primer Modal
-  handleClose() {
-    console.log('Modal closed');
-  }
-
+  // modal
   handleCloseByButton1() {
     this.processContractIteration();
     console.log('Modal closed by Button 1');
   }
 
-  handleCloseByButton2() {
-    console.log('Modal closed by Button 2');
-  }
-
-  handleCloseByIcon() {
-    console.log('Modal closed by Close Icon');
-  }
-
-  handleCloseByBackdrop() {
-    console.log('Modal closed by clicking on Backdrop');
+  changeContratoInfo(isContinue: boolean) {
+    if (isContinue) {
+      this.processContractIteration();
+      if (this.IsvalidOperativo) {
+        this.currentContractIteration += 1;
+      }
+    } else {
+      this.currentContractIteration -= 1;
+    }
   }
 
   finalStep() {
@@ -1749,13 +1774,17 @@ export default class IncrementoComponent implements AfterViewInit {
 
   // Procesar cada iteración de contratos
   processContractIteration() {
-    if (this.formGroup4.valid) {
-      // Guardar los datos del formulario en el array
+    console.log(this.currentContractIteration);
+    console.log(this.formGroup4.valid);
 
+    if (this.formGroup4.valid) {
+      this.IsvalidOperativo = true;
+      // Guardar los datos del formulario en el array
+      this.formGroup4.get('duracionMeses')?.enable();
       this.contractDataArray.push(this.formGroup4.value);
       console.log(this.contractDataArray);
       let cantidad_din_contratos = (
-        parseInt(this.formGroup4.get('cantidad_contratos')?.value, 10) - 1
+        this.formGroup1.value[1].length - 1
       ).toString();
 
       this.formGroup4
@@ -1775,10 +1804,10 @@ export default class IncrementoComponent implements AfterViewInit {
 
           // Si el índice NO es 0, reseteamos el control
           this.submitted = false;
-          this.formGroup4.get('cantidad_contratos')?.disable();
           this.formGroup4.controls[key].reset();
           this.formGroup4.controls[key].markAsPristine();
           this.formGroup4.controls[key].markAsUntouched();
+          this.formGroup4.get('duracionMeses')?.disable();
         }
       });
 
@@ -1786,7 +1815,28 @@ export default class IncrementoComponent implements AfterViewInit {
       this.cdr.detectChanges();
     } else {
       console.log('Formulario de contrato no válido');
+      this.logFormErrors(this.formGroup4);
+      this.submitted = true;
+      this.formGroup4.markAllAsTouched();
+      this.IsvalidOperativo = false;
+      return;
     }
+  }
+
+  logFormErrors(form: FormGroup | FormArray): void {
+    Object.keys(form.controls).forEach((field) => {
+      const control = form.get(field);
+      if (control instanceof FormGroup || control instanceof FormArray) {
+        this.logFormErrors(control); // Recursividad para FormGroups y FormArrays anidados
+      } else {
+        if (control?.invalid) {
+          console.log(
+            `Control "${field}" es inválido. Errores: `,
+            control.errors
+          );
+        }
+      }
+    });
   }
 
   //calcular duracion en meses
@@ -1829,23 +1879,12 @@ export default class IncrementoComponent implements AfterViewInit {
     return 0;
   }
 
-  changeContratoInfo(isContinue: boolean) {
-    if (isContinue) {
-      this.processContractIteration();
-      if (this.IsvalidOperativo) {
-        this.currentContractIteration += 1;
-      }
-    } else {
-      this.currentContractIteration -= 1;
-    }
-  }
-
   //Metodo para enviar todos los contratos al servidor
   sendAllContracts() {
     this.ShowLoadingModal = true;
     if (
-      this.totalContracts == 1 ||
-      this.totalContracts == this.currentContractIteration
+      this.formGroup1.value[1].length == 1 ||
+      this.formGroup1.value[1].length == this.currentContractIteration
     ) {
       this.formGroup4.get('duracionMeses')?.enable();
       this.contractDataArray.push(this.formGroup4.value);
@@ -1860,10 +1899,10 @@ export default class IncrementoComponent implements AfterViewInit {
       fechaFin: any;
       duracionMeses: any;
       numeroVehiculos: any;
-      idClaseVehiculo: any;
+      vehiculos: any;
       valorContrato: any;
       idFormaPago: any;
-      idAreaOperacion: any;
+      areasOperacion: any;
       disponibilidadVehiculosEstimada: any;
       estado: boolean;
     }> = [];
@@ -1882,28 +1921,45 @@ export default class IncrementoComponent implements AfterViewInit {
         fechaInicio: item.fecha_inicio,
         fechaFin: item.fecha_terminacion,
         duracionMeses: item.duracionMeses,
-        numeroVehiculos: item.numeroVehiculos,
-        idClaseVehiculo: item.idClaseVehiculo.map((i: { value: any }) => i.value),
+        numeroVehiculos: item.idClaseVehiculos.reduce(
+          (sum: number, vehiculo: any) => sum + vehiculo.cantidadVehiculos,
+          0
+        ),
         valorContrato: item.valorContrato,
-        idFormaPago: item.idFormaPago,
-        idAreaOperacion: item.idAreaOperacion.map((i: { value: any }) => i.value),
-        disponibilidadVehiculosEstimada: item.disponibilidadVehiculosEstimada,
+        idFormaPago: item.idFormaPago.value,
+        disponibilidadVehiculosEstimada:
+        item.disponibilidadVehiculosEstimada.value,
         estado: true,
+
+        vehiculos: item.idClaseVehiculos,
+        areasOperacion: item.idAreaOperacion.map((i: { value: any }) => {
+          return {
+            id: this.contratosSolicitud
+              ? this.contratosSolicitud.areasOperacion.find(
+                (item: { idMunicipioArea: any }) =>
+                  (item.idMunicipioArea = i.value)
+              ).id
+              : '',
+            idMunicipioArea: i.value,
+          };
+        }),
       });
     });
+
+    console.log(contratos);
 
     // Rellenar el array documentos
     this.formGroup1.value[1].forEach((item: any) => {
       documentos.push({
-        nit: this.formGroup3.get('nit')?.value,
+        nit: this.nit,
         documento: item,
       });
     });
 
     const allFormsData = {
       fechaSolicitud: new Date(),
-      nombreEmpresa: this.formGroup3.get('nombreEmpresa')?.value,
-      nit: this.formGroup3.get('nit')?.value,
+      nombreEmpresa: this.formGroup1.get('nombreEmpresa')?.value,
+      nit: this.formGroup1.get('nit')?.value,
       territorial: 'Territorial de Antioquia',
       idEstadoSolicitud: 123,
       idCategoriaSolicitud: 150,
@@ -1935,7 +1991,6 @@ export default class IncrementoComponent implements AfterViewInit {
         // Aquí puedes manejar la respuesta, por ejemplo:
         this.ShowLoadingModal = false;
         this.showFinalModal = true;
-        console.log('Datos enviados exitosamente:', response);
       },
       (error) => {
         this.ShowLoadingModal = false;
