@@ -129,6 +129,16 @@ export class ApiSFService {
     );
   }
 
+  createAllSolicitud(data1: any): Observable<any> {
+    return this.http.post(
+      `${this.baseUrl}/api/formularioContratoPasos/paso1`,
+      data1,
+      {
+        responseType: 'text',
+      }
+    );
+  }
+
   // POST solicitud primer creacion
   createSolicitud(data1: any): Observable<any> {
     return this.http.post(
