@@ -93,7 +93,7 @@ export class ApiService {
 
   //clase vehiculo
   getClaseVehiculo(): Observable<any> {
-    return this.http.get(`${this.baseUrl}/catalogos/ClaseVehiculo`);
+    return this.http.get(`${this.baseUrl}/catalogos/SFClaseVehiculo`);
   }
 
   //categorias

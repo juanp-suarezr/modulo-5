@@ -24,10 +24,19 @@ export class ApiSFService {
     search: string,
     fechaSolicitud: string,
     pageSize: number,
-    currentPage: number
+    currentPage: number,
+    usuario: string
   ): Observable<any> {
     let params: string[] = [];
+    let formulario: string = 'formulario';
 
+    console.log(usuario);
+    
+    if (usuario == 'superTransp') {
+      formulario = 'formulario/rol-super';
+    } else if (usuario == 'gesDoc') {
+      formulario = 'formulario/rol-gestion';
+    }
     // Agregar parámetros de búsqueda si existen
     if (search) {
       const searchParam = !isNaN(+search)
@@ -55,7 +64,7 @@ export class ApiSFService {
 
     // Realizar la solicitud HTTP con los parámetros construidos
     return this.http.get(
-      `${this.baseUrl}/api/formulario?size=${pageSize}&page=${currentPage}&${allParams}`
+      `${this.baseUrl}/api/${formulario}?size=${pageSize}&page=${currentPage}&${allParams}`
     );
   }
 
