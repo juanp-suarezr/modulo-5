@@ -122,7 +122,7 @@ export class ApiSFService {
   //get descargar excel
   descargarExcel(id: string): Observable<any> {
     return this.http.get(
-      `${this.baseUrl}/api/detalle-contratos/export/excel/{idFormulario}?idFormulario=${id}`,
+      `${this.baseUrl}/api/detalle-contratos/export/excel/${id}`,
       {
         responseType: 'blob' as 'json',
       }
