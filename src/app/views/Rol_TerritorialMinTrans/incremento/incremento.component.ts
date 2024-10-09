@@ -697,7 +697,7 @@ export default class IncrementoComponent implements AfterViewInit, OnInit {
           {value: '', disabled: false},
           Validators.required,
         ],
-        contrato: ['', Validators.required],
+        numeroContrato: ['', Validators.required],
         contratante: ['', Validators.required],
         fecha_inicio: ['', Validators.required],
         fecha_terminacion: ['', Validators.required],
@@ -1722,7 +1722,7 @@ export default class IncrementoComponent implements AfterViewInit, OnInit {
     contratos.forEach((element: any) => {
       this.ShowLoadingModal = true;
       this.apiSFService
-        .SolicitudPaso4(this.contratosSolicitud.id, element)
+        .SolicitudPaso4(this.contratosSolicitud.idDetalleContrato, element)
         .subscribe(
           (response) => {
             contador += 1;

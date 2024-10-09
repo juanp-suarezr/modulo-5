@@ -1101,31 +1101,36 @@
 
         <!-- input 2 -->
         <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
-
-          <p class="text-primary3 font-semibold h-full">
+          <p class="text-primary3 font-semibold">
             N° de contrato*
           </p>
-
           <!-- input -->
           <div class="mt-2 w-full relative">
             <input
               class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent"
-              type="text" formControlName="contrato" required placeholder="Ingrese número">
+              type="text" formControlName="numeroContrato" required placeholder="Ingrese número contrato">
             <div class="w-full relative">
               <!-- Icono de error (rojo) -->
-              <span *ngIf="formGroup4.get('contrato')?.invalid && (formGroup4.get('contrato')?.touched || submitted)"
-                    class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
-                <span class="pi pi-exclamation-circle text-error text-[24px]"></span>
-              </span>
+              <span
+                *ngIf="formGroup4.get('numeroContrato')?.invalid && (formGroup4.get('numeroContrato')?.touched || submitted)"
+                class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
+                                <span class="pi pi-exclamation-circle text-error text-[24px]"></span>
+                            </span>
 
               <!-- Icono de éxito (verde) -->
-              <span *ngIf="formGroup4.get('contrato')?.valid && (formGroup4.get('contrato')?.touched || submitted)"
-                    class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
-                <span class="pi pi-check-circle text-success text-[24px]"></span>
-              </span>
+              <span
+                *ngIf="formGroup4.get('numeroContrato')?.valid && (formGroup4.get('numeroContrato')?.touched || submitted)"
+                class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
+                                <span class="pi pi-check-circle text-success text-[24px]"></span>
+                            </span>
             </div>
+            <span *ngIf="submitted && formGroup4.get('numeroContrato')?.errors?.['required']"
+                  class="text-error">
+                            El numero de contrato es obligatorio
+                        </span>
 
           </div>
+
         </div>
 
         <!-- input 3 -->
