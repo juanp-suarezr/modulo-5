@@ -274,7 +274,6 @@ export default class SolicitudComponent {
 
   loadOptions() {
     return new Promise((resolve, reject) => {
-      //GET SOLICITUD
       this.apiSFService
         .getAllSolicitudByID(this.idSubject.getValue())
         .subscribe(
@@ -307,6 +306,7 @@ export default class SolicitudComponent {
 
             console.log(response);
             this.loadingPage = false;
+            resolve(response); // Resuelve la promesa cuando se haya procesado todo
           },
           (error) => {
             this.loadingPage = false;
@@ -585,7 +585,7 @@ export default class SolicitudComponent {
   }
 
   //Metodo para cambiar el valor del menuleft
-  changeActiveNum(newValue: string, saved?: any) {
+  async changeActiveNum(newValue: string, saved?: any) {
     if (this.solicitud.formulario.radicadoSalida) {
       saved = true;
     }
@@ -594,7 +594,7 @@ export default class SolicitudComponent {
         this.stateService.setActiveNum(newValue);
       }
     } else if (newValue == '3') {
-      this.loadOptions();
+      await this.loadOptions();
       if (saved && this.solicitud.formulario.excelModeloTransporte) {
         this.stateService.setActiveNum(newValue);
       }

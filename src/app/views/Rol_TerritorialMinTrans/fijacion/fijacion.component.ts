@@ -1,17 +1,17 @@
-import {first, BehaviorSubject} from 'rxjs';
-import {OnlyNumberGlobal} from './../../../validator/onlyNumber.validator';
-import {ErrorService} from '../../../services/error/error.service';
-import {PrimaryButtonComponent} from '../../../components/primary-button/primary-button.component';
-import {ActiveNumService} from '../../../services/left-nav/active-num.service';
-import {ActiveNumStepperService} from '../../../services/stepper/active-num.service';
-import {ChangeDetectorRef, Component, OnInit, ViewChild} from '@angular/core';
-import {LeftNavComponent} from '../../../components/left-nav/left-nav.component';
-import {SttepperComponent} from '../../../components/sttepper/sttepper.component';
-import {FileUploadComponent} from '../../../components/file-upload/file-upload.component';
-import {CommonModule} from '@angular/common';
+import { first, BehaviorSubject } from 'rxjs';
+import { OnlyNumberGlobal } from './../../../validator/onlyNumber.validator';
+import { ErrorService } from '../../../services/error/error.service';
+import { PrimaryButtonComponent } from '../../../components/primary-button/primary-button.component';
+import { ActiveNumService } from '../../../services/left-nav/active-num.service';
+import { ActiveNumStepperService } from '../../../services/stepper/active-num.service';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { LeftNavComponent } from '../../../components/left-nav/left-nav.component';
+import { SttepperComponent } from '../../../components/sttepper/sttepper.component';
+import { FileUploadComponent } from '../../../components/file-upload/file-upload.component';
+import { CommonModule } from '@angular/common';
 //servicios de consultas api
-import {ApiService} from '../../../services/api/api.service';
-import {InputText} from '../../../components/input/input.component';
+import { ApiService } from '../../../services/api/api.service';
+import { InputText } from '../../../components/input/input.component';
 import {
   FormBuilder,
   FormGroup,
@@ -21,17 +21,17 @@ import {
   AbstractControl,
   FormArray,
 } from '@angular/forms';
-import {SelectComponent} from '../../../components/select/select.component';
-import {MESES} from '../../../shared/data/meses';
-import {AlertComponent} from '../../../components/alert/alert.component';
-import {Router} from '@angular/router';
-import {dateRangeValidator} from '../../../validator/date.validator';
-import {HORAS} from '../../../shared/data/horas';
-import {NoNegativeGlobal} from '../../../validator/noNegative.validator';
-import {ApiSFService} from '../../../services/api/apiSF.service';
-import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
-import {DialogModule} from 'primeng/dialog';
-import {ProgressSpinnerModule} from 'primeng/progressspinner';
+import { SelectComponent } from '../../../components/select/select.component';
+import { MESES } from '../../../shared/data/meses';
+import { AlertComponent } from '../../../components/alert/alert.component';
+import { Router } from '@angular/router';
+import { dateRangeValidator } from '../../../validator/date.validator';
+import { HORAS } from '../../../shared/data/horas';
+import { NoNegativeGlobal } from '../../../validator/noNegative.validator';
+import { ApiSFService } from '../../../services/api/apiSF.service';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { DialogModule } from 'primeng/dialog';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @Component({
   selector: 'app-fijacion',
@@ -363,10 +363,9 @@ export default class FijacionComponent {
           console.error('Error fetching user data', error);
         }
       );
+      // Forzar detección de cambios
+      this.cdr.detectChanges();
     });
-
-    // Forzar detección de cambios
-    this.cdr.detectChanges();
   }
 
   ObtenerDocumentos(id: string): Promise<any> {
@@ -460,8 +459,10 @@ export default class FijacionComponent {
 
             this.selects[3].value =
               contrato.disponibilidadVehiculosEstimada || '';
-            this.selects[2].selectedOption = this.formGroup4.get('idAreaOperacion')?.value || '';
-            this.selectedOptionsDeparts = this.formGroup4.get('idAreaOperacion')?.value;
+            this.selects[2].selectedOption =
+              this.formGroup4.get('idAreaOperacion')?.value || '';
+            this.selectedOptionsDeparts =
+              this.formGroup4.get('idAreaOperacion')?.value;
             // Primero limpias el FormArray para asegurarte de que esté vacío antes de agregar nuevos controles
             this.idClaseVehiculos.clear();
 
@@ -543,13 +544,13 @@ export default class FijacionComponent {
         patrimonioLiquido: ['', Validators.required],
         cantidadVehiculos: ['', Validators.required],
       },
-      {validators: [NoNegativeGlobal]}
+      { validators: [NoNegativeGlobal] }
     );
 
     this.formGroup4 = this.fb.group(
       {
         cantidad_contratos: [
-          {value: '', disabled: false},
+          { value: '', disabled: false },
           Validators.required,
         ],
         numeroContrato: ['', Validators.required],
@@ -565,7 +566,7 @@ export default class FijacionComponent {
         disponibilidadVehiculosEstimada: ['', Validators.required],
         idClaseVehiculos: this.fb.array([]), // FormArray para manejar las clases de vehículos seleccionadas
       },
-      {validators: [dateRangeValidator, NoNegativeGlobal]}
+      { validators: [dateRangeValidator, NoNegativeGlobal] }
     );
   }
 
@@ -770,7 +771,7 @@ export default class FijacionComponent {
 
   // Generar opciones de numeros para los selects
   generateOptions(max: number) {
-    return Array.from({length: max}, (_, i) => ({
+    return Array.from({ length: max }, (_, i) => ({
       value: i + 1,
       label: i + 1,
     }));
@@ -1152,12 +1153,12 @@ export default class FijacionComponent {
         ])
           .then(
             ([
-               resolucionHabilitacion,
-               cedulaRepresentante,
-               estadosFinancieros,
-               cedulaContador,
-               tarjetaProfesionalContador,
-             ]) => {
+              resolucionHabilitacion,
+              cedulaRepresentante,
+              estadosFinancieros,
+              cedulaContador,
+              tarjetaProfesionalContador,
+            ]) => {
               // Creación del objeto data2 con todos los campos procesados
               const data2 = {
                 resolucionHabilitacion,
@@ -1309,7 +1310,7 @@ export default class FijacionComponent {
 
         if (formGroup) {
           // Parchamos el form con los archivos en base64
-          formGroup.patchValue({[formControlName]: base64Array});
+          formGroup.patchValue({ [formControlName]: base64Array });
 
           // Solo para el cargador de archivos del formGroup1 y el control específico
           if (formControlName === 2 && formGroup === this.formGroup1) {
@@ -1356,7 +1357,7 @@ export default class FijacionComponent {
     const byteArray = new Uint8Array(byteNumbers);
     const mimeType = this.detectMimeType(base64); // Detectar el tipo MIME
 
-    return new Blob([byteArray], {type: mimeType});
+    return new Blob([byteArray], { type: mimeType });
   }
 
   // Crear un enlace para descargar o mostrar el archivo
@@ -1500,6 +1501,8 @@ export default class FijacionComponent {
   // Método para enviar los formularios
   async onSubmitAllForms() {
     this.ShowLoadingModal = true;
+    const data1 = await this.datosPaso1();
+
     this.processContractIteration();
     console.log(this.formGroup4);
 
@@ -1540,7 +1543,7 @@ export default class FijacionComponent {
           valorContrato: item.valorContrato,
           idFormaPago: item.idFormaPago.value,
           disponibilidadVehiculosEstimada:
-          item.disponibilidadVehiculosEstimada.value,
+            item.disponibilidadVehiculosEstimada.value,
           estado: true,
           idEstadoSolicitud:
             index + 1 == this.formGroup1.get('2')?.value.length ? 123 : 162,
@@ -1550,20 +1553,20 @@ export default class FijacionComponent {
             return {
               id: this.contratosSolicitud
                 ? this.contratosSolicitud[index].areasOperacion.find(
-                  (item: { idMunicipioArea: any }) =>
-                    (item.idMunicipioArea = i.value)
-                ).id
+                    (item: { idMunicipioArea: any }) =>
+                      (item.idMunicipioArea = i.value)
+                  ).id
                 : '',
               idMunicipioArea: i.value,
             };
           }),
         });
+
+        this.contratosSolicitud.length > index + 1;
       });
       //valida si existe informacion de Contratos guardados
       if (this.contratosSolicitud) {
         console.log('entroo 1');
-        const data1 = await this.datosPaso1();
-        this.ActualizarSolicitud(1, data1, 'opcion3', true);
         //si existe actualizar segun el array
         this.actualizarContratos(contratos);
       } else if (
@@ -1572,13 +1575,9 @@ export default class FijacionComponent {
         this.idSolicitud === 'undefined' ||
         this.idSolicitud === undefined
       ) {
-        console.log('entrooo 2');
-
-        //proceso para guardar
-        this.sendAllContracts();
-      } else {
-        const data1 = await this.datosPaso1();
         this.ActualizarSolicitud(1, data1, 'opcion3', true);
+        console.log('entrooo 2');
+      } else {
         console.log('entro segurooo');
 
         //CREA SOLICITUD
@@ -1775,7 +1774,7 @@ export default class FijacionComponent {
         valorContrato: item.valorContrato,
         idFormaPago: item.idFormaPago.value,
         disponibilidadVehiculosEstimada:
-        item.disponibilidadVehiculosEstimada.value,
+          item.disponibilidadVehiculosEstimada.value,
         estado: true,
 
         vehiculos: item.idClaseVehiculos,
@@ -1783,9 +1782,9 @@ export default class FijacionComponent {
           return {
             id: this.contratosSolicitud
               ? this.contratosSolicitud.areasOperacion.find(
-                (item: { idMunicipioArea: any }) =>
-                  (item.idMunicipioArea = i.value)
-              ).id
+                  (item: { idMunicipioArea: any }) =>
+                    (item.idMunicipioArea = i.value)
+                ).id
               : '',
             idMunicipioArea: i.value,
           };
