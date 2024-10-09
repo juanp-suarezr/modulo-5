@@ -840,8 +840,7 @@ export default class FijacionComponent {
   }
 
   //modal continuar despues de guardar
-  async showModalSaveInfo(num: number) {
-    await this.ObtenerSolicitud(this.idSolicitud);
+  showModalSaveInfo(num: number) {
     this.numberTocontinueSaved = num;
     this.showModalInfoSaved = true;
   }
@@ -854,6 +853,7 @@ export default class FijacionComponent {
   ) {
     switch (newValue) {
       case 1:
+        await this.ObtenerSolicitud(this.idSolicitud);
         this.stepperService.setActiveNum(newValue);
         break;
       case 2:
@@ -912,6 +912,7 @@ export default class FijacionComponent {
           this.formGroup4.get('cantidad_contratos')?.disable();
           this.formGroup4.get('duracionMeses')?.disable();
         } else if (back == true) {
+          await this.ObtenerSolicitud(this.idSolicitud);
           this.stepperService.setActiveNum(newValue);
         }
         break;
@@ -1580,33 +1581,43 @@ export default class FijacionComponent {
       } else {
         console.log('entro segurooo');
 
-        //CREA SOLICITUD
-        this.apiSFService.createContratos(contratos[0]).subscribe(
-          (response4) => {
-            const parsedData = JSON.parse(response4);
-            console.log('Datos enviados exitosamente:', parsedData);
-            localStorage.setItem(
-              'contratosSolicitudID',
-              parsedData.idDetalleContrato
+        contratos.forEach((item, index) => {
+          //CREA SOLICITUD
+          if (this.contratosSolicitud) {
+            if (this.contratosSolicitud[index]) {
+              
+            }
+            // this.actualizarContratos(contratos);
+          } else {
+            this.apiSFService.createContratos(item).subscribe(
+              (response4) => {
+                const parsedData = JSON.parse(response4);
+                console.log('Datos enviados exitosamente:', parsedData);
+                localStorage.setItem(
+                  'contratosSolicitudID',
+                  parsedData.idDetalleContrato
+                );
+                this.contratosSolicitud = parsedData;
+                
+                // Aquí puedes manejar la respuesta, por ejemplo:
+                this.ShowLoadingModal = false;
+              },
+              (error) => {
+                this.ShowLoadingModal = false;
+                this.showErrorModal = true;
+                // Manejo del error
+                console.error('Error al enviar los datos:', error);
+              }
             );
-            this.contratosSolicitud = parsedData;
-            this.actualizarContratos(contratos);
-            // Aquí puedes manejar la respuesta, por ejemplo:
-            this.ShowLoadingModal = false;
-          },
-          (error) => {
-            this.ShowLoadingModal = false;
-            this.showErrorModal = true;
-            // Manejo del error
-            console.error('Error al enviar los datos:', error);
           }
-        );
+        });
       }
     } else {
       this.ShowLoadingModal = false;
     }
   }
 
+  //CAMBIAAAAR
   actualizarContratos(contratos: any) {
     let contador = 0;
     contratos.forEach((element: any) => {
@@ -1710,6 +1721,7 @@ export default class FijacionComponent {
           this.formGroup4.get('duracionMeses')?.disable();
           // Primero limpias el FormArray para asegurarte de que esté vacío antes de agregar nuevos controles
           this.idClaseVehiculos.clear();
+          this.selectedOptionsDeparts = [];
         }
       });
 
