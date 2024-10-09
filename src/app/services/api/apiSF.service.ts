@@ -31,7 +31,7 @@ export class ApiSFService {
     let formulario: string = 'formulario';
 
     console.log(usuario);
-    
+
     if (usuario == 'superTransp') {
       formulario = 'formulario/rol-super';
     } else if (usuario == 'gesDoc') {
@@ -142,9 +142,7 @@ export class ApiSFService {
 
   // POST solicitud primer contratos
   createContratos(data2: any): Observable<any> {
-    return this.http.post(
-      `${this.baseUrl}/api/formularioContratoPasos/paso4`,
-      data2,
+    return this.http.post(`${this.baseUrl}/api/formularioContratoPasos/paso4`, data2,
       {
         responseType: 'text',
       }
