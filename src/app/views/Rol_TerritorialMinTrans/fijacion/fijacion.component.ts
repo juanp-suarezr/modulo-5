@@ -855,7 +855,9 @@ export default class FijacionComponent {
   ) {
     switch (newValue) {
       case 1:
+        this.loadingInicio = true;
         await this.ObtenerSolicitud(this.idSolicitud);
+        this.loadingInicio = false;
         this.stepperService.setActiveNum(newValue);
         break;
       case 2:
@@ -1722,7 +1724,7 @@ export default class FijacionComponent {
           // Primero limpias el FormArray para asegurarte de que esté vacío antes de agregar nuevos controles
           this.idClaseVehiculos.clear();
           this.selectedOptionsDeparts = [];
-          
+          this.selectedOptionsClase = [];
         }
       });
 
