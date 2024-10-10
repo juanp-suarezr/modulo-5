@@ -31,7 +31,7 @@ import {HORAS} from '../../../shared/data/horas';
 import {dateRangeValidator} from '../../../validator/date.validator';
 import {NoNegativeGlobal} from '../../../validator/noNegative.validator';
 import {ApiSFService} from '../../../services/api/apiSF.service';
-import {catchError, debounceTime, distinctUntilChanged, switchMap} from "rxjs/operators";
+import {catchError, debounceTime, distinctUntilChanged, switchMap, timeout} from "rxjs/operators";
 import {BehaviorSubject, of} from "rxjs";
 
 @Component({
@@ -421,6 +421,7 @@ export default class IncrementoComponent implements AfterViewInit, OnInit {
           ?.setValue('');
         if (value && value.length >= 9) {
           return this.apiSFService.getDataByNIT(value).pipe(
+            timeout(5000),
             catchError((error) => {
               console.error('Error al enviar los datos:', error);
               this.showModalWarning1 = true;
@@ -457,6 +458,60 @@ export default class IncrementoComponent implements AfterViewInit, OnInit {
               console.log('Empresa inactiva');
             }
           } else {
+            this.showModalAlerta = true;
+          }
+        }
+      });
+
+    this.formGroup4
+      .get('nitContratante')
+      ?.valueChanges.pipe(
+      debounceTime(500),
+      distinctUntilChanged(),
+      switchMap((value: string) => {
+        this.isProcessing = true;
+        this.formGroup4.get('contratante')?.setValue('');
+        if (value && value.length >= 9) {
+          return this.apiSFService.getDataByNIT(value).pipe(
+            timeout(5000), // Tiempo máximo de espera de 5 segundos
+            catchError((error) => {
+              console.error('Error al enviar los datos:', error);
+              this.showModalWarning1 = true;
+              this.formGroup4.get('contratante')?.enable();
+              return of(null); // Retorna null si hay un error
+            })
+          );
+        } else {
+          this.isProcessing = true;
+          // Si el NIT no es válido, no hacer nada
+          return of(null);
+        }
+      })
+    )
+      .subscribe((response) => {
+        if (response) {
+          const parsedData = JSON.parse(response);
+          console.log(parsedData);
+
+          if (parsedData.registros) {
+            if (parsedData.registros[0].nomEstadoMatricula === 'ACTIVA') {
+              console.log('Empresa activa');
+              // Actualizar el campo 'nombreEmpresa'
+              this.isProcessing = false;
+              this.formGroup4
+                .get('contratante')
+                ?.setValue(parsedData.registros[0].razonSocialEmpresa);
+              console.log(
+                'Datos enviados exitosamente:',
+                parsedData.registros[0].razonSocialEmpresa
+              );
+            } else {
+              this.showModalAlerta1 = true;
+              this.formGroup4.get('contratante')?.setValue('Empresa no valida');
+              console.log('Empresa inactiva');
+            }
+          } else {
+            this.formGroup4.get('contratante')?.setValue('Empresa no valida');
             this.showModalAlerta = true;
           }
         }
@@ -580,6 +635,7 @@ export default class IncrementoComponent implements AfterViewInit, OnInit {
         idAreaOperacion: ['', Validators.required],
         disponibilidad: ['', Validators.required],
         idClaseVehiculos: this.fb.array([]),
+        nitContratante: ['', Validators.required],
       },
       {validators: [dateRangeValidator, NoNegativeGlobal]}
     );
@@ -602,6 +658,12 @@ export default class IncrementoComponent implements AfterViewInit, OnInit {
       this.formGroup2.valid &&
       this.formGroup3.valid
     ) {
+      this.formGroup4
+        .get('cantidad_contratos')
+        ?.setValue(this.formGroup1.value[1].length);
+      this.formGroup4.get('cantidad_contratos')?.disable();
+      this.formGroup4.get('duracionMeses')?.disable();
+      this.formGroup4.get('contratante')?.disable();
       this.stateService.setActiveNum(newValue);
     }
   }
@@ -1111,10 +1173,11 @@ export default class IncrementoComponent implements AfterViewInit, OnInit {
     notChange?: boolean
   ) {
     this.isActuFile = [-1];
+    this.showModalInfoSaved = false;
     switch (num) {
       case 1:
         this.apiSFService.SolicitudPaso1(this.idSolicitud, data).subscribe(
-          (response) => {
+          () => {
             if (opcion == 'opcion2') {
               this.ActualizarSolicitud(2);
             } else if (opcion == 'opcion3') {
@@ -1593,6 +1656,7 @@ export default class IncrementoComponent implements AfterViewInit, OnInit {
         estado: boolean;
         idEstadoSolicitud: any;
         idFormulario: any;
+        nitContratante: any;
       }> = [];
 
       console.log(this.contratosSolicitud);
@@ -1613,6 +1677,7 @@ export default class IncrementoComponent implements AfterViewInit, OnInit {
           idFormaPago: item.forma_pago.value,
           disponibilidadVehiculosEstimada: item.disponibilidad.value,
           estado: true,
+          nitContratante: item.nitContratante,
           idEstadoSolicitud: this.counter == this.formGroup1.get('1')?.value.length ? 123 : 162,
           idFormulario: parseInt(this.idSolicitud),
           vehiculos: item.idClaseVehiculos,
@@ -1716,9 +1781,15 @@ export default class IncrementoComponent implements AfterViewInit, OnInit {
 
   changeContratoInfo(isContinue: boolean) {
     if (isContinue) {
-      this.processContractIteration();
-      if (this.IsvalidOperativo) {
-        this.currentContractIteration += 1;
+      this.currentContractIteration += 1;
+      this.ObtenerContratos(
+        this.idSolicitud,
+        this.currentContractIteration - 1
+      );
+      if (
+        this.currentContractIteration == this.formGroup1.get('1')?.value.length
+      ) {
+        this.showFinalModal = true;
       }
     } else {
       this.currentContractIteration -= 1;
@@ -1727,6 +1798,8 @@ export default class IncrementoComponent implements AfterViewInit, OnInit {
 
   finalStep() {
     this.showFinalModal = false;
+    localStorage.setItem('idSolicitud', '');
+    localStorage.setItem('contratosSolicitudID', '');
     this.router.navigate(['/dashboard']).then(() => {
       location.reload();
     });
