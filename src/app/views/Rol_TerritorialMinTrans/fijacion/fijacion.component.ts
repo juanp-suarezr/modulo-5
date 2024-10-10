@@ -1,4 +1,13 @@
-import { first, BehaviorSubject } from 'rxjs';
+import {
+  first,
+  BehaviorSubject,
+  debounceTime,
+  distinctUntilChanged,
+  switchMap,
+  catchError,
+  of,
+  timeout,
+} from 'rxjs';
 import { OnlyNumberGlobal } from './../../../validator/onlyNumber.validator';
 import { ErrorService } from '../../../services/error/error.service';
 import { PrimaryButtonComponent } from '../../../components/primary-button/primary-button.component';
@@ -92,6 +101,8 @@ export default class FijacionComponent {
 
   //loadingInicial
   loadingInicio: boolean = true;
+  //Control para deshabilitar el botón
+  isProcessing: boolean = true;
 
   //view archivo blob
   documentUrl: SafeResourceUrl | undefined;
@@ -167,6 +178,9 @@ export default class FijacionComponent {
   showFinalModal: boolean = false; // Control para mostrar el modal final
   showModalContinuar: boolean = false; //control para mostrar modal de desea continuar
   showModalContinuar1: boolean = false; //control para mostrar modal de desea continuar operativo
+  showModalWarning1: boolean = false; //control para mostrar modal de advertencia error en el rues
+  showModalAlerta: boolean = false; //control para mostrar modal de alerta Nit contratante
+  showModalAlerta1: boolean = false; //control para mostrar modal de alerta Nit contratante
   //number to continue modal
   numberTocontinue: number = 0;
   //number to continue modal infosaved
@@ -497,8 +511,6 @@ export default class FijacionComponent {
           //     }
           //   );
           // }
-
-          console.log(this.formGroup4);
         });
       },
       (error) => {
@@ -518,6 +530,60 @@ export default class FijacionComponent {
     this.formGroup4.get('fecha_terminacion')?.valueChanges.subscribe(() => {
       this.updateDuration();
     });
+
+    this.formGroup4
+      .get('nitContratante')
+      ?.valueChanges.pipe(
+        debounceTime(500),
+        distinctUntilChanged(),
+        switchMap((value: string) => {
+          this.isProcessing = true;
+          this.formGroup4.get('contratante')?.setValue('');
+          if (value && value.length >= 9) {
+            return this.apiSFService.getDataByNIT(value).pipe(
+              timeout(5000), // Tiempo máximo de espera de 5 segundos
+              catchError((error) => {
+                console.error('Error al enviar los datos:', error);
+                this.showModalWarning1 = true;
+                this.formGroup4.get('contratante')?.enable();
+                return of(null); // Retorna null si hay un error
+              })
+            );
+          } else {
+            this.isProcessing = true;
+            // Si el NIT no es válido, no hacer nada
+            return of(null);
+          }
+        })
+      )
+      .subscribe((response) => {
+        if (response) {
+          const parsedData = JSON.parse(response);
+          console.log(parsedData);
+
+          if (parsedData.registros) {
+            if (parsedData.registros[0].nomEstadoMatricula === 'ACTIVA') {
+              console.log('Empresa activa');
+              // Actualizar el campo 'nombreEmpresa'
+              this.isProcessing = false;
+              this.formGroup4
+                .get('contratante')
+                ?.setValue(parsedData.registros[0].razonSocialEmpresa);
+              console.log(
+                'Datos enviados exitosamente:',
+                parsedData.registros[0].razonSocialEmpresa
+              );
+            } else {
+              this.showModalAlerta1 = true;
+              this.formGroup4.get('contratante')?.setValue('Empresa no valida');
+              console.log('Empresa inactiva');
+            }
+          } else {
+            this.formGroup4.get('contratante')?.setValue('Empresa no valida');
+            this.showModalAlerta = true;
+          }
+        }
+      });
   }
 
   initializeForm() {
@@ -557,6 +623,7 @@ export default class FijacionComponent {
         ],
         numeroContrato: ['', Validators.required],
         contratante: ['', Validators.required],
+        nitContratante: ['', Validators.required],
         fecha_inicio: ['', Validators.required],
         fecha_terminacion: ['', Validators.required],
         duracionMeses: ['', Validators.required],
@@ -831,6 +898,12 @@ export default class FijacionComponent {
       this.formGroup2.valid &&
       this.formGroup3.valid
     ) {
+      this.formGroup4
+        .get('cantidad_contratos')
+        ?.setValue(this.formGroup1.value[2].length);
+      this.formGroup4.get('cantidad_contratos')?.disable();
+      this.formGroup4.get('duracionMeses')?.disable();
+      this.formGroup4.get('contratante')?.disable();
       this.stateService.setActiveNum(newValue);
     }
   }
@@ -915,6 +988,7 @@ export default class FijacionComponent {
 
           this.formGroup4.get('cantidad_contratos')?.disable();
           this.formGroup4.get('duracionMeses')?.disable();
+          this.formGroup4.get('contratante')?.disable();
         } else if (back == true) {
           await this.ObtenerSolicitud(this.idSolicitud);
           this.stepperService.setActiveNum(newValue);
@@ -1623,7 +1697,7 @@ export default class FijacionComponent {
   }
 
   crearContratos(contratos: any) {
-    this.apiSFService.createContratos(contratos[0]).subscribe(
+    this.apiSFService.createContratos(contratos).subscribe(
       (response4) => {
         const parsedData = JSON.parse(response4);
         console.log('Datos enviados exitosamente:', parsedData);
@@ -1718,10 +1792,14 @@ export default class FijacionComponent {
   processContractIteration() {
     console.log(this.currentContractIteration);
 
-    if (this.formGroup4.valid) {
+    if (
+      this.formGroup4.valid &&
+      this.formGroup4.get('contratante')?.value != 'Empresa no valida'
+    ) {
       this.IsvalidOperativo = true;
       // Guardar los datos del formulario en el array
       this.formGroup4.get('duracionMeses')?.enable();
+      this.formGroup4.get('contratante')?.enable();
       this.contractDataArray.push(this.formGroup4.value);
       console.log(this.contractDataArray);
       let cantidad_din_contratos = (
@@ -1760,6 +1838,9 @@ export default class FijacionComponent {
       // Forzamos la detección de cambios
       this.cdr.detectChanges();
     } else {
+      if (this.formGroup4.get('contratante')?.value == 'Empresa no valida') {
+        this.formGroup4.get('contratante')?.setErrors({ nitInvalido: true });
+      }
       console.log('Formulario de contrato no válido');
       this.logFormErrors(this.formGroup4);
       this.submitted = true;
@@ -1785,6 +1866,7 @@ export default class FijacionComponent {
       consecutivo: number;
       numeroContrato: any;
       contratante: any;
+      nitContratante: any;
       fechaInicio: any;
       fechaFin: any;
       duracionMeses: any;
@@ -1808,6 +1890,7 @@ export default class FijacionComponent {
         consecutivo: index,
         numeroContrato: item.numeroContrato,
         contratante: item.contratante,
+        nitContratante: item.nitContratante,
         fechaInicio: item.fecha_inicio,
         fechaFin: item.fecha_terminacion,
         duracionMeses: item.duracionMeses,

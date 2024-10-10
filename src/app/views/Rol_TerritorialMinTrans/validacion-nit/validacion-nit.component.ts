@@ -17,6 +17,7 @@ import {
   debounceTime,
   distinctUntilChanged,
   switchMap,
+  timeout,
 } from 'rxjs/operators';
 
 @Component({
@@ -80,10 +81,12 @@ export default class ValidacionNitComponent {
           // Verificar si el valor es válido para hacer la consulta
           if (value && value.length >= 9) {
             return this.apiSFService.getDataByNIT(value).pipe(
+              timeout(5000), // Tiempo máximo de espera de 5 segundos
               catchError((error) => {
                 console.error('Error al enviar los datos:', error);
                 this.showModalWarning1 = true;
                 this.formGroup1.get('nombreEmpresa')?.enable();
+                this.isProcessing = false;
                 return of(null); // Retorna null si hay un error
               })
             );
