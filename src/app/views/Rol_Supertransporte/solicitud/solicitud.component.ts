@@ -175,18 +175,7 @@ export default class SolicitudComponent {
     },
   ];
 
-  //Menu stepper1
-  infoStepper1 = [
-    {
-      num: 1,
-      info: 'Visualizar información operativo',
-    },
-    {
-      num: 2,
-      info: 'Cargue de documentación',
-    },
-  ];
-
+  
   //Props o datos para input upload
   dataClass = {
     textSize: 'xs',

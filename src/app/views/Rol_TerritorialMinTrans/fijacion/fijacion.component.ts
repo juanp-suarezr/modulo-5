@@ -1597,6 +1597,7 @@ export default class FijacionComponent {
         consecutivo: number;
         numeroContrato: any;
         contratante: any;
+        nitContratante: any;
         fechaInicio: any;
         fechaFin: any;
         duracionMeses: any;
@@ -1617,6 +1618,7 @@ export default class FijacionComponent {
           consecutivo: this.contador,
           numeroContrato: item.numeroContrato,
           contratante: item.contratante,
+          nitContratante: item.nitContratante,
           fechaInicio: item.fecha_inicio,
           fechaFin: item.fecha_terminacion,
           duracionMeses: item.duracionMeses,
