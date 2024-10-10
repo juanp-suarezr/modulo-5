@@ -76,7 +76,7 @@
 
         <!--Estado de subsanacion -->
         <div class="w-full flex flex-col justify-start items-stretch pt-6 my-auto h-full mb-6"
-          *ngIf="!solicitud.formulario.concepto">
+          *ngIf="!solicitud.formulario.radicadoSalida">
           <p class="text-primary3 font-semibold h-full m-auto">
             Estado de subsanación
           </p>
@@ -90,7 +90,7 @@
 
         <!-- SEMAFORO SUBSANACION -->
         <div class="w-full flex flex-col justify-start items-stretch pt-6 my-auto h-full mb-6"
-          *ngIf="checked && !solicitud.formulario.concepto">
+          *ngIf="checked && !solicitud.formulario.radicadoSalida">
           <p class="text-primary3 font-semibold h-full m-auto">
             Semáforo de subsanación
           </p>
@@ -1311,7 +1311,7 @@
             class="inline-flex items-center justify-center px-6 py-1 text-white bg-primary2 hover:bg-primary1 focus:bg-primary1 font-medium rounded-full text-[16px] work-sans text-center">
             <span class="govco-download me-2 py-2 h-[70%] m-auto"></span> Descargar archivo adjunto
           </button>
-          <app-primary-button type="button" (click)="changeActiveStep1(2)">continuar a financiero</app-primary-button>
+          <app-primary-button type="button" (click)="changeActiveNum('2', true)">continuar a financiero</app-primary-button>
         </div>
       </div>
 
@@ -1359,7 +1359,7 @@
           </p>
 
           <!-- input -->
-          <app-file-upload *ngIf="!solicitud.formulario.concepto" class="mt-2 h-full" [dataClass]="dataClass"
+          <app-file-upload *ngIf="!solicitud.formulario.radicadoSalida" class="mt-2 h-full" [dataClass]="dataClass"
             [maxFiles]="1" mimes=".pdf" [error]="errorStates[2]"
             (fileSelected)="onFileSelected($event, 2)"></app-file-upload>
 
@@ -1389,7 +1389,7 @@
                 </div>
 
                 <!-- button borrar -->
-                <button class="m-auto w-auto" (click)="deleteFile(2)">
+                <button class="m-auto w-auto" *ngIf="!solicitud.formulario.radicadoSalida" (click)="deleteFile(2)">
                   <span class="pi pi-trash w-full h-full sm:text-xl text-base text-primary2 text-medium"></span>
                 </button>
 
@@ -1576,8 +1576,8 @@
 
 
       <div class="mt-8 w-full flex justify-between gap-4">
-        <app-primary-button type="button" class="" (click)="SaveInfo()">Guardar</app-primary-button>
-        <app-primary-button type="button" (click)="changeActiveNum('3', true)">Continuar</app-primary-button>
+        <app-primary-button *ngIf="!solicitud.formulario.radicadoSalida" type="button" class="" (click)="SaveInfo()">Guardar y continuar</app-primary-button>
+        <app-primary-button *ngIf="solicitud.formulario.radicadoSalida" type="button" (click)="changeActiveNum('3', true)">Continuar</app-primary-button>
       </div>
 
 
@@ -1599,7 +1599,7 @@
           El concepto de sustentabilidad es*
         </p>
         <!-- select -->
-        <div class="w-full relative mt-2 sm:w-1/2" *ngIf="!solicitud.formulario.concepto">
+        <div class="w-full relative mt-2 sm:w-1/2" *ngIf="!solicitud.formulario.radicadoSalida">
 
           <div (click)="toggleDropdown(0)"
             [ngClass]="{'text-error !border border-error': formGroup3.get('concepto')?.invalid && (formGroup3.get('concepto')?.touched || formGroup3.get('concepto')?.dirty)}"
@@ -1632,7 +1632,7 @@
 
         </div>
         <!-- mostrar concepto -->
-        <div class="w-full relative mt-2 sm:w-1/2" *ngIf="solicitud.formulario.concepto">
+        <div class="w-full relative mt-2 sm:w-1/2" *ngIf="solicitud.formulario.radicadoSalida">
           <!-- input -->
           <div class="mt-2 relative w-full h-full flex items-center">
             <div
@@ -1644,14 +1644,15 @@
       </div>
 
       <div class="mt-8 w-full flex justify-center gap-4">
-        <app-primary-button type="button" class="" (click)="EmitirConcepto()">Guardar</app-primary-button>
+        <app-primary-button *ngIf="!solicitud.formulario.radicadoSalida" type="button" class="" (click)="EmitirConcepto()">Guardar</app-primary-button>
+        <app-primary-button *ngIf="solicitud.formulario.radicadoSalida" type="button" class="" (click)="changeActiveNum('4', true)">Continuar</app-primary-button>
       </div>
 
     </form>
 
   </div>
   <!-- solicitud radicado -->
-  <div class="md:col-span-8 sm:col-span-7 w-auto sm:mt-10 mt-4 md:px-8 px-2">
+  <div class="md:col-span-8 sm:col-span-7 w-auto sm:mt-10 mt-4 md:px-8 px-2" *ngIf="activeNum == '4' && loadingPage == false">
     <div class="w-full paso2 mb-6">
       <!-- formulario 1 -->
       <form [formGroup]="formGroup1" class="px-4 md:pl-12 md:pe-12 mt-6 active1 mb-6">
@@ -1668,7 +1669,7 @@
               Radicado de salida*
             </p>
 
-            <app-file-upload *ngIf="!solicitud.formulario.concepto" class="mt-2 h-full" [dataClass]="dataClass"
+            <app-file-upload *ngIf="!solicitud.formulario.radicadoSalida" class="mt-2 h-full" [dataClass]="dataClass"
               [maxFiles]="1" mimes=".pdf" [error]="errorStates[1]"
               (fileSelected)="onFileSelected($event, 1)"></app-file-upload>
 
@@ -1699,7 +1700,7 @@
                   </div>
 
                   <!-- button borrar -->
-                  <button class="m-auto w-auto" (click)="deleteFile(1)">
+                  <button *ngIf="!solicitud.formulario.radicadoSalida" class="m-auto w-auto" (click)="deleteFile(1)">
                     <span class="pi pi-trash w-full h-full sm:text-xl text-base text-primary2 text-medium"></span>
                   </button>
 
@@ -1718,13 +1719,13 @@
         </div>
 
         <div class="mt-4 w-full relative flex justify-between">
-          <button type="button" (click)="changeActiveStep(5)"
+          <button type="button" (click)="changeActiveNum('3', true)"
             class="inline-flex items-center justify-center px-6 py-1 text-white bg-primary4 hover:bg-primary2 focus:bg-primary2 font-medium rounded-full text-[16px] work-sans text-center">
             Regresar
           </button>
           <app-primary-button
             *ngIf="(this.formGroup1.get('1')?.value != '' && this.formGroup1.get('1')?.value != null) && isActuFile.includes(1)"
-            (click)="onSubmitAllForms()">Guardar y continuar</app-primary-button>
+            (click)="onSubmitAllForms()">Enviar</app-primary-button>
 
         </div>
 
@@ -1757,15 +1758,22 @@
 <app-alert [showModal]="showModal" title="Radicado guardado exitosamente" textColor="text-success"
   [showSubtitle]="false" [message]="'Su radicado de salida ha sido guardado con éxito'" buttonText="Continuar"
   [isIcon]="false" [showFirstButton]="true" [showCancelButton]="false" TypeAlert="success" (close)="handleClose()"
-  (closeByButton1)="changeActiveNum('2', true)" (closeByButton2)="handleCloseByButton2()"
-  (closeByBackdrop)="changeActiveNum('2', true)" (close)="showModal = true"></app-alert>
+  (closeByButton1)="showModalFinal = true" (closeByButton2)="handleCloseByButton2()"
+  (closeByBackdrop)="showModalFinal = true" (close)="showModal = true"></app-alert>
 
 <!-- Modal -->
 <app-alert [showModal]="showModal1" title="Información guardada" textColor="text-success" [showSubtitle]="false"
   [message]="' La información se ha cargado correctamente'" buttonText="Continuar" [isIcon]="false"
   [showFirstButton]="true" [showCancelButton]="false" TypeAlert="success" (close)="handleClose()"
   (closeByButton1)="changeActiveNum('3', true)" (closeByButton2)="handleCloseByButton2()"
-  (closeByBackdrop)="changeActiveNum('3', true)" (close)="showModal = true"></app-alert>
+  (closeByBackdrop)="changeActiveNum('3', true)" (close)="showModal1 = false"></app-alert>
+
+  <!-- Modal -->
+<app-alert [showModal]="showModal2" title="Información guardada" textColor="text-success" [showSubtitle]="false"
+[message]="' La información se ha cargado correctamente'" buttonText="Continuar" [isIcon]="false"
+[showFirstButton]="true" [showCancelButton]="false" TypeAlert="success" (close)="handleClose()"
+(closeByButton1)="changeActiveNum('4', true)" (closeByButton2)="handleCloseByButton2()"
+(closeByBackdrop)="changeActiveNum('4', true)" (close)="showModal1 = false"></app-alert>
 
 <!-- Modal FINAL -->
 <app-alert [showModal]="showModalFinal" title="Solicitud guardada con éxito" textColor="text-success"

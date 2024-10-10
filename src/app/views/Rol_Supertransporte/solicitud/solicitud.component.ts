@@ -131,6 +131,7 @@ export default class SolicitudComponent {
   //Control para mostrar modales
   showModal: boolean = false;
   showModal1: boolean = false;
+  showModal2: boolean = false;
   ShowLoadingModal: boolean = false;
   showErrorModal: boolean = false;
   showModalFinal: boolean = false;
@@ -152,6 +153,10 @@ export default class SolicitudComponent {
     {
       num: '3',
       name: 'Concepto',
+    },
+    {
+      num: '4',
+      name: 'Radicado',
     },
   ];
 
@@ -175,7 +180,6 @@ export default class SolicitudComponent {
     },
   ];
 
-  
   //Props o datos para input upload
   dataClass = {
     textSize: 'xs',
@@ -286,12 +290,13 @@ export default class SolicitudComponent {
                 value: clase.id,
                 label: clase.descripcion,
               }));
+              this.ActuForms(response);
               console.log(this.conceptos);
             });
 
             this.solicitud = response;
 
-            this.ActuForms(response);
+            
 
             console.log(response);
             this.loadingPage = false;
@@ -324,14 +329,26 @@ export default class SolicitudComponent {
     this.formGroup2.patchValue({
       ['solidez']: info.formulario.solidez,
     });
+    this.formGroup3.patchValue({
+      ['concepto']:
+        this.conceptos.find(
+          (item: any) => item.value == info.formulario.concepto
+        ) || '',
+    });
+    
+
+    this.selects[0].value = this.conceptos.find(
+      (item: any) => item.value == info.formulario.concepto
+    ) || '';
 
     this.checked = info.formulario.subsanar;
 
-    if (info.formulario.concepto) {
+    if (info.formulario.radicadoSalida) {
       this.formGroup2.get('rentaNeta')?.disable();
       this.formGroup2.get('solidez')?.disable();
       this.formGroup2.get('liquidez')?.disable();
       this.formGroup2.get('rentaOperacional')?.disable();
+      this.formGroup3.get('concepto')?.disable();
     }
   }
 
@@ -578,13 +595,21 @@ export default class SolicitudComponent {
     if (this.solicitud.formulario.radicadoSalida) {
       saved = true;
     }
-    if (newValue == '2') {
+
+    if (this.solicitud.formulario.excelModeloTransporte) {
+      saved = true;
+    }
+
+    if (this.solicitud.formulario.concepto) {
+      saved = true;
+    }
+
+    if (newValue == '3') {
       if (saved) {
         this.stateService.setActiveNum(newValue);
       }
-    } else if (newValue == '3') {
-      await this.loadOptions();
-      if (saved && this.solicitud.formulario.excelModeloTransporte) {
+    } else if (newValue == '4') {
+      if (saved) {
         this.stateService.setActiveNum(newValue);
       }
     } else {
@@ -609,26 +634,6 @@ export default class SolicitudComponent {
         break;
       case 5:
         this.changeActiveNum('1');
-        this.stepperService.setActiveNum(1);
-        break;
-
-      default:
-        break;
-    }
-
-    console.log(this.errorStates);
-  }
-
-  //Metodo para cambiar el valor del stepper 1
-  changeActiveStep1(newValue: number) {
-    switch (newValue) {
-      case 1:
-        this.stepperService.setActiveNum(newValue);
-        break;
-      case 2:
-        this.stepperService.setActiveNum(newValue);
-        break;
-      case 3:
         this.stepperService.setActiveNum(1);
         break;
 
@@ -931,53 +936,6 @@ export default class SolicitudComponent {
       );
   }
 
-  //Metodo para guardar el formulario
-  onSubmitAllForms() {
-    if (this.validateFormGroup(this.formGroup1, this.errorStates)) {
-      this.ShowLoadingModal = true; // Mostrar modal
-      console.log(this.formGroup1.get('1')?.value);
-      console.log(this.formGroup1);
-
-      // Convertir valores que pueden ser Blob a Base64 (para los archivos en data2)
-      Promise.all([
-        this.convertirSiEsBlob(this.formGroup1.get('1')?.value), // radicadoSalida
-      ])
-        .then(([radicadoSalida]) => {
-          // Creación del objeto data2 con todos los campos procesados
-          const data = {
-            radicadoSalida,
-          };
-
-          // put paso 2 actualizar - cargue 2
-          this.apiSFService
-            .RadicadoSalida(this.solicitud.formulario.id, data)
-            .subscribe(
-              (response) => {
-                // Aquí puedes manejar la respuesta, por ejemplo:
-                this.ShowLoadingModal = false;
-                this.showModal = true;
-
-                console.log('Datos enviados exitosamente:', response);
-              },
-              (error) => {
-                this.ShowLoadingModal = false;
-                this.showErrorModal = true;
-                // Manejo del error
-                console.error('Error al enviar los datos:', error);
-              }
-            );
-        })
-        .catch((error) => {
-          console.error('Error en la conversión de archivos:', error);
-          this.ShowLoadingModal = false;
-        });
-    } else {
-      this.ShowLoadingModal = false; // Mostrar modal
-      this.submitted = true;
-      this.formGroup1.markAllAsTouched();
-    }
-  }
-
   SaveInfo() {
     if (this.validateFormGroup(this.formGroup2, this.errorStates)) {
       this.ShowLoadingModal = true; // Mostrar modal
@@ -990,7 +948,7 @@ export default class SolicitudComponent {
     }
   }
 
-  actualizarFinanciero(isConcepto?: boolean) {
+  actualizarFinanciero() {
     // Convertir valores que pueden ser Blob a Base64 (para los archivos en data2)
     Promise.all([
       this.convertirSiEsBlob(this.formGroup2.get('2')?.value), // radicadoSalida
@@ -1020,12 +978,8 @@ export default class SolicitudComponent {
                   (response) => {
                     // Aquí puedes manejar la respuesta, por ejemplo:
 
-                    if (isConcepto) {
-                      this.actualizarConcepto();
-                    } else {
-                      this.ShowLoadingModal = false;
-                      this.showModal1 = true;
-                    }
+                    this.ShowLoadingModal = false;
+                    this.showModal1 = true;
 
                     console.log('Datos enviados exitosamente:', response);
                   },
@@ -1055,8 +1009,8 @@ export default class SolicitudComponent {
 
   EmitirConcepto() {
     if (this.validateFormGroup(this.formGroup3, this.errorStates)) {
-      this.actualizarFinanciero(true);
       this.ShowLoadingModal = true; // Mostrar modal
+      this.actualizarConcepto();
       console.log(this.formGroup3);
     } else {
       this.ShowLoadingModal = false; // Mostrar modal
@@ -1065,21 +1019,30 @@ export default class SolicitudComponent {
     }
   }
 
-  actualizarConcepto() {
+  actualizarConcepto(isfinal?: boolean) {
     const data = {
       concepto: this.formGroup3.get('concepto')?.value.value,
       idEstadoSolicitud:
-        this.formGroup3.get('concepto')?.value.label == 'Favorable' ? 125 : 126,
+        this.formGroup3.get('concepto')?.value.label == 'Favorable' &&
+        (this.solicitud.formulario.radicadoSalida ||
+          this.formGroup1.get('1')?.value != null) &&
+        isfinal
+          ? 125
+          : 126,
     };
     // put paso final emitir concepto
     this.apiSFService
       .emitirConcepto(this.solicitud.formulario.id, data)
       .subscribe(
         (response) => {
-          this.checked = false;
-          this.ActiveSubsanacion();
+          if (isfinal) {
+            this.checked = false;
+            this.ActiveSubsanacion();
+          }
+          this.changeActiveNum('4');
           this.ShowLoadingModal = false;
-          this.showModalFinal = true;
+          this.showModal2 = true;
+
           console.log('Datos enviados exitosamente:', response);
         },
         (error) => {
@@ -1089,6 +1052,54 @@ export default class SolicitudComponent {
           console.error('Error al enviar los datos:', error);
         }
       );
+  }
+
+  //Metodo para guardar el radicado de salida
+  onSubmitAllForms() {
+    if (this.validateFormGroup(this.formGroup1, this.errorStates)) {
+      this.ShowLoadingModal = true; // Mostrar modal
+      console.log(this.formGroup1.get('1')?.value);
+      console.log(this.formGroup1);
+
+      // Convertir valores que pueden ser Blob a Base64 (para los archivos en data2)
+      Promise.all([
+        this.convertirSiEsBlob(this.formGroup1.get('1')?.value), // radicadoSalida
+      ])
+        .then(([radicadoSalida]) => {
+          // Creación del objeto data2 con todos los campos procesados
+          const data = {
+            radicadoSalida,
+          };
+
+          // put paso 2 actualizar - cargue 2
+          this.apiSFService
+            .RadicadoSalida(this.solicitud.formulario.id, data)
+            .subscribe(
+              (response) => {
+                // Aquí puedes manejar la respuesta, por ejemplo:
+                this.ShowLoadingModal = false;
+                this.showModal = true;
+                this.actualizarConcepto(true);
+
+                console.log('Datos enviados exitosamente:', response);
+              },
+              (error) => {
+                this.ShowLoadingModal = false;
+                this.showErrorModal = true;
+                // Manejo del error
+                console.error('Error al enviar los datos:', error);
+              }
+            );
+        })
+        .catch((error) => {
+          console.error('Error en la conversión de archivos:', error);
+          this.ShowLoadingModal = false;
+        });
+    } else {
+      this.ShowLoadingModal = false; // Mostrar modal
+      this.submitted = true;
+      this.formGroup1.markAllAsTouched();
+    }
   }
 
   setConceptoLabel() {
