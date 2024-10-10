@@ -866,7 +866,7 @@
                 </h3>
             </div>
             <!-- content 1 -->
-            <div class="content1 md:grid sm:grid-cols-2 md:grid-cols-3 md:gap-x-24 md:flex items-center h-full">
+            <div class="content1 md:grid sm:grid-cols-2 md:grid-cols-7 md:gap-x-4 md:flex items-center h-full">
 
 
                 <!-- input 3 Cantidad de contratos* -->
@@ -875,9 +875,9 @@
                         Cantidad de contratos*
                     </p>
                     <!-- input -->
-                    <div class="mt-2 relative w-full">
+                    <div class="mt-2 relative w-full h-full">
                         <input
-                            class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent disabled:bg-secondary3 disabled:border-secondary2 disabled:text-secondary2"
+                            class="shadow-sm rounded-md w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent disabled:bg-secondary3 disabled:border-secondary2 disabled:text-secondary2"
                             type="number" formControlName="cantidad_contratos" placeholder="Ingrese número">
                         <div class="w-full relative">
 
@@ -894,12 +894,12 @@
                 </div>
 
                 <!-- input 4 N° de contrato* -->
-                <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+                <div class="w-full col-span-2 flex flex-col justify-center items-start pt-6 my-auto h-full">
                     <p class="text-primary3 font-semibold">
                         N° de contrato*
                     </p>
                     <!-- input -->
-                    <div class="mt-2 w-full relative">
+                    <div class="mt-2 w-full relative h-full">
                         <input
                             class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent"
                             type="text" formControlName="numeroContrato" required placeholder="Ingrese número contrato">
@@ -927,15 +927,50 @@
 
                 </div>
 
+                <!-- input 5.1 nit contratante -->
+                <div class="w-full col-span-2 flex flex-col justify-center items-start pt-6 my-auto h-full">
+
+                    <p class="text-primary3 font-semibold">
+                        NIT de empresa contratante*
+                    </p>
+
+                    <!-- input -->
+                    <div class="mt-2 relative w-full h-full">
+                        <input
+                            class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent"
+                            type="text" formControlName="nitContratante" required placeholder="Ingrese NIT contratante">
+                        <div class="w-full relative">
+                            <!-- Icono de error (rojo) -->
+                            <span
+                                *ngIf="formGroup4.get('nitContratante')?.invalid && (formGroup4.get('nitContratante')?.touched || submitted)"
+                                class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
+                                <span class="pi pi-exclamation-circle text-error text-[24px]"></span>
+                            </span>
+
+                            <!-- Icono de éxito (verde) -->
+                            <span
+                                *ngIf="formGroup4.get('nitContratante')?.valid && (formGroup4.get('nitContratante')?.touched || submitted)"
+                                class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
+                                <span class="pi pi-check-circle text-success text-[24px]"></span>
+                            </span>
+                        </div>
+                        <span *ngIf="submitted && formGroup4.get('nitContratante')?.errors?.['required']"
+                            class="text-error">
+                            NIT de empresa contratante es obligatorio
+                        </span>
+                    </div>
+
+                </div>
+
                 <!-- input 5 Contratante* -->
-                <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
-                    <p class="text-primary3 font-semibold h-full">
+                <div class="w-full col-span-2 flex flex-col justify-center items-start pt-6 my-auto h-full">
+                    <p class="text-primary3 font-semibold">
                         Contratante*
                     </p>
                     <!-- input -->
-                    <div class="mt-2 relative w-full">
+                    <div class="mt-2 relative w-full h-full">
                         <input
-                            class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent"
+                            class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent disabled:bg-secondary3 disabled:border-secondary2 disabled:text-secondary2"
                             type="text" formControlName="contratante" required
                             placeholder="Nombre de empresa contratante">
                         <div class="w-full relative">
@@ -962,13 +997,18 @@
                             class="text-error">
                             El numeró no puede ser negativo
                         </span>
+                        <span
+                            *ngIf="formGroup4.get('contratante')?.hasError('nitInvalido') && (formGroup4.get('contratante')?.touched || submitted)"
+                            class="text-error">
+                            El contratante no se encuentra registrado en rues
+                        </span>
                     </div>
 
                 </div>
             </div>
 
             <!-- content 2 -->
-            <div class="content1 md:grid sm:grid-cols-2 md:grid-cols-3 md:gap-x-24 md:flex items-center h-full">
+            <div class="content1 md:grid sm:grid-cols-2 md:grid-cols-3 md:gap-x-24 md:flex items-center h-full mb-4">
                 <!-- input 7 Fecha de inicio* -->
                 <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
                     <p class="text-primary3 font-semibold h-full m-auto">
@@ -1342,7 +1382,7 @@
                     Regresar
                 </button> -->
                 <app-primary-button type="submit" class="">Guardar y continuar</app-primary-button>
-                
+
             </div>
 
         </form>
@@ -1408,3 +1448,21 @@
     buttonText="Continuar" [showFirstButton]="true" [showCancelButton]="false" TypeAlert="error"
     (close)="showErrorModal = false" (closeByButton1)="showErrorModal = false" (closeByIcon)="showErrorModal = false"
     (closeByBackdrop)="showErrorModal = false" (close)="showErrorModal = false"></app-alert>
+
+<!-- modal de error en data -->
+<app-alert [showModal]="showModalAlerta" title="No se encuentra registro en RUES" subtitle=""
+    message="Se recomienda solicitar realizar registro RUES, para poder tramitar solicitudes." cancelButtonText="Cerrar"
+    [showCancelButton]="true" [showFirstButton]="false" (close)="showModalAlerta = false" textColor="text-waring"
+    TypeAlert="warning"></app-alert>
+
+<!-- modal de error en data -->
+<app-alert [showModal]="showModalAlerta1" title="Registro con matricula cancelada" subtitle=""
+    message="Se recomienda solicitar actualizar novedad de registro RUES, para poder tramitar solicitudes."
+    cancelButtonText="Cerrar" [showCancelButton]="true" [showFirstButton]="false" (close)="showModalAlerta1 = false"
+    textColor="text-waring" TypeAlert="warning"></app-alert>
+
+<!-- modal de error en data -->
+<app-alert [showModal]="showModalWarning1" title="inconvenientes registros RUES" subtitle=""
+    message="Estamos experimentando inconvenientes técnicos con la consulta del NIT en rues. Se le habilitará el espacio para añadir de manera manual la razón social."
+    cancelButtonText="Cerrar" [showCancelButton]="true" [showFirstButton]="false" (close)="showModalWarning1 = false"
+    textColor="text-waring" TypeAlert="warning"></app-alert>
