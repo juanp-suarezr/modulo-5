@@ -1382,14 +1382,9 @@
 <app-alert [showModal]="showModalInfoSaved1" title="Información guardada" textColor="text-success"
     [showSubtitle]="false" [message]="' La información se ha cargado correctamente'" buttonText="Continuar"
     [isIcon]="false" [showFirstButton]="true" [showCancelButton]="false" TypeAlert="success"
-    (close)="showModalInfoSaved = false" (closeByButton1)="continueContract()"
-    (closeByBackdrop)="continueContract()" (close)="showModalInfoSaved1 = true"></app-alert>
+    (close)="showModalInfoSaved1 = false" (closeByButton1)="changeContratoInfo(true)"
+    (closeByBackdrop)="changeContratoInfo(true)" (close)="showModalInfoSaved1 = false"></app-alert>
 
-<!-- modal de continuar sin guardar operativo -->
-<app-alert [showModal]="showModalContinuar1" title="Continuar sin guardar" subtitle=""
-    message="Esta seguro que desea continuar sin guardar." cancelButtonText="Cerrar" [showCancelButton]="true"
-    buttonText="Continuar" [showFirstButton]="true" (close)="showModalContinuar = false"
-    (closeByButton1)="changeContratoInfo(true)" TypeAlert="warning"></app-alert>
 
 <!-- modal de confirmación -->
 <app-alert [showModal]="showModal" title="¿Está seguro de enviar?" subtitle="¿Está seguro de enviar?"

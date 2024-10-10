@@ -116,6 +116,8 @@ export default class FijacionComponent {
 
   //solicitud contratos
   contratosSolicitud: any;
+  //contador para consecutivo
+  contador: number = 0;
 
   //solicitud guardada
   solicitudGuardada: any;
@@ -309,7 +311,7 @@ export default class FijacionComponent {
           await this.ObtenerDocumentos(response.id);
 
           //OBTENER Contratos
-          this.ObtenerContratos(response.id);
+          this.ObtenerContratos(response.id, 0);
 
           (this.nombreEmpresa = response.nombreEmpresa),
             (this.nit = response.nit),
@@ -356,7 +358,7 @@ export default class FijacionComponent {
           this.formGroup3.patchValue({
             ['cantidadVehiculos']: response.cantidadVehiculos,
           });
-
+          resolve(response);
           console.log(response);
         },
         (error) => {
@@ -405,7 +407,7 @@ export default class FijacionComponent {
     });
   }
 
-  ObtenerContratos(id: string) {
+  ObtenerContratos(id: string, index: number) {
     //GET CONTRATOS
     this.apiSFService.getContratosByIDSolicitud(id).subscribe(
       (response2) => {
@@ -418,83 +420,83 @@ export default class FijacionComponent {
         response2.forEach((contrato: any) => {
           console.log(contrato);
           // Actualizamos los campos principales del formulario con el valor del primer contrato (solo para campos "globales")
-          if (response2.indexOf(contrato) === 0) {
-            this.formGroup4.get('duracionMeses')?.enable();
-            this.formGroup4.patchValue({
-              cantidad_contratos: this.formGroup1.get('2')?.value.length,
-              numeroContrato: contrato.numeroContrato || '',
-              contratante: contrato.contratante || '',
-              fecha_inicio:
-                this.formatearFechaParaDatetimeLocal(contrato.fechaInicio) ||
-                '',
-              fecha_terminacion:
-                this.formatearFechaParaDatetimeLocal(contrato.fechaFin) || '',
-              duracionMeses: contrato.duracionMeses || '',
-              numeroVehiculos: contrato.idvehiculos || '',
-              idClaseVehiculo: contrato.claseVehiculos.map((item: any) => ({
-                value: item.idClaseVehiculo,
-                label: item.claseVehiculoDescripcion,
-              })),
-              valorContrato: contrato.valorContrato || '',
-              idFormaPago: {
-                value: contrato.idFormaPago,
-                label: contrato.formaPagoDescripcion,
-              },
-              idAreaOperacion: contrato.areasOperacion.map((item: any) => ({
-                value: item.idMunicipioArea,
-                label: item.departamentoDescripcion,
-              })),
-              disponibilidadVehiculosEstimada:
-                this.horas.find(
-                  (item: any) =>
-                    item.value == contrato.disponibilidadVehiculosEstimada
-                ) || '',
-              idClaseVehiculos: contrato.vehiculos,
-            });
+          // if (response2.indexOf(contrato) === index) {
+          //   this.formGroup4.get('duracionMeses')?.enable();
+          //   this.formGroup4.patchValue({
+          //     cantidad_contratos: this.formGroup1.get('2')?.value.length,
+          //     numeroContrato: contrato.numeroContrato || '',
+          //     contratante: contrato.contratante || '',
+          //     fecha_inicio:
+          //       this.formatearFechaParaDatetimeLocal(contrato.fechaInicio) ||
+          //       '',
+          //     fecha_terminacion:
+          //       this.formatearFechaParaDatetimeLocal(contrato.fechaFin) || '',
+          //     duracionMeses: contrato.duracionMeses || '',
+          //     numeroVehiculos: contrato.idvehiculos || '',
+          //     idClaseVehiculo: contrato.claseVehiculos.map((item: any) => ({
+          //       value: item.idClaseVehiculo,
+          //       label: item.claseVehiculoDescripcion,
+          //     })),
+          //     valorContrato: contrato.valorContrato || '',
+          //     idFormaPago: {
+          //       value: contrato.idFormaPago,
+          //       label: contrato.formaPagoDescripcion,
+          //     },
+          //     idAreaOperacion: contrato.areasOperacion.map((item: any) => ({
+          //       value: item.idMunicipioArea,
+          //       label: item.departamentoDescripcion,
+          //     })),
+          //     disponibilidadVehiculosEstimada:
+          //       this.horas.find(
+          //         (item: any) =>
+          //           item.value == contrato.disponibilidadVehiculosEstimada
+          //       ) || '',
+          //     idClaseVehiculos: contrato.vehiculos,
+          //   });
 
-            this.formGroup4.get('cantidad_contratos')?.disable();
-            this.formGroup4.get('duracionMeses')?.disable();
+          //   this.formGroup4.get('cantidad_contratos')?.disable();
+          //   this.formGroup4.get('duracionMeses')?.disable();
 
-            this.selects[1].value = contrato.idFormaPago || '';
+          //   this.selects[1].value = contrato.idFormaPago || '';
 
-            this.selects[3].value =
-              contrato.disponibilidadVehiculosEstimada || '';
-            this.selects[2].selectedOption =
-              this.formGroup4.get('idAreaOperacion')?.value || '';
-            this.selectedOptionsDeparts =
-              this.formGroup4.get('idAreaOperacion')?.value;
-            // Primero limpias el FormArray para asegurarte de que esté vacío antes de agregar nuevos controles
-            this.idClaseVehiculos.clear();
+          //   this.selects[3].value =
+          //     contrato.disponibilidadVehiculosEstimada || '';
+          //   this.selects[2].selectedOption =
+          //     this.formGroup4.get('idAreaOperacion')?.value || '';
+          //   this.selectedOptionsDeparts =
+          //     this.formGroup4.get('idAreaOperacion')?.value;
+          //   // Primero limpias el FormArray para asegurarte de que esté vacío antes de agregar nuevos controles
+          //   this.idClaseVehiculos.clear();
 
-            // Luego recorres la respuesta y agregas los valores al FormArray
-            contrato.claseVehiculos.forEach(
-              (claseVehiculo: {
-                idClaseVehiculo: any;
-                cantidadVehiculos: any;
-                claseVehiculoDescripcion: any;
-              }) => {
-                const vehiculoGroup = this.fb.group({
-                  idClaseVehiculo: [
-                    claseVehiculo.idClaseVehiculo,
-                    Validators.required,
-                  ],
-                  cantidadVehiculos: [
-                    claseVehiculo.cantidadVehiculos,
-                    [Validators.required, Validators.min(1)],
-                  ],
-                });
+          //   // Luego recorres la respuesta y agregas los valores al FormArray
+          //   contrato.claseVehiculos.forEach(
+          //     (claseVehiculo: {
+          //       idClaseVehiculo: any;
+          //       cantidadVehiculos: any;
+          //       claseVehiculoDescripcion: any;
+          //     }) => {
+          //       const vehiculoGroup = this.fb.group({
+          //         idClaseVehiculo: [
+          //           claseVehiculo.idClaseVehiculo,
+          //           Validators.required,
+          //         ],
+          //         cantidadVehiculos: [
+          //           claseVehiculo.cantidadVehiculos,
+          //           [Validators.required, Validators.min(1)],
+          //         ],
+          //       });
 
-                // Añades el grupo al FormArray
-                this.idClaseVehiculos.push(vehiculoGroup);
+          //       // Añades el grupo al FormArray
+          //       this.idClaseVehiculos.push(vehiculoGroup);
 
-                // Si también necesitas actualizar `selectedOptionsClase`:
-                this.selectedOptionsClase.push({
-                  value: claseVehiculo.idClaseVehiculo,
-                  label: claseVehiculo.claseVehiculoDescripcion,
-                });
-              }
-            );
-          }
+          //       // Si también necesitas actualizar `selectedOptionsClase`:
+          //       this.selectedOptionsClase.push({
+          //         value: claseVehiculo.idClaseVehiculo,
+          //         label: claseVehiculo.claseVehiculoDescripcion,
+          //       });
+          //     }
+          //   );
+          // }
 
           console.log(this.formGroup4);
         });
@@ -1114,6 +1116,7 @@ export default class FijacionComponent {
     opcion?: string,
     notChange?: boolean
   ) {
+    this.showModalInfoSaved = false;
     this.isActuFile = [-1];
     switch (num) {
       case 1:
@@ -1132,6 +1135,7 @@ export default class FijacionComponent {
               this.ShowLoadingModal = false;
               this.showModalSaveInfo(num + 1);
             }
+            console.log('estado num', num+1);
             console.log('Datos enviados exitosamente:', response);
           },
           (error) => {
@@ -1184,6 +1188,8 @@ export default class FijacionComponent {
                       this.showModalSaveInfo(num + 1);
                     }
                     // this.ActuFileGuardado(7, 8, 9, 10, 11);
+                    console.log('estado num', num+1);
+                    
                     console.log('Datos enviados exitosamente:', response);
                   },
                   (error) => {
@@ -1214,9 +1220,10 @@ export default class FijacionComponent {
           (response) => {
             // Aquí puedes manejar la respuesta, por ejemplo:
             this.ShowLoadingModal = false;
-            this.stepperService.setActiveNum(num);
+            
+            //valida si viene actualizar desde operativo
             if (!notChange) {
-              this.showModalSaveInfo(num + 1);
+              this.showModalSaveInfo(num+1);
             } else {
               this.ObtenerSolicitud(this.idSolicitud);
             }
@@ -1501,6 +1508,7 @@ export default class FijacionComponent {
 
   // Método para enviar los formularios
   async onSubmitAllForms() {
+    this.contador += 1;
     this.ShowLoadingModal = true;
     const data1 = await this.datosPaso1();
 
@@ -1528,10 +1536,9 @@ export default class FijacionComponent {
       }> = [];
 
       console.log(this.contratosSolicitud);
-
       this.contractDataArray.forEach((item, index) => {
         contratos.push({
-          consecutivo: index,
+          consecutivo: this.contador,
           numeroContrato: item.numeroContrato,
           contratante: item.contratante,
           fechaInicio: item.fecha_inicio,
@@ -1547,28 +1554,34 @@ export default class FijacionComponent {
             item.disponibilidadVehiculosEstimada.value,
           estado: true,
           idEstadoSolicitud:
-            index + 1 == this.formGroup1.get('2')?.value.length ? 123 : 162,
+            this.contador == this.formGroup1.get('2')?.value.length ? 123 : 162,
           idFormulario: parseInt(this.idSolicitud),
           vehiculos: item.idClaseVehiculos,
           areasOperacion: item.idAreaOperacion.map((i: { value: any }) => {
             return {
-              id: this.contratosSolicitud
+              id: this.contratosSolicitud ? this.contratosSolicitud.find(
+                (item: { consecutivo: any }) => item.consecutivo == this.contador
+              )
                 ? this.contratosSolicitud[index].areasOperacion.find(
                     (item: { idMunicipioArea: any }) =>
                       (item.idMunicipioArea = i.value)
                   ).id
-                : '',
+                : '' :  '',
               idMunicipioArea: i.value,
             };
           }),
         });
-
-        this.contratosSolicitud.length > index + 1;
       });
-      //valida si existe informacion de Contratos guardados
-      if (this.contratosSolicitud) {
+
+      if (
+        this.contratosSolicitud &&
+        this.contratosSolicitud.find(
+          (item: { consecutivo: any }) => item.consecutivo == this.contador
+        )
+      ) {
         console.log('entroo 1');
         //si existe actualizar segun el array
+        this.ActualizarSolicitud(1, data1, 'opcion3', true);
         this.actualizarContratos(contratos);
       } else if (
         //valida si no existe nada guardado
@@ -1576,41 +1589,31 @@ export default class FijacionComponent {
         this.idSolicitud === 'undefined' ||
         this.idSolicitud === undefined
       ) {
-        this.ActualizarSolicitud(1, data1, 'opcion3', true);
         console.log('entrooo 2');
       } else {
         console.log('entro segurooo');
-
-        contratos.forEach((item, index) => {
-          //CREA SOLICITUD
-          if (this.contratosSolicitud) {
-            if (this.contratosSolicitud[index]) {
-              
-            }
-            // this.actualizarContratos(contratos);
-          } else {
-            this.apiSFService.createContratos(item).subscribe(
-              (response4) => {
-                const parsedData = JSON.parse(response4);
-                console.log('Datos enviados exitosamente:', parsedData);
-                localStorage.setItem(
-                  'contratosSolicitudID',
-                  parsedData.idDetalleContrato
-                );
-                this.contratosSolicitud = parsedData;
-                
-                // Aquí puedes manejar la respuesta, por ejemplo:
-                this.ShowLoadingModal = false;
-              },
-              (error) => {
-                this.ShowLoadingModal = false;
-                this.showErrorModal = true;
-                // Manejo del error
-                console.error('Error al enviar los datos:', error);
-              }
+        this.apiSFService.createContratos(contratos[0]).subscribe(
+          (response4) => {
+            const parsedData = JSON.parse(response4);
+            console.log('Datos enviados exitosamente:', parsedData);
+            localStorage.setItem(
+              'contratosSolicitudID',
+              parsedData.idDetalleContrato
             );
+            this.contratosSolicitud = parsedData;
+            this.showModalInfoSaved1 = true;
+            this.contractDataArray = [];
+
+            // Aquí puedes manejar la respuesta, por ejemplo:
+            this.ShowLoadingModal = false;
+          },
+          (error) => {
+            this.ShowLoadingModal = false;
+            this.showErrorModal = true;
+            // Manejo del error
+            console.error('Error al enviar los datos:', error);
           }
-        });
+        );
       }
     } else {
       this.ShowLoadingModal = false;
@@ -1652,18 +1655,15 @@ export default class FijacionComponent {
 
   changeContratoInfo(isContinue: boolean) {
     if (isContinue) {
-      this.processContractIteration();
-      if (this.IsvalidOperativo) {
-        this.currentContractIteration += 1;
+      //OBTENER Contratos
+      this.currentContractIteration += 1;
+      this.ObtenerContratos(this.idSolicitud, this.currentContractIteration-1);
+      if (this.currentContractIteration == this.formGroup1.get('2')?.value.length) {
+        this.showFinalModal = true;
       }
     } else {
       this.currentContractIteration -= 1;
     }
-  }
-
-  //continuar despues de guardado
-  continueContract() {
-    this.currentContractIteration += 1;
   }
 
   logFormErrors(form: FormGroup | FormArray): void {
@@ -1685,7 +1685,7 @@ export default class FijacionComponent {
   // Procesar cada iteración de contratos
   processContractIteration() {
     console.log(this.currentContractIteration);
-    console.log(this.formGroup4.valid);
+    
 
     if (this.formGroup4.valid) {
       this.IsvalidOperativo = true;
@@ -1722,6 +1722,7 @@ export default class FijacionComponent {
           // Primero limpias el FormArray para asegurarte de que esté vacío antes de agregar nuevos controles
           this.idClaseVehiculos.clear();
           this.selectedOptionsDeparts = [];
+          
         }
       });
 
