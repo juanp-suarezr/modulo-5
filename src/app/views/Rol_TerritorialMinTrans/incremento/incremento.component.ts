@@ -1814,6 +1814,7 @@ export default class IncrementoComponent implements AfterViewInit, OnInit {
       this.IsvalidOperativo = true;
       // Guardar los datos del formulario en el array
       this.formGroup4.get('duracionMeses')?.enable();
+      this.formGroup4.get('contratante')?.enable();
       this.contractDataArray.push(this.formGroup4.value);
       console.log(this.contractDataArray);
       let cantidad_din_contratos = (
