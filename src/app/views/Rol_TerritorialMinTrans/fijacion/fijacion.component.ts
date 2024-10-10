@@ -1137,7 +1137,7 @@ export default class FijacionComponent {
               this.ShowLoadingModal = false;
               this.showModalSaveInfo(num + 1);
             }
-            console.log('estado num', num+1);
+            console.log('estado num', num + 1);
             console.log('Datos enviados exitosamente:', response);
           },
           (error) => {
@@ -1190,8 +1190,8 @@ export default class FijacionComponent {
                       this.showModalSaveInfo(num + 1);
                     }
                     // this.ActuFileGuardado(7, 8, 9, 10, 11);
-                    console.log('estado num', num+1);
-                    
+                    console.log('estado num', num + 1);
+
                     console.log('Datos enviados exitosamente:', response);
                   },
                   (error) => {
@@ -1222,10 +1222,10 @@ export default class FijacionComponent {
           (response) => {
             // Aquí puedes manejar la respuesta, por ejemplo:
             this.ShowLoadingModal = false;
-            
+
             //valida si viene actualizar desde operativo
             if (!notChange) {
-              this.showModalSaveInfo(num+1);
+              this.showModalSaveInfo(num + 1);
             } else {
               this.ObtenerSolicitud(this.idSolicitud);
             }
@@ -1561,14 +1561,17 @@ export default class FijacionComponent {
           vehiculos: item.idClaseVehiculos,
           areasOperacion: item.idAreaOperacion.map((i: { value: any }) => {
             return {
-              id: this.contratosSolicitud ? this.contratosSolicitud.find(
-                (item: { consecutivo: any }) => item.consecutivo == this.contador
-              )
-                ? this.contratosSolicitud[index].areasOperacion.find(
-                    (item: { idMunicipioArea: any }) =>
-                      (item.idMunicipioArea = i.value)
-                  ).id
-                : '' :  '',
+              id: this.contratosSolicitud
+                ? this.contratosSolicitud.find(
+                    (item: { consecutivo: any }) =>
+                      item.consecutivo == this.contador
+                  )
+                  ? this.contratosSolicitud[index].areasOperacion.find(
+                      (item: { idMunicipioArea: any }) =>
+                        (item.idMunicipioArea = i.value)
+                    ).id
+                  : ''
+                : '',
               idMunicipioArea: i.value,
             };
           }),
@@ -1591,35 +1594,57 @@ export default class FijacionComponent {
         this.idSolicitud === 'undefined' ||
         this.idSolicitud === undefined
       ) {
-        console.log('entrooo 2');
-      } else {
-        console.log('entro segurooo');
-        this.apiSFService.createContratos(contratos[0]).subscribe(
-          (response4) => {
-            const parsedData = JSON.parse(response4);
-            console.log('Datos enviados exitosamente:', parsedData);
-            localStorage.setItem(
-              'contratosSolicitudID',
-              parsedData.idDetalleContrato
-            );
-            this.contratosSolicitud = parsedData;
-            this.showModalInfoSaved1 = true;
-            this.contractDataArray = [];
+        //crear solicitud
+        this.apiSFService.createSolicitud(data1).subscribe(
+          (response) => {
+            const parsedData = JSON.parse(response);
 
             // Aquí puedes manejar la respuesta, por ejemplo:
-            this.ShowLoadingModal = false;
+            console.log('Datos enviados exitosamente:', parsedData);
+            this.idSolicitud = parsedData.id_solicitud;
+            localStorage.setItem('idSolicitud', this.idSolicitud);
+
+            this.ActualizarSolicitud(1, data1, 'opcion3', true);
+            this.crearContratos(contratos[0]);
           },
           (error) => {
             this.ShowLoadingModal = false;
             this.showErrorModal = true;
-            // Manejo del error
             console.error('Error al enviar los datos:', error);
           }
         );
+      } else {
+        console.log('entro segurooo');
+        this.crearContratos(contratos[0]);
       }
     } else {
       this.ShowLoadingModal = false;
     }
+  }
+
+  crearContratos(contratos: any) {
+    this.apiSFService.createContratos(contratos[0]).subscribe(
+      (response4) => {
+        const parsedData = JSON.parse(response4);
+        console.log('Datos enviados exitosamente:', parsedData);
+        localStorage.setItem(
+          'contratosSolicitudID',
+          parsedData.idDetalleContrato
+        );
+        this.contratosSolicitud = parsedData;
+        this.showModalInfoSaved1 = true;
+        this.contractDataArray = [];
+
+        // Aquí puedes manejar la respuesta, por ejemplo:
+        this.ShowLoadingModal = false;
+      },
+      (error) => {
+        this.ShowLoadingModal = false;
+        this.showErrorModal = true;
+        // Manejo del error
+        console.error('Error al enviar los datos:', error);
+      }
+    );
   }
 
   //CAMBIAAAAR
@@ -1659,8 +1684,13 @@ export default class FijacionComponent {
     if (isContinue) {
       //OBTENER Contratos
       this.currentContractIteration += 1;
-      this.ObtenerContratos(this.idSolicitud, this.currentContractIteration-1);
-      if (this.currentContractIteration == this.formGroup1.get('2')?.value.length) {
+      this.ObtenerContratos(
+        this.idSolicitud,
+        this.currentContractIteration - 1
+      );
+      if (
+        this.currentContractIteration == this.formGroup1.get('2')?.value.length
+      ) {
         this.showFinalModal = true;
       }
     } else {
@@ -1687,7 +1717,6 @@ export default class FijacionComponent {
   // Procesar cada iteración de contratos
   processContractIteration() {
     console.log(this.currentContractIteration);
-    
 
     if (this.formGroup4.valid) {
       this.IsvalidOperativo = true;
