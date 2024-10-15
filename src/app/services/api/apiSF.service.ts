@@ -258,7 +258,7 @@ export class ApiSFService {
     );
   }
 
-  // PUT generadores riesgo
+  // PUT emitir concepto
   emitirConcepto(id: string, data2: any): Observable<any> {
     return this.http.put(
       `${this.baseUrl}/api/formulario/concepto/${id}`,

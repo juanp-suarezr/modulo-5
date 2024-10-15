@@ -133,18 +133,19 @@ export default class ValidacionNitComponent {
         .getSolicitudByNIT(this.formGroup1.get('nit')?.value)
         .subscribe(
           (response) => {
-            console.log(response.registrado); // Muestra la respuesta en la consola
+            console.log(response.estado); // Muestra la respuesta en la consola
             this.isProcessing = false; // Habilita el botón de nuevo
             this.ShowLoadingModal = false;
-            if (response.registrado) {
-              this.showModal = true;
-            } else {
+            if (response.estado) {
               this.router.navigate(['/fijacioncapacidadtransportadora'], {
                 state: {
                   nit: this.formGroup1.get('nit')?.value,
                   nombreEmpresa: this.formGroup1.get('nombreEmpresa')?.value,
                 },
               });
+              
+            } else {
+              this.showModal = true;
             }
           },
           (error) => {

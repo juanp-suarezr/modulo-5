@@ -114,7 +114,7 @@
     <!-- modal de confirmación -->
     <app-alert [showModal]="showModal" title="Error en la fijación de la capacidad transportadora"
         [showSubtitle]="false"
-        [message]="'la empresa ' +this.formGroup1.get('nombreEmpresa')?.value+ ', con NIT' +this.formGroup1.get('nit')?.value+ ', ya tiene una fijación de la capacidad transportadora asignada'"
+        [message]="'la empresa ' +this.formGroup1.get('nombreEmpresa')?.value+ ', con NIT ' +this.formGroup1.get('nit')?.value+ ', ya tiene una fijación de la capacidad transportadora asignada'"
         cancelButtonText="Cerrar" [showCancelButton]="true" [showFirstButton]="false" TypeAlert="error"
         (close)="showModal = false" textColor="text-error" (closeByButton2)="handleCloseByButton2()"></app-alert>
 
