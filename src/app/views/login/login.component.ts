@@ -34,7 +34,7 @@ export default class LoginComponent {
           } else {
             this.errorMessage = null;
             this.router.navigate(['/dashboard']).then(() => {
-              location.reload();
+              
             });
             console.log(response.user); // Aquí puedes redirigir o manejar la lógica según el rol
           }
