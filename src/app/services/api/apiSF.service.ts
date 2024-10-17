@@ -29,8 +29,8 @@ export class ApiSFService {
   ): Observable<any> {
     let params: string[] = [];
     let formulario: string = 'formulario';
-    // Expresión regular para detectar caracteres especiales
-    const specialCharRegex = /[^a-zA-Z0-9]/;
+    // Expresión regular para detectar caracteres especiales excepto espacios
+  const specialCharRegex = /[^a-zA-Z0-9 ]/;
 
     console.log(usuario);
 
