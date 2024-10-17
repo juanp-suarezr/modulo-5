@@ -29,6 +29,8 @@ export class ApiSFService {
   ): Observable<any> {
     let params: string[] = [];
     let formulario: string = 'formulario';
+    // Expresión regular para detectar caracteres especiales
+    const specialCharRegex = /[^a-zA-Z0-9]/;
 
     console.log(usuario);
 
@@ -39,11 +41,16 @@ export class ApiSFService {
     }
     // Agregar parámetros de búsqueda si existen
     if (search) {
-      const searchParam = !isNaN(+search)
-        ? search.length > 7
-          ? `nit=${search}`
-          : `id=${search}`
-        : `nombreEmpresa=${search}`;
+      let searchParam;
+      if (specialCharRegex.test(search)) {
+        searchParam = `nombreEmpresa=++`;
+      } else {
+        searchParam = !isNaN(+search)
+          ? search.length > 7
+            ? `nit=${search}`
+            : `id=${search}`
+          : `nombreEmpresa=${search}`;
+      }
       params.push(searchParam);
     }
 
@@ -152,7 +159,9 @@ export class ApiSFService {
 
   // POST solicitud primer contratos
   createContratos(data2: any): Observable<any> {
-    return this.http.post(`${this.baseUrl}/api/formularioContratoPasos/paso4`, data2,
+    return this.http.post(
+      `${this.baseUrl}/api/formularioContratoPasos/paso4`,
+      data2,
       {
         responseType: 'text',
       }

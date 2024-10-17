@@ -607,7 +607,7 @@ export default class IncrementoComponent implements AfterViewInit, OnInit {
       9: [null, Validators.required],
       10: [null, Validators.required],
       11: [null, Validators.required],
-      0: ['', Validators.required],
+      cantidadVehiculosIncrementar: ['', Validators.required],
       1: ['', Validators.required],
     });
 
@@ -877,7 +877,7 @@ export default class IncrementoComponent implements AfterViewInit, OnInit {
             [11]: this.displayFile(response.tarjetaProfesionalContador),
           });
           this.formGroup2.patchValue({
-            [0]: response.cantidadVehiculosIncrementar,
+            ['cantidadVehiculosIncrementar']: response.cantidadVehiculosIncrementar,
           });
           this.formGroup3.patchValue({
             [12]: this.displayFile(response.certificadoPropiedadEmpresa),
@@ -1019,28 +1019,28 @@ export default class IncrementoComponent implements AfterViewInit, OnInit {
       case 4:
 
         if (this.validateFormGroup(this.formGroup3, this.errorStates)) {
-          if (parseFloat(this.inputs[0].value) <= 50) {
+          if (parseFloat(this.formGroup2.get('cantidadVehiculosIncrementar')?.value) <= 50) {
             this.valid1 =
               this.formGroup3.get('capital_social')?.value >= 300 * this.smlmmv;
             this.valid2 =
               this.formGroup3.get('patrimonio_liquido')?.value >= 180 * this.smlmmv;
           } else if (
-            parseFloat(this.inputs[0].value) >= 51 &&
-            parseFloat(this.inputs[0].value) <= 300
+            parseFloat(this.formGroup2.get('cantidadVehiculosIncrementar')?.value) >= 51 &&
+            parseFloat(this.formGroup2.get('cantidadVehiculosIncrementar')?.value) <= 300
           ) {
             this.valid1 =
               this.formGroup3.get('capital_social')?.value >= 400 * this.smlmmv;
             this.valid2 =
               this.formGroup3.get('patrimonio_liquido')?.value >= 280 * this.smlmmv;
           } else if (
-            parseFloat(this.inputs[0].value) >= 301 &&
-            parseFloat(this.inputs[0].value) <= 600
+            parseFloat(this.formGroup2.get('cantidadVehiculosIncrementar')?.value) >= 301 &&
+            parseFloat(this.formGroup2.get('cantidadVehiculosIncrementar')?.value) <= 600
           ) {
             this.valid1 =
               this.formGroup3.get('capital_social')?.value >= 700 * this.smlmmv;
             this.valid2 =
               this.formGroup3.get('patrimonio_liquido')?.value >= 500 * this.smlmmv;
-          } else if (parseFloat(this.inputs[0].value) >= 601) {
+          } else if (parseFloat(this.formGroup2.get('cantidadVehiculosIncrementar')?.value) >= 601) {
             this.valid1 =
               this.formGroup3.get('capital_social')?.value >= 1000 * this.smlmmv;
             this.valid2 =
@@ -1220,7 +1220,7 @@ export default class IncrementoComponent implements AfterViewInit, OnInit {
                 estadosFinancieros: estadosFinancieros,
                 cedulaContador: cedulaContador,
                 tarjetaProfesionalContador: tarjetaProfesionalContador,
-                cantidadVehiculosIncrementar: parseFloat(this.inputs[0].value),
+                cantidadVehiculosIncrementar: this.formGroup2.get('cantidadVehiculosIncrementar')?.value,
               };
               this.apiSFService
                 .SolicitudPaso2(this.idSolicitud, data2)
@@ -1516,12 +1516,13 @@ export default class IncrementoComponent implements AfterViewInit, OnInit {
       this.selectedPercentage = value ? `${value}%` : '';
     }
 
-    const numeroVehiculos = this.inputs[0].value
-      ? parseFloat(this.inputs[0].value)
+    const numeroVehiculos = this.formGroup2.get('cantidadVehiculosIncrementar')?.value
+      ? parseFloat(this.formGroup2.get('cantidadVehiculosIncrementar')?.value)
       : 0;
     const porcentaje = this.inputs[1].value
       ? parseFloat(this.inputs[1].value)
       : 0;
+
 
     if (numeroVehiculos && porcentaje) {
       const resultado = (numeroVehiculos * porcentaje) / 100;
@@ -1530,7 +1531,7 @@ export default class IncrementoComponent implements AfterViewInit, OnInit {
     }
 
     //Lógica para cambiar el texto dinámico
-    if (index === 0) {
+    if (this.formGroup2.get('cantidadVehiculosIncrementar')?.value) {
       if (numeroVehiculos <= 50) {
         this.dynamicText =
           'Empresa con capacidad transportadora operacional autorizada de hasta 50 vehículos: Capital pagado mínimo: 300 SMLMV – Patrimonio líquido mínimo > 180 SMLMV';
@@ -2014,7 +2015,7 @@ export default class IncrementoComponent implements AfterViewInit, OnInit {
       certificadoPropiedadEmpresa: this.formGroup3.value[12][0],
       capitalSocial: this.formGroup3.get('capital_social')?.value,
       patrimonioLiquido: this.formGroup3.get('patrimonio_liquido')?.value,
-      cantidadVehiculosIncrementar: parseFloat(this.inputs[0].value),
+      cantidadVehiculosIncrementar: this.formGroup2.get('cantidadVehiculosIncrementar')?.value,
       contratos: contratos,
       documentos: documentos,
     };

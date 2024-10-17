@@ -31,6 +31,8 @@ import { InputSwitchModule } from 'primeng/inputswitch';
 import { BehaviorSubject } from 'rxjs';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { blob } from 'stream/consumers';
+import { dateRangeValidator } from '../../../validator/date.validator';
+import { NoNegativeGlobal } from '../../../validator/noNegative.validator';
 
 @Component({
   selector: 'app-solicitud',
@@ -233,7 +235,8 @@ export default class SolicitudComponent {
       rentaOperacional: ['', Validators.required],
       liquidez: ['', Validators.required],
       solidez: ['', Validators.required],
-    });
+    }, { validators: [NoNegativeGlobal] }
+  );
 
     this.formGroup3 = this.fb.group({
       concepto: ['', Validators.required],
