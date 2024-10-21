@@ -10,8 +10,8 @@ import {
   SimpleChanges,
   ChangeDetectorRef,
 } from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {PrimaryButtonComponent} from '../primary-button/primary-button.component';
+import { CommonModule } from '@angular/common';
+import { PrimaryButtonComponent } from '../primary-button/primary-button.component';
 
 @Component({
   selector: 'app-file-upload',
@@ -32,15 +32,16 @@ export class FileUploadComponent implements OnInit, AfterViewInit {
   fileName: string = '';
   isFileUpdate: boolean | null = null;
   islimit: boolean | false = false;
+  isHeavy: boolean | false = false;
   currentIndex = 0;
   maxVisibleFiles = 2;
+  // Tamaño maximo del archivo
+  maxSize = 2000000; // 2 MB en bytes
 
-  constructor(private cd: ChangeDetectorRef) {
-  }
+  constructor(private cd: ChangeDetectorRef) {}
 
   ngOnInit() {
     // Inicialización necesaria antes de que la vista esté disponible
-
   }
 
   ngAfterViewInit() {
@@ -48,8 +49,6 @@ export class FileUploadComponent implements OnInit, AfterViewInit {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    
-    
     if (changes['error'] && changes['error'].currentValue) {
       this.cd.detectChanges();
       console.log(this.error);
@@ -58,18 +57,24 @@ export class FileUploadComponent implements OnInit, AfterViewInit {
 
   onFileSelected(event: any) {
     this.islimit = false;
+    this.isHeavy = false;
     this.isFileUpdate = null;
 
     // Convierte los archivos seleccionados en un array
     const selectedFiles = Array.from(event.target.files) as File[];
 
     // Verifica si el número de archivos supera el máximo permitido
-    if (this.files.length + selectedFiles.length > this.maxFiles && this.maxFiles !== 0) {
+    if (
+      this.files.length + selectedFiles.length > this.maxFiles &&
+      this.maxFiles !== 0
+    ) {
       this.islimit = true;
     } else {
       // Agrega los nuevos archivos a la lista existente sin duplicar archivos
       selectedFiles.forEach((file) => {
-        if (!this.files.some(f => f.name === file.name && f.size === file.size)) {
+        if (
+          !this.files.some((f) => f.name === file.name && f.size === file.size)
+        ) {
           this.files.push(file);
         }
       });
@@ -78,8 +83,24 @@ export class FileUploadComponent implements OnInit, AfterViewInit {
       this.fileName = this.files.length > 0 ? this.files[0].name : '';
       this.islimit = false;
 
-      // Emitir la lista de archivos actualizada
-      this.fileSelected.emit(this.files);
+      this.files.forEach((file) => {
+        if (file.size > this.maxSize) {
+          this.isHeavy = true;
+        } else if (!this.isHeavy) {
+          this.isHeavy = false;
+        }
+      });
+
+      if (this.isHeavy) {
+        console.log("pesado");
+        
+        this.files = [];
+      } else {
+        console.log("no es pesado");
+
+        // Emitir la lista de archivos actualizada
+        this.fileSelected.emit(this.files);
+      }
     }
 
     // Restablece el valor del input para permitir la selección del mismo archivo nuevamente
@@ -91,9 +112,8 @@ export class FileUploadComponent implements OnInit, AfterViewInit {
     this.cd.detectChanges();
   }
 
-
   deleteFile(file: File) {
-    this.files = this.files.filter(f => f !== file);
+    this.files = this.files.filter((f) => f !== file);
     this.fileName = this.files.length > 0 ? this.files[0].name : '';
 
     // Emitir la lista actualizada de archivos
@@ -133,7 +153,10 @@ export class FileUploadComponent implements OnInit, AfterViewInit {
   }
 
   get visibleFiles(): File[] {
-    return this.files.slice(this.currentIndex, this.currentIndex + this.maxVisibleFiles);
+    return this.files.slice(
+      this.currentIndex,
+      this.currentIndex + this.maxVisibleFiles
+    );
   }
 
   moveLeft(): void {
@@ -150,12 +173,10 @@ export class FileUploadComponent implements OnInit, AfterViewInit {
 
   viewDocument(file: File) {
     if (file) {
-      console.log(file);
       
       const url = URL.createObjectURL(file);
 
       window.open(url);
     }
   }
-
 }

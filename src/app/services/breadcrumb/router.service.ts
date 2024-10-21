@@ -40,7 +40,7 @@ export class RouterService {
         this.breadcrumbSubject.next([
           { name: 'Tramitar solicitud', route: 'NA' },
           {
-            name: 'validador nit',
+            name: 'validador NIT',
             route: 'validador_nit',
           },
         ]);

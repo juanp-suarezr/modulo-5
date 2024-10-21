@@ -102,13 +102,19 @@
 
   </div>
 
-  <div *ngIf="isFileUpdate == false && islimit == false" class="text-error text-[14px] work-sans mt-2">
+  <div *ngIf="isFileUpdate == false && islimit == false && isHeavy == false" class="text-error text-[14px] work-sans mt-2">
     Debe adjuntar un documento
   </div>
 
   <div *ngIf="islimit == true">
     <p class="text-error text-[14px] work-sans mt-2">
       Se ha excedido el máximo de {{ maxFiles }} archivos permitidos.
+    </p>
+  </div>
+
+  <div *ngIf="isHeavy == true">
+    <p class="text-error text-[14px] work-sans mt-2">
+      Se ha excedido el máximo de peso permitido.
     </p>
   </div>
 
