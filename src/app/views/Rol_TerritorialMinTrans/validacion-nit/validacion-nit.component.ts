@@ -59,13 +59,13 @@ export default class ValidacionNitComponent {
   initializeForm() {
     this.formGroup1 = this.fb.group({
       nombreEmpresa: ['', { value: '', disabled: true }, Validators.required],
-      nit: ['901852316', [Validators.required, NoNegativeGlobal]],
+      nit: ['', [Validators.required, NoNegativeGlobal]],
     });
   }
 
   ngAfterViewInit() {
     this.formGroup1.get('nombreEmpresa')?.disable();
-    
+
 
     // Escuchar cambios en el campo 'nit'
     this.formGroup1
@@ -143,7 +143,7 @@ export default class ValidacionNitComponent {
                   nombreEmpresa: this.formGroup1.get('nombreEmpresa')?.value,
                 },
               });
-              
+
             } else {
               this.showModal = true;
             }
