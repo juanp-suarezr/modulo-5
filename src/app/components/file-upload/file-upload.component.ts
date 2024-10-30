@@ -9,9 +9,11 @@ import {
   Input,
   SimpleChanges,
   ChangeDetectorRef,
+  OnChanges,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PrimaryButtonComponent } from '../primary-button/primary-button.component';
+import { ErrorService } from '../../services/error/error.service';
 
 @Component({
   selector: 'app-file-upload',
@@ -20,7 +22,7 @@ import { PrimaryButtonComponent } from '../primary-button/primary-button.compone
   templateUrl: './file-upload.component.html',
   styleUrls: ['./file-upload.component.css'],
 })
-export class FileUploadComponent implements OnInit, AfterViewInit {
+export class FileUploadComponent implements OnInit, AfterViewInit, OnChanges {
   @Input() dataClass: any = [];
   @Input() mimes: string = '*';
   @Input() maxFiles: number = 0; // Define el máximo de archivos permitidos
@@ -38,7 +40,7 @@ export class FileUploadComponent implements OnInit, AfterViewInit {
   // Tamaño maximo del archivo
   maxSize = 2000000; // 2 MB en bytes
 
-  constructor(private cd: ChangeDetectorRef) {}
+  constructor(private cd: ChangeDetectorRef, private errorService: ErrorService) {}
 
   ngOnInit() {
     // Inicialización necesaria antes de que la vista esté disponible
@@ -92,11 +94,11 @@ export class FileUploadComponent implements OnInit, AfterViewInit {
       });
 
       if (this.isHeavy) {
-        console.log("pesado");
         
+
         this.files = [];
       } else {
-        console.log("no es pesado");
+        
 
         // Emitir la lista de archivos actualizada
         this.fileSelected.emit(this.files);
@@ -140,7 +142,11 @@ export class FileUploadComponent implements OnInit, AfterViewInit {
     if (this.files.length === 0) {
       this.isFileUpdate = false;
     } else {
+      this.islimit = false;
+      this.isHeavy = false;
       this.isFileUpdate = true;
+      this.error = false;
+      
     }
   }
 
@@ -153,6 +159,7 @@ export class FileUploadComponent implements OnInit, AfterViewInit {
   }
 
   get visibleFiles(): File[] {
+        
     return this.files.slice(
       this.currentIndex,
       this.currentIndex + this.maxVisibleFiles
@@ -173,7 +180,6 @@ export class FileUploadComponent implements OnInit, AfterViewInit {
 
   viewDocument(file: File) {
     if (file) {
-      
       const url = URL.createObjectURL(file);
 
       window.open(url);

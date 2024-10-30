@@ -1,4 +1,4 @@
-<div class="w-full px-6 sm:px-24 md:px-36 mt-12 mb-12">
+<div class="w-full px-6 sm:px-24 md:px-36 mt-12 pb-12">
 
   <!-- carga loading -->
   <div class="md:col-span-8 sm:col-span-7 w-auto h-full sm:mt-10 mt-4 md:px-8 px-2" *ngIf="isLoading">
@@ -8,7 +8,7 @@
   </div>
 
   <!-- Contenedor de iframe -->
-  <div class="responsive-iframe-container pb-12" [ngClass]="{'hidden': isLoading}">
+  <div class="responsive-iframe-container mb-12" [ngClass]="{'hidden': isLoading}">
     <iframe title="SustentabilidadFinanciera v2" width="1024" height="804"
             src="https://app.powerbi.com/view?r=eyJrIjoiM2Y0OWU4MWUtZWE0Yi00ZDE5LWI0NjYtYzM5ZWU0YjdhZTgwIiwidCI6IjAyZjMzOGMyLTVkZmEtNGNlOS05ZWQxLTJlNmY1NTI0Y2M3NSIsImMiOjR9"
             frameborder="0" allowFullScreen="true" (load)="onIframeLoad()"></iframe>

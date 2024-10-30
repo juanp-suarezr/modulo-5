@@ -92,7 +92,7 @@
 
               <!-- left arrow -->
               <!-- Botón de Navegación Izquierda (visible solo si hay más de 2 archivos) -->
-              <button *ngIf="solicitud?.documentos.length > 2" class="m-auto" (click)="moveLeft()"
+              <button *ngIf="solicitud?.documentos.length > 1" class="m-auto" (click)="moveLeft()"
                 [disabled]="currentIndex === 0">
                 <span class="pi pi-chevron-left text-primary2 text-xl"></span>
               </button>
@@ -138,7 +138,7 @@
               </div>
 
               <!-- Botón de Navegación Derecha (visible solo si hay más de 2 archivos) -->
-              <button *ngIf="solicitud?.documentos.length > 2" class="m-auto" (click)="moveRight()"
+              <button *ngIf="solicitud?.documentos.length > 1" class="m-auto" (click)="moveRight()"
                 [disabled]="currentIndex >= solicitud?.documentos.length - maxVisibleFiles">
                 <span class="pi pi-chevron-right text-primary2 text-xl"></span>
               </button>
@@ -711,19 +711,31 @@
             <!-- input -->
             <div class="mt-2 relative w-full h-full flex items-center">
               <div
-                class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border focus:outline-none focus:border-primary1 bg-secondary3 border-secondary2 text-primary3 flex items-center justify-center">
+                class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-full border focus:outline-none focus:border-primary1 bg-secondary3 border-secondary2 text-primary3 flex items-center justify-center">
                 {{ formatCurrency(solicitud?.formulario.capitalSocial / smlmmv) }}
               </div>
             </div>
-            <!-- texto informativo -->
-            <div class="flex inline-flex md:gap-3 gap-2 h-full w-full mt-2">
+            <!-- texto informativo fijacion -->
+            <div class="flex inline-flex md:gap-3 gap-2 h-full w-full mt-2"
+              *ngIf="solicitud?.formulario.categoriaSolicitud.descripcion == 'Fijación'">
               <span class="lg:w-[12%] sm:w-[12%] w-[10%] h-full flex justify-center lg:px-1 m-auto">
                 <img class="w-full m-auto" src="/assets/iconoInfo.svg">
               </span>
               <p class="text-primary1 work-sans text-[11px] mt-2 w-auto">
                 Empresa con capacidad transportadora operacional autorizada de
-                hasta 51 y 300 vehículos: Capital pagado mínimo: 400 SMLMV –
-                Patrimonio líquido mínimo > 280 SMLMV
+                {{ solicitud?.formulario.cantidadVehiculos }} vehículos: Capital pagado mínimo: 300 SMLMV
+                –
+                Patrimonio líquido mínimo > 180 SMLMV
+              </p>
+            </div>
+            <!-- texto informativo incremento -->
+            <div class="flex inline-flex md:gap-3 gap-2 h-full w-full mt-2"
+              *ngIf="solicitud?.formulario.categoriaSolicitud.descripcion == 'Incremento'">
+              <span class="lg:w-[12%] sm:w-[12%] w-[10%] h-full flex justify-center lg:px-1 m-auto">
+                <img class="w-full m-auto" src="/assets/iconoInfo.svg">
+              </span>
+              <p class="text-primary1 work-sans text-[11px] mt-2 w-auto">
+                {{ dynamicText }}
               </p>
             </div>
           </div>
@@ -737,20 +749,32 @@
             <!-- input -->
             <div class="mt-2 relative w-full h-full flex items-center">
               <div
-                class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border focus:outline-none focus:border-primary1 bg-secondary3 border-secondary2 text-primary3 flex items-center justify-center">
+                class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-full border focus:outline-none focus:border-primary1 bg-secondary3 border-secondary2 text-primary3 flex items-center justify-center">
                 {{ formatCurrency(solicitud?.formulario.patrimonioLiquido / smlmmv) }}
               </div>
             </div>
 
-            <!-- texto informativo -->
-            <div class="flex inline-flex md:gap-3 gap-2 h-full w-full mt-2">
+            <!-- texto informativo fijacion -->
+            <div class="flex inline-flex md:gap-3 gap-2 h-full w-full mt-2"
+              *ngIf="solicitud?.formulario.categoriaSolicitud.descripcion == 'Fijación'">
               <span class="lg:w-[12%] sm:w-[12%] w-[10%] h-full flex justify-center lg:px-1 m-auto">
                 <img class="w-full m-auto" src="/assets/iconoInfo.svg">
               </span>
               <p class="text-primary1 work-sans text-[11px] mt-2 w-auto">
                 Empresa con capacidad transportadora operacional autorizada de
-                hasta 51 y 300 vehículos: Capital pagado mínimo: 400 SMLMV –
-                Patrimonio líquido mínimo > 280 SMLMV
+                {{ solicitud?.formulario.cantidadVehiculos }} vehículos: Capital pagado mínimo: 300 SMLMV
+                –
+                Patrimonio líquido mínimo > 180 SMLMV
+              </p>
+            </div>
+            <!-- texto informativo incremento -->
+            <div class="flex inline-flex md:gap-3 gap-2 h-full w-full mt-2"
+              *ngIf="solicitud?.formulario.categoriaSolicitud.descripcion == 'Incremento'">
+              <span class="lg:w-[12%] sm:w-[12%] w-[10%] h-full flex justify-center lg:px-1 m-auto">
+                <img class="w-full m-auto" src="/assets/iconoInfo.svg">
+              </span>
+              <p class="text-primary1 work-sans text-[11px] mt-2 w-auto">
+                {{ dynamicText }}
               </p>
             </div>
 
@@ -771,7 +795,7 @@
             <!-- input -->
             <div class="mt-2 relative w-full h-full flex items-center">
               <div
-                class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border focus:outline-none focus:border-primary1 bg-secondary3 border-secondary2 text-primary3 flex items-center justify-center">
+                class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-full border focus:outline-none focus:border-primary1 bg-secondary3 border-secondary2 text-primary3 flex items-center justify-center">
                 {{ solicitud?.formulario.cantidadVehiculos }}
               </div>
             </div>
@@ -789,7 +813,7 @@
             <!-- input -->
             <div class="mt-2 relative w-full h-full flex items-center">
               <div
-                class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border focus:outline-none focus:border-primary1 bg-secondary3 border-secondary2 text-primary3 flex items-center justify-center">
+                class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-full border focus:outline-none focus:border-primary1 bg-secondary3 border-secondary2 text-primary3 flex items-center justify-center">
                 {{ solicitud?.formulario.cantidadVehiculosIncrementar }}
               </div>
             </div>
@@ -816,227 +840,238 @@
 
 
     <!-- contenido operativo -->
-    <div class="w-full" *ngIf="activeNum == '1'">
-      <h3 class="text-primary1 !font-bold">Solicitud ID {{solicitud?.formulario.id}}</h3>
+    <div class="w-full flex justify-center gap-x-2">
       <!-- flecha izquierda -->
-      <div *ngIf="currentContractIndex > 0" (click)="prevContract()" class="arrow-left">
-        <span class="prev-page-text-govco">Anterior</span>
-      </div>
+      <button *ngIf="currentContractIndex > 0" (click)="prevContract()" class="arrow-left flex items-center"
+        [disabled]="currentContractIndex === 0">
+        <span class="pi pi-chevron-left text-primary2 text-xl"></span>
+      </button>
+      <!-- contenido total -->
+      <div class="w-full" *ngIf="activeNum == '1'">
+        <h3 class="text-primary1 !font-bold">Solicitud ID {{solicitud?.formulario.id}}</h3>
 
-      <div class="px-4 md:pl-16 md:pe-16 mt-6 active1 mb-6">
-        <div *ngIf="solicitud?.contratos[currentContractIndex]"
-          class="md:grid sm:grid-cols-2 md:grid-cols-3 md:gap-x-24 md:flex items-center h-full">
 
-          <!-- consecutivo -->
-          <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
-            <p class="text-primary3 font-semibold h-full m-auto">
-              Consecutivo
-            </p>
-            <p class="text-primary3 font-normal h-full m-auto">
-              contrato_{{ currentContractIndex+1 }}_{{ solicitud?.formulario.nit
-              }}_{{solicitud?.formulario.nombreEmpresa}}
-            </p>
-          </div>
-          <!-- numero del contrato -->
-          <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
-            <p class="text-primary3 font-semibold h-full m-auto">
-              N° de contrato
-            </p>
+        <div class="px-4 md:pl-16 md:pe-16 mt-6 active1 mb-6">
+          <div *ngIf="solicitud?.contratos[currentContractIndex]"
+            class="md:grid sm:grid-cols-2 md:grid-cols-3 md:gap-x-24 md:flex items-center h-full">
 
-            <!-- input -->
-            <div class="mt-2 relative w-full h-full flex items-center">
-              <div
-                class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border focus:outline-none focus:border-primary1 bg-secondary3 border-secondary2 text-primary3 flex items-center justify-center">
-                {{ solicitud?.contratos[currentContractIndex]?.detalleContrato.numeroContrato }}
-              </div>
+            <!-- consecutivo -->
+            <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+              <p class="text-primary3 font-semibold h-full m-auto">
+                Consecutivo
+              </p>
+              <p class="text-primary3 font-normal h-full m-auto">
+                contrato_{{ currentContractIndex+1 }}_{{ solicitud?.formulario.nit
+                }}_{{solicitud?.formulario.nombreEmpresa}}
+              </p>
             </div>
-          </div>
-          <!-- contratante -->
-          <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
-            <p class="text-primary3 font-semibold h-full m-auto">
-              Contratante
-            </p>
+            <!-- numero del contrato -->
+            <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+              <p class="text-primary3 font-semibold h-full m-auto">
+                N° de contrato
+              </p>
 
-            <!-- input -->
-            <div class="mt-2 relative w-full h-full flex items-center">
-              <div
-                class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border focus:outline-none focus:border-primary1 bg-secondary3 border-secondary2 text-primary3 flex items-center justify-center">
-                {{ solicitud?.contratos[currentContractIndex]?.detalleContrato.contratante }}
-              </div>
-            </div>
-          </div>
-          <!-- Fecha inicio -->
-          <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
-            <p class="text-primary3 font-semibold h-full m-auto">
-              Fecha de inicio
-            </p>
-
-            <!-- input -->
-            <div class="mt-2 relative w-full h-full flex items-center">
-              <div
-                class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border focus:outline-none focus:border-primary1 bg-secondary3 border-secondary2 text-primary3 flex items-center justify-center">
-                {{ formatField(solicitud?.contratos[currentContractIndex]?.detalleContrato.fechaInicio) }}
-              </div>
-            </div>
-          </div>
-          <!-- Fecha Fin -->
-          <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
-            <p class="text-primary3 font-semibold h-full m-auto">
-              Fecha de terminación
-            </p>
-
-            <!-- input -->
-            <div class="mt-2 relative w-full h-full flex items-center">
-              <div
-                class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border focus:outline-none focus:border-primary1 bg-secondary3 border-secondary2 text-primary3 flex items-center justify-center">
-                {{ formatField(solicitud?.contratos[currentContractIndex]?.detalleContrato.fechaFin) }}
-              </div>
-            </div>
-          </div>
-          <!--  Duración en meses -->
-          <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
-            <p class="text-primary3 font-semibold h-full m-auto">
-              Duración en meses
-            </p>
-
-            <!-- input -->
-            <div class="mt-2 relative w-full h-full flex items-center">
-              <div
-                class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border focus:outline-none focus:border-primary1 bg-secondary3 border-secondary2 text-primary3 flex items-center justify-center">
-                {{ formatMonthsAndDays(solicitud?.contratos[currentContractIndex]?.detalleContrato.duracionMeses) }}
-              </div>
-            </div>
-          </div>
-          <!-- Clase de vehículo y cantidad -->
-          <div class="w-full flex flex-col justify-center items-strech pt-6 my-auto h-full sm:col-span-2">
-            <p class="text-primary3 font-semibold h-full m-auto">
-              Clase de vehículo - cantidad / contrato
-            </p>
-
-            <!-- Headers dinámicos -->
-            <div class="headers-container flex flex-wrap gap-4 mt-2">
-              <button type="button"
-                *ngFor="let vehiculo of solicitud?.contratos[currentContractIndex]?.vehiculos; let i = index"
-                (click)="setActiveHeader(i)"
-                [ngClass]="{'active-header': activeHeader === i, 'inactive-header': activeHeader !== i}"
-                class="p-2 text-primary1 border-b-2">
-                {{ getClaseVehiculos(vehiculo.idClaseVehiculo) || 'Clase Vehículo ' + (i + 1) }}
-              </button>
-
-            </div>
-
-
-            <!-- Inputs dinámicos basados en el header activo -->
-            <div *ngIf="activeHeader != null" class="inputs-container mt-1">
-              <div *ngFor="let vehiculo of solicitud?.contratos[currentContractIndex]?.vehiculos; let i = index"
-                [ngClass]="{'hidden': activeHeader != i}" class="w-full items-start pt-2 my-auto h-full">
-
-                <!-- Input para el número de vehículos -->
-                <!-- input -->
-                <div class="relative w-full h-full">
-                  <div
-                    class="shadow-sm rounded-md min-w-[200px] w-full p-[10px] h-[40px] border focus:outline-none focus:border-primary1 bg-secondary3 border-secondary2 text-primary3 flex items-center justify-center">
-                    {{ vehiculo.cantidadVehiculos }}
-                  </div>
+              <!-- input -->
+              <div class="mt-2 relative w-full h-full flex items-center">
+                <div
+                  class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-full border focus:outline-none focus:border-primary1 bg-secondary3 border-secondary2 text-primary3 flex items-center justify-center">
+                  {{ solicitud?.contratos[currentContractIndex]?.detalleContrato.numeroContrato }}
                 </div>
+              </div>
+            </div>
+            <!-- contratante -->
+            <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+              <p class="text-primary3 font-semibold h-full m-auto">
+                Contratante
+              </p>
+
+              <!-- input -->
+              <div class="mt-2 relative w-full h-full flex items-center">
+                <div
+                  class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-full border focus:outline-none focus:border-primary1 bg-secondary3 border-secondary2 text-primary3 flex items-center justify-center">
+                  {{ solicitud?.contratos[currentContractIndex]?.detalleContrato.contratante }}
+                </div>
+              </div>
+            </div>
+            <!-- Fecha inicio -->
+            <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+              <p class="text-primary3 font-semibold h-full m-auto">
+                Fecha de inicio
+              </p>
+
+              <!-- input -->
+              <div class="mt-2 relative w-full h-full flex items-center">
+                <div
+                  class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-full border focus:outline-none focus:border-primary1 bg-secondary3 border-secondary2 text-primary3 flex items-center justify-center">
+                  {{ formatField(solicitud?.contratos[currentContractIndex]?.detalleContrato.fechaInicio) }}
+                </div>
+              </div>
+            </div>
+            <!-- Fecha Fin -->
+            <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+              <p class="text-primary3 font-semibold h-full m-auto">
+                Fecha de terminación
+              </p>
+
+              <!-- input -->
+              <div class="mt-2 relative w-full h-full flex items-center">
+                <div
+                  class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-full border focus:outline-none focus:border-primary1 bg-secondary3 border-secondary2 text-primary3 flex items-center justify-center">
+                  {{ formatField(solicitud?.contratos[currentContractIndex]?.detalleContrato.fechaFin) }}
+                </div>
+              </div>
+            </div>
+            <!--  Duración en meses -->
+            <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+              <p class="text-primary3 font-semibold h-full m-auto">
+                Duración en meses
+              </p>
+
+              <!-- input -->
+              <div class="mt-2 relative w-full h-full flex items-center">
+                <div
+                  class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-full border focus:outline-none focus:border-primary1 bg-secondary3 border-secondary2 text-primary3 flex items-center justify-center">
+                  {{ formatMonthsAndDays(solicitud?.contratos[currentContractIndex]?.detalleContrato.duracionMeses) }}
+                </div>
+              </div>
+            </div>
+            <!-- Clase de vehículo y cantidad -->
+            <div class="w-full flex flex-col justify-center items-strech pt-6 my-auto h-full sm:col-span-2">
+              <p class="text-primary3 font-semibold h-full m-auto">
+                Clase de vehículo - cantidad / contrato
+              </p>
+
+              <!-- Headers dinámicos -->
+              <div class="headers-container flex flex-wrap gap-4 mt-2">
+                <button type="button"
+                  *ngFor="let vehiculo of solicitud?.contratos[currentContractIndex]?.vehiculos; let i = index"
+                  (click)="setActiveHeader(i)"
+                  [ngClass]="{'active-header': activeHeader === i, 'inactive-header': activeHeader !== i}"
+                  class="p-2 text-primary1 border-b-2">
+                  {{ getClaseVehiculos(vehiculo.idClaseVehiculo) || 'Clase Vehículo ' + (i + 1) }}
+                </button>
+
+              </div>
 
 
+              <!-- Inputs dinámicos basados en el header activo -->
+              <div *ngIf="activeHeader != null" class="inputs-container mt-1">
+                <div *ngFor="let vehiculo of solicitud?.contratos[currentContractIndex]?.vehiculos; let i = index"
+                  [ngClass]="{'hidden': activeHeader != i}" class="w-full items-start pt-2 my-auto h-full">
+
+                  <!-- Input para el número de vehículos -->
+                  <!-- input -->
+                  <div class="relative w-full h-full">
+                    <div
+                      class="shadow-sm rounded-md min-w-[200px] w-full p-[10px] h-full border focus:outline-none focus:border-primary1 bg-secondary3 border-secondary2 text-primary3 flex items-center justify-center">
+                      {{ vehiculo.cantidadVehiculos }}
+                    </div>
+                  </div>
+
+
+                </div>
+              </div>
+
+            </div>
+            <!-- Cantidad total -->
+            <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+              <p class="text-primary3 font-semibold h-full m-auto">
+                Cantidad total vehículos / contrato
+              </p>
+
+              <!-- input -->
+              <div class="mt-2 relative w-full h-full flex items-center">
+                <div
+                  class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-full border focus:outline-none focus:border-primary1 bg-secondary3 border-secondary2 text-primary3 flex items-center justify-center">
+                  {{ solicitud?.contratos[currentContractIndex]?.detalleContrato.numeroVehiculos }}
+                </div>
+              </div>
+            </div>
+            <!-- Valor del Contrato -->
+            <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+              <p class="text-primary3 font-semibold h-full m-auto">
+                Valor del Contrato
+              </p>
+
+              <!-- input -->
+              <div class="mt-2 relative w-full h-full flex items-center">
+                <div
+                  class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-full border focus:outline-none focus:border-primary1 bg-secondary3 border-secondary2 text-primary3 flex items-center justify-center">
+                  {{ formatCurrency(solicitud?.contratos[currentContractIndex]?.detalleContrato.valorContrato) }}
+                </div>
+              </div>
+            </div>
+            <!-- Forma de pago -->
+            <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+              <p class="text-primary3 font-semibold h-full m-auto">
+                Forma de pago
+              </p>
+
+              <!-- input -->
+              <div class="mt-2 relative w-full h-full flex items-center">
+                <div
+                  class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-full border focus:outline-none focus:border-primary1 bg-secondary3 border-secondary2 text-primary3 flex items-center justify-center">
+                  {{
+                  getFormasPagos(solicitud?.contratos[currentContractIndex]?.detalleContrato.idFormaPago)
+                  || 'forma de pago invalida'
+                  }}
+                </div>
+              </div>
+            </div>
+            <!-- Áreas de Operación -->
+            <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+              <p class="text-primary3 font-semibold h-full m-auto">
+                Áreas de Operación
+              </p>
+
+              <!-- input -->
+              <div class="mt-2 relative w-full h-full flex items-center">
+                <div
+                  class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-full border focus:outline-none focus:border-primary1 bg-secondary3 border-secondary2 text-primary3 flex items-center justify-center">
+                  {{
+                  getAreasOperacion(solicitud?.contratos[currentContractIndex]?.areasOperacion)
+                  || 'Areas operación invalidas'
+                  }}
+                </div>
+              </div>
+            </div>
+            <!-- Tiempos estimados (En horas)-Disponibilidad de Vehículo -->
+            <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+              <p class="text-primary3 font-semibold h-full m-auto">
+                Tiempos estimados (En horas)-Disponibilidad de Vehículo
+              </p>
+
+              <!-- input -->
+              <div class="mt-2 relative w-full h-full flex items-center">
+                <div
+                  class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-full border focus:outline-none focus:border-primary1 bg-secondary3 border-secondary2 text-primary3 flex items-center justify-center">
+                  {{ solicitud?.contratos[currentContractIndex]?.detalleContrato.disponibilidadVehiculosEstimada }}
+                  horas
+                </div>
               </div>
             </div>
 
-          </div>
-          <!-- Cantidad total -->
-          <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
-            <p class="text-primary3 font-semibold h-full m-auto">
-              Cantidad total vehículos / contrato
-            </p>
 
-            <!-- input -->
-            <div class="mt-2 relative w-full h-full flex items-center">
-              <div
-                class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border focus:outline-none focus:border-primary1 bg-secondary3 border-secondary2 text-primary3 flex items-center justify-center">
-                {{ solicitud?.contratos[currentContractIndex]?.detalleContrato.numeroVehiculos }}
-              </div>
-            </div>
-          </div>
-          <!-- Valor del Contrato -->
-          <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
-            <p class="text-primary3 font-semibold h-full m-auto">
-              Valor del Contrato
-            </p>
 
-            <!-- input -->
-            <div class="mt-2 relative w-full h-full flex items-center">
-              <div
-                class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border focus:outline-none focus:border-primary1 bg-secondary3 border-secondary2 text-primary3 flex items-center justify-center">
-                {{ formatCurrency(solicitud?.contratos[currentContractIndex]?.detalleContrato.valorContrato) }}
-              </div>
-            </div>
-          </div>
-          <!-- Forma de pago -->
-          <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
-            <p class="text-primary3 font-semibold h-full m-auto">
-              Forma de pago
-            </p>
-
-            <!-- input -->
-            <div class="mt-2 relative w-full h-full flex items-center">
-              <div
-                class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border focus:outline-none focus:border-primary1 bg-secondary3 border-secondary2 text-primary3 flex items-center justify-center">
-                {{
-                getFormasPagos(solicitud?.contratos[currentContractIndex]?.detalleContrato.idFormaPago)
-                || 'forma de pago invalida'
-                }}
-              </div>
-            </div>
-          </div>
-          <!-- Áreas de Operación -->
-          <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
-            <p class="text-primary3 font-semibold h-full m-auto">
-              Áreas de Operación
-            </p>
-
-            <!-- input -->
-            <div class="mt-2 relative w-full h-full flex items-center">
-              <div
-                class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border focus:outline-none focus:border-primary1 bg-secondary3 border-secondary2 text-primary3 flex items-center justify-center">
-                {{
-                getAreasOperacion(solicitud?.contratos[currentContractIndex]?.areasOperacion)
-                || 'Areas operación invalidas'
-                }}
-              </div>
-            </div>
-          </div>
-          <!-- Tiempos estimados (En horas)-Disponibilidad de Vehículo -->
-          <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
-            <p class="text-primary3 font-semibold h-full m-auto">
-              Tiempos estimados (En horas)-Disponibilidad de Vehículo
-            </p>
-
-            <!-- input -->
-            <div class="mt-2 relative w-full h-full flex items-center">
-              <div
-                class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border focus:outline-none focus:border-primary1 bg-secondary3 border-secondary2 text-primary3 flex items-center justify-center">
-                {{ solicitud?.contratos[currentContractIndex]?.detalleContrato.disponibilidadVehiculosEstimada }} horas
-              </div>
-            </div>
           </div>
 
-
-
+          <div class="mt-6 w-full flex justify-end">
+            <app-primary-button type="button" (click)="changeActiveStep(4)">continuar Radicado</app-primary-button>
+          </div>
         </div>
 
-        <div class="mt-6 w-full flex justify-end">
-          <app-primary-button type="button" (click)="changeActiveStep(4)">continuar Radicado</app-primary-button>
-        </div>
+
       </div>
 
       <!-- flecha derecha -->
-      <div *ngIf="currentContractIndex < totalContracts - 1" (click)="nextContract()" class="arrow-right">
-        <span class="next-page-text-govco">Siguiente</span>
-      </div>
+      <button *ngIf="currentContractIndex < totalContracts - 1" (click)="nextContract()"
+        class="arrow-right flex items-center"
+        [disabled]="currentContractIndex >= solicitud?.documentos.length - maxVisibleFiles">
+        <span class="pi pi-chevron-right text-primary2 text-xl"></span>
+      </button>
 
     </div>
+
 
     <!-- contenido radicado -->
     <div class="w-full" *ngIf="activeNum == '2'">

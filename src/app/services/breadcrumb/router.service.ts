@@ -100,55 +100,15 @@ export class RouterService {
           ]);
           break;
         //INDICADORES
-        // 1 routeo comparativoVehiculo-placas
-        case url.includes('comparativoVehiculo-placas'):
+        // 1 routeo indicadores
+        case url.includes('indicadores'):
           this.breadcrumbSubject.next([
             { name: 'Indicadores', route: 'NA' },
-            {
-              name: 'Comparativo contractual de vehículos y placas',
-              route: 'comparativoVehiculo-placas',
-            },
+            
           ]);
           break;
 
-        //2 Solicitudes enviadas por territoriales
-        case url.includes('solicitudxterritorial'):
-          this.breadcrumbSubject.next([
-            { name: 'Indicadores', route: 'NA' },
-            {
-              name: 'Solicitudes enviadas por territoriales',
-              route: 'solicitudxterritorial',
-            },
-          ]);
-          break;
-
-        //3 Vehículos requeridos por territorial
-        case url.includes('vehiculosxterritorial'):
-          this.breadcrumbSubject.next([
-            { name: 'Indicadores', route: 'NA' },
-            {
-              name: 'Vehículos requeridos por territorial',
-              route: 'vehiculosxterritorial',
-            },
-          ]);
-          break;
-
-          //4 Solicitudes realizadas año a año
-        case url.includes('solicitudesxaño'):
-        this.breadcrumbSubject.next([
-          { name: 'Indicadores', route: 'NA' },
-          { name: 'Solicitudes realizadas año a año', route: 'solicitudesxaño' },
-        ]);
-        break;
-
-        //5 routeo Solicitudes realizadas mes a mes
-        case url.includes('solicitudesxmes'):
-          this.breadcrumbSubject.next([
-            { name: 'Indicadores', route: 'NA' },
-            { name: 'Solicitudes realizadas mes a mes', route: 'solicitudesxmes' },
-          ]);
-          break;
-
+        
         default:
           this.breadcrumbSubject.next([
             { name: 'Ruta no reconocida', route: 'NA' },

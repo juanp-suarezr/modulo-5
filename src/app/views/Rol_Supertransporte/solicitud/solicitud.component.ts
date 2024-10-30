@@ -229,14 +229,16 @@ export default class SolicitudComponent {
     this.formGroup1 = this.fb.group({
       1: [null, Validators.required],
     });
-    this.formGroup2 = this.fb.group({
-      2: [null, Validators.required],
-      rentaNeta: ['', Validators.required],
-      rentaOperacional: ['', Validators.required],
-      liquidez: ['', Validators.required],
-      solidez: ['', Validators.required],
-    }, { validators: [NoNegativeGlobal] }
-  );
+    this.formGroup2 = this.fb.group(
+      {
+        2: [null, Validators.required],
+        rentaNeta: ['', Validators.required],
+        rentaOperacional: ['', Validators.required],
+        liquidez: ['', Validators.required],
+        solidez: ['', Validators.required],
+      },
+      { validators: [NoNegativeGlobal] }
+    );
 
     this.formGroup3 = this.fb.group({
       concepto: ['', Validators.required],
@@ -299,8 +301,6 @@ export default class SolicitudComponent {
 
             this.solicitud = response;
 
-            
-
             console.log(response);
             this.loadingPage = false;
             resolve(response); // Resuelve la promesa cuando se haya procesado todo
@@ -338,11 +338,11 @@ export default class SolicitudComponent {
           (item: any) => item.value == info.formulario.concepto
         ) || '',
     });
-    
 
-    this.selects[0].value = this.conceptos.find(
-      (item: any) => item.value == info.formulario.concepto
-    ) || '';
+    this.selects[0].value =
+      this.conceptos.find(
+        (item: any) => item.value == info.formulario.concepto
+      ) || '';
 
     this.checked = info.formulario.subsanar;
 
@@ -600,6 +600,7 @@ export default class SolicitudComponent {
     }
 
     if (this.solicitud.formulario.excelModeloTransporte) {
+      
       saved = true;
     }
 
@@ -822,6 +823,37 @@ export default class SolicitudComponent {
     );
   }
 
+  get dynamicText(): string {
+    let textReq = '';
+
+    //Lógica para cambiar el texto dinámico
+    if (this.solicitud?.formulario.cantidadVehiculosIncrementar) {
+      if (this.solicitud?.formulario.cantidadVehiculosIncrementar <= 50) {
+        textReq =
+          'Empresa con capacidad transportadora operacional autorizada de hasta 50 vehículos: Capital pagado mínimo: 300 SMLMV – Patrimonio líquido mínimo > 180 SMLMV';
+      } else if (
+        this.solicitud?.formulario.cantidadVehiculosIncrementar >= 51 &&
+        this.solicitud?.formulario.cantidadVehiculosIncrementar <= 300
+      ) {
+        textReq =
+          'Empresa con capacidad transportadora operacional autorizada de hasta 51 y 300 vehículos: Capital pagado mínimo: 400 SMLMV – Patrimonio líquido mínimo > 280 SMLMV';
+      } else if (
+        this.solicitud?.formulario.cantidadVehiculosIncrementar >= 301 &&
+        this.solicitud?.formulario.cantidadVehiculosIncrementar <= 600
+      ) {
+        textReq =
+          'Empresa con capacidad transportadora operacional autorizada de hasta 301 y 600 vehículos: Capital pagado mínimo: 700 SMLMV – Patrimonio líquido mínimo > 500 SMLMV';
+      } else if (
+        this.solicitud?.formulario.cantidadVehiculosIncrementar >= 601
+      ) {
+        textReq =
+          'Empresa con capacidad transportadora operacional autorizada de más 600 vehículos: Capital pagado mínimo: 1000 SMLMV – Patrimonio líquido mínimo > 700 SMLMV';
+      }
+    }
+
+    return textReq;
+  }
+
   moveLeft(): void {
     if (this.currentIndex > 0) {
       this.currentIndex--;
@@ -1030,8 +1062,8 @@ export default class SolicitudComponent {
         (this.solicitud.formulario.radicadoSalida ||
           this.formGroup1.get('1')?.value != null) &&
         isfinal
-          ? 125
-          : 126,
+          ? 281
+          : 282,
     };
     // put paso final emitir concepto
     this.apiSFService

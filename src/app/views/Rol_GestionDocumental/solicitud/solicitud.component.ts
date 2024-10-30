@@ -175,6 +175,8 @@ export default class SolicitudComponent {
 
   //form dinamico num vehiculos
   activeHeader: number | null = 0;
+  //Propiedad para almacenar el texto dinamico
+  
 
   ngOnInit(): void {
     this.stateService.setActiveNum('0');
@@ -612,6 +614,30 @@ export default class SolicitudComponent {
       this.currentIndex,
       this.currentIndex + this.maxVisibleFiles
     );
+  }
+
+  get dynamicText(): string {
+      let textReq = '';
+
+    //Lógica para cambiar el texto dinámico
+    if (this.solicitud?.formulario.cantidadVehiculosIncrementar) {
+      if (this.solicitud?.formulario.cantidadVehiculosIncrementar <= 50) {
+        textReq = 'Empresa con capacidad transportadora operacional autorizada de hasta 50 vehículos: Capital pagado mínimo: 300 SMLMV – Patrimonio líquido mínimo > 180 SMLMV';
+        
+      } else if (this.solicitud?.formulario.cantidadVehiculosIncrementar >= 51 && this.solicitud?.formulario.cantidadVehiculosIncrementar <= 300) {
+        textReq = 'Empresa con capacidad transportadora operacional autorizada de hasta 51 y 300 vehículos: Capital pagado mínimo: 400 SMLMV – Patrimonio líquido mínimo > 280 SMLMV';
+        
+      } else if (this.solicitud?.formulario.cantidadVehiculosIncrementar >= 301 && this.solicitud?.formulario.cantidadVehiculosIncrementar <= 600) {
+        textReq = 'Empresa con capacidad transportadora operacional autorizada de hasta 301 y 600 vehículos: Capital pagado mínimo: 700 SMLMV – Patrimonio líquido mínimo > 500 SMLMV';
+        
+      } else if (this.solicitud?.formulario.cantidadVehiculosIncrementar >= 601) {
+        textReq = 'Empresa con capacidad transportadora operacional autorizada de más 600 vehículos: Capital pagado mínimo: 1000 SMLMV – Patrimonio líquido mínimo > 700 SMLMV';
+        
+      }
+    }
+
+    return textReq;
+
   }
 
   moveLeft(): void {

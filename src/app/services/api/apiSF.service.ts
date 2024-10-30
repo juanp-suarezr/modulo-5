@@ -277,4 +277,14 @@ export class ApiSFService {
       }
     );
   }
+
+  // DELETE documentos
+  deleteDoc(id: string): Observable<any> {
+    return this.http.delete(
+      `${this.baseUrl}/documentos/${id}`,
+      {
+        responseType: 'text',
+      }
+    );
+  }
 }

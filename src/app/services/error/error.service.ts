@@ -10,6 +10,8 @@ export class ErrorService {
   errorStates$ = this.errorStatesSubject.asObservable();
 
   updateErrorStates(newErrorStates: { [key: number]: boolean }) {
+    console.log(newErrorStates);
+    
     this.errorStatesSubject.next(newErrorStates);
   }
 

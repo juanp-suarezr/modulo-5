@@ -108,7 +108,7 @@ export class ApiService {
 
   //estados solicitud
   getEstados(): Observable<any> {
-    return this.http.get(`${this.baseUrl}/catalogos/Estados%20de%20Solicitud`);
+    return this.http.get(`${this.baseUrl}/catalogos/SFEstado%20Solicitud`);
   }
 
   //estados favorables
