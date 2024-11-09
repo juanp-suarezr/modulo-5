@@ -29,6 +29,6 @@ export class HeaderBarComponent {
 
   logout() {
     console.log("cerrar sesion");
-    this.authService.logout();
+    
   }
 }

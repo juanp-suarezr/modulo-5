@@ -44,6 +44,7 @@ export default class DashboardComponent {
   response: any;
   apiResponse: any;
   user: any;
+  hasPermission: boolean = false;
   loading: boolean = true; // Estado de carga
 
   //paginator datas
@@ -82,18 +83,17 @@ export default class DashboardComponent {
     private appRef: ApplicationRef, // Servicio para manejar el estado de la aplicación
     private cdRef: ChangeDetectorRef, // Inyecta el ChangeDetectorRef
     private stateService: ActiveNumService,
-    private stepperService: ActiveNumStepperService,
+    private stepperService: ActiveNumStepperService
   ) {
-    this.user = this.authService.currentUser; // Almacena el usuario actual desde el servicio de autenticación
+    this.user = this.authService.getUserInfo();
+    this.hasPermission = this.authService.hasPermission(
+      'MUV_CARGADOCUMENTACION'
+    );
   }
 
   // Getter para verificar el rol
   get hasSuperTransporteRole(): boolean {
-    return (
-      this.user?.roles?.some((role: any) =>
-        role.roleName.includes('ROLE_SUPERTRANSPORTE')
-      ) ?? false
-    );
+    return this.authService.hasRole('ROLE_SUPERTRANSPORTE');
   }
 
   ngOnInit(): void {
@@ -104,20 +104,21 @@ export default class DashboardComponent {
         localStorage.setItem('idSolicitud', '');
         this.stateService.setActiveNum('0');
         this.stepperService.setActiveNum(1);
-        
+
+        console.log(this.hasPermission);
+        console.log(this.user);
+        console.log(this.authService.getUserRoles()[0].sistema);
+
         // Cuando la aplicación esté estable, comienza a cargar los datos
-        
+
         if (
-          this.user.roles.some(
-            (role: any) =>
-              role.roleName.includes('ROLE_SUPERTRANSPORTE') ||
-              role.roleName.includes('ROLE_ESCRITURA_GESDOC')
-          )
+          this.authService.getUserRoles()[0].sistema ===
+            'ROLE_SUPERTRANSPORTE' ||
+          this.authService.getUserRoles()[0].sistema === 'ROLE_ESCRITURA_GESDOC'
         ) {
           if (
-            this.user.roles.some((role: any) =>
-              role.roleName.includes('ROLE_SUPERTRANSPORTE')
-            )
+            this.authService.getUserRoles()[0].sistema ===
+            'ROLE_SUPERTRANSPORTE'
           ) {
             this.usuarioRol = 'superTransp';
           } else {
@@ -178,15 +179,27 @@ export default class DashboardComponent {
     // Realiza una llamada a la API para obtener los estados de solicitudas categorías
     this.apiService.getEstados().subscribe(
       (response) => {
-        let descriptionsToInclude = ['Asignar', 'En estudio', 'Aprobado', 'Rechazado', 'Pendiente'];
+        let descriptionsToInclude = [
+          'Asignar',
+          'En estudio',
+          'Aprobado',
+          'Rechazado',
+          'Pendiente',
+        ];
         console.log(response); // Muestra la respuesta en la consola
         if (this.usuarioRol == 'superTransp') {
-          descriptionsToInclude = ['Asignar', 'En estudio', 'Aprobado', 'Rechazado'];
-        } else if(this.usuarioRol == 'gesDoc') {
+          descriptionsToInclude = [
+            'Asignar',
+            'En estudio',
+            'Aprobado',
+            'Rechazado',
+          ];
+        } else if (this.usuarioRol == 'gesDoc') {
           descriptionsToInclude = ['Asignar', 'En estudio'];
         }
-        this.estadosSolicitud = response.detalle.filter((item: { descripcion: string; }) =>
-          descriptionsToInclude.includes(item.descripcion)
+        this.estadosSolicitud = response.detalle.filter(
+          (item: { descripcion: string }) =>
+            descriptionsToInclude.includes(item.descripcion)
         );
 
         console.log(this.estadosSolicitud);
@@ -220,7 +233,7 @@ export default class DashboardComponent {
     usuario: string
   ) {
     this.loading = true; // Comienza la carga de datos
-    
+
     // traer los datos de la consulta
     this.apiSFService
       .getSolicitudes(
@@ -239,9 +252,8 @@ export default class DashboardComponent {
           this.totalPages = response.totalPages;
           // Validar roles y generar headers después de cargar los datos
           if (
-            this.user.roles.some((role: any) =>
-              role.roleName.includes('ROLE_ESCRITURA_GESDOC')
-            )
+            this.authService.getUserRoles()[0].sistema ===
+            'ROLE_ESCRITURA_GESDOC'
           ) {
             this.getHeaders();
             //rol de GESTION DOCUMENTAL
@@ -284,9 +296,8 @@ export default class DashboardComponent {
             this.loading = false; // Termina la carga de datos
             this.cdRef.detectChanges(); // Forzar la detección de cambios
           } else if (
-            this.user.roles.some((role: any) =>
-              role.roleName.includes('ROLE_SUPERTRANSPORTE')
-            )
+            this.authService.getUserRoles()[0].sistema ===
+            'ROLE_SUPERTRANSPORTE'
           ) {
             this.getHeaders();
             //rol de SUPERTRANSPORTE
@@ -442,15 +453,13 @@ export default class DashboardComponent {
 
     let router;
     if (
-      this.user.roles.some((role: any) =>
-        role.roleName.includes('ROLE_SUPERTRANSPORTE')
-      )
+      this.authService.getUserRoles()[0].sistema ===
+            'ROLE_SUPERTRANSPORTE'
     ) {
       router = 'solicitudAprobacion';
     } else if (
-      this.user.roles.some((role: any) =>
-        role.roleName.includes('ROLE_ESCRITURA_GESDOC')
-      )
+      this.authService.getUserRoles()[0].sistema ===
+            'ROLE_ESCRITURA_GESDOC'
     ) {
       router = 'solicitudRadicacion';
     }

@@ -116,6 +116,11 @@ export class ApiService {
     return this.http.get(`${this.baseUrl}/catalogos/SFSolicitud`);
   }
 
+  //salario minimo
+  getSalario(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/catalogos/Salarios%20M%C3%ADnimos`);
+  }
+
 
 
 

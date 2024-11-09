@@ -71,7 +71,10 @@ export default class SolicitudComponent {
     private route: ActivatedRoute,
     private cdr: ChangeDetectorRef // Inyectar ChangeDetectorRef
   ) {
-    this.user = this.authService.currentUser; // Almacena el usuario actual desde el servicio de autenticación
+    this.user = this.authService.getUserInfo();
+    this.hasPermission = this.authService.hasPermission(
+      'MUV_CARGADOCUMENTACION'
+    );
 
     // TRAER ID DESDE NAVEGACIÓN O LOCALSTORAGE
     const navigation = this.router.getCurrentNavigation();
@@ -123,6 +126,7 @@ export default class SolicitudComponent {
 
   //Respuesta de user activo y rol
   user: any;
+  hasPermission: boolean = false;
   //respuesta formas de pago
   formasPago: any;
   //respuesta id operacion
@@ -288,6 +292,25 @@ export default class SolicitudComponent {
             this.apiService.getDeparts().subscribe((response3) => {
               this.departamentos = response3;
             });
+            //salario minimo
+            this.apiService.getSalario().subscribe(
+              (response) => {
+                // Filtrar el detalle para obtener el salario del año actual
+                const salarioActual = response.detalle.find((salario: any) =>
+                  salario.descripcion.includes(
+                    new Date().getFullYear().toString()
+                  )
+                );
+
+                this.smlmmv = salarioActual
+                  ? salarioActual.detalle
+                  : response.detalle[0].detalle;
+                console.log(this.smlmmv);
+              },
+              (error) => {
+                console.error('Error fetching user data', error);
+              }
+            );
 
             //respuesta concepto
             this.apiService.getConcepto().subscribe((response4) => {
@@ -600,7 +623,6 @@ export default class SolicitudComponent {
     }
 
     if (this.solicitud.formulario.excelModeloTransporte) {
-      
       saved = true;
     }
 

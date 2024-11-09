@@ -139,7 +139,6 @@ export default class FijacionComponent {
   contratosSolicitud: any;
   //contador para consecutivo paso 4
   contador: number = 0;
-  
 
   //solicitud guardada
   solicitudGuardada: any;
@@ -407,7 +406,6 @@ export default class FijacionComponent {
       //GET DOCUMENTOS
       this.apiSFService.getDocumentosByID(id).subscribe(
         (response1) => {
-          
           this.loadingInicio = false;
           if (!this.isNewContracts) {
             // Crear un array de contratos
@@ -444,7 +442,6 @@ export default class FijacionComponent {
     //GET CONTRATOS
     this.apiSFService.getContratosByIDSolicitud(id).subscribe(
       (response2) => {
-        
         this.loadingInicio = false;
         this.contratosSolicitud = response2;
 
@@ -869,6 +866,24 @@ export default class FijacionComponent {
         console.error('Error fetching user data', error);
       }
     );
+
+    //salario minimo
+    this.apiService.getSalario().subscribe(
+      (response) => {
+        // Filtrar el detalle para obtener el salario del año actual
+        const salarioActual = response.detalle.find((salario: any) =>
+          salario.descripcion.includes(new Date().getFullYear().toString())
+        );
+
+        this.smlmmv = salarioActual ? salarioActual.detalle : response.detalle[0].detalle;
+        console.log(this.smlmmv);
+        
+
+      },
+      (error) => {
+        console.error('Error fetching user data', error);
+      }
+    );
   }
 
   //para mostrar fecha de bd en el form
@@ -1141,7 +1156,6 @@ export default class FijacionComponent {
         } else {
           this.submitted = true;
           this.formGroup3.markAllAsTouched();
-          
         }
 
         break;
@@ -1252,7 +1266,6 @@ export default class FijacionComponent {
                 this.apiSFService.deleteDoc(element).subscribe(
                   (response) => {},
                   (error) => {
-                    
                     // Manejo del error
                     console.error('Error al eliminar los docs:', error);
                   }
@@ -1268,7 +1281,6 @@ export default class FijacionComponent {
               this.ShowLoadingModal = false;
               this.showModalSaveInfo(num + 1);
             }
-            
           },
           (error) => {
             this.ShowLoadingModal = false;

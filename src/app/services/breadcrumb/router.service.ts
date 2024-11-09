@@ -13,6 +13,7 @@ export class RouterService {
   breadcrumb$ = this.breadcrumbSubject.asObservable();
 
   user: any;
+  hasPermission: boolean = false;
 
   constructor(private router: Router, private authService: AuthService) {
     this.router.events
@@ -28,10 +29,13 @@ export class RouterService {
 
   private updateBreadcrumb(): void {
     const url = this.router.url;
-    this.user = this.authService.currentUser;
+    this.user = this.authService.getUserInfo();
+    this.hasPermission = this.authService.hasPermission(
+      'MUV_CARGADOCUMENTACION'
+    );
 
     //routeo dependiendo del rol
-    if (this.user.roles[0].roleName == 'ROLE_ESCRITURA_MIN') {
+    if (this.authService.getUserRoles()[0].sistema === 'ROLE_ESCRITURA_MIN') {
       if (url.includes('dashboard')) {
         this.breadcrumbSubject.next([
           { name: 'Tramitar solicitud', route: 'NA' },
@@ -66,7 +70,9 @@ export class RouterService {
         ]);
       }
       //rol gestion documental
-    } else if (this.user.roles[0].roleName == 'ROLE_ESCRITURA_GESDOC') {
+    } else if (
+      this.authService.getUserRoles()[0].sistema === 'ROLE_ESCRITURA_GESDOC'
+    ) {
       if (url.includes('dashboard')) {
         this.breadcrumbSubject.next([
           { name: 'Visualizar solicitudes', route: 'NA' },
@@ -85,7 +91,9 @@ export class RouterService {
         ]);
       }
       //rol ROLE_SUPERTRANSPORTE
-    } else if (this.user.roles[0].roleName == 'ROLE_SUPERTRANSPORTE') {
+    } else if (
+      this.authService.getUserRoles()[0].sistema === 'ROLE_SUPERTRANSPORTE'
+    ) {
       switch (true) {
         //routeo dashboard
         case url.includes('dashboard'):
@@ -102,13 +110,9 @@ export class RouterService {
         //INDICADORES
         // 1 routeo indicadores
         case url.includes('indicadores'):
-          this.breadcrumbSubject.next([
-            { name: 'Indicadores', route: 'NA' },
-            
-          ]);
+          this.breadcrumbSubject.next([{ name: 'Indicadores', route: 'NA' }]);
           break;
 
-        
         default:
           this.breadcrumbSubject.next([
             { name: 'Ruta no reconocida', route: 'NA' },

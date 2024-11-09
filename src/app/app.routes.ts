@@ -1,5 +1,6 @@
 import {Routes} from '@angular/router';
-import {AuthGuard} from './auth.guard';
+import { AuthGuard } from './guards/auth.guard';
+
 
 export const routes: Routes = [
   {
@@ -10,21 +11,25 @@ export const routes: Routes = [
         path: 'dashboard',
         loadComponent: () => import('./views/dashboard/dashboard.component'),
         canActivate: [AuthGuard],
+        data: { permission: 'MUV_CARGADOCUMENTACION' }
       },
       {
         path: 'validador_nit',
         loadComponent: () => import('./views/Rol_TerritorialMinTrans/validacion-nit/validacion-nit.component'),
         canActivate: [AuthGuard],
+        data: { permission: 'MUV_CARGADOCUMENTACION' }
       },
       {
         path: 'fijacioncapacidadtransportadora',
         loadComponent: () => import('./views/Rol_TerritorialMinTrans/fijacion/fijacion.component'),
         canActivate: [AuthGuard],
+        data: { permission: 'MUV_CARGADOCUMENTACION' }
       },
       {
         path: 'incrementocapacidadtransportadora',
         loadComponent: () => import('./views/Rol_TerritorialMinTrans/incremento/incremento.component'),
         canActivate: [AuthGuard],
+        data: { permission: 'MUV_CARGADOCUMENTACION' }
       },
       {
         path: 'solicitudRadicacion',
@@ -58,19 +63,14 @@ export const routes: Routes = [
     loadComponent: () => import('./layouts/auth-layout/auth-layout.component'),
     children: [
       {
-        path: 'login',
-        loadComponent: () => import('./views/login/login.component'),
-        canActivate: [AuthGuard],
-      },
-      {
-        path: 'verificacion',
+        path: 'errorAutentication',
         loadComponent: () => import('./views/verificacion/verificacion.component'),
         canActivate: [AuthGuard],
       },
-
+      
       {
         path: '',
-        redirectTo: 'login',
+        redirectTo: 'errorAutentication',
         pathMatch: 'full'
       }
     ]

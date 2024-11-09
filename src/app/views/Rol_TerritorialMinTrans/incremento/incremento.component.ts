@@ -746,6 +746,23 @@ export default class IncrementoComponent implements AfterViewInit, OnInit {
         console.error('Error fetching user data', error);
       }
     );
+    //salario minimo
+    this.apiService.getSalario().subscribe(
+      (response) => {
+        // Filtrar el detalle para obtener el salario del año actual
+        const salarioActual = response.detalle.find((salario: any) =>
+          salario.descripcion.includes(new Date().getFullYear().toString())
+        );
+
+        this.smlmmv = salarioActual ? salarioActual.detalle : response.detalle[0].detalle;
+        console.log(this.smlmmv);
+        
+
+      },
+      (error) => {
+        console.error('Error fetching user data', error);
+      }
+    );
   }
 
   deleteFile(num: number, index?: number) {

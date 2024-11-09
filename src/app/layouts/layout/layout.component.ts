@@ -40,6 +40,7 @@ export default class LayoutComponent implements OnInit, OnDestroy {
   ) {}
 
   user: any;
+  hasPermission: boolean = false;
 
   ngOnInit(): void {
     this.breadcrumbSubscription = this.breadcrumbService.breadcrumb$.subscribe(
@@ -49,7 +50,10 @@ export default class LayoutComponent implements OnInit, OnDestroy {
     );
 
     //traer los datos de la consulta
-    this.user = this.authService.currentUser;
+    this.user = this.authService.getUserInfo();
+    this.hasPermission = this.authService.hasPermission(
+      'MUV_CARGADOCUMENTACION'
+    );
   }
 
   ngOnDestroy(): void {

@@ -16,6 +16,7 @@ export class SidebarComponent {
   isSidebarOpen = true;
   activeItem: string | null = null;
   user: any;
+  hasPermission: boolean = false;
 
   // Define the menu items
   items: any[] = [
@@ -50,12 +51,14 @@ export class SidebarComponent {
           this.isSidebarOpen = false;
         }
       });
-    this.user = this.authService.currentUser;
+    this.user = this.authService.getUserInfo();
+    this.hasPermission = this.authService.hasPermission(
+      'MUV_CARGADOCUMENTACION'
+    );
 
     if (
-      this.user.roles.some((role: any) =>
-        role.roleName.includes('ROLE_ESCRITURA_GESDOC')
-      )
+      this.authService.getUserRoles()[0].sistema ===
+            'ROLE_ESCRITURA_GESDOC'
     ) {
       this.items = [
         {
@@ -63,9 +66,8 @@ export class SidebarComponent {
         }
       ];
     } else if (
-      this.user.roles.some((role: any) =>
-        role.roleName.includes('ROLE_SUPERTRANSPORTE')
-      )
+      this.authService.getUserRoles()[0].sistema ===
+            'ROLE_SUPERTRANSPORTE'
     ) {
       this.items = [
         { label: 'Inicio', route: '/dashboard' },

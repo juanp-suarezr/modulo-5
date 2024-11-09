@@ -15,12 +15,16 @@ export class TableComponent {
   @Input() headers: any = [];
   @Input() data: any = [];
   @Output() idClicked: EventEmitter<number> = new EventEmitter<number>();
-  @Output() solicitudGuardada: EventEmitter<{ id: number, categoria: string }> = new EventEmitter<{ id: number, categoria: string }>();
+  @Output() solicitudGuardada: EventEmitter<{ id: number; categoria: string }> =
+    new EventEmitter<{ id: number; categoria: string }>();
   user: any;
-  
+  hasPermission: boolean = false;
 
   constructor(private authService: AuthService) {
-    this.user = this.authService.currentUser; // Obtener el usuario actual
+    this.user = this.authService.getUserInfo();
+    this.hasPermission = this.authService.hasPermission(
+      'MUV_CARGADOCUMENTACION'
+    );
   }
 
   get info(): string[] {
@@ -50,22 +54,25 @@ export class TableComponent {
   }
 
   hasRole(name: string): boolean {
-    return this.user.roles.some((role: any) => role.roleName.includes(name));
+    return this.authService.getUserRoles()[0].sistema ===
+            name;
   }
 
   //Metodo para darle click al id
   onIdClick(id: number) {
     console.log(id);
-    
+
     this.idClicked.emit(id);
   }
 
   //Metodo para continuar con registro
   onButtonClick(solicitud: any) {
     console.log(solicitud);
-    
-    this.solicitudGuardada.emit({id:this.getId(solicitud.id), categoria: solicitud.categoria});
-    
+
+    this.solicitudGuardada.emit({
+      id: this.getId(solicitud.id),
+      categoria: solicitud.categoria,
+    });
   }
 
   getColorForSemaforo(dias: number): string {
@@ -81,9 +88,9 @@ export class TableComponent {
 
   getId(value: string): number {
     // Dividimos el string por la coma y retornamos el primer valor (el id)
-    return parseInt(value.split(',')[0]); 
+    return parseInt(value.split(',')[0]);
   }
-  
+
   isTrue(value: string): boolean {
     // Verificamos si el segundo valor es "true"
     return value.split(',')[1] === 'true';
