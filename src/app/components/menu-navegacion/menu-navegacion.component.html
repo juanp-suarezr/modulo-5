@@ -1,0 +1,144 @@
+<div class="container-navbar-menu-govco blue-menu-govco">
+    <nav class="navbar navbar-expand-lg navbar-menu-govco flex" role="navigation" aria-label="Menú ejemplo entidad"
+        #navbarMenu>
+        <div class="container-logo-header-govco">
+            <span class="logo-header-govco"></span>
+            <div class="container-search-header-govco">
+
+            </div>
+        </div>
+        <div class="container-fluid container-second-navbar-menu-govco">
+            <button class="navbar-toggler button-responsive-menu-govco collapsed" type="button" (click)="toggleMenu()"
+                [attr.aria-expanded]="menuCollapsed ? 'false' : 'true'">
+                <span class="icon-bars-menu-govco"></span>
+            </button>
+            <div class="desktop_nav navbar-collapse navbar-collapse-menu-govco" id="navbarScroll"
+                style="margin-top: -21px;">
+                <ul class="navbar-nav navbar-nav-menu-govco ms-auto flex">
+                    <li class="nav-item">
+                        <a class="nav-link dir-menu-govco active" [routerLinkActiveOptions]="{ exact: true }"
+                            routerLink="/dashboard" routerLinkActive="active" aria-current="page" type="button"
+                            role="button">
+                            <span class="text-item-menu-govco">Inicio</span>
+                        </a>
+                    </li>
+                    <li *ngIf="hasSolicitudes" class="nav-item dropdown" #dropdownItem>
+                        <a class="nav-link dir-menu-govco" [routerLinkActiveOptions]="{ exact: true }"
+                            (click)="toggleDropdown(dropdownItem)" routerLinkActive="active" aria-current="page"
+                            type="button" role="button">
+                            <span class="text-item-menu-govco">Tramitar solicitud</span>
+                            <span
+                                class="ml-2 pi pi-sort-down-fill text-item-menu-govco !no-underline h-fit transition-all"
+                                [ngClass]="{'rotate': dropdownItem.classList.contains('is-expanded')}"></span> </a>
+                        <div class="dropdown-menu items_dropdown dropdown-menu-end megamenu-menu-govco hidden"
+                            role="menu">
+                            <div class="g-3 container-items-govco">
+                                <div class="colum-item-menu-govco">
+                                    <hr class="dropdown-divider">
+                                    <ul class="list-unstyled">
+                                        <li>
+                                            <a class="dropdown-item dir-menu-govco active" type="button" role="button"
+                                                (click)="navigateTo('/validador_nit', dropdownItem)"
+                                                aria-current="page">
+                                                Fijación de Capacidad Transportadora
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item dir-menu-govco" type="button" role="button"
+                                                (click)="navigateTo('/incrementocapacidadtransportadora', dropdownItem)"
+                                                aria-current="page">
+                                                Incremento de Capacidad Transportadora
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li *ngIf="hasIndicadores" class="nav-item">
+                        <a class="nav-link dir-menu-govco" [routerLinkActiveOptions]="{ exact: true }"
+                            routerLink="/indicadores" routerLinkActive="active" aria-current="page" type="button"
+                            role="button">
+                            <span class="text-item-menu-govco">Indicadores</span>
+                        </a>
+                    </li>
+                    <!-- <li class="nav-item dropdown has-megamenu-menu-govco" #desktopDropdown>
+                        <a class="nav-link" type="button" role="button" id="navbarDropdown3" (click)="toggleDropdown(desktopDropdown)" aria-expanded="false">
+                            <span class="container-text-icon-menu-govco">
+                                <span class="text-item-menu-govco">Ítem menú adicional</span>
+                                <span class="icon-caret-menu-govco"></span>
+                            </span>
+                        </a>
+                        <div class="dropdown-menu items_dropdown dropdown-menu-end megamenu-menu-govco hidden" role="menu">
+                            <div class="g-3 container-items-govco">
+                                <div class="colum-item-menu-govco">
+                                    <hr class="dropdown-divider">
+                                    <ul class="list-unstyled">
+                                        <li><a class="dropdown-item dir-menu-govco" type="button" role="button">Trámites</a></li>
+                                        <li><a class="dropdown-item dir-menu-govco" type="button" role="button">Trámites</a></li>
+                                        <li><a class="dropdown-item dir-menu-govco" type="button" role="button">Trámites</a></li>
+                                        <li><a class="dropdown-item dir-menu-govco" type="button" role="button">Trámites</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </li> -->
+                </ul>
+            </div>
+            <div class="movile_nav"
+                [ngClass]="{'collapse': menuCollapsed, 'navbar-collapse': true, 'navbar-collapse-menu-govco': true}"
+                id="navbarScroll">
+                <div class="container-search-icon-menu-govco navbar-toggler">
+                    <a class="navbar-brand navbar-toggler icon-entidad-menu-govco" type="button" role="button"></a>
+                    <button class="icon-user-alt-menu-govco" (click)="toggleMenu()"></button>
+                </div>
+                <ul class="navbar-nav navbar-nav-menu-govco ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link dir-menu-govco active" [routerLinkActiveOptions]="{ exact: true }"
+                            routerLink="/inicio" routerLinkActive="active" aria-current="page" type="button"
+                            role="button">
+                            <span class="text-item-menu-govco">Inicio</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" *ngIf="hasSolicitudes">
+                        <a class="nav-link dir-menu-govco" [routerLinkActiveOptions]="{ exact: true }"
+                            routerLink="/gestionsolicitudes" routerLinkActive="active" aria-current="page" type="button"
+                            role="button">
+                            <span class="text-item-menu-govco">Tramitar solicitud</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" *ngIf="hasIndicadores">
+                        <a class="nav-link dir-menu-govco" [routerLinkActiveOptions]="{ exact: true }"
+                            routerLink="/informacion-general" routerLinkActive="active" aria-current="page"
+                            type="button" role="button">
+                            <span class="text-item-menu-govco">Indicadores</span>
+                        </a>
+                    </li>
+                    <!-- <li class="nav-item dropdown has-megamenu-menu-govco" #dropdownItem>
+                        <a class="nav-link" type="button" role="button" id="navbarDropdown3"
+                            (click)="toggleDropdown(dropdownItem)" aria-expanded="false">
+                            <span class="container-text-icon-menu-govco">
+                                <span class="text-item-menu-govco">Ítem menú adicional</span>
+                                <span class="icon-caret-menu-govco"></span>
+                            </span>
+                        </a>
+                        <div class="dropdown-menu items_dropdown dropdown-menu-end megamenu-menu-govco hidden"
+                            role="menu">
+                            <div class="g-3 container-items-govco">
+                                <div class="colum-item-menu-govco">
+                                    <hr class="dropdown-divider">
+                                    <ul class="list-unstyled">
+                                        <li><a class="dropdown-item dir-menu-govco" href="#">Trámites</a></li>
+                                        <li><a class="dropdown-item dir-menu-govco" href="#">Trámites</a></li>
+                                        <li><a class="dropdown-item dir-menu-govco" href="#">Trámites</a></li>
+                                        <li><a class="dropdown-item dir-menu-govco" href="#">Trámites</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </li> -->
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>

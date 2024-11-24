@@ -35,7 +35,7 @@ export class RouterService {
     );
 
     //routeo dependiendo del rol
-    if (this.authService.getUserRoles()[0].sistema === 'ROLE_ESCRITURA_MIN') {
+    if (this.authService.getUserRoles()[0].sistema === 'MSF_TERRITORIAL') {
       if (url.includes('dashboard')) {
         this.breadcrumbSubject.next([
           { name: 'Tramitar solicitud', route: 'NA' },
@@ -71,7 +71,7 @@ export class RouterService {
       }
       //rol gestion documental
     } else if (
-      this.authService.getUserRoles()[0].sistema === 'ROLE_ESCRITURA_GESDOC'
+      this.authService.getUserRoles()[0].sistema === 'MSF_GESTION_DOCUMENTAL'
     ) {
       if (url.includes('dashboard')) {
         this.breadcrumbSubject.next([
@@ -90,9 +90,9 @@ export class RouterService {
           { name: 'Ruta no reconocida', route: 'NA' },
         ]);
       }
-      //rol ROLE_SUPERTRANSPORTE
+      //rol MSF_SUPERTRANSPORTE
     } else if (
-      this.authService.getUserRoles()[0].sistema === 'ROLE_SUPERTRANSPORTE'
+      this.authService.getUserRoles()[0].sistema === 'MSF_SUPERTRANSPORTE'
     ) {
       switch (true) {
         //routeo dashboard

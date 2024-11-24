@@ -1,4 +1,4 @@
-<div class="sm:grid sm:grid-cols-10 gap-4 pb-16" *ngIf="user.roles[0].roleName == 'ROLE_ESCRITURA_GESDOC'"
+<div class="sm:grid sm:grid-cols-10 gap-4 pb-16"
   xmlns="http://www.w3.org/1999/html">
 
   <div class="md:col-span-2 sm:col-span-3 w-auto sm:mt-16 mt-12">
@@ -840,14 +840,14 @@
 
 
     <!-- contenido operativo -->
-    <div class="w-full flex justify-center gap-x-2">
+    <div class="w-full flex justify-center gap-x-2" *ngIf="activeNum == '1'">
       <!-- flecha izquierda -->
       <button *ngIf="currentContractIndex > 0" (click)="prevContract()" class="arrow-left flex items-center"
         [disabled]="currentContractIndex === 0">
         <span class="pi pi-chevron-left text-primary2 text-xl"></span>
       </button>
       <!-- contenido total -->
-      <div class="w-full" *ngIf="activeNum == '1'">
+      <div class="w-full">
         <h3 class="text-primary1 !font-bold">Solicitud ID {{solicitud?.formulario.id}}</h3>
 
 

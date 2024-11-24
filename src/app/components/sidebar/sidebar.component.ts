@@ -58,7 +58,7 @@ export class SidebarComponent {
 
     if (
       this.authService.getUserRoles()[0].sistema ===
-            'ROLE_ESCRITURA_GESDOC'
+            'MSF_GESTION_DOCUMENTAL'
     ) {
       this.items = [
         {
@@ -67,7 +67,7 @@ export class SidebarComponent {
       ];
     } else if (
       this.authService.getUserRoles()[0].sistema ===
-            'ROLE_SUPERTRANSPORTE'
+            'MSF_SUPERTRANSPORTE'
     ) {
       this.items = [
         { label: 'Inicio', route: '/dashboard' },

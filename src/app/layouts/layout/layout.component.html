@@ -1,19 +1,19 @@
 <div class="bg-gray-50/50">
     <app-header-bar [user]="user" />
-    
-    
-    <div class="mt-[12px] mb-[13px] pl-[18px] sm:mt-[32px] sm:mb-[22px] sm:pl-[86px]">
-        <img src="/assets/super_transporte.png" class="w-auto sm:h-[48px] h-[35px]" alt="">
+    <!-- side bar azul -->
+    <app-menu-navegacion></app-menu-navegacion>
+    <!-- indicador - marcador seccion -->
+    <div class="px-4 bg-[#333333] padding-title">
+        <div class="flex items-center">
+            <p class="text-white title-module">
+                <b>Indicadores de gestión y operación y sustentabilidad financiera</b>
+            </p>
+        </div>
     </div>
     
-    <app-sidebar />
-    <app-header [breadcrumb]="breadcrumb"></app-header>
     <div class="z-4">
         <div class="">
-            <h2 class="text-primary1 !font-semibold mt-12 px-6">
-                Indicadores de gestión y operación y sustentabilidad financiera
-                
-            </h2>
+            <app-header  [breadcrumb]="breadcrumb"></app-header>
             <router-outlet />
         </div>
     </div>

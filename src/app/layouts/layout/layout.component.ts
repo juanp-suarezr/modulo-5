@@ -15,6 +15,7 @@ import { Subscription } from 'rxjs';
 //servicios de consultas api
 import { ApiService } from '../../services/api/api.service';
 import { AuthService } from '../../services/auth/auth.service';
+import MenuNavegacionComponent from '../../components/menu-navegacion/menu-navegacion.component';
 
 @Component({
   selector: 'app-layout',
@@ -26,6 +27,7 @@ import { AuthService } from '../../services/auth/auth.service';
     HeaderBarComponent,
     RouterOutlet,
     CommonModule,
+    MenuNavegacionComponent,
   ],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.css',
@@ -52,7 +54,7 @@ export default class LayoutComponent implements OnInit, OnDestroy {
     //traer los datos de la consulta
     this.user = this.authService.getUserInfo();
     this.hasPermission = this.authService.hasPermission(
-      'MUV_CARGADOCUMENTACION'
+      'MSF_TERRITORIAL'
     );
   }
 

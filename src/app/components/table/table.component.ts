@@ -23,7 +23,7 @@ export class TableComponent {
   constructor(private authService: AuthService) {
     this.user = this.authService.getUserInfo();
     this.hasPermission = this.authService.hasPermission(
-      'MUV_CARGADOCUMENTACION'
+      'MSF_TERRITORIAL'
     );
   }
 

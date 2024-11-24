@@ -69,7 +69,7 @@ export default class SolicitudComponent {
   ) {
     this.user = this.authService.getUserInfo();
     this.hasPermission = this.authService.hasPermission(
-      'MUV_CARGADOCUMENTACION'
+      'SF_GESTION_DOCUMENTAL'
     );
 
     // TRAER ID DESDE NAVEGACIÓN O LOCALSTORAGE

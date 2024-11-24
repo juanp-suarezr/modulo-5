@@ -16,13 +16,13 @@
                 <tr class="text-primary3 border-b-2 border-secondary1 bg-white" *ngFor="let item of data">
                   <td *ngFor="let key of info" class="px-5 py-5">
                     <!-- datos con rol de escritura territorial -->
-                    <p *ngIf="key !== 'id' && key !== 'estadoSolicitudDescripcion' && hasRole('ROLE_ESCRITURA_MIN')"
+                    <p *ngIf="key !== 'id' && key !== 'estadoSolicitudDescripcion' && hasRole('MSF_TERRITORIAL')"
                       class="whitespace-no-wrap">
                       {{ formatField(item[key]) }}
                     </p>
                     <!-- boton con rol de escritura territorial -->
                     <button
-                      *ngIf="key == 'estadoSolicitudDescripcion'  && item[key] == 'Pendiente'  && hasRole('ROLE_ESCRITURA_MIN')"
+                      *ngIf="key == 'estadoSolicitudDescripcion'  && item[key] == 'Pendiente'  && hasRole('MSF_TERRITORIAL')"
                       class="whitespace-no-wrap flex inline-flex px-3 py-2 bg-primary1 text-white hover:bg-primary2 rounded-full shadow-md"
                       (click)="onButtonClick(item)">
                       Continuar
@@ -33,20 +33,20 @@
                     </p>
                     <!-- id con rol de escritura gestion doc  -->
                     <button
-                      *ngIf="key === 'id' && isTrue(item[key]) && (hasRole('ROLE_ESCRITURA_GESDOC') || hasRole('ROLE_SUPERTRANSPORTE'))"
+                      *ngIf="key === 'id' && isTrue(item[key]) && (hasRole('MSF_GESTION_DOCUMENTAL') || hasRole('MSF_SUPERTRANSPORTE'))"
                       class="underline text-primary2 font-semibold cursor-pointer" pTooltip="clic para abrir"
                       tooltipPosition="right" (click)="onIdClick( getId(item[key]) )">
                       {{ getId(item[key]) }}
                     </button>
                     
                     <!-- datos con rol de escritura gestion doc -->
-                    <p *ngIf="key !== 'id' && key !== 'semaforo' && (hasRole('ROLE_ESCRITURA_GESDOC') || hasRole('ROLE_SUPERTRANSPORTE'))"
+                    <p *ngIf="key !== 'id' && key !== 'semaforo' && (hasRole('MSF_GESTION_DOCUMENTAL') || hasRole('MSF_SUPERTRANSPORTE'))"
                       class="whitespace-no-wrap">
                       {{ formatField(item[key]) }}
                     </p>
                     <!-- Barra de progreso del semáforo -->
                     <div
-                      *ngIf="key === 'semaforo' && (hasRole('ROLE_ESCRITURA_GESDOC') || hasRole('ROLE_SUPERTRANSPORTE'))"
+                      *ngIf="key === 'semaforo' && (hasRole('MSF_GESTION_DOCUMENTAL') || hasRole('MSF_SUPERTRANSPORTE'))"
                       class="w-full relative flex-col whitespace-no-wrap z-[1]">
 
                       <!-- Barra de progreso base (gris) -->
@@ -106,13 +106,13 @@
             <div class="w-1/2 p-2">
 
               <!-- datos con rol de escritura territorial -->
-              <p *ngIf="info[i] !== 'id' && info[i] !== 'estadoSolicitudDescripcion' && hasRole('ROLE_ESCRITURA_MIN')"
+              <p *ngIf="info[i] !== 'id' && info[i] !== 'estadoSolicitudDescripcion' && hasRole('MSF_TERRITORIAL')"
                 class="whitespace-no-wrap">
                 {{ formatField(item[info[i]]) }}
               </p>
               <!-- boton con rol de escritura territorial -->
               <button
-                *ngIf="info[i] == 'estadoSolicitudDescripcion'  && item[info[i]] == 'Pendiente'  && hasRole('ROLE_ESCRITURA_MIN')"
+                *ngIf="info[i] == 'estadoSolicitudDescripcion'  && item[info[i]] == 'Pendiente'  && hasRole('MSF_TERRITORIAL')"
                 class="whitespace-no-wrap flex inline-flex px-3 py-1 bg-primary1 text-white text-xs hover:bg-primary2 rounded-full shadow-md"
                 (click)="onButtonClick(item)">
                 Continuar
@@ -125,7 +125,7 @@
               </p>
 
               <!-- Condición: id con rol de escritura gestion doc -->
-              <button *ngIf="info[i] === 'id' && isTrue(item[info[i]]) && (hasRole('ROLE_ESCRITURA_GESDOC') || hasRole('ROLE_SUPERTRANSPORTE'))"
+              <button *ngIf="info[i] === 'id' && isTrue(item[info[i]]) && (hasRole('MSF_GESTION_DOCUMENTAL') || hasRole('MSF_SUPERTRANSPORTE'))"
                 class="underline text-primary2 font-semibold cursor-pointer" pTooltip="clic para abrir"
                 tooltipPosition="right" (click)="onIdClick(getId(item[info[i]]))">
                 {{ getId(item[info[i]]) }}
@@ -133,14 +133,14 @@
 
               
               <!-- Condición: datos con rol de escritura gestion doc -->
-              <p *ngIf="info[i] !== 'id' && info[i] !== 'semaforo' && (hasRole('ROLE_ESCRITURA_GESDOC') || hasRole('ROLE_SUPERTRANSPORTE'))"
+              <p *ngIf="info[i] !== 'id' && info[i] !== 'semaforo' && (hasRole('MSF_GESTION_DOCUMENTAL') || hasRole('MSF_SUPERTRANSPORTE'))"
                 class="whitespace-no-wrap">
                 {{ formatField(item[info[i]]) }}
               </p>
 
               <!-- Barra de progreso del semáforo -->
               <div
-                *ngIf="info[i] === 'semaforo' && (hasRole('ROLE_ESCRITURA_GESDOC') || hasRole('ROLE_SUPERTRANSPORTE'))"
+                *ngIf="info[i] === 'semaforo' && (hasRole('MSF_GESTION_DOCUMENTAL') || hasRole('MSF_SUPERTRANSPORTE'))"
                 class="w-full relative flex flex-col justify-center mt-2 whitespace-no-wrap z-[1]">
 
                 <!-- Barra de progreso base (gris) -->

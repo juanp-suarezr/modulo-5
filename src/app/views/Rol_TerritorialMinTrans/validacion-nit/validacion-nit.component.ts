@@ -19,6 +19,7 @@ import {
   switchMap,
   timeout,
 } from 'rxjs/operators';
+import { AuthService } from '../../../services/auth/auth.service';
 
 @Component({
   selector: 'app-validacion-nit',
@@ -33,12 +34,27 @@ import {
   styleUrl: './validacion-nit.component.css',
 })
 export default class ValidacionNitComponent {
+
+  user: any;
+  hasPermission: boolean = false;
+
   constructor(
     private fb: FormBuilder,
     private cdr: ChangeDetectorRef,
     private apiSFService: ApiSFService,
-    private router: Router
-  ) {}
+    private router: Router,
+    private authService: AuthService
+  ) {
+
+    //traer los datos de la consulta
+    this.user = this.authService.getUserInfo();
+    this.hasPermission = this.authService.hasPermission(
+      'MSF_TERRITORIAL'
+    );
+
+  }
+
+  
 
   submitted: boolean = false;
   formGroup1!: FormGroup;

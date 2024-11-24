@@ -73,7 +73,7 @@ export default class SolicitudComponent {
   ) {
     this.user = this.authService.getUserInfo();
     this.hasPermission = this.authService.hasPermission(
-      'MUV_CARGADOCUMENTACION'
+      'MSF_SUPERTRANSPORTE'
     );
 
     // TRAER ID DESDE NAVEGACIÓN O LOCALSTORAGE

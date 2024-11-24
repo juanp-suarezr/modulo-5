@@ -87,13 +87,13 @@ export default class DashboardComponent {
   ) {
     this.user = this.authService.getUserInfo();
     this.hasPermission = this.authService.hasPermission(
-      'MUV_CARGADOCUMENTACION'
+      'MSF_TERRITORIAL'
     );
   }
 
   // Getter para verificar el rol
   get hasSuperTransporteRole(): boolean {
-    return this.authService.hasRole('ROLE_SUPERTRANSPORTE');
+    return this.authService.hasRole('MSF_SUPERTRANSPORTE');
   }
 
   ngOnInit(): void {
@@ -113,12 +113,12 @@ export default class DashboardComponent {
 
         if (
           this.authService.getUserRoles()[0].sistema ===
-            'ROLE_SUPERTRANSPORTE' ||
-          this.authService.getUserRoles()[0].sistema === 'ROLE_ESCRITURA_GESDOC'
+            'MSF_SUPERTRANSPORTE' ||
+          this.authService.getUserRoles()[0].sistema === 'MSF_GESTION_DOCUMENTAL'
         ) {
           if (
             this.authService.getUserRoles()[0].sistema ===
-            'ROLE_SUPERTRANSPORTE'
+            'MSF_SUPERTRANSPORTE'
           ) {
             this.usuarioRol = 'superTransp';
           } else {
@@ -253,7 +253,7 @@ export default class DashboardComponent {
           // Validar roles y generar headers después de cargar los datos
           if (
             this.authService.getUserRoles()[0].sistema ===
-            'ROLE_ESCRITURA_GESDOC'
+            'MSF_GESTION_DOCUMENTAL'
           ) {
             this.getHeaders();
             //rol de GESTION DOCUMENTAL
@@ -297,7 +297,7 @@ export default class DashboardComponent {
             this.cdRef.detectChanges(); // Forzar la detección de cambios
           } else if (
             this.authService.getUserRoles()[0].sistema ===
-            'ROLE_SUPERTRANSPORTE'
+            'MSF_SUPERTRANSPORTE'
           ) {
             this.getHeaders();
             //rol de SUPERTRANSPORTE
@@ -454,12 +454,12 @@ export default class DashboardComponent {
     let router;
     if (
       this.authService.getUserRoles()[0].sistema ===
-            'ROLE_SUPERTRANSPORTE'
+            'MSF_SUPERTRANSPORTE'
     ) {
       router = 'solicitudAprobacion';
     } else if (
       this.authService.getUserRoles()[0].sistema ===
-            'ROLE_ESCRITURA_GESDOC'
+            'MSF_GESTION_DOCUMENTAL'
     ) {
       router = 'solicitudRadicacion';
     }

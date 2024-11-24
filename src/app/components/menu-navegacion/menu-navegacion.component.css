@@ -1,0 +1,537 @@
+/* Fuente iconografica */
+@font-face {
+    font-family: "govco-font";
+    src: url("/assets/govco-font-icons.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* WorkSans-Medium */
+@font-face {
+    font-family: 'WorkSans-Medium';
+    src: url('/assets/fonts/Work_Sans/static/WorkSans-Medium.ttf');
+}
+
+/* WorkSans-SemiBold */
+@font-face {
+    font-family: 'WorkSans-SemiBold';
+    src: url('/assets/fonts/Work_Sans/static/WorkSans-SemiBold.ttf');
+}
+
+/* WorkSans-Regular */
+@font-face {
+    font-family: 'WorkSans-Regular';
+    src: url('/assets/fonts/Work_Sans/static/WorkSans-Regular.ttf');
+}
+
+html {
+    font-size: 100%;
+    /* 100% = 16px */
+}
+
+.logo-aut-header-govco {
+    position: relative;
+    margin-bottom: 2rem;
+}
+
+.rotate {
+    transform: rotate(180deg);
+    transition: transform 0.3s ease-in-out;
+}
+
+.logo-aut-header-govco .link-login-header-govco {
+    color: #3366CC;
+    font-family: WorkSans-Regular;
+    font-size: 14px;
+    display: block;
+    right: 5.375rem;
+    position: absolute;
+    margin-top: 2rem;
+}
+
+.logo-aut-header-govco .link-login-header-govco:hover {
+    color: #004884;
+}
+
+.container-logo-header-govco {
+    /* padding: 3.563rem 5.375rem 0 5.375rem; */
+    display: flex;
+    /* align-items: center; */
+    justify-content: space-between;
+}
+
+.container-logo-header-govco .logo-header-govco {
+    margin-top: 6px;
+    height: 58px;
+    content: url(/assets/super_transporte_blanco.svg);
+}
+
+.container-navbar-ejemplo-menu-govco .icon-entidad-menu-govco{
+    margin-top: 6px;
+    height: 58px;
+    content: url(/assets/super_transporte_blanco.svg);
+}
+
+.container-logo-header-govco .container-search-header-govco {
+    max-width: 21.875rem;
+}
+
+@media (max-width: 991px) {
+    .logo-aut-header-govco {
+        display: none;
+    }
+
+    .container-logo-header-govco {
+        padding: 0rem 0 0rem 1.125rem;
+        border-bottom: 0.188rem solid #004884;
+    }
+
+    .container-logo-header-govco .logo-header-govco {
+        height: 2.188rem;
+    }
+}
+
+
+/* Menu de navegacion */
+.container-navbar-menu-govco {
+    background-color: #004884 !important;
+    width: 100%;
+    min-height: 3.75rem;
+    max-height: 4.5rem;
+}
+
+.container-navbar-menu-govco.blue-menu-govco,
+.blue-menu-govco .navbar-collapse-menu-govco {
+    border-bottom: 0.188rem solid #004884;
+}
+
+.container-navbar-menu-govco.green-menu-govco,
+.green-menu-govco .navbar-collapse-menu-govco {
+    border-bottom: 0.188rem solid #068460;
+}
+
+.container-navbar-menu-govco.yellow-menu-govco,
+.yellow-menu-govco .navbar-collapse-menu-govco {
+    border-bottom: 0.188rem solid #FAD118;
+}
+
+.container-navbar-menu-govco.red-menu-govco,
+.red-menu-govco .navbar-collapse-menu-govco {
+    border-bottom: 0.188rem solid #D31F3F;
+}
+
+.container-navbar-menu-govco.orange-menu-govco,
+.orange-menu-govco .navbar-collapse-menu-govco {
+    border-bottom: 0.188rem solid #FF6C00;
+}
+
+.navbar-collapse-menu-govco {
+    background-color: #004884 !important;
+}
+
+.navbar-menu-govco .megamenu-menu-govco,
+.navbar-menu-govco .dropdown-large-menu-govco {
+    background-color: #004884 !important;
+}
+
+.navbar-menu-govco ul.navbar-nav li {
+    background-color: #004884;
+}
+
+.navbar-menu-govco ul.navbar-nav li a {
+    white-space: normal;
+    color: #fbfbfb !important;
+    height: 100%;
+    display: flex;
+    font-size: 14px;
+    line-height: normal !important;
+    font-family: WorkSans-Medium;
+    padding-right: .5rem;
+    padding-left: .5rem;
+}
+
+.navbar-menu-govco ul.navbar-nav li a.dropdown-item {
+    
+    color: #004884 !important;
+    
+}
+
+
+.navbar-menu-govco ul.navbar-nav li a.nav-link.active {
+    font-family: WorkSans-SemiBold;
+}
+
+.blue-menu-govco .navbar-menu-govco ul.navbar-nav li a.nav-link:not(.active):hover,
+.blue-menu-govco .navbar-menu-govco ul.navbar-nav li a.nav-link.active,
+.blue-menu-govco .navbar-menu-govco ul.navbar-nav li a.nav-link[aria-expanded="true"],
+.blue-menu-govco .navbar-menu-govco ul.navbar-nav li a.nav-link:focus-visible {
+    background-color: #fbfbfb;
+    color: #004884 !important;
+}
+
+.green-menu-govco .navbar-menu-govco ul.navbar-nav li a.nav-link:not(.active):hover,
+.green-menu-govco .navbar-menu-govco ul.navbar-nav li a.nav-link.active,
+.green-menu-govco .navbar-menu-govco ul.navbar-nav li a.nav-link[aria-expanded="true"],
+.green-menu-govco .navbar-menu-govco ul.navbar-nav li a.nav-link:focus-visible {
+    background-color: #fbfbfb;
+    color: #004884 !important;
+}
+
+.yellow-menu-govco .navbar-menu-govco ul.navbar-nav li a.nav-link:not(.active):hover,
+.yellow-menu-govco .navbar-menu-govco ul.navbar-nav li a.nav-link.active,
+.yellow-menu-govco .navbar-menu-govco ul.navbar-nav li a.nav-link[aria-expanded="true"],
+.yellow-menu-govco .navbar-menu-govco ul.navbar-nav li a.nav-link:focus-visible {
+    background-color: #FAD118;
+    color: #000000 !important;
+}
+
+.red-menu-govco .navbar-menu-govco ul.navbar-nav li a.nav-link:not(.active):hover,
+.red-menu-govco .navbar-menu-govco ul.navbar-nav li a.nav-link.active,
+.red-menu-govco .navbar-menu-govco ul.navbar-nav li a.nav-link[aria-expanded="true"],
+.red-menu-govco .navbar-menu-govco ul.navbar-nav li a.nav-link:focus-visible {
+    background-color: #D31F3F;
+    color: #FFFFFF !important;
+}
+
+.orange-menu-govco .navbar-menu-govco ul.navbar-nav li a.nav-link:not(.active):hover,
+.orange-menu-govco .navbar-menu-govco ul.navbar-nav li a.nav-link.active,
+.orange-menu-govco .navbar-menu-govco ul.navbar-nav li a.nav-link[aria-expanded="true"],
+.orange-menu-govco .navbar-menu-govco ul.navbar-nav li a.nav-link:focus-visible {
+    background-color: #FF6C00;
+    color: #000000 !important;
+}
+
+.navbar-menu-govco ul.navbar-nav li a:not(.active):hover .text-item-menu-govco {
+    text-decoration: underline;
+}
+
+.navbar-menu-govco ul.navbar-nav li a.disabled {
+    color: #BABABA !important;
+    pointer-events: none;
+}
+
+.navbar-menu-govco ul.navbar-nav li a:focus-visible {
+    outline: max(0.125rem, 0.15em) solid #000000;
+    outline-offset: max(0.188rem, 0.15em);
+    z-index: 1;
+    font-family: WorkSans-SemiBold;
+}
+
+.navbar-menu-govco ul.navbar-nav li ul {
+    background-color: #F2F2F2;
+    border: 0;
+}
+
+.navbar-menu-govco ul.navbar-nav li ul li {
+    width: 100%
+}
+
+.navbar-menu-govco ul.navbar-nav li ul li a {
+    align-items: center;
+    padding: 0 0 0 1.875rem;
+    font-family: WorkSans-Regular;
+}
+
+.navbar-menu-govco ul.navbar-nav li ul li a:not(.active):hover {
+    text-decoration: underline;
+    background-color: #F2F2F2;
+}
+
+.navbar-menu-govco ul.navbar-nav li ul li a:active,
+.navbar-menu-govco ul.navbar-nav li ul li a.active,
+.navbar-menu-govco ul.navbar-nav li ul li a:not(.active):focus-visible {
+    background-color: #FFFFFF !important;
+    color: #4B4B4B !important;
+    font-family: WorkSans-Medium;
+}
+
+.navbar-menu-govco ul.navbar-nav li div span {
+    font-size: 15px;
+    color: #4B4B4B;
+}
+.container-navbar-menu-govco .navbar-menu-govco ul li ul li a:not(.active):hover {
+    background-color: #E8E8E8 !important;
+    color: #4B4B4B !important;
+}
+.navbar-menu-govco ul.navbar-nav li a .icon-caret-menu-govco::before {
+    font-family: "govco-font";
+    content: "\e88e";
+    line-height: 1;
+    font-size: 16px;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    color: #4B4B4B;
+}
+
+.blue-menu-govco .navbar-menu-govco ul.navbar-nav li a:hover .icon-caret-menu-govco::before,
+.blue-menu-govco .navbar-menu-govco ul.navbar-nav li a.active .icon-caret-menu-govco::before,
+.blue-menu-govco .navbar-menu-govco ul.navbar-nav li a:focus-visible .icon-caret-menu-govco::before,
+.blue-menu-govco .navbar-menu-govco ul.navbar-nav li a[aria-expanded="true"] .icon-caret-menu-govco::before,
+.green-menu-govco .navbar-menu-govco ul.navbar-nav li a:hover .icon-caret-menu-govco::before,
+.green-menu-govco .navbar-menu-govco ul.navbar-nav li a.active .icon-caret-menu-govco::before,
+.green-menu-govco .navbar-menu-govco ul.navbar-nav li a:focus-visible .icon-caret-menu-govco::before,
+.green-menu-govco .navbar-menu-govco ul.navbar-nav li a[aria-expanded="true"] .icon-caret-menu-govco::before,
+.red-menu-govco .navbar-menu-govco ul.navbar-nav li a:hover .icon-caret-menu-govco::before,
+.red-menu-govco .navbar-menu-govco ul.navbar-nav li a.active .icon-caret-menu-govco::before,
+.red-menu-govco .navbar-menu-govco ul.navbar-nav li a:focus-visible .icon-caret-menu-govco::before,
+.red-menu-govco .navbar-menu-govco ul.navbar-nav li a[aria-expanded="true"] .icon-caret-menu-govco::before {
+    color: #FFFFFF;
+}
+
+.yellow-menu-govco .navbar-menu-govco ul.navbar-nav li a:hover .icon-caret-menu-govco::before,
+.yellow-menu-govco .navbar-menu-govco ul.navbar-nav li a.active .icon-caret-menu-govco::before,
+.yellow-menu-govco .navbar-menu-govco ul.navbar-nav li a:focus-visible .icon-caret-menu-govco::before,
+.yellow-menu-govco .navbar-menu-govco ul.navbar-nav li a[aria-expanded="true"] .icon-caret-menu-govco::before,
+.orange-menu-govco .navbar-menu-govco ul.navbar-nav li a:hover .icon-caret-menu-govco::before,
+.orange-menu-govco .navbar-menu-govco ul.navbar-nav li a.active .icon-caret-menu-govco::before,
+.orange-menu-govco .navbar-menu-govco ul.navbar-nav li a:focus-visible .icon-caret-menu-govco::before,
+.orange-menu-govco .navbar-menu-govco ul.navbar-nav li a[aria-expanded="true"] .icon-caret-menu-govco::before {
+    color: #000000;
+}
+
+.icon-entidad-menu-govco {
+    content: url(/assets/super_transporte_blanco.svg);
+    height: 2.188rem;
+    margin-left: 1.125rem;
+    padding: 0;
+}
+
+/* ============ desktop view ============ */
+@media all and (min-width: 992px) {
+
+    .navbar-menu-govco ul.navbar-nav li a {
+        padding-top: 1.5rem;
+    }
+
+    .navbar-menu-govco {
+        font-size: 14px;
+        margin: 0 60px;
+        padding: 0 !important;
+        max-width: 65.875rem;
+    }
+
+    .navbar-menu-govco .container-second-navbar-menu-govco {
+        padding: 0;
+        margin: 0 60px;
+    }
+
+    .navbar-menu-govco .megamenu-menu-govco {
+        padding-top: 0.6rem;
+        border-radius: 0 0 0.313rem 0.313rem;
+        border: 0;
+        margin-top: -0.16rem !important;
+        left: 0;
+        right: 0;
+        width: 100%;
+        z-index: 10000;
+        position: relative;
+    }
+
+    .navbar-menu-govco .dropdown-large-menu-govco {
+        padding: 0.6rem;
+        border-radius: 0 0 0.313rem 0.313rem;
+        border: 0;
+        margin-top: -0.01rem !important;
+    }
+
+    .navbar-menu-govco ul.navbar-nav-menu-govco {
+        margin: 0 auto;
+        height: 4.313rem;
+    }
+
+    .navbar-menu-govco ul.navbar-nav li {
+        max-width: 13.75rem;
+    }
+
+    .navbar-menu-govco ul.navbar-nav li a span.container-text-icon-menu-govco {
+        display: flex;
+    }
+
+    .navbar-menu-govco ul.navbar-nav li a span.text-item-menu-govco {
+        max-width: 11.25rem;
+        padding: 0 0.5rem;
+    }
+
+    .navbar-menu-govco ul.navbar-nav li ul {
+        margin-top: -0.01rem !important;
+        border-radius: 0 0 0.313rem 0.313rem;
+    }
+
+    .navbar-menu-govco ul.navbar-nav li ul li {
+        min-width: 18.75rem;
+        background-color: #F2F2F2;
+    }
+
+    .navbar-menu-govco ul.navbar-nav li ul li a {
+        height: 2.25rem;
+    }
+
+    .navbar-menu-govco ul.navbar-nav li div ul li {
+        min-width: auto;
+    }
+
+    .navbar-menu-govco .container-items-govco {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .navbar-menu-govco .colum-item-menu-govco {
+        display: inline-block;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .navbar-menu-govco .has-megamenu-menu-govco {
+        position: static !important;
+    }
+
+    .navbar-menu-govco .dropdown-large-menu-govco.col-3-menu-govco {
+        min-width: 40.625rem;
+    }
+
+    .navbar-menu-govco .dropdown-large-menu-govco.col-2-menu-govco {
+        min-width: 30rem;
+    }
+}
+
+.desktop_nav{
+    display: block;
+}
+
+/* ============ desktop view .end// ============ */
+
+.icon-movile{
+    visibility: hidden !important;
+}
+/* ============ mobile view ============ */
+@media(max-width: 991px) {
+    .desktop_nav{
+        display: none !important;
+    }
+
+    .icon-movile{
+        visibility: visible !important;
+    }
+
+    .navbar-menu-govco {
+        padding: 0.4rem 0 0 0;
+    }
+
+    .navbar-menu-govco .button-responsive-menu-govco {
+        border: 0;
+        margin-right: 1.125rem;
+    }
+
+    .icon-bars-menu-govco::before {
+        font-family: "govco-font";
+        content: "\e83f";
+        line-height: 1;
+        font-size: 35px;
+        margin-top: 0.5rem;
+        margin-bottom: 0.5rem;
+        color: white;
+    }
+
+    .navbar-collapse-menu-govco {
+        z-index: 2;
+        position: absolute;
+        top: 3.563rem;
+        width: 100%;
+        margin: 0;
+        left: 0;
+        height: fit-content;
+        transition: none !important;
+        border-bottom: 0.188rem solid #004884;
+    }
+
+    .button-responsive-menu-govco:not(.collapsed) .icon-bars-menu-govco::before {
+        font-family: "govco-font";
+        content: "eb73";
+    }
+
+    .navbar-menu-govco ul.navbar-nav li a {
+        height: 3rem;
+        align-items: center;
+        padding-left: 1.5rem !important;
+        padding-right: 1.875rem !important;
+    }
+
+    .navbar-menu-govco.fixed-top .navbar-collapse,
+    .navbar.sticky-top .navbar-collapse {
+        overflow-y: auto;
+        max-height: 90vh;
+        margin-top: 0.625rem;
+    }
+
+    .navbar-menu-govco ul.navbar-nav li div span {
+        padding-left: 1.5rem;
+    }
+
+    .navbar-menu-govco ul.navbar-nav {
+        padding: 0;
+    }
+
+    .navbar-menu-govco ul.navbar-nav li a span.text-item-menu-govco {
+        align-items: center;
+    }
+
+    .navbar-menu-govco ul.navbar-nav li a span {
+        display: grid;
+        grid-template-columns: 110fr 1fr;
+    }
+
+    .navbar-menu-govco ul.navbar-nav li ul li a {
+        height: 3rem;
+    }
+
+    .navbar-menu-govco .colum-item-menu-govco {
+        margin-bottom: 0.5rem;
+    }
+
+    .navbar-menu-govco ul.navbar-nav li a.show .icon-caret-menu-govco::before {
+        font-family: "govco-font";
+        content: "e895";
+    }
+
+    .container-search-icon-menu-govco {
+        display: grid;
+        grid-template-columns: 20fr 1fr;
+        grid-gap: 2.5rem;
+        align-items: center;
+        margin-bottom: 0.5rem;
+        margin-right: 1.125rem;
+    }
+
+    .icon-user-alt-menu-govco {
+        text-align: center;
+        text-align: left;
+        padding-left: 25px;
+    }
+
+    .icon-user-alt-menu-govco::before {
+        font-family: "govco-font";
+        content: "\eb73";
+        line-height: 1;
+        font-size: 30px;
+        margin-top: 0.5rem;
+        margin-bottom: 0.5rem;
+        color: white;
+    }
+
+    .navbar-menu-govco .megamenu-menu-govco,
+    .navbar-menu-govco .dropdown-large-menu-govco {
+        margin-top: 0 !important;
+    }
+
+    .container-second-navbar-menu-govco {
+        padding: 0;
+        display: flex;
+        flex-wrap: inherit;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        justify-content: end;
+    }
+}
+
+/* ============ mobile view .end// ============ */

@@ -11,35 +11,37 @@ export const routes: Routes = [
         path: 'dashboard',
         loadComponent: () => import('./views/dashboard/dashboard.component'),
         canActivate: [AuthGuard],
-        data: { permission: 'MUV_CARGADOCUMENTACION' }
+        data: { permission: ['MSF_SF_LISTAR_SOLICITUD_TR', 'MSF_SF_LISTAR_SOLICITUD_GD', 'MSF_SF_LISTAR_SOLICITUD_ST'] }
       },
       {
         path: 'validador_nit',
         loadComponent: () => import('./views/Rol_TerritorialMinTrans/validacion-nit/validacion-nit.component'),
         canActivate: [AuthGuard],
-        data: { permission: 'MUV_CARGADOCUMENTACION' }
+        data: { permission: 'MSF_CREAR_SOLICITUD' }
       },
       {
         path: 'fijacioncapacidadtransportadora',
         loadComponent: () => import('./views/Rol_TerritorialMinTrans/fijacion/fijacion.component'),
         canActivate: [AuthGuard],
-        data: { permission: 'MUV_CARGADOCUMENTACION' }
+        data: { permission: 'MSF_CREAR_SOLICITUD' }
       },
       {
         path: 'incrementocapacidadtransportadora',
         loadComponent: () => import('./views/Rol_TerritorialMinTrans/incremento/incremento.component'),
         canActivate: [AuthGuard],
-        data: { permission: 'MUV_CARGADOCUMENTACION' }
+        data: { permission: 'MSF_CREAR_SOLICITUD' }
       },
       {
         path: 'solicitudRadicacion',
         loadComponent: () => import('./views/Rol_GestionDocumental/solicitud/solicitud.component'),
         canActivate: [AuthGuard],
+        data: { permission: 'MSF_SF_GENERAR_RADICADO_E' }
       },
       {
         path: 'solicitudAprobacion',
         loadComponent: () => import('./views/Rol_Supertransporte/solicitud/solicitud.component'),
         canActivate: [AuthGuard],
+        data: { permission: 'MSF_SF_GENERAR_RADICADO_SALIDA' }
       },
       {
         path: '',
@@ -53,6 +55,7 @@ export const routes: Routes = [
         path: 'indicadores',
         loadComponent: () => import('./views/Rol_Supertransporte/indicadores/power-bi/power-bi.component'),
         canActivate: [AuthGuard],
+        data: { permission: 'MSF_LISTAR_INDICADORES' }
       },
 
 
@@ -63,9 +66,8 @@ export const routes: Routes = [
     loadComponent: () => import('./layouts/auth-layout/auth-layout.component'),
     children: [
       {
-        path: 'errorAutentication',
+        path: 'errorautenticacion',
         loadComponent: () => import('./views/verificacion/verificacion.component'),
-        canActivate: [AuthGuard],
       },
       
       {
