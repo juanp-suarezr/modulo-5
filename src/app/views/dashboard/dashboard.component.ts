@@ -319,7 +319,7 @@ export default class DashboardComponent {
                   clase.id +
                   ',' +
                   (clase.estadoSolicitudDescripcion == 'En estudio' ||
-                    clase.estadoSolicitudDescripcion == 'Aprobado'),
+                    clase.estadoSolicitudDescripcion == 'Aprobada' || clase.estadoSolicitudDescripcion == 'Aprobado'),
                 fecha: clase.fechaSolicitud,
                 nit: clase.nit,
                 empresa: clase.nombreEmpresa,
