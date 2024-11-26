@@ -11,7 +11,7 @@ import { CommonModule } from '@angular/common';
 import {
   FormArray,
   FormBuilder,
-  FormGroup,
+  FormGroup, FormsModule,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
@@ -60,6 +60,7 @@ interface Contrato {
     SttepperComponent,
     SelectComponent,
     AlertComponent,
+    FormsModule,
   ],
   templateUrl: './incremento.component.html',
   styleUrl: './incremento.component.css',
@@ -501,7 +502,7 @@ export default class IncrementoComponent implements AfterViewInit, OnInit {
                     this.formGroup2
                       .get('vehiculosFijados')
                       ?.enable();
-                    
+
                   }
                 );
             } else {

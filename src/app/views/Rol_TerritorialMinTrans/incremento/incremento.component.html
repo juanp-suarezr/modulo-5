@@ -40,13 +40,13 @@
               <div class="w-full relative">
                 <!-- Icono de error (rojo) -->
                 <span *ngIf="formGroup1.get('nit')?.invalid && (formGroup1.get('nit')?.touched || submitted)"
-                  class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
+                      class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
                   <span class="pi pi-exclamation-circle text-error text-[24px]"></span>
                 </span>
 
                 <!-- Icono de éxito (verde) -->
                 <span *ngIf="formGroup1.get('nit')?.valid && (formGroup1.get('nit')?.touched || submitted)"
-                  class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
+                      class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
                   <span class="pi pi-check-circle text-success text-[24px]"></span>
                 </span>
               </div>
@@ -107,59 +107,60 @@
             </p>
 
             <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" mimes=".pdf" [error]="errorStates[1]"
-              (fileSelected)="onFileSelected($event, 1)"></app-file-upload>
+                             (fileSelected)="onFileSelected($event, 1)"></app-file-upload>
 
             <!-- Opcion que aparece si existe archivo guardado en la solicitud -->
             <div class="w-full"
-              *ngIf="(this.formGroup1.get('1')?.value != '' && this.formGroup1.get('1')?.value != null) && this.solicitudGuardada && this.contratosArray">
+                 *ngIf="(this.formGroup1.get('1')?.value != '' && this.formGroup1.get('1')?.value != null) && this.solicitudGuardada && this.contratosArray">
               <p class="text-center">Documentos actualmente guardados</p>
               <div class="mt-2 flex gap-2 items-center">
                 <!-- Botón de Navegación Izquierda (visible solo si hay más de 2 archivos) -->
                 <button *ngIf="this.contratosArray.length > 2" class="m-auto" (click)="moveLeft()"
-                  [disabled]="currentIndex === 0">
+                        [disabled]="currentIndex === 0">
                   <span class="pi pi-chevron-left text-primary2 text-xl"></span>
                 </button>
 
                 <!-- Archivos Visibles -->
                 <div *ngFor="let file of visibleFiles; let index = index"
-                  class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto z-1"
-                  [ngClass]="{'bg-error/40': deletedValues.includes(file.id)}">
+                     class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto z-1"
+                     [ngClass]="{'bg-error/40': deletedValues.includes(file.id)}">
 
                   <!-- document -->
                   <div class="w-full m-auto cursor-pointer z-1" (click)="viewDocument(file.documento)">
                     <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto" viewBox="0 0 384 512">
                       <path
-                        d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z" />
+                        d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z"/>
                     </svg>
                   </div>
 
                   <!-- texto info file -->
                   <div class="px-2 w-auto">
                     <p class="truncate text-[8px] font-semibold">
-                      Contratos {{ (currentIndex+1)+index }}
+                      Contratos {{ (currentIndex + 1) + index }}
                     </p>
                     <p class="truncate text-[8px]">{{
-                      (file.documento.size / 1024).toFixed(2) }} Kb
+                        (file.documento.size / 1024).toFixed(2)
+                      }} Kb
                     </p>
                   </div>
                   <!-- button borrar -->
                   <button *ngIf="!deletedValues.includes(file.id)" class="m-auto w-auto"
-                    (click)="deleteFile(1, ((currentIndex+1)+index)-1)">
+                          (click)="deleteFile(1, ((currentIndex+1)+index)-1)">
                     <span class="pi pi-trash w-full h-full sm:text-xl text-base text-primary2 text-medium"></span>
                   </button>
 
                   <!-- button regresar -->
                   <button *ngIf="deletedValues.includes(file.id)" class="m-auto w-auto"
-                    (click)="NodeleteFile(((currentIndex+1)+index)-1)">
+                          (click)="NodeleteFile(((currentIndex+1)+index)-1)">
                     <span pTooltip="restaurar documento" tooltipPosition="right"
-                      class="pi pi-sync w-full h-full sm:text-xl text-base text-primary2 text-medium"></span>
+                          class="pi pi-sync w-full h-full sm:text-xl text-base text-primary2 text-medium"></span>
                   </button>
 
                 </div>
 
                 <!-- Botón de Navegación Derecha (visible solo si hay más de 2 archivos) -->
                 <button *ngIf="this.contratosArray.length > 2" class="m-auto" (click)="moveRight()"
-                  [disabled]="currentIndex >= this.contratosArray.length - maxVisibleFiles">
+                        [disabled]="currentIndex >= this.contratosArray.length - maxVisibleFiles">
                   <span class="pi pi-chevron-right text-primary2 text-xl"></span>
                 </button>
 
@@ -179,13 +180,13 @@
             </p>
 
             <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" [maxFiles]="1" mimes=".pdf"
-              [error]="errorStates[2]" (fileSelected)="onFileSelected($event, 2)"></app-file-upload>
+                             [error]="errorStates[2]" (fileSelected)="onFileSelected($event, 2)"></app-file-upload>
 
             <div class="w-full"
-              *ngIf="(this.formGroup1.get('2')?.value != '' && this.formGroup1.get('2')?.value != null) && this.solicitudGuardada && !isActuFile.includes(2)">
+                 *ngIf="(this.formGroup1.get('2')?.value != '' && this.formGroup1.get('2')?.value != null) && this.solicitudGuardada && !isActuFile.includes(2)">
 
               <div class="mt-2 flex gap-2 items-center cursor-pointer"
-                (click)="viewDocument(formGroup1.get('2')?.value)">
+                   (click)="viewDocument(formGroup1.get('2')?.value)">
 
                 <!-- Archivos Visibles -->
                 <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
@@ -194,7 +195,7 @@
                   <div class="w-auto m-auto">
                     <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto" viewBox="0 0 384 512">
                       <path
-                        d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z" />
+                        d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z"/>
                     </svg>
                   </div>
 
@@ -204,8 +205,8 @@
                       Plan rodamiento
                     </p>
                     <p class="truncate text-[8px]">{{
-                      (this.formGroup1.get('2')?.value.size /
-                      1024).toFixed(2)
+                        (this.formGroup1.get('2')?.value.size /
+                          1024).toFixed(2)
                       }} Kb</p>
                   </div>
 
@@ -237,13 +238,13 @@
             </p>
 
             <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" [maxFiles]="1" mimes=".pdf"
-              [error]="errorStates[3]" (fileSelected)="onFileSelected($event, 3)"></app-file-upload>
+                             [error]="errorStates[3]" (fileSelected)="onFileSelected($event, 3)"></app-file-upload>
 
             <div class="w-full"
-              *ngIf="(this.formGroup1.get('3')?.value != '' && this.formGroup1.get('3')?.value != null) && this.solicitudGuardada && !isActuFile.includes(3)">
+                 *ngIf="(this.formGroup1.get('3')?.value != '' && this.formGroup1.get('3')?.value != null) && this.solicitudGuardada && !isActuFile.includes(3)">
 
               <div class="mt-2 flex gap-2 items-center cursor-pointer"
-                (click)="viewDocument(formGroup1.get('3')?.value)">
+                   (click)="viewDocument(formGroup1.get('3')?.value)">
 
                 <!-- Archivos Visibles -->
                 <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
@@ -252,7 +253,7 @@
                   <div class="w-auto m-auto">
                     <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto" viewBox="0 0 384 512">
                       <path
-                        d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z" />
+                        d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z"/>
                     </svg>
                   </div>
 
@@ -262,8 +263,8 @@
                       Estructura de costos
                     </p>
                     <p class="truncate text-[8px]">{{
-                      (this.formGroup1.get('3')?.value.size /
-                      1024).toFixed(2)
+                        (this.formGroup1.get('3')?.value.size /
+                          1024).toFixed(2)
                       }} Kb</p>
                   </div>
 
@@ -289,13 +290,13 @@
             </p><br>
 
             <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" [maxFiles]="1" mimes=".pdf"
-              [error]="errorStates[4]" (fileSelected)="onFileSelected($event, 4)"></app-file-upload>
+                             [error]="errorStates[4]" (fileSelected)="onFileSelected($event, 4)"></app-file-upload>
 
             <div class="w-full"
-              *ngIf="(this.formGroup1.get('4')?.value != '' && this.formGroup1.get('4')?.value != null) && this.solicitudGuardada && !isActuFile.includes(4)">
+                 *ngIf="(this.formGroup1.get('4')?.value != '' && this.formGroup1.get('4')?.value != null) && this.solicitudGuardada && !isActuFile.includes(4)">
 
               <div class="mt-2 flex gap-2 items-center cursor-pointer"
-                (click)="viewDocument(formGroup1.get('4')?.value)">
+                   (click)="viewDocument(formGroup1.get('4')?.value)">
 
                 <!-- Archivos Visibles -->
                 <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
@@ -304,7 +305,7 @@
                   <div class="w-auto m-auto">
                     <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto" viewBox="0 0 384 512">
                       <path
-                        d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z" />
+                        d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z"/>
                     </svg>
                   </div>
 
@@ -314,8 +315,8 @@
                       Certificado de cumplimiento
                     </p>
                     <p class="truncate text-[8px]">{{
-                      (this.formGroup1.get('4')?.value.size /
-                      1024).toFixed(2)
+                        (this.formGroup1.get('4')?.value.size /
+                          1024).toFixed(2)
                       }} Kb</p>
                   </div>
 
@@ -347,13 +348,13 @@
             </p>
 
             <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" [maxFiles]="1" mimes=".pdf"
-              [error]="errorStates[5]" (fileSelected)="onFileSelected($event, 5)"></app-file-upload>
+                             [error]="errorStates[5]" (fileSelected)="onFileSelected($event, 5)"></app-file-upload>
 
             <div class="w-full"
-              *ngIf="(this.formGroup1.get('5')?.value != '' && this.formGroup1.get('5')?.value != null) && this.solicitudGuardada && !isActuFile.includes(5)">
+                 *ngIf="(this.formGroup1.get('5')?.value != '' && this.formGroup1.get('5')?.value != null) && this.solicitudGuardada && !isActuFile.includes(5)">
 
               <div class="mt-2 flex gap-2 items-center cursor-pointer"
-                (click)="viewDocument(formGroup1.get('5')?.value)">
+                   (click)="viewDocument(formGroup1.get('5')?.value)">
 
                 <!-- Archivos Visibles -->
                 <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
@@ -362,7 +363,7 @@
                   <div class="w-auto m-auto">
                     <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto" viewBox="0 0 384 512">
                       <path
-                        d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z" />
+                        d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z"/>
                     </svg>
                   </div>
 
@@ -372,8 +373,8 @@
                       Certificado de existencias
                     </p>
                     <p class="truncate text-[8px]">{{
-                      (this.formGroup1.get('5')?.value.size /
-                      1024).toFixed(2)
+                        (this.formGroup1.get('5')?.value.size /
+                          1024).toFixed(2)
                       }} Kb</p>
                   </div>
 
@@ -398,13 +399,13 @@
             </p>
 
             <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" [maxFiles]="1" mimes=".pdf"
-              [error]="errorStates[6]" (fileSelected)="onFileSelected($event, 6)"></app-file-upload>
+                             [error]="errorStates[6]" (fileSelected)="onFileSelected($event, 6)"></app-file-upload>
 
             <div class="w-full"
-              *ngIf="(this.formGroup1.get('6')?.value != '' && this.formGroup1.get('6')?.value != null) && this.solicitudGuardada && !isActuFile.includes(6)">
+                 *ngIf="(this.formGroup1.get('6')?.value != '' && this.formGroup1.get('6')?.value != null) && this.solicitudGuardada && !isActuFile.includes(6)">
 
               <div class="mt-2 flex gap-2 items-center cursor-pointer"
-                (click)="viewDocument(formGroup1.get('6')?.value)">
+                   (click)="viewDocument(formGroup1.get('6')?.value)">
 
                 <!-- Archivos Visibles -->
                 <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
@@ -413,7 +414,7 @@
                   <div class="w-auto m-auto">
                     <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto" viewBox="0 0 384 512">
                       <path
-                        d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z" />
+                        d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z"/>
                     </svg>
                   </div>
 
@@ -423,8 +424,8 @@
                       Registro Unico Tributario
                     </p>
                     <p class="truncate text-[8px]">{{
-                      (this.formGroup1.get('6')?.value.size /
-                      1024).toFixed(2)
+                        (this.formGroup1.get('6')?.value.size /
+                          1024).toFixed(2)
                       }} Kb</p>
                   </div>
 
@@ -472,13 +473,13 @@
             </p>
 
             <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" mimes=".pdf" [maxFiles]="1"
-              [error]="errorStates[7]" (fileSelected)="onFileSelected($event, 7)"></app-file-upload>
+                             [error]="errorStates[7]" (fileSelected)="onFileSelected($event, 7)"></app-file-upload>
 
             <div class="w-full"
-              *ngIf="(this.formGroup2.get('7')?.value != '' && this.formGroup2.get('7')?.value != null) && this.solicitudGuardada && !isActuFile.includes(7)">
+                 *ngIf="(this.formGroup2.get('7')?.value != '' && this.formGroup2.get('7')?.value != null) && this.solicitudGuardada && !isActuFile.includes(7)">
 
               <div class="mt-2 flex gap-2 items-center cursor-pointer"
-                (click)="viewDocument(formGroup2.get('7')?.value)">
+                   (click)="viewDocument(formGroup2.get('7')?.value)">
 
                 <!-- Archivos Visibles -->
                 <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
@@ -487,7 +488,7 @@
                   <div class="w-auto m-auto">
                     <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto" viewBox="0 0 384 512">
                       <path
-                        d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z" />
+                        d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z"/>
                     </svg>
                   </div>
 
@@ -497,8 +498,8 @@
                       Resolución de habilitación
                     </p>
                     <p class="truncate text-[8px]">{{
-                      (this.formGroup2.get('7')?.value.size /
-                      1024).toFixed(2)
+                        (this.formGroup2.get('7')?.value.size /
+                          1024).toFixed(2)
                       }} Kb</p>
                   </div>
 
@@ -523,13 +524,13 @@
             </p>
 
             <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" mimes=".pdf" [maxFiles]="1"
-              [error]="errorStates[8]" (fileSelected)="onFileSelected($event, 8)"></app-file-upload>
+                             [error]="errorStates[8]" (fileSelected)="onFileSelected($event, 8)"></app-file-upload>
 
             <div class="w-full"
-              *ngIf="(this.formGroup2.get('8')?.value != '' && this.formGroup2.get('8')?.value != null) && this.solicitudGuardada && !isActuFile.includes(8)">
+                 *ngIf="(this.formGroup2.get('8')?.value != '' && this.formGroup2.get('8')?.value != null) && this.solicitudGuardada && !isActuFile.includes(8)">
 
               <div class="mt-2 flex gap-2 items-center cursor-pointer"
-                (click)="viewDocument(formGroup2.get('8')?.value)">
+                   (click)="viewDocument(formGroup2.get('8')?.value)">
 
                 <!-- Archivos Visibles -->
                 <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
@@ -538,7 +539,7 @@
                   <div class="w-auto m-auto">
                     <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto" viewBox="0 0 384 512">
                       <path
-                        d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z" />
+                        d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z"/>
                     </svg>
                   </div>
 
@@ -548,8 +549,8 @@
                       Cédula de ciudadanía
                     </p>
                     <p class="truncate text-[8px]">{{
-                      (this.formGroup2.get('8')?.value.size /
-                      1024).toFixed(2)
+                        (this.formGroup2.get('8')?.value.size /
+                          1024).toFixed(2)
                       }} Kb</p>
                   </div>
 
@@ -580,13 +581,13 @@
             </p>
 
             <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" mimes=".pdf" [maxFiles]="1"
-              [error]="errorStates[9]" (fileSelected)="onFileSelected($event, 9)"></app-file-upload>
+                             [error]="errorStates[9]" (fileSelected)="onFileSelected($event, 9)"></app-file-upload>
 
             <div class="w-full"
-              *ngIf="(this.formGroup2.get('9')?.value != '' && this.formGroup2.get('9')?.value != null) && this.solicitudGuardada && !isActuFile.includes(9)">
+                 *ngIf="(this.formGroup2.get('9')?.value != '' && this.formGroup2.get('9')?.value != null) && this.solicitudGuardada && !isActuFile.includes(9)">
 
               <div class="mt-2 flex gap-2 items-center cursor-pointer"
-                (click)="viewDocument(formGroup2.get('9')?.value)">
+                   (click)="viewDocument(formGroup2.get('9')?.value)">
 
                 <!-- Archivos Visibles -->
                 <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
@@ -595,7 +596,7 @@
                   <div class="w-auto m-auto">
                     <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto" viewBox="0 0 384 512">
                       <path
-                        d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z" />
+                        d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z"/>
                     </svg>
                   </div>
 
@@ -605,8 +606,8 @@
                       Estados financieros
                     </p>
                     <p class="truncate text-[8px]">{{
-                      (this.formGroup2.get('9')?.value.size /
-                      1024).toFixed(2)
+                        (this.formGroup2.get('9')?.value.size /
+                          1024).toFixed(2)
                       }} Kb</p>
                   </div>
 
@@ -631,13 +632,13 @@
             </p>
 
             <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" mimes=".pdf" [maxFiles]="1"
-              [error]="errorStates[10]" (fileSelected)="onFileSelected($event, 10)"></app-file-upload>
+                             [error]="errorStates[10]" (fileSelected)="onFileSelected($event, 10)"></app-file-upload>
 
             <div class="w-full"
-              *ngIf="(this.formGroup2.get('10')?.value != '' && this.formGroup2.get('10')?.value != null) && this.solicitudGuardada && !isActuFile.includes(10)">
+                 *ngIf="(this.formGroup2.get('10')?.value != '' && this.formGroup2.get('10')?.value != null) && this.solicitudGuardada && !isActuFile.includes(10)">
 
               <div class="mt-2 flex gap-2 items-center cursor-pointer"
-                (click)="viewDocument(formGroup2.get('10')?.value)">
+                   (click)="viewDocument(formGroup2.get('10')?.value)">
 
                 <!-- Archivos Visibles -->
                 <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
@@ -646,7 +647,7 @@
                   <div class="w-auto m-auto">
                     <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto" viewBox="0 0 384 512">
                       <path
-                        d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z" />
+                        d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z"/>
                     </svg>
                   </div>
 
@@ -656,8 +657,8 @@
                       Cédula del contador
                     </p>
                     <p class="truncate text-[8px]">{{
-                      (this.formGroup2.get('10')?.value.size /
-                      1024).toFixed(2)
+                        (this.formGroup2.get('10')?.value.size /
+                          1024).toFixed(2)
                       }} Kb</p>
                   </div>
 
@@ -689,13 +690,13 @@
             </p>
 
             <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" mimes=".pdf" [maxFiles]="1"
-              [error]="errorStates[11]" (fileSelected)="onFileSelected($event, 11)"></app-file-upload>
+                             [error]="errorStates[11]" (fileSelected)="onFileSelected($event, 11)"></app-file-upload>
 
             <div class="w-full"
-              *ngIf="(this.formGroup2.get('11')?.value != '' && this.formGroup2.get('11')?.value != null) && this.solicitudGuardada && !isActuFile.includes(11)">
+                 *ngIf="(this.formGroup2.get('11')?.value != '' && this.formGroup2.get('11')?.value != null) && this.solicitudGuardada && !isActuFile.includes(11)">
 
               <div class="mt-2 flex gap-2 items-center cursor-pointer"
-                (click)="viewDocument(formGroup2.get('11')?.value)">
+                   (click)="viewDocument(formGroup2.get('11')?.value)">
 
                 <!-- Archivos Visibles -->
                 <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
@@ -704,7 +705,7 @@
                   <div class="w-auto m-auto">
                     <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto" viewBox="0 0 384 512">
                       <path
-                        d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z" />
+                        d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z"/>
                     </svg>
                   </div>
 
@@ -714,8 +715,8 @@
                       Tarjeta profesional y certificado
                     </p>
                     <p class="truncate text-[8px]">{{
-                      (this.formGroup2.get('11')?.value.size /
-                      1024).toFixed(2)
+                        (this.formGroup2.get('11')?.value.size /
+                          1024).toFixed(2)
                       }} Kb</p>
                   </div>
 
@@ -746,7 +747,7 @@
                 </p>
                 <input
                   class="mt-2 flex-1 shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent"
-                  type="number" formControlName="vehiculosFijados" placeholder="0" />
+                  type="number" formControlName="vehiculosFijados" placeholder="0"/>
               </div>
               <!-- vehiculos a incrementar -->
               <div class="w-full">
@@ -756,7 +757,7 @@
                 </p>
                 <input
                   class="mt-2 flex-1 shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent"
-                  type="number" formControlName="cantidadVehiculosIncrementar" placeholder="0" />
+                  type="number" formControlName="cantidadVehiculosIncrementar" placeholder="0"/>
               </div>
             </div>
 
@@ -768,20 +769,24 @@
                 </p>
                 <input
                   class="mt-2 flex-1 shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent"
-                  type="number" formControlName="totalVehiculos" placeholder="0" />
+                  type="number" formControlName="totalVehiculos" placeholder="0"/>
               </div>
 
               <div class="w-auto flex flex-wrap gap-2">
+
                 <p class="text-primary3 font-semibold" [ngClass]="{'!text-error !font-normal': errorStates[1]}">
                   {{ selectedPercentage }} de propiedad de la empresa*
                 </p>
-                <app-select class="flex-1 w-full lg:w-1/3 mt-2 cursor-pointer" [input]="inputs[1]" [index]="1"
-                  [error]="errorStates[1]" (inputChange)="onInputChange($event.index, $event.event)"></app-select>
-  
+
+                <app-select class="flex-1 w-full lg:w-1/3 mt-2 cursor-pointer"
+                            [input]="inputs[1]" [index]="1" [error]="errorStates[1]" [(ngModel)]="inputs[1].value"
+                            (inputChange)="onInputChange($event.index, $event.event)"></app-select>
+
                 <input-text class="flex-auto w-full lg:w-1/3 mt-2" [input]="inputs[2]" [index]="2"
-                  [error]="errorStates[2]" [disabled]="true"></input-text>
+                            [error]="errorStates[2]" [disabled]="true"></input-text>
+
               </div>
-              
+
             </div>
 
             <!-- texto informativo -->
@@ -810,7 +815,7 @@
               <div class="w-auto flex flex-wrap gap-2 justify-center items-start pt-6 my-auto">
                 <input
                   class="mt-2 flex-auto shadow-sm rounded-md min-w-[160px] w-auto p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent"
-                  type="number" formControlName="cantidadVehiculosIncrementar" placeholder="0" />
+                  type="number" formControlName="cantidadVehiculosIncrementar" placeholder="0"/>
 
               </div>
 
@@ -818,9 +823,10 @@
                 {{ selectedPercentage }} de propiedad de la empresa*
               </p>
               <app-select class="flex-1 w-auto mt-2 cursor-pointer" [input]="inputs[1]" [index]="1"
-                [error]="errorStates[1]" (inputChange)="onInputChange($event.index, $event.event)"></app-select>
+                          [error]="errorStates[1]"
+                          (inputChange)="onInputChange($event.index, $event.event)"></app-select>
               <input-text class="flex-auto w-auto mt-2" [input]="inputs[2]" [index]="2" [error]="errorStates[2]"
-                [disabled]="true"></input-text>
+                          [disabled]="true"></input-text>
             </div>
 
             <!-- texto informativo -->
@@ -835,7 +841,7 @@
 
         <div class="mt-6 w-full flex flex-wrap justify-end gap-4">
           <button type="button" (click)="changeActiveStep(1, false)"
-            class="inline-flex items-center justify-center px-6 py-1 text-white bg-primary4 hover:bg-primary2 focus:bg-primary2 font-medium rounded-full text-[16px] work-sans text-center">
+                  class="inline-flex items-center justify-center px-6 py-1 text-white bg-primary4 hover:bg-primary2 focus:bg-primary2 font-medium rounded-full text-[16px] work-sans text-center">
             Regresar
           </button>
           <app-primary-button class="" (click)="changeActiveStep(3, true)">Guardar</app-primary-button>
@@ -849,7 +855,7 @@
     <!-- formulario 3 -->
     <ng-template #content3>
       <form [formGroup]="formGroup3" class="px-4 md:pl-16 md:pe-16 mt-6 active1 mb-6" *ngIf="activeStep == 3"
-        (ngSubmit)="changeActiveStep(4, true)">
+            (ngSubmit)="changeActiveStep(4, true)">
         <div class="col-span-2">
           <p class="font-bold">Digitar los siguientes campos*</p>
           <p class="text-primary4 font-[500]">Los campos marcados con * son obligatorios</p>
@@ -864,13 +870,13 @@
               Certificado del {{ selectedPercentage }} de propiedad de la empresa*
             </p>
             <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" mimes=".pdf" [maxFiles]="1"
-              [error]="errorStates[12]" (fileSelected)="onFileSelected($event, 12)"></app-file-upload>
+                             [error]="errorStates[12]" (fileSelected)="onFileSelected($event, 12)"></app-file-upload>
 
             <div class="w-full"
-              *ngIf="(this.formGroup3.get('12')?.value != '' && this.formGroup3.get('12')?.value != null) && this.solicitudGuardada && !isActuFile.includes(12)">
+                 *ngIf="(this.formGroup3.get('12')?.value != '' && this.formGroup3.get('12')?.value != null) && this.solicitudGuardada && !isActuFile.includes(12)">
 
               <div class="mt-2 flex gap-2 items-center cursor-pointer"
-                (click)="viewDocument(formGroup3.get('12')?.value)">
+                   (click)="viewDocument(formGroup3.get('12')?.value)">
 
                 <!-- Archivos Visibles -->
                 <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
@@ -879,7 +885,7 @@
                   <div class="w-auto m-auto">
                     <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto" viewBox="0 0 384 512">
                       <path
-                        d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z" />
+                        d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z"/>
                     </svg>
                   </div>
 
@@ -889,8 +895,8 @@
                       Certificado de propiedad
                     </p>
                     <p class="truncate text-[8px]">{{
-                      (this.formGroup3.get('12')?.value.size /
-                      1024).toFixed(2)
+                        (this.formGroup3.get('12')?.value.size /
+                          1024).toFixed(2)
                       }} Kb</p>
                   </div>
 
@@ -919,7 +925,7 @@
               <input
                 class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent"
                 type="text" formControlName="capital_social" placeholder="$"
-                (input)="onCurrencyInput($event, 'capital_social', formGroup3)" (focus)="onCurrencyFocus($event)" />
+                (input)="onCurrencyInput($event, 'capital_social', formGroup3)" (focus)="onCurrencyFocus($event)"/>
               <div class="w-full relative">
                 <!-- Icono de error (rojo) -->
                 <span
@@ -976,7 +982,7 @@
               <input
                 class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent"
                 type="text" formControlName="patrimonio_liquido" placeholder="$"
-                (input)="onCurrencyInput($event, 'patrimonio_liquido', formGroup3)" (focus)="onCurrencyFocus($event)" />
+                (input)="onCurrencyInput($event, 'patrimonio_liquido', formGroup3)" (focus)="onCurrencyFocus($event)"/>
               <div class="w-full relative">
                 <!-- Icono de error (rojo) -->
                 <span
@@ -1021,7 +1027,7 @@
 
         <div class="mt-6 w-full flex justify-end gap-4">
           <button type="button" (click)="changeActiveStep(2, false, true)"
-            class="inline-flex items-center justify-center px-6 py-1 text-white bg-primary4 hover:bg-primary2 focus:bg-primary2 font-medium rounded-full text-[16px] work-sans text-center">
+                  class="inline-flex items-center justify-center px-6 py-1 text-white bg-primary4 hover:bg-primary2 focus:bg-primary2 font-medium rounded-full text-[16px] work-sans text-center">
             Regresar
           </button>
           <app-primary-button type="submit" class="">Guardar</app-primary-button>
@@ -1039,8 +1045,8 @@
 
     <!--formulario 4 -->
     <form [formGroup]="formGroup4" class="px-4 md:pl-16 md:pe-16 mt-6 active1 mb-16"
-      *ngFor="let file of this.formGroup1.get('1')?.value; let index = index"
-      [ngClass]="{ 'hidden': index !== currentContractIteration }" (ngSubmit)="onSubmitAllForms()">
+          *ngFor="let file of this.formGroup1.get('1')?.value; let index = index"
+          [ngClass]="{ 'hidden': index !== currentContractIteration }" (ngSubmit)="onSubmitAllForms()">
       <div class="col-span-2">
         <p class="font-bold">Digitar los siguientes campos*</p>
         <p class="text-primary4 font-[500] pt-4">Los campos marcados con * son obligatorios</p>
@@ -1057,7 +1063,7 @@
           </p>
         </div>
         <h3 class="mt-2">
-          {{ this.fileNames[1][currentContractIteration]+formGroup4.get('numeroContrato')?.value}}
+          {{ this.fileNames[1][currentContractIteration] + formGroup4.get('numeroContrato')?.value }}
         </h3>
 
       </div>
@@ -1288,26 +1294,26 @@
           <div class="w-full relative mt-2">
             <!-- Selector principal -->
             <div (click)="toggleDropdown(0)"
-              [ngClass]="{'text-error !border border-error': formGroup4.get('idClaseVehiculo')?.invalid && (formGroup4.get('idClaseVehiculo')?.touched || formGroup4.get('idClaseVehiculo')?.dirty)}"
-              class="cursor-pointer shadow-sm min-w-[160px] w-full p-[10px] min-h-[40px] bg-transparent border-2 border-secondary1 focus:outline-none focus:border-primary1 flex justify-between items-center">
+                 [ngClass]="{'text-error !border border-error': formGroup4.get('idClaseVehiculo')?.invalid && (formGroup4.get('idClaseVehiculo')?.touched || formGroup4.get('idClaseVehiculo')?.dirty)}"
+                 class="cursor-pointer shadow-sm min-w-[160px] w-full p-[10px] min-h-[40px] bg-transparent border-2 border-secondary1 focus:outline-none focus:border-primary1 flex justify-between items-center">
               <span *ngIf="!selectedOptionsClase.length" class="font-[500] text-xs">Seleccione</span>
               <span *ngIf="selectedOptionsClase.length" class="text-normal">{{
-                getSelectedLabels('idClaseVehiculo')
+                  getSelectedLabels('idClaseVehiculo')
                 }}</span>
 
               <i class="pi pi-chevron-down text-primary2 text-xs"
-                [ngClass]="{'!text-error': formGroup4.get('idClaseVehiculo')?.invalid && (formGroup4.get('idClaseVehiculo')?.touched || formGroup4.get('idClaseVehiculo')?.dirty)}"></i>
+                 [ngClass]="{'!text-error': formGroup4.get('idClaseVehiculo')?.invalid && (formGroup4.get('idClaseVehiculo')?.touched || formGroup4.get('idClaseVehiculo')?.dirty)}"></i>
             </div>
 
             <!-- Opciones desplegables -->
             <ul *ngIf="selects[0].isDropdownOpen"
-              class="absolute z-20 bg-secondary4 border border-primary1 shadow-md rounded-bl-md rounded-br-md w-full mt-1 max-h-48 overflow-y-auto">
+                class="absolute z-20 bg-secondary4 border border-primary1 shadow-md rounded-bl-md rounded-br-md w-full mt-1 max-h-48 overflow-y-auto">
               <li *ngFor="let option of ClaseVehiculo" (click)="toggleOption(option, 'idClaseVehiculo')"
-                class="cursor-pointer px-4 py-2 hover:bg-secondary1 flex items-center">
+                  class="cursor-pointer px-4 py-2 hover:bg-secondary1 flex items-center">
 
                 <!-- Estilo personalizado -->
                 <div class="mr-2 !border-2 !border-primary1 rounded-md !h-5 !w-5 flex items-center justify-center"
-                  [ngClass]=" {'!bg-primary1 text-white': isSelected(option, 'idClaseVehiculo')}">
+                     [ngClass]=" {'!bg-primary1 text-white': isSelected(option, 'idClaseVehiculo')}">
                   <span *ngIf="isSelected(option, 'idClaseVehiculo')"> &#10003; </span>
                 </div>
                 {{ option.label }}
@@ -1318,11 +1324,11 @@
 
             <!-- Mensajes de validación -->
             <span class="text-sm text-success"
-              *ngIf="formGroup4.get('idClaseVehiculo')?.valid && formGroup4.get('idClaseVehiculo')?.touched">
+                  *ngIf="formGroup4.get('idClaseVehiculo')?.valid && formGroup4.get('idClaseVehiculo')?.touched">
               Selección válida
             </span>
             <span class="text-sm text-error"
-              *ngIf="formGroup4.get('idClaseVehiculo')?.invalid && (formGroup4.get('idClaseVehiculo')?.touched || formGroup4.get('idClaseVehiculo')?.dirty)">
+                  *ngIf="formGroup4.get('idClaseVehiculo')?.invalid && (formGroup4.get('idClaseVehiculo')?.touched || formGroup4.get('idClaseVehiculo')?.dirty)">
               {{ selects[0].errorMessage }}
             </span>
 
@@ -1338,9 +1344,9 @@
           <!-- Headers dinámicos -->
           <div class="headers-container flex flex-wrap gap-4 mt-2">
             <button type="button" *ngFor="let vehiculo of idClaseVehiculos.controls; let i = index"
-              (click)="setActiveHeader(i)"
-              [ngClass]="{'active-header': activeHeader === i, 'inactive-header': activeHeader !== i}"
-              class="p-2 text-primary1 border-b-2">
+                    (click)="setActiveHeader(i)"
+                    [ngClass]="{'active-header': activeHeader === i, 'inactive-header': activeHeader !== i}"
+                    class="p-2 text-primary1 border-b-2">
               {{ getSelectedLabelsHeaders()[i] || 'Clase Vehículo ' + (i + 1) }}
             </button>
 
@@ -1350,8 +1356,8 @@
           <!-- Inputs dinámicos basados en el header activo -->
           <div *ngIf="activeHeader != null" class="inputs-container mt-2">
             <div *ngFor="let vehiculo of idClaseVehiculos.controls; let i = index" [formGroupName]="i"
-              [ngClass]="{'hidden': activeHeader != i}"
-              class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+                 [ngClass]="{'hidden': activeHeader != i}"
+                 class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
 
               <!-- Input para el número de vehículos -->
               <div class="mt-2 relative w-full">
@@ -1381,8 +1387,8 @@
                   *ngIf="submitted && formGroup4.get('idClaseVehiculos')?.get(activeHeader.toString())?.get('cantidadVehiculos')?.errors?.['required']"
                   class="text-error">
                   N° de Vehículos es obligatorio para {{
-                  getSelectedLabelsHeaders()[activeHeader] || 'Clase Vehículo ' +
-                  (activeHeader + 1)
+                    getSelectedLabelsHeaders()[activeHeader] || 'Clase Vehículo ' +
+                    (activeHeader + 1)
                   }}
                 </span>
 
@@ -1390,8 +1396,8 @@
                   *ngIf="formGroup4.get('idClaseVehiculos')?.get(activeHeader.toString())?.get('cantidadVehiculos')?.hasError('negativeNumber') && (formGroup4.get('idClaseVehiculos')?.get(activeHeader.toString())?.get('cantidadVehiculos')?.touched || submitted)"
                   class="text-error">
                   El número de vehículos no puede ser negativo para {{
-                  getSelectedLabelsHeaders()[activeHeader] || 'Clase Vehículo ' +
-                  (activeHeader + 1)
+                    getSelectedLabelsHeaders()[activeHeader] || 'Clase Vehículo ' +
+                    (activeHeader + 1)
                   }}
                 </span>
               </div>
@@ -1418,31 +1424,31 @@
           <div class="w-full relative mt-2">
 
             <div (click)="toggleDropdown(2)"
-              [ngClass]="{'text-error !border border-error': formGroup4.get('forma_pago')?.invalid && (formGroup4.get('forma_pago')?.touched || formGroup4.get('forma_pago')?.dirty)}"
-              class="cursor-pointer shadow-sm min-w-[160px] w-full p-[10px] h-[40px] bg-transparent border-2 border-secondary1 focus:outline-none focus:border-primary1 flex justify-between items-center">
+                 [ngClass]="{'text-error !border border-error': formGroup4.get('forma_pago')?.invalid && (formGroup4.get('forma_pago')?.touched || formGroup4.get('forma_pago')?.dirty)}"
+                 class="cursor-pointer shadow-sm min-w-[160px] w-full p-[10px] h-[40px] bg-transparent border-2 border-secondary1 focus:outline-none focus:border-primary1 flex justify-between items-center">
               <span *ngIf="!selects[2].value" class="font-[500] text-xs">Seleccione</span>
               <span *ngIf="selects[2].value" class="text-normal">{{
-                formGroup4.get('forma_pago')?.value.label
+                  formGroup4.get('forma_pago')?.value.label
                 }}</span>
 
               <i class="pi pi-chevron-down text-primary2 text-xs"
-                [ngClass]="{'!text-error': formGroup4.get('forma_pago')?.invalid && (formGroup4.get('forma_pago')?.touched || formGroup4.get('forma_pago')?.dirty)}"></i>
+                 [ngClass]="{'!text-error': formGroup4.get('forma_pago')?.invalid && (formGroup4.get('forma_pago')?.touched || formGroup4.get('forma_pago')?.dirty)}"></i>
             </div>
 
             <ul *ngIf="selects[2].isDropdownOpen"
-              class="absolute z-20 bg-secondary4 border border-primary1 shadow-md rounded-bl-md rounded-br-md w-full mt-1 max-h-48 overflow-y-auto">
+                class="absolute z-20 bg-secondary4 border border-primary1 shadow-md rounded-bl-md rounded-br-md w-full mt-1 max-h-48 overflow-y-auto">
               <li *ngFor="let option of formaPago" (click)="selectOption(2, option, 'forma_pago')"
-                class="cursor-pointer px-4 py-2 hover:bg-primary1 hover:text-white">
+                  class="cursor-pointer px-4 py-2 hover:bg-primary1 hover:text-white">
                 {{ option.label }}
               </li>
             </ul>
             <!-- Mensajes de validación -->
             <span class="text-sm text-success"
-              *ngIf="formGroup4.get('forma_pago')?.valid && formGroup4.get('forma_pago')?.touched">
+                  *ngIf="formGroup4.get('forma_pago')?.valid && formGroup4.get('forma_pago')?.touched">
               Selección válida
             </span>
             <span class="text-sm text-error"
-              *ngIf="formGroup4.get('forma_pago')?.invalid && (formGroup4.get('forma_pago')?.touched || formGroup4.get('forma_pago')?.dirty)">
+                  *ngIf="formGroup4.get('forma_pago')?.invalid && (formGroup4.get('forma_pago')?.touched || formGroup4.get('forma_pago')?.dirty)">
               {{ selects[2].errorMessage }}
             </span>
 
@@ -1462,26 +1468,26 @@
 
             <!-- Selector principal -->
             <div (click)="toggleDropdown(3)"
-              [ngClass]="{'text-error !border border-error': formGroup4.get('idAreaOperacion')?.invalid && (formGroup4.get('idAreaOperacion')?.touched || formGroup4.get('idAreaOperacion')?.dirty)}"
-              class="cursor-pointer shadow-sm min-w-[160px] w-full p-[10px] min-h-[40px] bg-transparent border-2 border-secondary1 focus:outline-none focus:border-primary1 flex justify-between items-center">
+                 [ngClass]="{'text-error !border border-error': formGroup4.get('idAreaOperacion')?.invalid && (formGroup4.get('idAreaOperacion')?.touched || formGroup4.get('idAreaOperacion')?.dirty)}"
+                 class="cursor-pointer shadow-sm min-w-[160px] w-full p-[10px] min-h-[40px] bg-transparent border-2 border-secondary1 focus:outline-none focus:border-primary1 flex justify-between items-center">
               <span *ngIf="!selectedOptionsDeparts.length" class="font-[500] text-xs">Seleccione</span>
               <span *ngIf="selectedOptionsDeparts.length" class="text-normal">{{
-                getSelectedLabels('idAreaOperacion')
+                  getSelectedLabels('idAreaOperacion')
                 }}</span>
 
               <i class="pi pi-chevron-down text-primary2 text-xs"
-                [ngClass]="{'!text-error': formGroup4.get('idAreaOperacion')?.invalid && (formGroup4.get('idAreaOperacion')?.touched || formGroup4.get('idAreaOperacion')?.dirty)}"></i>
+                 [ngClass]="{'!text-error': formGroup4.get('idAreaOperacion')?.invalid && (formGroup4.get('idAreaOperacion')?.touched || formGroup4.get('idAreaOperacion')?.dirty)}"></i>
             </div>
 
             <!-- Opciones desplegables -->
             <ul *ngIf="selects[3].isDropdownOpen"
-              class="absolute z-20 bg-secondary4 border border-primary1 shadow-md rounded-bl-md rounded-br-md w-full mt-1 max-h-48 overflow-y-auto">
+                class="absolute z-20 bg-secondary4 border border-primary1 shadow-md rounded-bl-md rounded-br-md w-full mt-1 max-h-48 overflow-y-auto">
               <li *ngFor="let option of departs" (click)="toggleOption(option, 'idAreaOperacion')"
-                class="cursor-pointer px-4 py-2 hover:bg-secondary1 flex items-center">
+                  class="cursor-pointer px-4 py-2 hover:bg-secondary1 flex items-center">
 
                 <!-- Estilo personalizado -->
                 <div class="mr-2 !border-2 !border-primary1 rounded-md !h-5 !w-5 flex items-center justify-center"
-                  [ngClass]=" {'!bg-primary1 text-white': isSelected(option, 'idAreaOperacion')}">
+                     [ngClass]=" {'!bg-primary1 text-white': isSelected(option, 'idAreaOperacion')}">
                   <span *ngIf="isSelected(option, 'idAreaOperacion')"> &#10003; </span>
                 </div>
                 {{ option.label }}
@@ -1490,12 +1496,12 @@
             </ul>
             <!-- Mensajes de validación -->
             <span class="text-sm text-success"
-              *ngIf="formGroup4.get('idAreaOperacion')?.valid && formGroup4.get('idAreaOperacion')?.touched">
+                  *ngIf="formGroup4.get('idAreaOperacion')?.valid && formGroup4.get('idAreaOperacion')?.touched">
               Selección válida
             </span>
 
             <span class="text-sm text-error"
-              *ngIf="formGroup4.get('idAreaOperacion')?.invalid && (formGroup4.get('idAreaOperacion')?.touched || formGroup4.get('idAreaOperacion')?.dirty)">
+                  *ngIf="formGroup4.get('idAreaOperacion')?.invalid && (formGroup4.get('idAreaOperacion')?.touched || formGroup4.get('idAreaOperacion')?.dirty)">
               {{ selects[3].errorMessage }}
             </span>
 
@@ -1514,31 +1520,31 @@
           <div class="w-full relative mt-2">
 
             <div (click)="toggleDropdown(4)"
-              [ngClass]="{'text-error !border border-error': formGroup4.get('disponibilidad')?.invalid && (formGroup4.get('disponibilidad')?.touched || formGroup4.get('disponibilidad')?.dirty)}"
-              class="cursor-pointer shadow-sm min-w-[160px] w-full p-[10px] h-[40px] bg-transparent border-2 border-secondary1 focus:outline-none focus:border-primary1 flex justify-between items-center">
+                 [ngClass]="{'text-error !border border-error': formGroup4.get('disponibilidad')?.invalid && (formGroup4.get('disponibilidad')?.touched || formGroup4.get('disponibilidad')?.dirty)}"
+                 class="cursor-pointer shadow-sm min-w-[160px] w-full p-[10px] h-[40px] bg-transparent border-2 border-secondary1 focus:outline-none focus:border-primary1 flex justify-between items-center">
               <span *ngIf="!selects[4].value" class="font-[500] text-xs">Seleccione</span>
               <span *ngIf="selects[4].value" class="text-normal">{{
-                formGroup4.get('disponibilidad')?.value.label
+                  formGroup4.get('disponibilidad')?.value.label
                 }}</span>
 
               <i class="pi pi-chevron-down text-primary2 text-xs"
-                [ngClass]="{'!text-error': formGroup4.get('disponibilidad')?.invalid && (formGroup4.get('disponibilidad')?.touched || formGroup4.get('disponibilidad')?.dirty)}"></i>
+                 [ngClass]="{'!text-error': formGroup4.get('disponibilidad')?.invalid && (formGroup4.get('disponibilidad')?.touched || formGroup4.get('disponibilidad')?.dirty)}"></i>
             </div>
 
             <ul *ngIf="selects[4].isDropdownOpen"
-              class="absolute z-20 bg-secondary4 border border-primary1 shadow-md rounded-bl-md rounded-br-md w-full mt-1 max-h-48 overflow-y-auto">
+                class="absolute z-20 bg-secondary4 border border-primary1 shadow-md rounded-bl-md rounded-br-md w-full mt-1 max-h-48 overflow-y-auto">
               <li *ngFor="let option of horas" (click)="selectOption(4, option, 'disponibilidad')"
-                class="cursor-pointer px-4 py-2 hover:bg-primary1 hover:text-white">
+                  class="cursor-pointer px-4 py-2 hover:bg-primary1 hover:text-white">
                 {{ option.label }}
               </li>
             </ul>
             <!-- Mensajes de validación -->
             <span class="text-sm text-success"
-              *ngIf="formGroup4.get('disponibilidad')?.valid && formGroup4.get('disponibilidad')?.touched">
+                  *ngIf="formGroup4.get('disponibilidad')?.valid && formGroup4.get('disponibilidad')?.touched">
               Selección válida
             </span>
             <span class="text-sm text-error"
-              *ngIf="formGroup4.get('disponibilidad')?.invalid && (formGroup4.get('disponibilidad')?.touched || formGroup4.get('ClaseVehiculo')?.dirty)">
+                  *ngIf="formGroup4.get('disponibilidad')?.invalid && (formGroup4.get('disponibilidad')?.touched || formGroup4.get('ClaseVehiculo')?.dirty)">
               {{ selects[4].errorMessage }}
             </span>
 
@@ -1563,7 +1569,7 @@
             <input
               class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent"
               type="text" formControlName="valorContrato" placeholder="$"
-              (input)="onCurrencyInput($event, 'valorContrato', formGroup4)" (focus)="onCurrencyFocus($event)" />
+              (input)="onCurrencyInput($event, 'valorContrato', formGroup4)" (focus)="onCurrencyFocus($event)"/>
             <div class="w-full relative">
               <!-- Icono de error (rojo) -->
               <span
@@ -1608,75 +1614,81 @@
 
 <!-- APP ALERT continuar sin guardar -->
 <app-alert [showModal]="showModalContinuar" title="Continuar sin guardar" subtitle=""
-  message="Esta seguro que desea continuar sin guardar." cancelButtonText="Cerrar" [showCancelButton]="true"
-  buttonText="Continuar" [showFirstButton]="true" (close)="showModalContinuar = false"
-  (closeByButton1)="changeActiveStep(numberTocontinue, false)" TypeAlert="warning"></app-alert>
+           message="Esta seguro que desea continuar sin guardar." cancelButtonText="Cerrar" [showCancelButton]="true"
+           buttonText="Continuar" [showFirstButton]="true" (close)="showModalContinuar = false"
+           (closeByButton1)="changeActiveStep(numberTocontinue, false)" TypeAlert="warning"></app-alert>
 
 <!-- APP ALERT REQUISITO CAPITAL SOCIAL Y PATRIMONIO -->
 <app-alert [showModal]="showModalRequisito" title="No cumple requisito" subtitle=""
-  message="{{ valid1 ? 'No se cumple con el requisito mínimo de patrimonio liquido (menor a 180 SMLMV)' :valid2 ? 'No se cumple con el requisito mínimo de capital social (300 SMLMV)' : 'No se cumple con el requisito mínimo de capital social (300 SMLMV) y patrimonio liquido (180 SMLMV)'  }}"
-  cancelButtonText="Cerrar" [showCancelButton]="true" [showFirstButton]="false" (close)="showModalRequisito = false"
-  textColor="text-waring" TypeAlert="warning"></app-alert>
+           message="{{ valid1 ? 'No se cumple con el requisito mínimo de patrimonio liquido (menor a 180 SMLMV)' :valid2 ? 'No se cumple con el requisito mínimo de capital social (300 SMLMV)' : 'No se cumple con el requisito mínimo de capital social (300 SMLMV) y patrimonio liquido (180 SMLMV)'  }}"
+           cancelButtonText="Cerrar" [showCancelButton]="true" [showFirstButton]="false"
+           (close)="showModalRequisito = false"
+           textColor="text-waring" TypeAlert="warning"></app-alert>
 
 
 <!-- modal de loading -->
 <app-alert [showModal]="ShowLoadingModal" title="Verificando datos" subtitle="Un momento por favor."
-  message="Se está guardando los datos enviados" [showFirstButton]="false" [showCancelButton]="false"
-  TypeAlert="loader"></app-alert>
+           message="Se está guardando los datos enviados" [showFirstButton]="false" [showCancelButton]="false"
+           TypeAlert="loader"></app-alert>
 
 <!-- Modal DE INFORMACION GUARDADA -->
 <app-alert [showModal]="showModalInfoSaved" title="Información guardada" textColor="text-success" [showSubtitle]="false"
-  [message]="' La información se ha cargado correctamente'" buttonText="Continuar" [isIcon]="false"
-  [showFirstButton]="true" [showCancelButton]="false" TypeAlert="success" (close)="showModalInfoSaved = false"
-  (closeByButton1)="numberTocontinueSaved == 5 ? changeActiveNum('1') : changeActiveStep(numberTocontinueSaved, false)"
-  (closeByBackdrop)="numberTocontinueSaved == 5 ? changeActiveNum('1') : changeActiveStep(numberTocontinueSaved, false)"
-  (close)="showModalInfoSaved = true"></app-alert>
+           [message]="' La información se ha cargado correctamente'" buttonText="Continuar" [isIcon]="false"
+           [showFirstButton]="true" [showCancelButton]="false" TypeAlert="success" (close)="showModalInfoSaved = false"
+           (closeByButton1)="numberTocontinueSaved == 5 ? changeActiveNum('1') : changeActiveStep(numberTocontinueSaved, false)"
+           (closeByBackdrop)="numberTocontinueSaved == 5 ? changeActiveNum('1') : changeActiveStep(numberTocontinueSaved, false)"
+           (close)="showModalInfoSaved = true"></app-alert>
 
 <!-- Modal DE INFORMACION GUARDADA OPERATIVO -->
 <app-alert [showModal]="showModalInfoSaved1" title="Información guardada" textColor="text-success"
-  [showSubtitle]="false" [message]="' La información se ha cargado correctamente'" buttonText="Continuar"
-  [isIcon]="false" [showFirstButton]="true" [showCancelButton]="false" TypeAlert="success"
-  (close)="showModalInfoSaved1 = false" (closeByButton1)="changeContratoInfo(true)"
-  (closeByBackdrop)="changeContratoInfo(true)" (close)="showModalInfoSaved1 = false"></app-alert>
+           [showSubtitle]="false" [message]="' La información se ha cargado correctamente'" buttonText="Continuar"
+           [isIcon]="false" [showFirstButton]="true" [showCancelButton]="false" TypeAlert="success"
+           (close)="showModalInfoSaved1 = false" (closeByButton1)="changeContratoInfo(true)"
+           (closeByBackdrop)="changeContratoInfo(true)" (close)="showModalInfoSaved1 = false"></app-alert>
 
 
 <!-- modal de confirmación -->
 <app-alert [showModal]="showModal" title="¿Está seguro de enviar?" subtitle="¿Está seguro de enviar?"
-  [showSubtitle]="false" [message]="'Una vez enviado, no podrá cambiar la información.'" buttonText="Enviar"
-  [showFirstButton]="true" cancelButtonText="Cancelar" [showCancelButton]="true" TypeAlert="success"
-  (close)="showModal = false"
-  (closeByButton1)="currentContractIteration == totalContracts ? sendAllContracts() : handleCloseByButton1()"
-  (closeByIcon)="showModal = false" (closeByBackdrop)="showModal = false" (close)="showModal = false"></app-alert>
+           [showSubtitle]="false" [message]="'Una vez enviado, no podrá cambiar la información.'" buttonText="Enviar"
+           [showFirstButton]="true" cancelButtonText="Cancelar" [showCancelButton]="true" TypeAlert="success"
+           (close)="showModal = false"
+           (closeByButton1)="currentContractIteration == totalContracts ? sendAllContracts() : handleCloseByButton1()"
+           (closeByIcon)="showModal = false" (closeByBackdrop)="showModal = false"
+           (close)="showModal = false"></app-alert>
 
 
 <!-- modal final -->
 <app-alert [showModal]="showFinalModal" title="Envío exitoso" textColor="text-success" [showSubtitle]="false"
-  [message]="'Su solicitud ha sido enviada exitosamente, se le asignará un radicado para su trámite'"
-  buttonText="Continuar" [showFirstButton]="true" [showCancelButton]="false" TypeAlert="success"
-  (close)="showFinalModal = false" (closeByButton1)="finalStep()" (closeByIcon)="showFinalModal = false"
-  (closeByBackdrop)="showFinalModal = false" (close)="showFinalModal = false"></app-alert>
+           [message]="'Su solicitud ha sido enviada exitosamente, se le asignará un radicado para su trámite'"
+           buttonText="Continuar" [showFirstButton]="true" [showCancelButton]="false" TypeAlert="success"
+           (close)="showFinalModal = false" (closeByButton1)="finalStep()" (closeByIcon)="showFinalModal = false"
+           (closeByBackdrop)="showFinalModal = false" (close)="showFinalModal = false"></app-alert>
 
 <!-- modal error -->
 <app-alert [showModal]="showErrorModal" title="Error en el envió de datos" textColor="text-error" [showSubtitle]="false"
-  [message]="'Estamos experimentando inconvenientes técnicos con el envió de la solicitud, por favor intente más tarde'"
-  buttonText="Continuar" [showFirstButton]="true" [showCancelButton]="false" TypeAlert="error"
-  (close)="showErrorModal = false" (closeByButton1)="showErrorModal = false" (closeByIcon)="showErrorModal = false"
-  (closeByBackdrop)="showErrorModal = false" (close)="showErrorModal = false"></app-alert>
+           [message]="'Estamos experimentando inconvenientes técnicos con el envió de la solicitud, por favor intente más tarde'"
+           buttonText="Continuar" [showFirstButton]="true" [showCancelButton]="false" TypeAlert="error"
+           (close)="showErrorModal = false" (closeByButton1)="showErrorModal = false"
+           (closeByIcon)="showErrorModal = false"
+           (closeByBackdrop)="showErrorModal = false" (close)="showErrorModal = false"></app-alert>
 
 <!-- modal de error en data -->
 <app-alert [showModal]="showModalAlerta" title="No se encuentra registro en RUES" subtitle=""
-  message="Se recomienda solicitar realizar registro RUES, para poder tramitar solicitudes." cancelButtonText="Cerrar"
-  [showCancelButton]="true" [showFirstButton]="false" (close)="showModalAlerta = false" textColor="text-waring"
-  TypeAlert="warning"></app-alert>
+           message="Se recomienda solicitar realizar registro RUES, para poder tramitar solicitudes."
+           cancelButtonText="Cerrar"
+           [showCancelButton]="true" [showFirstButton]="false" (close)="showModalAlerta = false" textColor="text-waring"
+           TypeAlert="warning"></app-alert>
 
 <!-- modal de error en data -->
 <app-alert [showModal]="showModalAlerta1" title="Registro con matricula cancelada" subtitle=""
-  message="Se recomienda solicitar actualizar novedad de registro RUES, para poder tramitar solicitudes."
-  cancelButtonText="Cerrar" [showCancelButton]="true" [showFirstButton]="false" (close)="showModalAlerta1 = false"
-  textColor="text-waring" TypeAlert="warning"></app-alert>
+           message="Se recomienda solicitar actualizar novedad de registro RUES, para poder tramitar solicitudes."
+           cancelButtonText="Cerrar" [showCancelButton]="true" [showFirstButton]="false"
+           (close)="showModalAlerta1 = false"
+           textColor="text-waring" TypeAlert="warning"></app-alert>
 
 <!-- modal de error en data -->
 <app-alert [showModal]="showModalWarning1" title="inconvenientes registros RUES" subtitle=""
-  message="Estamos experimentando inconvenientes técnicos con la consulta del NIT en rues. Se le habilitará el espacio para añadir de manera manual la razón social."
-  cancelButtonText="Cerrar" [showCancelButton]="true" [showFirstButton]="false" (close)="showModalWarning1 = false"
-  textColor="text-waring" TypeAlert="warning"></app-alert>
+           message="Estamos experimentando inconvenientes técnicos con la consulta del NIT en rues. Se le habilitará el espacio para añadir de manera manual la razón social."
+           cancelButtonText="Cerrar" [showCancelButton]="true" [showFirstButton]="false"
+           (close)="showModalWarning1 = false"
+           textColor="text-waring" TypeAlert="warning"></app-alert>
