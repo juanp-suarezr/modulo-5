@@ -72,9 +72,7 @@ export default class SolicitudComponent {
     private cdr: ChangeDetectorRef // Inyectar ChangeDetectorRef
   ) {
     this.user = this.authService.getUserInfo();
-    this.hasPermission = this.authService.hasPermission(
-      'MSF_SUPERTRANSPORTE'
-    );
+    this.hasPermission = this.authService.hasPermission('MSF_SUPERTRANSPORTE');
 
     // TRAER ID DESDE NAVEGACIÓN O LOCALSTORAGE
     const navigation = this.router.getCurrentNavigation();
@@ -206,6 +204,15 @@ export default class SolicitudComponent {
       errorMessage: 'Concepto es requerido',
       isDropdownOpen: false,
     },
+    {
+      name: 'cumplimiento',
+      required: true,
+      placeholder: 'Seleccione',
+      value: '', // Valor seleccionado
+      good: 'Selección correcta',
+      errorMessage: 'cumplimiento es requerido',
+      isDropdownOpen: false,
+    },
   ];
 
   currentIndex: number = 0;
@@ -218,6 +225,7 @@ export default class SolicitudComponent {
   activeHeader: number | null = 0;
 
   ngOnInit(): void {
+    
     this.stateService.setActiveNum('0');
     this.stepperService.setActiveNum(1);
     //Suscribirse al observable para obtener los cambios reactivos del menuleft
@@ -240,9 +248,16 @@ export default class SolicitudComponent {
         rentaOperacional: ['', Validators.required],
         liquidez: ['', Validators.required],
         solidez: ['', Validators.required],
+        activoCorriente: ['', Validators.required],
+        pasivoCorriente: ['', Validators.required],
+        capitalTrabajo: [''],
+        estructuraCostos: ['', Validators.required],
+        cumplimientoIncremento: ['', Validators.required],
       },
       { validators: [NoNegativeGlobal] }
     );
+
+    this.formGroup2.get('capitalTrabajo')?.disable();
 
     this.formGroup3 = this.fb.group({
       concepto: ['', Validators.required],
@@ -262,6 +277,19 @@ export default class SolicitudComponent {
 
     // Forzar detección de cambios
     this.cdr.detectChanges();
+  }
+
+  ngAfterViewInit() {
+    this.loadOptions();
+
+    // Escuchar cambios en los campos 'fechaInicio' y 'fechaFin'
+    this.formGroup2.get('activoCorriente')?.valueChanges.subscribe(() => {
+      this.updateCapital();
+    });
+
+    this.formGroup2.get('pasivoCorriente')?.valueChanges.subscribe(() => {
+      this.updateCapital();
+    });
   }
 
   // Método para actualizar el id y el BehaviorSubject
@@ -355,6 +383,22 @@ export default class SolicitudComponent {
     this.formGroup2.patchValue({
       ['solidez']: info.formulario.solidez,
     });
+    this.formGroup2.patchValue({
+      ['activoCorriente']: info.formulario.activoCorriente,
+    });
+    this.formGroup2.patchValue({
+      ['pasivoCorriente']: info.formulario.pasivoCorriente,
+    });
+    this.formGroup2.patchValue({
+      ['capitalTrabajo']: info.formulario.capitalTrabajo,
+    });
+    this.formGroup2.patchValue({
+      ['estructuraCostos']: info.formulario.estructuraCostos,
+    });
+    this.formGroup2.patchValue({
+      ['cumplimientoIncremento']: info.formulario.cumplimientoIncremento,
+    });
+
     this.formGroup3.patchValue({
       ['concepto']:
         this.conceptos.find(
@@ -374,6 +418,10 @@ export default class SolicitudComponent {
       this.formGroup2.get('solidez')?.disable();
       this.formGroup2.get('liquidez')?.disable();
       this.formGroup2.get('rentaOperacional')?.disable();
+      this.formGroup2.get('activoCorriente')?.disable();
+      this.formGroup2.get('pasivoCorriente')?.disable();
+      this.formGroup2.get('estructuraCostos')?.disable();
+      this.formGroup2.get('cumplimientoIncremento')?.disable();
       this.formGroup3.get('concepto')?.disable();
     }
   }
@@ -1005,6 +1053,17 @@ export default class SolicitudComponent {
     }
   }
 
+  //calcular duracion en meses
+  updateCapital(): void {
+    const activo = this.formGroup2.get('activoCorriente')?.value;
+    const pasivo = this.formGroup2.get('pasivoCorriente')?.value;
+
+    if (activo && pasivo) {
+      const capital = parseInt(activo) - parseInt(pasivo);
+      this.formGroup2.get('capitalTrabajo')?.setValue(capital);
+    }
+  }
+
   actualizarFinanciero() {
     // Convertir valores que pueden ser Blob a Base64 (para los archivos en data2)
     Promise.all([
@@ -1028,6 +1087,14 @@ export default class SolicitudComponent {
                 liquidez: this.formGroup2.get('liquidez')?.value,
                 rentaOperacional:
                   this.formGroup2.get('rentaOperacional')?.value,
+                activoCorriente: this.formGroup2.get('activoCorriente')?.value,
+                pasivoCorriente: this.formGroup2.get('pasivoCorriente')?.value,
+                capitalTrabajo: this.formGroup2.get('capitalTrabajo')?.value,
+                estructuraCostos:
+                  this.formGroup2.get('estructuraCostos')?.value,
+                cumplimientoIncremento: this.formGroup2.get(
+                  'cumplimientoIncremento'
+                )?.value,
               };
               this.apiSFService
                 .GeneradoresRiesgo(this.solicitud.formulario.id, data1)
@@ -1164,5 +1231,38 @@ export default class SolicitudComponent {
       (item: any) => item.value === this.solicitud.formulario.concepto
     );
     return concepto ? concepto.label : 'Valor no encontrado';
+  }
+
+  // Quitar el formato de moneda para obtener solo el número
+  parseCurrency(value: string): number {
+    return Number(value.replace(/[^0-9]+/g, '')); // Solo números
+  }
+
+  onCurrencyInput(event: any, controlName: string, formGroup: FormGroup): void {
+    const input = event.target;
+    let value = input.value;
+
+    // Eliminar cualquier carácter no permitido (solo números)
+    value = value.replace(/[^0-9]/g, '');
+
+    // Si no hay valor, establecer a vacío para permitir eliminar
+    if (!value) {
+      input.value = '';
+      formGroup.get(controlName)?.setValue(null);
+      return;
+    }
+
+    // Convertir el valor a número y actualizar en el formulario
+    const numericValue = this.parseCurrency(value);
+    formGroup.get(controlName)?.setValue(numericValue);
+
+    // Formatear y mostrar el valor instantáneamente
+    input.value = this.formatCurrency(numericValue);
+  }
+
+  // No realizar ningún cambio al enfocar, pero mantener el valor
+  onCurrencyFocus(event: any): void {
+    const input = event.target;
+    input.value = input.value; // Mantiene el valor actual al enfocar
   }
 }

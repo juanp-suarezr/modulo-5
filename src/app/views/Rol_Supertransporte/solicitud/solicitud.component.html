@@ -1489,7 +1489,7 @@
               {{ getMedidor(formGroup2.get('rentaNeta')?.value, 'renta') }}
             </div>
           </div>
-          <span *ngIf="submitted && formGroup3.get('rentaNeta')?.errors?.['required']" class="text-error">
+          <span *ngIf="submitted && formGroup2.get('rentaNeta')?.errors?.['required']" class="text-error">
             Renta neta es obligatorio
           </span>
           <span
@@ -1593,6 +1593,187 @@
             class="text-error">
             El numeró no puede ser negativo
           </span>
+        </div>
+        <!-- Activo corriente(%) -->
+        <div class="w-full flex flex-col justify-start items-stretch pt-6 my-auto h-full">
+          <!-- input contet -->
+          <div class="mt-2 relative w-full h-full flex gap-2 items-center">
+            <!-- INPUT -->
+            <div
+              class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border focus:outline-none focus:border-primary1 bg-secondary3 border-secondary2 text-primary3 flex items-center justify-center">
+              <!-- titulo -->
+              <div class="flex w-[70%] p-0 m-0">
+                <p class="my-auto"> Activo corriente ($)</p>
+              </div>
+              <!-- input -->
+              <div class="flex w-[30%] p-0 m-0 bg-secondary1">
+                <!-- input -->
+                <input class="shadow-sm rounded-md w-full border bg-transparent" type="text"
+                  formControlName="activoCorriente" placeholder="Ingrese numero"
+                  (input)="onCurrencyInput($event, 'activoCorriente', formGroup2)" (focus)="onCurrencyFocus($event)" />
+
+              </div>
+            </div>
+            <div class="px-4 py-2 rounded-xl shadow-md font-semibold bg-success/40 text-success">
+              $
+            </div>
+          </div>
+          <span *ngIf="submitted && formGroup2.get('activoCorriente')?.errors?.['required']" class="text-error">
+            Activo corriente es obligatorio
+          </span>
+          <span
+            *ngIf="formGroup2.get('activoCorriente')?.hasError('negativeNumber') && (formGroup2.get('activoCorriente')?.touched || submitted)"
+            class="text-error">
+            El numeró no puede ser negativo
+          </span>
+        </div>
+        <!-- Pasivo corriente(%) -->
+        <div class="w-full flex flex-col justify-start items-stretch pt-6 my-auto h-full">
+          <!-- input contet -->
+          <div class="mt-2 relative w-full h-full flex gap-2 items-center">
+            <!-- INPUT -->
+            <div
+              class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border focus:outline-none focus:border-primary1 bg-secondary3 border-secondary2 text-primary3 flex items-center justify-center">
+              <!-- titulo -->
+              <div class="flex w-[70%] p-0 m-0">
+                <p class="my-auto"> Pasivo corriente ($)</p>
+              </div>
+              <!-- input -->
+              <div class="flex w-[30%] p-0 m-0 bg-secondary1">
+                <!-- input -->
+                <input class="shadow-sm rounded-md w-full border bg-transparent" type="text"
+                  formControlName="pasivoCorriente" placeholder="Ingrese numero"
+                  (input)="onCurrencyInput($event, 'pasivoCorriente', formGroup2)" (focus)="onCurrencyFocus($event)" />
+
+              </div>
+            </div>
+            <div class="px-4 py-2 rounded-xl shadow-md font-semibold bg-error/40 text-error">
+              $
+            </div>
+          </div>
+          <span *ngIf="submitted && formGroup2.get('pasivoCorriente')?.errors?.['required']" class="text-error">
+            Pasivo corriente es obligatorio
+          </span>
+          <span
+            *ngIf="formGroup2.get('pasivoCorriente')?.hasError('negativeNumber') && (formGroup2.get('pasivoCorriente')?.touched || submitted)"
+            class="text-error">
+            El numeró no puede ser negativo
+          </span>
+        </div>
+        <!-- Capital de trabajo(%) -->
+        <div class="w-full flex flex-col justify-start items-stretch pt-6 my-auto h-full">
+          <!-- input contet -->
+          <div class="mt-2 relative w-full h-full flex gap-2 items-center">
+            <!-- INPUT -->
+            <div
+              class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border focus:outline-none focus:border-primary1 bg-secondary3 border-secondary2 text-primary3 flex items-center justify-center">
+              <!-- titulo -->
+              <div class="flex w-[70%] p-0 m-0">
+                <p class="my-auto"> Capital de trabajo ($)</p>
+              </div>
+              <!-- input -->
+              <div class="flex w-[30%] p-0 m-0 bg-secondary1">
+                <!-- input -->
+                <input class="shadow-sm rounded-md w-full border bg-transparent" type="number"
+                  formControlName="capitalTrabajo" placeholder="$">
+
+
+
+              </div>
+            </div>
+            <div class="px-4 py-2 rounded-xl shadow-md font-semibold bg-waring/40 text-waring">
+              $
+            </div>
+          </div>
+          <span class="lg:text-[11px] sm:text-[10px] text-success">
+            campo calculado automáticamente.
+          </span>
+        </div>
+        <!-- Estructura de costos(%) -->
+        <div class="w-full flex flex-col justify-start items-stretch pt-6 my-auto h-full">
+          <!-- input contet -->
+          <div class="mt-2 relative w-full h-full flex gap-2 items-center">
+            <!-- INPUT -->
+            <div
+              class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border focus:outline-none focus:border-primary1 bg-secondary3 border-secondary2 text-primary3 flex items-center justify-center">
+              <!-- titulo -->
+              <div class="flex w-[70%] p-0 m-0">
+                <p class="my-auto"> Estructura de costos ($)</p>
+              </div>
+              <!-- input -->
+              <div class="flex w-[30%] p-0 m-0 bg-secondary1">
+                <!-- input -->
+                <input class="shadow-sm rounded-md w-full border bg-transparent" type="text"
+                  formControlName="estructuraCostos" placeholder="Ingrese numero"
+                  (input)="onCurrencyInput($event, 'estructuraCostos', formGroup2)" (focus)="onCurrencyFocus($event)" />
+
+              </div>
+            </div>
+            <div class="px-4 py-2 rounded-xl shadow-md font-semibold bg-primary2/40 text-primary2">
+              $
+            </div>
+          </div>
+          <span *ngIf="submitted && formGroup2.get('estructuraCostos')?.errors?.['required']" class="text-error">
+            Estructura de costos es obligatorio
+          </span>
+          <span
+            *ngIf="formGroup2.get('estructuraCostos')?.hasError('negativeNumber') && (formGroup2.get('estructuraCostos')?.touched || submitted)"
+            class="text-error">
+            El numeró no puede ser negativo
+          </span>
+        </div>
+        <!-- cumplimento del 7 o 10% -->
+        <div class="w-full flex flex-col justify-start items-stretch pt-6 my-auto h-full">
+          <p class="text-primary3 font-semibold h-full mt-4">
+            cumplimiento del 7 o 10%
+          </p>
+          <!-- select -->
+          <div class="w-full relative mt-2 sm:w-1/2" *ngIf="!solicitud.formulario.radicadoSalida">
+
+            <div (click)="toggleDropdown(1)"
+              [ngClass]="{'text-error !border border-error': formGroup2.get('cumplimientoIncremento')?.invalid && (formGroup2.get('cumplimientoIncremento')?.touched || formGroup2.get('cumplimientoIncremento')?.dirty)}"
+              class="cursor-pointer shadow-sm min-w-[160px] w-full p-[10px] h-[40px] bg-transparent border-2 border-secondary1 focus:outline-none focus:border-primary1 flex justify-between items-center">
+              <span *ngIf="!selects[1].value" class="font-[500] text-xs">Seleccione</span>
+              <span *ngIf="selects[1].value" class="text-normal">{{
+                formGroup2.get('cumplimientoIncremento')?.value.label
+                }}</span>
+
+              <i class="pi pi-chevron-down text-primary2 text-xs"
+                [ngClass]="{'!text-error': formGroup2.get('cumplimientoIncremento')?.invalid && (formGroup2.get('cumplimientoIncremento')?.touched || formGroup2.get('cumplimientoIncremento')?.dirty)}"></i>
+            </div>
+
+            <ul *ngIf="selects[1].isDropdownOpen"
+              class="absolute z-20 bg-secondary4 border border-primary1 shadow-md rounded-bl-md rounded-br-md w-full mt-1 max-h-48 overflow-y-auto">
+              <li (click)="selectOption(1, 7, 'cumplimiento')"
+                class="cursor-pointer px-4 py-2 hover:bg-primary1 hover:text-white">
+                7%
+              </li>
+              <li (click)="selectOption(1, 10, 'cumplimiento')"
+                class="cursor-pointer px-4 py-2 hover:bg-primary1 hover:text-white">
+                10%
+              </li>
+            </ul>
+            <!-- Mensajes de validación -->
+            <span class="text-sm text-success"
+              *ngIf="formGroup2.get('cumplimientoIncremento')?.valid && formGroup2.get('cumplimientoIncremento')?.touched">
+              Selección válida
+            </span>
+            <span class="text-sm text-error"
+              *ngIf="formGroup2.get('cumplimientoIncremento')?.invalid && (formGroup2.get('cumplimientoIncremento')?.touched || formGroup2.get('cumplimientoIncremento')?.dirty)">
+              {{ selects[1].errorMessage }}
+            </span>
+
+          </div>
+          <!-- mostrar cumplimiento -->
+          <div class="w-full relative mt-2 sm:w-1/2" *ngIf="solicitud.formulario.radicadoSalida">
+            <!-- input -->
+            <div class="mt-2 relative w-full h-full flex items-center">
+              <div
+                class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border focus:outline-none focus:border-primary1 bg-secondary3 border-secondary2 text-primary3 flex items-center justify-center">
+                {{formGroup2.get('cumplimientoIncremento')?.value}}%
+              </div>
+            </div>
+          </div>
         </div>
 
 
