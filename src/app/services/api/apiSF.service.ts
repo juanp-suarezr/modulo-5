@@ -12,11 +12,6 @@ export class ApiSFService {
 
   constructor(private http: HttpClient) {}
 
-  // Ejemplo de método DELETE
-  deleteItem(id: number): Observable<any> {
-    return this.http.delete(`${this.baseUrl}/items/${id}`);
-  }
-
   // GET solicitudes con múltiples filtros
   getSolicitudes(
     estado: string,
@@ -115,7 +110,12 @@ export class ApiSFService {
     return this.http.get(`${this.baseUrl}/api/formulario/verificar-nit/${nit}`);
   }
 
-  //get data by nit
+  //consulta nit por cantidad vehiculos
+  getcantidadVehiculosByNIT(nit: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}/api/formulario/cantidad-vehiculos/${nit}`);
+  }
+
+  //get data by nit RUES
   getDataByNIT(nit: string): Observable<any> {
     return this.http.post(
       `${this.baseUrlRues}/getConfecamaras`,

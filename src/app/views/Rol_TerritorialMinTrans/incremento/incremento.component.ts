@@ -476,6 +476,34 @@ export default class IncrementoComponent implements AfterViewInit, OnInit {
                 'Datos enviados exitosamente:',
                 parsedData.registros[0].razonSocialEmpresa
               );
+              this.apiSFService
+                .getcantidadVehiculosByNIT(parsedData.nit)
+                .subscribe(
+                  (response) => {
+                    console.log(response.cantidadVehiculosIncrementar); // Muestra la respuesta en la consola
+
+                    if (response.estado) {
+                      this.formGroup2
+                        .get('vehiculosFijados')
+                        ?.setValue(response.cantidadVehiculos);
+                      this.formGroup2
+                        .get('totalVehiculos')
+                        ?.setValue(response.cantidadVehiculosIncrementar+response.cantidadVehiculos);
+
+                      this.formGroup2.get('vehiculosFijados')?.disable();
+                      this.formGroup2.get('totalVehiculos')?.disable();
+                    } else {
+                      console.log('no hay registros');
+                    }
+                  },
+                  (error) => {
+                    console.error('Error fetching user data', error); // Maneja el error si ocurre
+                    this.formGroup2
+                      .get('vehiculosFijados')
+                      ?.enable();
+                    
+                  }
+                );
             } else {
               this.showModalAlerta1 = true;
               console.log('Empresa inactiva');
@@ -514,20 +542,16 @@ export default class IncrementoComponent implements AfterViewInit, OnInit {
       .subscribe((response) => {
         if (response) {
           const parsedData = JSON.parse(response);
-          console.log(parsedData);
 
           if (parsedData.registros) {
             if (parsedData.registros[0].nomEstadoMatricula === 'ACTIVA') {
               console.log('Empresa activa');
+
               // Actualizar el campo 'nombreEmpresa'
               this.isProcessing = false;
               this.formGroup4
                 .get('contratante')
                 ?.setValue(parsedData.registros[0].razonSocialEmpresa);
-              console.log(
-                'Datos enviados exitosamente:',
-                parsedData.registros[0].razonSocialEmpresa
-              );
             } else {
               this.showModalAlerta1 = true;
               this.formGroup4.get('contratante')?.setValue('Empresa no valida');
@@ -632,7 +656,10 @@ export default class IncrementoComponent implements AfterViewInit, OnInit {
       10: [null, Validators.required],
       11: [null, Validators.required],
       cantidadVehiculosIncrementar: ['', Validators.required],
-      1: ['', Validators.required],
+      1: ['', Validators.required], //cumplimiento
+      2: ['', Validators.required], //resultado
+      vehiculosFijados: ['', Validators.required], //vehiculos fijados
+      totalVehiculos: ['', Validators.required], //cantidad total de vehiculos
     });
 
     this.formGroup3 = this.fb.group({
@@ -754,10 +781,10 @@ export default class IncrementoComponent implements AfterViewInit, OnInit {
           salario.descripcion.includes(new Date().getFullYear().toString())
         );
 
-        this.smlmmv = salarioActual ? salarioActual.detalle : response.detalle[0].detalle;
+        this.smlmmv = salarioActual
+          ? salarioActual.detalle
+          : response.detalle[0].detalle;
         console.log(this.smlmmv);
-        
-
       },
       (error) => {
         console.error('Error fetching user data', error);
@@ -864,7 +891,7 @@ export default class IncrementoComponent implements AfterViewInit, OnInit {
       this.apiSFService.getDocumentosByID(id).subscribe(
         (response1) => {
           console.log(response1);
-          
+
           this.loadingInicio = false;
           if (!this.isNewContracts) {
             // Crear un array de contratos
@@ -878,13 +905,11 @@ export default class IncrementoComponent implements AfterViewInit, OnInit {
             this.formGroup1.patchValue({
               [1]: this.contratosArray,
             });
-            
-            
 
             this.fileNames[1] = response1.map((f: any, index: number) => {
-              const firstPart = `consecutivo_${index + 1}__${this.formGroup1.get('nit')?.value}_${
-                this.formGroup1.get('nombreEmpresa')?.value
-              }__`;
+              const firstPart = `consecutivo_${index + 1}__${
+                this.formGroup1.get('nit')?.value
+              }_${this.formGroup1.get('nombreEmpresa')?.value}__`;
               return firstPart;
             });
           }
@@ -968,6 +993,10 @@ export default class IncrementoComponent implements AfterViewInit, OnInit {
             ['cantidadVehiculosIncrementar']:
               response.cantidadVehiculosIncrementar,
           });
+          this.formGroup2.patchValue({
+            [1]: response.cumplimiento,
+          });
+          this.inputs[1].value = response.cumplimiento;
           this.formGroup3.patchValue({
             [12]: this.displayFile(response.certificadoPropiedadEmpresa),
           });
@@ -1354,6 +1383,7 @@ export default class IncrementoComponent implements AfterViewInit, OnInit {
                 cantidadVehiculosIncrementar: this.formGroup2.get(
                   'cantidadVehiculosIncrementar'
                 )?.value,
+                cumplimiento: this.formGroup2.value[1],
               };
               this.apiSFService
                 .SolicitudPaso2(this.idSolicitud, data2)
@@ -1576,9 +1606,9 @@ export default class IncrementoComponent implements AfterViewInit, OnInit {
           formGroup.patchValue({ [formControlName]: base64Array });
           if (formControlName === 1 && formGroup === this.formGroup1) {
             this.fileNames[1] = file.map((f, index) => {
-              const firstPart = `consecutivo_${index + 1}__${this.formGroup1.get('nit')?.value}_${
-                this.formGroup1.get('nombreEmpresa')?.value
-              }__`;
+              const firstPart = `consecutivo_${index + 1}__${
+                this.formGroup1.get('nit')?.value
+              }_${this.formGroup1.get('nombreEmpresa')?.value}__`;
               return firstPart;
             });
             this.isNewContracts = true;
@@ -1914,9 +1944,10 @@ export default class IncrementoComponent implements AfterViewInit, OnInit {
 
   // Procesar cada iteración de contratos
   processContractIteration() {
-    
-    if (this.formGroup4.valid &&
-      this.formGroup4.get('contratante')?.value != 'Empresa no valida') {
+    if (
+      this.formGroup4.valid &&
+      this.formGroup4.get('contratante')?.value != 'Empresa no valida'
+    ) {
       this.IsvalidOperativo = true;
       // Guardar los datos del formulario en el array
       this.formGroup4.get('duracionMeses')?.enable();
@@ -2113,7 +2144,6 @@ export default class IncrementoComponent implements AfterViewInit, OnInit {
       idCategoriaSolicitud: 150,
       excelModeloTransporte: '',
       radicadoEntrada: '',
-      cumplimiento: '',
       estado: true,
       planRodamiento: this.formGroup1.value[2][0],
       estructuraCostosBasicos: this.formGroup1.value[3][0],
@@ -2131,6 +2161,7 @@ export default class IncrementoComponent implements AfterViewInit, OnInit {
       cantidadVehiculosIncrementar: this.formGroup2.get(
         'cantidadVehiculosIncrementar'
       )?.value,
+      cumplimiento: this.formGroup2.value[1][0],
       contratos: contratos,
       documentos: documentos,
     };
