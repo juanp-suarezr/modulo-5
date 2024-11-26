@@ -221,6 +221,9 @@ export default class IncrementoComponent implements AfterViewInit, OnInit {
   numberTocontinueSaved: number = 0;
   showModalInfoSaved: boolean = false;
 
+  //cantidadTotalVehIncrementar
+  cantidadTotalVehIncrementar: any;
+
   //Menu left
   infoMenu = [
     {
@@ -432,6 +435,17 @@ export default class IncrementoComponent implements AfterViewInit, OnInit {
       this.updateDuration();
     });
 
+    
+
+    this.formGroup2.get('cantidadVehiculosIncrementar')?.valueChanges
+    .pipe(
+      debounceTime(300) // Espera 300ms después de que el usuario termine de escribir
+    )
+    .subscribe((cantidadIncrementar) => {
+
+      this.updateTotalVeh(parseInt(cantidadIncrementar));
+    });
+
     this.formGroup1.get('nombreEmpresa')?.disable();
 
     this.formGroup1
@@ -482,26 +496,29 @@ export default class IncrementoComponent implements AfterViewInit, OnInit {
                   (response) => {
                     console.log(response.cantidadVehiculosIncrementar); // Muestra la respuesta en la consola
 
+                    this.cantidadTotalVehIncrementar = response.cantidadVehiculosIncrementar;
+
                     if (response.estado) {
                       this.formGroup2
                         .get('vehiculosFijados')
                         ?.setValue(response.cantidadVehiculos);
                       this.formGroup2
                         .get('totalVehiculos')
-                        ?.setValue(response.cantidadVehiculosIncrementar+response.cantidadVehiculos);
+                        ?.setValue(
+                          response.cantidadVehiculosIncrementar +
+                            response.cantidadVehiculos
+                        );
 
                       this.formGroup2.get('vehiculosFijados')?.disable();
                       this.formGroup2.get('totalVehiculos')?.disable();
+                      this.updateTotalVeh(parseInt(this.formGroup2.get('cantidadVehiculosIncrementar')?.value));
                     } else {
                       console.log('no hay registros');
                     }
                   },
                   (error) => {
                     console.error('Error fetching user data', error); // Maneja el error si ocurre
-                    this.formGroup2
-                      .get('vehiculosFijados')
-                      ?.enable();
-                    
+                    this.formGroup2.get('vehiculosFijados')?.enable();
                   }
                 );
             } else {
@@ -993,9 +1010,11 @@ export default class IncrementoComponent implements AfterViewInit, OnInit {
             ['cantidadVehiculosIncrementar']:
               response.cantidadVehiculosIncrementar,
           });
+          
           this.formGroup2.patchValue({
             [1]: response.cumplimiento,
           });
+
           this.inputs[1].value = response.cumplimiento;
           this.formGroup3.patchValue({
             [12]: this.displayFile(response.certificadoPropiedadEmpresa),
@@ -1006,6 +1025,8 @@ export default class IncrementoComponent implements AfterViewInit, OnInit {
           this.formGroup3.patchValue({
             ['patrimonio_liquido']: response.patrimonioLiquido,
           });
+
+          this.updateTotalVeh(parseInt(this.formGroup2.get('cantidadVehiculosIncrementar')?.value));
 
           resolve(response);
           console.log(response);
@@ -1679,9 +1700,8 @@ export default class IncrementoComponent implements AfterViewInit, OnInit {
       this.selectedPercentage = value ? `${value}%` : '';
     }
 
-    const numeroVehiculos = this.formGroup2.get('cantidadVehiculosIncrementar')
-      ?.value
-      ? parseFloat(this.formGroup2.get('cantidadVehiculosIncrementar')?.value)
+    const numeroVehiculos = this.formGroup2.get('totalVehiculos')?.value
+      ? parseFloat(this.formGroup2.get('totalVehiculos')?.value)
       : 0;
     const porcentaje = this.inputs[1].value
       ? parseFloat(this.inputs[1].value)
@@ -2030,6 +2050,20 @@ export default class IncrementoComponent implements AfterViewInit, OnInit {
       );
       this.formGroup4.get('duracionMeses')?.setValue(duracionMeses);
     }
+  }
+
+  //calcular total vehiculos con fijacion, incremento y veh a incrementar
+  updateTotalVeh(cantidadIncrementar:number): void {
+    this.formGroup2.get('totalVehiculos')?.setValue(this.cantidadTotalVehIncrementar + this.formGroup2.get('vehiculosFijados')?.value);
+      console.log(this.formGroup2.get('totalVehiculos')?.value);
+      console.log(cantidadIncrementar);
+      
+      // Calcula el nuevo total
+      const nuevoTotal = parseInt(this.formGroup2.get('totalVehiculos')?.value) + (cantidadIncrementar || 0);
+
+      // Establece el nuevo valor en totalVehiculos
+      
+      this.formGroup2.get('totalVehiculos')?.setValue(nuevoTotal, { emitEvent: false });
   }
 
   // Calcular la duración en meses con decimales
