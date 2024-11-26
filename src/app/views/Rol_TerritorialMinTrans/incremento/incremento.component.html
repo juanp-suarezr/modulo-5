@@ -741,13 +741,24 @@
 
             <div class="w-full flex flex-row justify-center items-start pt-6 my-auto gap-4">
               <!-- vehiculos fijados -->
-              <div class="w-full">
+              <div class="w-full" *ngIf="this.formGroup2.get('vehiculosFijados')?.value < 0">
                 <p class="text-primary3 font-semibold" [ngClass]="{'!text-error !font-normal': errorStates[3]}">
                   Cantidad vehículos en fijación*
                 </p>
                 <input
                   class="mt-2 flex-1 shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent"
                   type="number" formControlName="vehiculosFijados" placeholder="0" />
+              </div>
+              <!-- vehiculos fijados -->
+              <div class="w-full">
+                <p class="text-primary3 font-semibold" [ngClass]="{'!text-error !font-normal': errorStates[3]}">
+                  Capacidad actual vehiculos
+                </p>
+                <div
+                  class="mt-2 flex-1 shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent"
+                  type="number"placeholder="0"> 
+                  {{ capacidadVehiculos }}
+                </div>
               </div>
               <!-- vehiculos a incrementar -->
               <div class="w-full">

@@ -11,7 +11,8 @@ import { CommonModule } from '@angular/common';
 import {
   FormArray,
   FormBuilder,
-  FormGroup, FormsModule,
+  FormGroup,
+  FormsModule,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
@@ -88,6 +89,7 @@ export default class IncrementoComponent implements AfterViewInit, OnInit {
   >;
 
   stepContents: TemplateRef<any>[] = [];
+  
 
   constructor(
     private stateService: ActiveNumService,
@@ -224,6 +226,8 @@ export default class IncrementoComponent implements AfterViewInit, OnInit {
 
   //cantidadTotalVehIncrementar
   cantidadTotalVehIncrementar: any;
+  //capacidad actual vehiculos (total sin cantidad a incrementar)
+  capacidadVehiculos: number = 0;
 
   //Menu left
   infoMenu = [
@@ -436,16 +440,14 @@ export default class IncrementoComponent implements AfterViewInit, OnInit {
       this.updateDuration();
     });
 
-
-
-    this.formGroup2.get('cantidadVehiculosIncrementar')?.valueChanges
-    .pipe(
-      debounceTime(300) // Espera 300ms después de que el usuario termine de escribir
-    )
-    .subscribe((cantidadIncrementar) => {
-
-      this.updateTotalVeh(parseInt(cantidadIncrementar));
-    });
+    this.formGroup2
+      .get('cantidadVehiculosIncrementar')
+      ?.valueChanges.pipe(
+        debounceTime(300) // Espera 300ms después de que el usuario termine de escribir
+      )
+      .subscribe((cantidadIncrementar) => {
+        this.updateTotalVeh(parseInt(cantidadIncrementar));
+      });
 
     this.formGroup1.get('nombreEmpresa')?.disable();
 
@@ -497,7 +499,8 @@ export default class IncrementoComponent implements AfterViewInit, OnInit {
                   (response) => {
                     console.log(response.cantidadVehiculosIncrementar); // Muestra la respuesta en la consola
 
-                    this.cantidadTotalVehIncrementar = response.cantidadVehiculosIncrementar;
+                    this.cantidadTotalVehIncrementar =
+                      response.cantidadVehiculosIncrementar;
 
                     if (response.estado) {
                       this.formGroup2
@@ -510,18 +513,20 @@ export default class IncrementoComponent implements AfterViewInit, OnInit {
                             response.cantidadVehiculos
                         );
 
+                      this.capacidadVehiculos =
+                        response.cantidadVehiculosIncrementar +
+                        response.cantidadVehiculos;
+
                       this.formGroup2.get('vehiculosFijados')?.disable();
                       this.formGroup2.get('totalVehiculos')?.disable();
+                      
                     } else {
                       console.log('no hay registros');
                     }
                   },
                   (error) => {
                     console.error('Error fetching user data', error); // Maneja el error si ocurre
-                    this.formGroup2
-                      .get('vehiculosFijados')
-                      ?.enable();
-
+                    this.formGroup2.get('vehiculosFijados')?.enable();
                   }
                 );
             } else {
@@ -1029,7 +1034,9 @@ export default class IncrementoComponent implements AfterViewInit, OnInit {
             ['patrimonio_liquido']: response.patrimonioLiquido,
           });
 
-          this.updateTotalVeh(parseInt(this.formGroup2.get('cantidadVehiculosIncrementar')?.value));
+          this.updateTotalVeh(
+            parseInt(this.formGroup2.get('cantidadVehiculosIncrementar')?.value)
+          );
 
           resolve(response);
           console.log(response);
@@ -2056,17 +2063,26 @@ export default class IncrementoComponent implements AfterViewInit, OnInit {
   }
 
   //calcular total vehiculos con fijacion, incremento y veh a incrementar
-  updateTotalVeh(cantidadIncrementar:number): void {
-    this.formGroup2.get('totalVehiculos')?.setValue(this.cantidadTotalVehIncrementar + this.formGroup2.get('vehiculosFijados')?.value);
-      console.log(this.formGroup2.get('totalVehiculos')?.value);
-      console.log(cantidadIncrementar);
+  updateTotalVeh(cantidadIncrementar: number): void {
+    this.formGroup2
+      .get('totalVehiculos')
+      ?.setValue(
+        this.cantidadTotalVehIncrementar +
+          this.formGroup2.get('vehiculosFijados')?.value
+      );
+    console.log(this.formGroup2.get('totalVehiculos')?.value);
+    console.log(cantidadIncrementar);
 
-      // Calcula el nuevo total
-      const nuevoTotal = parseInt(this.formGroup2.get('totalVehiculos')?.value) + (cantidadIncrementar || 0);
+    // Calcula el nuevo total
+    const nuevoTotal =
+      parseInt(this.formGroup2.get('totalVehiculos')?.value) +
+      (cantidadIncrementar || 0);
 
-      // Establece el nuevo valor en totalVehiculos
+    // Establece el nuevo valor en totalVehiculos
 
-      this.formGroup2.get('totalVehiculos')?.setValue(nuevoTotal, { emitEvent: false });
+    this.formGroup2
+      .get('totalVehiculos')
+      ?.setValue(nuevoTotal, { emitEvent: false });
   }
 
   // Calcular la duración en meses con decimales
