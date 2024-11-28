@@ -48,6 +48,7 @@ export class FileUploadComponent implements OnInit, AfterViewInit, OnChanges {
 
   ngAfterViewInit() {
     // La referencia a fileInput estará disponible aquí
+    
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -55,6 +56,7 @@ export class FileUploadComponent implements OnInit, AfterViewInit, OnChanges {
       this.cd.detectChanges();
       console.log(this.error);
     }
+
   }
 
   onFileSelected(event: any) {

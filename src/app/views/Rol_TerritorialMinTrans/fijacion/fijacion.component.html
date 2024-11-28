@@ -80,6 +80,47 @@
 
 
                     </div>
+                    <!-- mostrar archivo que viene de regresar -->
+                    <div class="w-full"
+                        *ngIf="(this.formGroup1.get('1')?.value != '' && this.formGroup1.get('1')?.value != null) && !this.solicitudGuardada && !isActuFile.includes(1)">
+
+                        <div class="mt-2 flex gap-2 items-center cursor-pointer"
+                            (click)="viewDocument(formGroup1.get('1')?.value)">
+
+                            <!-- Archivos Visibles -->
+                            <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
+
+                                <!-- document -->
+                                <div class="w-auto m-auto">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto"
+                                        viewBox="0 0 384 512">
+                                        <path
+                                            d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z" />
+                                    </svg>
+                                </div>
+
+                                <!-- texto info file -->
+                                <div class="px-2 w-auto">
+                                    <p class="truncate text-[8px] font-semibold">
+                                        Solicitud de fijación
+                                    </p>
+                                    <p class="truncate text-[8px]">{{ (this.formGroup1.get('1')?.value.size /
+                                        1024).toFixed(2) }} Kb</p>
+                                </div>
+
+                                <!-- button borrar -->
+                                <button class="m-auto w-auto" (click)="deleteFile(1)">
+                                    <span
+                                        class="pi pi-trash w-full h-full sm:text-xl text-base text-primary2 text-medium"></span>
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+
+                    </div>
                 </div>
 
                 <!-- cargue 2 contrato prestacion del servicio de transporte -->
@@ -224,6 +265,47 @@
 
 
                     </div>
+                    <!-- mostrar archivo que viene de regresar -->
+                    <div class="w-full"
+                        *ngIf="(this.formGroup1.get('3')?.value != '' && this.formGroup1.get('3')?.value != null) && !this.solicitudGuardada && !isActuFile.includes(3)">
+
+                        <div class="mt-2 flex gap-2 items-center cursor-pointer"
+                            (click)="viewDocument(formGroup1.get('3')?.value)">
+
+                            <!-- Archivos Visibles -->
+                            <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
+
+                                <!-- document -->
+                                <div class="w-auto m-auto">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto"
+                                        viewBox="0 0 384 512">
+                                        <path
+                                            d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z" />
+                                    </svg>
+                                </div>
+
+                                <!-- texto info file -->
+                                <div class="px-2 w-auto">
+                                    <p class="truncate text-[8px] font-semibold">
+                                        Plan de Rodamiento
+                                    </p>
+                                    <p class="truncate text-[8px]">{{ (this.formGroup1.get('3')?.value.size /
+                                        1024).toFixed(2) }} Kb</p>
+                                </div>
+
+                                <!-- button borrar -->
+                                <button class="m-auto w-auto" (click)="deleteFile(3)">
+                                    <span
+                                        class="pi pi-trash w-full h-full sm:text-xl text-base text-primary2 text-medium"></span>
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+
+                    </div>
                 </div>
 
                 <!-- cargue 4 Estructura costos básicos contratante y contratista -->
@@ -237,6 +319,46 @@
                     <!-- Opcion que aparece si existe archivo guardado en la solicitud -->
                     <div class="w-full"
                         *ngIf="(this.formGroup1.get('4')?.value != '' && this.formGroup1.get('4')?.value != null) && this.solicitudGuardada && !isActuFile.includes(4)">
+                        <div class="mt-2 flex gap-2 items-center cursor-pointer"
+                            (click)="viewDocument(formGroup1.get('4')?.value)">
+
+                            <!-- Archivos Visibles -->
+                            <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
+
+                                <!-- document -->
+                                <div class="w-auto m-auto">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto"
+                                        viewBox="0 0 384 512">
+                                        <path
+                                            d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z" />
+                                    </svg>
+                                </div>
+
+                                <!-- texto info file -->
+                                <div class="px-2 w-auto">
+                                    <p class="truncate text-[8px] font-semibold">
+                                        Estructura costos básicos contratante y contratista
+                                    </p>
+                                    <p class="truncate text-[8px]">{{ (this.formGroup1.get('4')?.value.size /
+                                        1024).toFixed(2) }} Kb</p>
+                                </div>
+
+                                <!-- button borrar -->
+                                <button class="m-auto w-auto" (click)="deleteFile(4)">
+                                    <span
+                                        class="pi pi-trash w-full h-full sm:text-xl text-base text-primary2 text-medium"></span>
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+
+                    </div>
+                    <!-- mostrar archivo que viene de regresar -->
+                    <div class="w-full"
+                        *ngIf="(this.formGroup1.get('4')?.value != '' && this.formGroup1.get('4')?.value != null) && !this.solicitudGuardada && !isActuFile.includes(4)">
                         <div class="mt-2 flex gap-2 items-center cursor-pointer"
                             (click)="viewDocument(formGroup1.get('4')?.value)">
 
@@ -329,6 +451,46 @@
 
 
                     </div>
+                    <!-- mostrar archivo que viene de regresar -->
+                    <div class="w-full"
+                        *ngIf="(this.formGroup1.get('5')?.value != '' && this.formGroup1.get('5')?.value != null) && !this.solicitudGuardada && !isActuFile.includes(5)">
+                        <div class="mt-2 flex gap-2 items-center cursor-pointer"
+                            (click)="viewDocument(formGroup1.get('5')?.value)">
+
+                            <!-- Archivos Visibles -->
+                            <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
+
+                                <!-- document -->
+                                <div class="w-auto m-auto">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto"
+                                        viewBox="0 0 384 512">
+                                        <path
+                                            d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z" />
+                                    </svg>
+                                </div>
+
+                                <!-- texto info file -->
+                                <div class="px-2 w-auto">
+                                    <p class="truncate text-[8px] font-semibold">
+                                        Certificado de Existencia y Representación legal
+                                    </p>
+                                    <p class="truncate text-[8px]">{{ (this.formGroup1.get('5')?.value.size /
+                                        1024).toFixed(2) }} Kb</p>
+                                </div>
+
+                                <!-- button borrar -->
+                                <button class="m-auto w-auto" (click)="deleteFile(5)">
+                                    <span
+                                        class="pi pi-trash w-full h-full sm:text-xl text-base text-primary2 text-medium"></span>
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+
+                    </div>
                 </div>
 
                 <!-- cargue 6 Registro Único Tributario -->
@@ -342,6 +504,46 @@
                     <!-- Opcion que aparece si existe archivo guardado en la solicitud -->
                     <div class="w-full"
                         *ngIf="(this.formGroup1.get('6')?.value != '' && this.formGroup1.get('6')?.value != null) && this.solicitudGuardada && !isActuFile.includes(6)">
+                        <div class="mt-2 flex gap-2 items-center cursor-pointer"
+                            (click)="viewDocument(formGroup1.get('6')?.value)">
+
+                            <!-- Archivos Visibles -->
+                            <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
+
+                                <!-- document -->
+                                <div class="w-auto m-auto">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto"
+                                        viewBox="0 0 384 512">
+                                        <path
+                                            d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z" />
+                                    </svg>
+                                </div>
+
+                                <!-- texto info file -->
+                                <div class="px-2 w-auto">
+                                    <p class="truncate text-[8px] font-semibold">
+                                        Registro Único Tributario
+                                    </p>
+                                    <p class="truncate text-[8px]">{{ (this.formGroup1.get('6')?.value.size /
+                                        1024).toFixed(2) }} Kb</p>
+                                </div>
+
+                                <!-- button borrar -->
+                                <button class="m-auto w-auto" (click)="deleteFile(6)">
+                                    <span
+                                        class="pi pi-trash w-full h-full sm:text-xl text-base text-primary2 text-medium"></span>
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+
+                    </div>
+                    <!-- mostrar archivo que viene de regresar -->
+                    <div class="w-full"
+                        *ngIf="(this.formGroup1.get('6')?.value != '' && this.formGroup1.get('6')?.value != null) && !this.solicitudGuardada && !isActuFile.includes(6)">
                         <div class="mt-2 flex gap-2 items-center cursor-pointer"
                             (click)="viewDocument(formGroup1.get('6')?.value)">
 
@@ -686,7 +888,7 @@
                 <!-- input 1 Capital Social en SMLV* -->
                 <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
                     <p class="text-primary3 font-semibold h-full">
-                        Capital pagado en SMLV*
+                        Capital pagado
                     </p>
                     <!-- input -->
                     <div class="mt-2 relative w-full">
@@ -739,7 +941,7 @@
                 <!-- input 2 Patrimonio Líquido en SMLV* -->
                 <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
                     <p class="text-primary3 font-semibold h-full">
-                        Patrimonio Líquido en SMLV*
+                        Patrimonio Líquido
                     </p>
                     <!-- input -->
                     <div class="mt-2 relative w-full">

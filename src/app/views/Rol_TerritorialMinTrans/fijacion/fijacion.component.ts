@@ -360,31 +360,70 @@ export default class FijacionComponent {
             [6]: this.displayFile(response.registroUnicoTributario),
           });
           this.formGroup2.patchValue({
-            [7]: this.displayFile(response.resolucionHabilitacion),
+            [7]: this.displayFile(
+              response.resolucionHabilitacion != null
+                ? response.resolucionHabilitacion
+                : this.formGroup2.get('7')?.value
+                ? this.formGroup2.get('7')?.value[0]
+                : null
+            ),
           });
           this.formGroup2.patchValue({
-            [8]: this.displayFile(response.cedulaRepresentante),
+            [8]: this.displayFile(
+              response.cedulaRepresentante != null
+                ? response.cedulaRepresentante
+                : this.formGroup2.get('8')?.value
+                ? this.formGroup2.get('8')?.value[0]
+                : null
+            ),
           });
           this.formGroup2.patchValue({
-            [9]: this.displayFile(response.estadosFinancieros),
+            [9]: this.displayFile(
+              response.estadosFinancieros != null
+                ? response.estadosFinancieros
+                : this.formGroup2.get('9')?.value
+                ? this.formGroup2.get('9')?.value[0]
+                : null
+            ),
           });
           this.formGroup2.patchValue({
-            [10]: this.displayFile(response.cedulaContador),
+            [10]: this.displayFile(
+              response.cedulaContador != null
+                ? response.cedulaContador
+                : this.formGroup2.get('10')?.value
+                ? this.formGroup2.get('10')?.value[0]
+                : null
+            ),
           });
           this.formGroup2.patchValue({
-            [11]: this.displayFile(response.tarjetaProfesionalContador),
+            [11]: this.displayFile(
+              response.tarjetaProfesionalContador != null
+                ? response.tarjetaProfesionalContador
+                : this.formGroup2.get('11')?.value
+                ? this.formGroup2.get('11')?.value[0]
+                : null
+            ),
           });
 
           this.formGroup3.patchValue({
-            ['capitalSocial']: response.capitalSocial,
+            ['capitalSocial']:
+              response.capitalSocial != null
+                ? response.capitalSocial
+                : this.formGroup3.get('capitalSocial')?.value || null,
           });
 
           this.formGroup3.patchValue({
-            ['patrimonioLiquido']: response.patrimonioLiquido,
+            ['patrimonioLiquido']:
+              response.patrimonioLiquido != null
+                ? response.patrimonioLiquido
+                : this.formGroup3.get('patrimonioLiquido')?.value || null,
           });
 
           this.formGroup3.patchValue({
-            ['cantidadVehiculos']: response.cantidadVehiculos,
+            ['cantidadVehiculos']:
+              response.cantidadVehiculos != null
+                ? response.cantidadVehiculos
+                : this.formGroup3.get('cantidadVehiculos')?.value || null,
           });
           resolve(response);
           console.log(response);
@@ -444,88 +483,6 @@ export default class FijacionComponent {
       (response2) => {
         this.loadingInicio = false;
         this.contratosSolicitud = response2;
-
-        // Recorremos todos los contratos de la solicitud
-        // response2.forEach((contrato: any) => {
-        //   // Actualizamos los campos principales del formulario con el valor del primer contrato (solo para campos "globales")
-        //   // if (response2.indexOf(contrato) === index) {
-        //   //   this.formGroup4.get('duracionMeses')?.enable();
-        //   //   this.formGroup4.patchValue({
-        //   //     cantidad_contratos: this.formGroup1.get('2')?.value.length,
-        //   //     numeroContrato: contrato.numeroContrato || '',
-        //   //     contratante: contrato.contratante || '',
-        //   //     fecha_inicio:
-        //   //       this.formatearFechaParaDatetimeLocal(contrato.fechaInicio) ||
-        //   //       '',
-        //   //     fecha_terminacion:
-        //   //       this.formatearFechaParaDatetimeLocal(contrato.fechaFin) || '',
-        //   //     duracionMeses: contrato.duracionMeses || '',
-        //   //     numeroVehiculos: contrato.idvehiculos || '',
-        //   //     idClaseVehiculo: contrato.claseVehiculos.map((item: any) => ({
-        //   //       value: item.idClaseVehiculo,
-        //   //       label: item.claseVehiculoDescripcion,
-        //   //     })),
-        //   //     valorContrato: contrato.valorContrato || '',
-        //   //     idFormaPago: {
-        //   //       value: contrato.idFormaPago,
-        //   //       label: contrato.formaPagoDescripcion,
-        //   //     },
-        //   //     idAreaOperacion: contrato.areasOperacion.map((item: any) => ({
-        //   //       value: item.idMunicipioArea,
-        //   //       label: item.departamentoDescripcion,
-        //   //     })),
-        //   //     disponibilidadVehiculosEstimada:
-        //   //       this.horas.find(
-        //   //         (item: any) =>
-        //   //           item.value == contrato.disponibilidadVehiculosEstimada
-        //   //       ) || '',
-        //   //     idClaseVehiculos: contrato.vehiculos,
-        //   //   });
-
-        //   //   this.formGroup4.get('cantidad_contratos')?.disable();
-        //   //   this.formGroup4.get('duracionMeses')?.disable();
-
-        //   //   this.selects[1].value = contrato.idFormaPago || '';
-
-        //   //   this.selects[3].value =
-        //   //     contrato.disponibilidadVehiculosEstimada || '';
-        //   //   this.selects[2].selectedOption =
-        //   //     this.formGroup4.get('idAreaOperacion')?.value || '';
-        //   //   this.selectedOptionsDeparts =
-        //   //     this.formGroup4.get('idAreaOperacion')?.value;
-        //   //   // Primero limpias el FormArray para asegurarte de que esté vacío antes de agregar nuevos controles
-        //   //   this.idClaseVehiculos.clear();
-
-        //   //   // Luego recorres la respuesta y agregas los valores al FormArray
-        //   //   contrato.claseVehiculos.forEach(
-        //   //     (claseVehiculo: {
-        //   //       idClaseVehiculo: any;
-        //   //       cantidadVehiculos: any;
-        //   //       claseVehiculoDescripcion: any;
-        //   //     }) => {
-        //   //       const vehiculoGroup = this.fb.group({
-        //   //         idClaseVehiculo: [
-        //   //           claseVehiculo.idClaseVehiculo,
-        //   //           Validators.required,
-        //   //         ],
-        //   //         cantidadVehiculos: [
-        //   //           claseVehiculo.cantidadVehiculos,
-        //   //           [Validators.required, Validators.min(1)],
-        //   //         ],
-        //   //       });
-
-        //   //       // Añades el grupo al FormArray
-        //   //       this.idClaseVehiculos.push(vehiculoGroup);
-
-        //   //       // Si también necesitas actualizar `selectedOptionsClase`:
-        //   //       this.selectedOptionsClase.push({
-        //   //         value: claseVehiculo.idClaseVehiculo,
-        //   //         label: claseVehiculo.claseVehiculoDescripcion,
-        //   //       });
-        //   //     }
-        //   //   );
-        //   // }
-        // });
       },
       (error) => {
         console.error('Error fetching user data', error);
@@ -875,10 +832,10 @@ export default class FijacionComponent {
           salario.descripcion.includes(new Date().getFullYear().toString())
         );
 
-        this.smlmmv = salarioActual ? salarioActual.detalle : response.detalle[0].detalle;
+        this.smlmmv = salarioActual
+          ? salarioActual.detalle
+          : response.detalle[0].detalle;
         console.log(this.smlmmv);
-        
-
       },
       (error) => {
         console.error('Error fetching user data', error);
@@ -1002,6 +959,23 @@ export default class FijacionComponent {
           this.idSolicitud === 'undefined' ||
           this.idSolicitud === undefined
         ) {
+          this.isActuFile = [-1];
+
+          this.formGroup1.patchValue({
+            [1]: this.displayFile(this.formGroup1.get('1')?.value[0]),
+          });
+          this.formGroup1.patchValue({
+            [3]: this.displayFile(this.formGroup1.get('3')?.value[0]),
+          });
+          this.formGroup1.patchValue({
+            [4]: this.displayFile(this.formGroup1.get('4')?.value[0]),
+          });
+          this.formGroup1.patchValue({
+            [5]: this.displayFile(this.formGroup1.get('5')?.value[0]),
+          });
+          this.formGroup1.patchValue({
+            [6]: this.displayFile(this.formGroup1.get('6')?.value[0]),
+          });
         } else {
           await this.ObtenerSolicitud(this.idSolicitud);
         }
@@ -1052,15 +1026,23 @@ export default class FijacionComponent {
           } else {
             //Continuar Sin guardar
             this.ShowLoadingModal = false;
+            if (back == true) {
+              this.loadingInicio = true;
+              await this.ObtenerSolicitud(this.idSolicitud);
+              this.loadingInicio = false;
+              this.isActuFile = [-1];
+            }
             this.stepperService.setActiveNum(newValue);
           }
 
           this.formGroup4.get('duracionMeses')?.disable();
           this.formGroup4.get('contratante')?.disable();
         } else if (back == true) {
+          
           this.loadingInicio = true;
           await this.ObtenerSolicitud(this.idSolicitud);
           this.loadingInicio = false;
+          this.isActuFile = [-1];
           this.stepperService.setActiveNum(newValue);
         }
         break;

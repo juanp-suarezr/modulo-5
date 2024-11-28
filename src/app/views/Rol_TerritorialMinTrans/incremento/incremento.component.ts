@@ -41,6 +41,7 @@ import {
   timeout,
 } from 'rxjs/operators';
 import { BehaviorSubject, of } from 'rxjs';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 interface Contrato {
   nit: number;
@@ -62,6 +63,7 @@ interface Contrato {
     SelectComponent,
     AlertComponent,
     FormsModule,
+    ProgressSpinnerModule,
   ],
   templateUrl: './incremento.component.html',
   styleUrl: './incremento.component.css',
@@ -89,7 +91,6 @@ export default class IncrementoComponent implements AfterViewInit, OnInit {
   >;
 
   stepContents: TemplateRef<any>[] = [];
-  
 
   constructor(
     private stateService: ActiveNumService,
@@ -519,7 +520,6 @@ export default class IncrementoComponent implements AfterViewInit, OnInit {
 
                       this.formGroup2.get('vehiculosFijados')?.disable();
                       this.formGroup2.get('totalVehiculos')?.disable();
-                      
                     } else {
                       console.log('no hay registros');
                     }
@@ -680,6 +680,7 @@ export default class IncrementoComponent implements AfterViewInit, OnInit {
       9: [null, Validators.required],
       10: [null, Validators.required],
       11: [null, Validators.required],
+      13: [null, Validators.required],
       cantidadVehiculosIncrementar: ['', Validators.required],
       1: ['', Validators.required], //cumplimiento
       2: ['', Validators.required], //resultado
@@ -880,6 +881,9 @@ export default class IncrementoComponent implements AfterViewInit, OnInit {
       case 12:
         this.formGroup3.get(num.toString())?.setValue('');
         break;
+      case 13:
+        this.formGroup2.get(num.toString())?.setValue('');
+        break;
 
       default:
         break;
@@ -915,9 +919,9 @@ export default class IncrementoComponent implements AfterViewInit, OnInit {
       //GET DOCUMENTOS
       this.apiSFService.getDocumentosByID(id).subscribe(
         (response1) => {
-          console.log(response1);
+          
 
-          this.loadingInicio = false;
+          
           if (!this.isNewContracts) {
             // Crear un array de contratos
             this.contratosArray = response1.map((element: any) => ({
@@ -956,10 +960,12 @@ export default class IncrementoComponent implements AfterViewInit, OnInit {
         this.loadingInicio = false;
         this.contratosSolicitud = response2;
 
-        response2.forEach((contrato: any) => {
-          console.log(contrato);
-          console.log(this.formGroup4);
-        });
+        if (response2) {
+          response2.forEach((contrato: any) => {
+            console.log(contrato);
+            console.log(this.formGroup4);
+          });
+        }
       },
       (error) => {
         console.error('Error fetching user data', error);
@@ -972,6 +978,8 @@ export default class IncrementoComponent implements AfterViewInit, OnInit {
     return new Promise((resolve, reject) => {
       this.apiSFService.getSolicitudByID(newId).subscribe(
         async (response) => {
+          console.log(response.resolucionHabilitacion);
+
           this.solicitudGuardada = response;
           this.loadingInicio = true;
           //OBTENER DOCS
@@ -1000,38 +1008,98 @@ export default class IncrementoComponent implements AfterViewInit, OnInit {
             [6]: this.displayFile(response.registroUnicoTributario),
           });
           this.formGroup2.patchValue({
-            [7]: this.displayFile(response.resolucionHabilitacion),
+            [7]: this.displayFile(
+              response.resolucionHabilitacion != null
+                ? response.resolucionHabilitacion
+                : this.formGroup2.get('7')?.value
+                ? this.formGroup2.get('7')?.value[0]
+                : null
+            ),
           });
           this.formGroup2.patchValue({
-            [8]: this.displayFile(response.cedulaRepresentante),
+            [8]: this.displayFile(
+              response.cedulaRepresentante != null
+                ? response.cedulaRepresentante
+                : this.formGroup2.get('8')?.value
+                ? this.formGroup2.get('8')?.value[0]
+                : null
+            ),
           });
           this.formGroup2.patchValue({
-            [9]: this.displayFile(response.estadosFinancieros),
+            [9]: this.displayFile(
+              response.estadosFinancieros != null
+                ? response.estadosFinancieros
+                : this.formGroup2.get('9')?.value
+                ? this.formGroup2.get('9')?.value[0]
+                : null
+            ),
           });
           this.formGroup2.patchValue({
-            [10]: this.displayFile(response.cedulaContador),
+            [10]: this.displayFile(
+              response.cedulaContador != null
+                ? response.cedulaContador
+                : this.formGroup2.get('10')?.value
+                ? this.formGroup2.get('10')?.value[0]
+                : null
+            ),
           });
           this.formGroup2.patchValue({
-            [11]: this.displayFile(response.tarjetaProfesionalContador),
+            [11]: this.displayFile(
+              response.tarjetaProfesionalContador != null
+                ? response.tarjetaProfesionalContador
+                : this.formGroup2.get('11')?.value
+                ? this.formGroup2.get('11')?.value[0]
+                : null
+            ),
+          });
+          this.formGroup2.patchValue({
+            [13]: this.displayFile(
+              response.resolucionCapacidadTransportadora != null
+                ? response.resolucionCapacidadTransportadora
+                : this.formGroup2.get('13')?.value
+                ? this.formGroup2.get('13')?.value[0]
+                : null
+            ),
           });
           this.formGroup2.patchValue({
             ['cantidadVehiculosIncrementar']:
-              response.cantidadVehiculosIncrementar,
+              response.cantidadVehiculosIncrementar != null
+                ? response.cantidadVehiculosIncrementar
+                : this.formGroup2.get('cantidadVehiculosIncrementar')?.value ||
+                  null,
           });
 
           this.formGroup2.patchValue({
-            [1]: response.cumplimiento,
+            [1]:
+              response.cumplimiento != null
+                ? response.cumplimiento
+                : this.formGroup2.get('1')?.value,
           });
 
-          this.inputs[1].value = response.cumplimiento;
+          this.inputs[1].value =
+            response.cumplimiento != null
+              ? response.cumplimiento
+              : this.formGroup2.get('1')?.value;
           this.formGroup3.patchValue({
-            [12]: this.displayFile(response.certificadoPropiedadEmpresa),
+            [12]: this.displayFile(
+              response.certificadoPropiedadEmpresa != null
+                ? response.certificadoPropiedadEmpresa
+                : this.formGroup3.get('12')?.value
+                ? this.formGroup3.get('12')?.value[0]
+                : null
+            ),
           });
           this.formGroup3.patchValue({
-            ['capital_social']: response.capitalSocial,
+            ['capital_social']:
+              response.capitalSocial != null
+                ? response.capitalSocial
+                : this.formGroup3.get('capital_social')?.value,
           });
           this.formGroup3.patchValue({
-            ['patrimonio_liquido']: response.patrimonioLiquido,
+            ['patrimonio_liquido']:
+              response.patrimonioLiquido != null
+                ? response.patrimonioLiquido
+                : this.formGroup3.get('patrimonio_liquido')?.value,
           });
 
           this.updateTotalVeh(
@@ -1039,7 +1107,7 @@ export default class IncrementoComponent implements AfterViewInit, OnInit {
           );
 
           resolve(response);
-          console.log(response);
+          
         },
         (error) => {
           console.error('Error fetching user data', error);
@@ -1084,6 +1152,25 @@ export default class IncrementoComponent implements AfterViewInit, OnInit {
           this.idSolicitud === 'undefined' ||
           this.idSolicitud === undefined
         ) {
+          this.isActuFile = [-1];
+
+          this.formGroup1.patchValue({
+            [2]: this.displayFile(this.formGroup1.get('2')?.value[0]),
+          });
+          this.formGroup1.patchValue({
+            [3]: this.displayFile(this.formGroup1.get('3')?.value[0]),
+          });
+          this.formGroup1.patchValue({
+            [4]: this.displayFile(this.formGroup1.get('4')?.value[0]),
+          });
+          this.formGroup1.patchValue({
+            [5]: this.displayFile(this.formGroup1.get('5')?.value[0]),
+          });
+          this.formGroup1.patchValue({
+            [6]: this.displayFile(this.formGroup1.get('6')?.value[0]),
+          });
+
+          console.log(this.formGroup1.get('2')?.value);
         } else {
           await this.ObtenerSolicitud(this.idSolicitud);
         }
@@ -1125,6 +1212,13 @@ export default class IncrementoComponent implements AfterViewInit, OnInit {
             }
           } else {
             this.ShowLoadingModal = false;
+
+            if (back == true) {
+              this.loadingInicio = true;
+              await this.ObtenerSolicitud(this.idSolicitud);
+              this.loadingInicio = false;
+              this.isActuFile = [-1];
+            }
             this.stepperService.setActiveNum(newValue);
           }
 
@@ -1134,7 +1228,7 @@ export default class IncrementoComponent implements AfterViewInit, OnInit {
           this.loadingInicio = true;
           await this.ObtenerSolicitud(this.idSolicitud);
           this.loadingInicio = false;
-          this.stepperService.setActiveNum(newValue);
+          this.isActuFile = [-1];
         }
 
         break;
@@ -1144,7 +1238,7 @@ export default class IncrementoComponent implements AfterViewInit, OnInit {
           if (saved) {
             this.ShowLoadingModal = true;
             const data1 = await this.datosPaso1();
-            console.log(data1);
+            
             if (
               this.idSolicitud == '' ||
               this.idSolicitud === 'undefined' ||
@@ -1393,6 +1487,7 @@ export default class IncrementoComponent implements AfterViewInit, OnInit {
           this.convertirSiEsBlob(this.formGroup2.value[9]),
           this.convertirSiEsBlob(this.formGroup2.value[10]),
           this.convertirSiEsBlob(this.formGroup2.value[11]),
+          this.convertirSiEsBlob(this.formGroup2.value[13]),
         ])
           .then(
             ([
@@ -1401,6 +1496,7 @@ export default class IncrementoComponent implements AfterViewInit, OnInit {
               estadosFinancieros,
               cedulaContador,
               tarjetaProfesionalContador,
+              resolucionCapacidadTransportadora,
             ]) => {
               const data2 = {
                 fechaSolicitud: new Date(),
@@ -1411,6 +1507,8 @@ export default class IncrementoComponent implements AfterViewInit, OnInit {
                 estadosFinancieros: estadosFinancieros,
                 cedulaContador: cedulaContador,
                 tarjetaProfesionalContador: tarjetaProfesionalContador,
+                resolucionCapacidadTransportadora:
+                  resolucionCapacidadTransportadora,
                 cantidadVehiculosIncrementar: this.formGroup2.get(
                   'cantidadVehiculosIncrementar'
                 )?.value,
@@ -1430,7 +1528,7 @@ export default class IncrementoComponent implements AfterViewInit, OnInit {
                       this.showModalSaveInfo(num + 1);
                     }
                     // this.ActuFileGuardado(7, 8, 9, 10, 11);
-                    console.log('Datos enviados exitosamente:', response);
+                    
                   },
                   (error) => {
                     this.ShowLoadingModal = false;
@@ -1531,8 +1629,7 @@ export default class IncrementoComponent implements AfterViewInit, OnInit {
     for (const key in formGroup.controls) {
       if (formGroup.controls.hasOwnProperty(key)) {
         const control = formGroup.controls[key];
-        console.log(key);
-
+        
         if (!control.value || control.invalid) {
           const errorKey = parseInt(key, 10);
           errorStates[errorKey] = true;
@@ -1629,6 +1726,7 @@ export default class IncrementoComponent implements AfterViewInit, OnInit {
           10: this.formGroup2,
           11: this.formGroup2,
           12: this.formGroup3,
+          13: this.formGroup2,
         };
 
         const formGroup = formControlMap[formControlName];
@@ -2208,6 +2306,7 @@ export default class IncrementoComponent implements AfterViewInit, OnInit {
       estadosFinancieros: this.formGroup2.value[9][0],
       cedulaContador: this.formGroup2.value[10][0],
       tarjetaProfesionalContador: this.formGroup2.value[11][0],
+      resolucionCapacidadTransportadora: this.formGroup2.value[13][0],
       certificadoPropiedadEmpresa: this.formGroup3.value[12][0],
       capitalSocial: this.formGroup3.get('capital_social')?.value,
       patrimonioLiquido: this.formGroup3.get('patrimonio_liquido')?.value,

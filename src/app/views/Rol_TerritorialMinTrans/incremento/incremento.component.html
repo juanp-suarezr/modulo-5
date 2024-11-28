@@ -1,10 +1,11 @@
+
 <div class="sm:grid sm:grid-cols-10 gap-4 pb-24" xmlns="http://www.w3.org/1999/html">
 
   <div class="md:col-span-2 sm:col-span-3 w-auto sm:mt-16 mt-12 mb-12">
     <app-left-nav [data]="infoMenu" active="{{activeNum}}"></app-left-nav>
   </div>
   <!-- solicitud contenido -->
-  <div class="md:col-span-8 sm:col-span-7 w-auto sm:mt-10 mt-4 md:px-8 px-2" *ngIf="activeNum == '0'">
+  <div class="md:col-span-8 sm:col-span-7 w-auto sm:mt-10 mt-4 md:px-8 px-2" *ngIf="activeNum == '0'" >
 
     <h3 class="text-primary1 !font-bold mt-4"> Incremento de Capacidad Transportadora</h3>
 
@@ -168,6 +169,7 @@
 
             </div>
 
+
           </div>
 
           <!-- cargue 2 -->
@@ -182,6 +184,7 @@
             <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" [maxFiles]="1" mimes=".pdf"
               [error]="errorStates[2]" (fileSelected)="onFileSelected($event, 2)"></app-file-upload>
 
+            <!-- mostrar archivo guargado -->
             <div class="w-full"
               *ngIf="(this.formGroup1.get('2')?.value != '' && this.formGroup1.get('2')?.value != null) && this.solicitudGuardada && !isActuFile.includes(2)">
 
@@ -211,7 +214,46 @@
                   </div>
 
                   <!-- button borrar -->
-                  <button class="m-auto w-auto" (click)="deleteFile(1)">
+                  <button class="m-auto w-auto" (click)="deleteFile(2)">
+                    <span class="pi pi-trash w-full h-full sm:text-xl text-base text-primary2 text-medium"></span>
+                  </button>
+
+                </div>
+
+              </div>
+
+            </div>
+            <!-- mostrar archivo que viene de regresar -->
+            <div class="w-full"
+              *ngIf="(this.formGroup1.get('2')?.value != '' && this.formGroup1.get('2')?.value != null) && !this.solicitudGuardada && !isActuFile.includes(2)">
+
+              <div class="mt-2 flex gap-2 items-center cursor-pointer"
+                (click)="viewDocument(formGroup1.get('2')?.value)">
+
+                <!-- Archivos Visibles -->
+                <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
+
+                  <!-- document -->
+                  <div class="w-auto m-auto">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto" viewBox="0 0 384 512">
+                      <path
+                        d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z" />
+                    </svg>
+                  </div>
+
+                  <!-- texto info file -->
+                  <div class="px-2 w-auto">
+                    <p class="truncate text-[8px] font-semibold">
+                      Plan rodamiento
+                    </p>
+                    <p class="truncate text-[8px]">{{
+                      (this.formGroup1.get('2')?.value.size /
+                      1024).toFixed(2)
+                      }} Kb</p>
+                  </div>
+
+                  <!-- button borrar -->
+                  <button class="m-auto w-auto" (click)="deleteFile(2)">
                     <span class="pi pi-trash w-full h-full sm:text-xl text-base text-primary2 text-medium"></span>
                   </button>
 
@@ -239,7 +281,7 @@
 
             <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" [maxFiles]="1" mimes=".pdf"
               [error]="errorStates[3]" (fileSelected)="onFileSelected($event, 3)"></app-file-upload>
-
+            <!-- mostrar archivos guardados -->
             <div class="w-full"
               *ngIf="(this.formGroup1.get('3')?.value != '' && this.formGroup1.get('3')?.value != null) && this.solicitudGuardada && !isActuFile.includes(3)">
 
@@ -269,7 +311,46 @@
                   </div>
 
                   <!-- button borrar -->
-                  <button class="m-auto w-auto" (click)="deleteFile(1)">
+                  <button class="m-auto w-auto" (click)="deleteFile(3)">
+                    <span class="pi pi-trash w-full h-full sm:text-xl text-base text-primary2 text-medium"></span>
+                  </button>
+
+                </div>
+
+              </div>
+
+            </div>
+            <!-- mostrar archivo que viene de regresar -->
+            <div class="w-full"
+              *ngIf="(this.formGroup1.get('3')?.value != '' && this.formGroup1.get('3')?.value != null) && !this.solicitudGuardada && !isActuFile.includes(3)">
+
+              <div class="mt-2 flex gap-2 items-center cursor-pointer"
+                (click)="viewDocument(formGroup1.get('3')?.value)">
+
+                <!-- Archivos Visibles -->
+                <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
+
+                  <!-- document -->
+                  <div class="w-auto m-auto">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto" viewBox="0 0 384 512">
+                      <path
+                        d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z" />
+                    </svg>
+                  </div>
+
+                  <!-- texto info file -->
+                  <div class="px-2 w-auto">
+                    <p class="truncate text-[8px] font-semibold">
+                      Estructura de costos
+                    </p>
+                    <p class="truncate text-[8px]">{{
+                      (this.formGroup1.get('3')?.value.size /
+                      1024).toFixed(2)
+                      }} Kb</p>
+                  </div>
+
+                  <!-- button borrar -->
+                  <button class="m-auto w-auto" (click)="deleteFile(3)">
                     <span class="pi pi-trash w-full h-full sm:text-xl text-base text-primary2 text-medium"></span>
                   </button>
 
@@ -291,7 +372,7 @@
 
             <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" [maxFiles]="1" mimes=".pdf"
               [error]="errorStates[4]" (fileSelected)="onFileSelected($event, 4)"></app-file-upload>
-
+            <!-- mostrar archivos guardados -->
             <div class="w-full"
               *ngIf="(this.formGroup1.get('4')?.value != '' && this.formGroup1.get('4')?.value != null) && this.solicitudGuardada && !isActuFile.includes(4)">
 
@@ -321,7 +402,46 @@
                   </div>
 
                   <!-- button borrar -->
-                  <button class="m-auto w-auto" (click)="deleteFile(1)">
+                  <button class="m-auto w-auto" (click)="deleteFile(4)">
+                    <span class="pi pi-trash w-full h-full sm:text-xl text-base text-primary2 text-medium"></span>
+                  </button>
+
+                </div>
+
+              </div>
+
+            </div>
+            <!-- mostrar archivo que viene de regresar -->
+            <div class="w-full"
+              *ngIf="(this.formGroup1.get('4')?.value != '' && this.formGroup1.get('4')?.value != null) && !this.solicitudGuardada && !isActuFile.includes(4)">
+
+              <div class="mt-2 flex gap-2 items-center cursor-pointer"
+                (click)="viewDocument(formGroup1.get('4')?.value)">
+
+                <!-- Archivos Visibles -->
+                <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
+
+                  <!-- document -->
+                  <div class="w-auto m-auto">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto" viewBox="0 0 384 512">
+                      <path
+                        d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z" />
+                    </svg>
+                  </div>
+
+                  <!-- texto info file -->
+                  <div class="px-2 w-auto">
+                    <p class="truncate text-[8px] font-semibold">
+                      Certificado de cumplimiento
+                    </p>
+                    <p class="truncate text-[8px]">{{
+                      (this.formGroup1.get('4')?.value.size /
+                      1024).toFixed(2)
+                      }} Kb</p>
+                  </div>
+
+                  <!-- button borrar -->
+                  <button class="m-auto w-auto" (click)="deleteFile(4)">
                     <span class="pi pi-trash w-full h-full sm:text-xl text-base text-primary2 text-medium"></span>
                   </button>
 
@@ -349,7 +469,7 @@
 
             <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" [maxFiles]="1" mimes=".pdf"
               [error]="errorStates[5]" (fileSelected)="onFileSelected($event, 5)"></app-file-upload>
-
+            <!-- mostrar archivos guardados -->
             <div class="w-full"
               *ngIf="(this.formGroup1.get('5')?.value != '' && this.formGroup1.get('5')?.value != null) && this.solicitudGuardada && !isActuFile.includes(5)">
 
@@ -379,7 +499,46 @@
                   </div>
 
                   <!-- button borrar -->
-                  <button class="m-auto w-auto" (click)="deleteFile(1)">
+                  <button class="m-auto w-auto" (click)="deleteFile(5)">
+                    <span class="pi pi-trash w-full h-full sm:text-xl text-base text-primary2 text-medium"></span>
+                  </button>
+
+                </div>
+
+              </div>
+
+            </div>
+            <!-- mostrar archivo que viene de regresar -->
+            <div class="w-full"
+              *ngIf="(this.formGroup1.get('5')?.value != '' && this.formGroup1.get('5')?.value != null) && !this.solicitudGuardada && !isActuFile.includes(5)">
+
+              <div class="mt-2 flex gap-2 items-center cursor-pointer"
+                (click)="viewDocument(formGroup1.get('5')?.value)">
+
+                <!-- Archivos Visibles -->
+                <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
+
+                  <!-- document -->
+                  <div class="w-auto m-auto">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto" viewBox="0 0 384 512">
+                      <path
+                        d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z" />
+                    </svg>
+                  </div>
+
+                  <!-- texto info file -->
+                  <div class="px-2 w-auto">
+                    <p class="truncate text-[8px] font-semibold">
+                      Certificado de existencias
+                    </p>
+                    <p class="truncate text-[8px]">{{
+                      (this.formGroup1.get('5')?.value.size /
+                      1024).toFixed(2)
+                      }} Kb</p>
+                  </div>
+
+                  <!-- button borrar -->
+                  <button class="m-auto w-auto" (click)="deleteFile(5)">
                     <span class="pi pi-trash w-full h-full sm:text-xl text-base text-primary2 text-medium"></span>
                   </button>
 
@@ -400,7 +559,7 @@
 
             <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" [maxFiles]="1" mimes=".pdf"
               [error]="errorStates[6]" (fileSelected)="onFileSelected($event, 6)"></app-file-upload>
-
+            <!-- mostrar archivos guardados -->
             <div class="w-full"
               *ngIf="(this.formGroup1.get('6')?.value != '' && this.formGroup1.get('6')?.value != null) && this.solicitudGuardada && !isActuFile.includes(6)">
 
@@ -430,7 +589,46 @@
                   </div>
 
                   <!-- button borrar -->
-                  <button class="m-auto w-auto" (click)="deleteFile(1)">
+                  <button class="m-auto w-auto" (click)="deleteFile(6)">
+                    <span class="pi pi-trash w-full h-full sm:text-xl text-base text-primary2 text-medium"></span>
+                  </button>
+
+                </div>
+
+              </div>
+
+            </div>
+            <!-- mostrar archivo que viene de regresar -->
+            <div class="w-full"
+              *ngIf="(this.formGroup1.get('6')?.value != '' && this.formGroup1.get('6')?.value != null) && !this.solicitudGuardada && !isActuFile.includes(6)">
+
+              <div class="mt-2 flex gap-2 items-center cursor-pointer"
+                (click)="viewDocument(formGroup1.get('6')?.value)">
+
+                <!-- Archivos Visibles -->
+                <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
+
+                  <!-- document -->
+                  <div class="w-auto m-auto">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto" viewBox="0 0 384 512">
+                      <path
+                        d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z" />
+                    </svg>
+                  </div>
+
+                  <!-- texto info file -->
+                  <div class="px-2 w-auto">
+                    <p class="truncate text-[8px] font-semibold">
+                      Registro Unico Tributario
+                    </p>
+                    <p class="truncate text-[8px]">{{
+                      (this.formGroup1.get('6')?.value.size /
+                      1024).toFixed(2)
+                      }} Kb</p>
+                  </div>
+
+                  <!-- button borrar -->
+                  <button class="m-auto w-auto" (click)="deleteFile(6)">
                     <span class="pi pi-trash w-full h-full sm:text-xl text-base text-primary2 text-medium"></span>
                   </button>
 
@@ -474,7 +672,7 @@
 
             <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" mimes=".pdf" [maxFiles]="1"
               [error]="errorStates[7]" (fileSelected)="onFileSelected($event, 7)"></app-file-upload>
-
+            <!-- mostrar archivos guardados -->
             <div class="w-full"
               *ngIf="(this.formGroup2.get('7')?.value != '' && this.formGroup2.get('7')?.value != null) && this.solicitudGuardada && !isActuFile.includes(7)">
 
@@ -504,7 +702,46 @@
                   </div>
 
                   <!-- button borrar -->
-                  <button class="m-auto w-auto" (click)="deleteFile(1)">
+                  <button class="m-auto w-auto" (click)="deleteFile(7)">
+                    <span class="pi pi-trash w-full h-full sm:text-xl text-base text-primary2 text-medium"></span>
+                  </button>
+
+                </div>
+
+              </div>
+
+            </div>
+            <!-- mostrar archivo que viene de regresar -->
+            <div class="w-full"
+              *ngIf="(this.formGroup2.get('7')?.value != '' && this.formGroup2.get('7')?.value != null) && !this.solicitudGuardada && !isActuFile.includes(7)">
+
+              <div class="mt-2 flex gap-2 items-center cursor-pointer"
+                (click)="viewDocument(formGroup2.get('7')?.value)">
+
+                <!-- Archivos Visibles -->
+                <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
+
+                  <!-- document -->
+                  <div class="w-auto m-auto">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto" viewBox="0 0 384 512">
+                      <path
+                        d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z" />
+                    </svg>
+                  </div>
+
+                  <!-- texto info file -->
+                  <div class="px-2 w-auto">
+                    <p class="truncate text-[8px] font-semibold">
+                      Resolución de habilitación
+                    </p>
+                    <p class="truncate text-[8px]">{{
+                      (this.formGroup2.get('7')?.value.size /
+                      1024).toFixed(2)
+                      }} Kb</p>
+                  </div>
+
+                  <!-- button borrar -->
+                  <button class="m-auto w-auto" (click)="deleteFile(7)">
                     <span class="pi pi-trash w-full h-full sm:text-xl text-base text-primary2 text-medium"></span>
                   </button>
 
@@ -526,6 +763,7 @@
             <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" mimes=".pdf" [maxFiles]="1"
               [error]="errorStates[8]" (fileSelected)="onFileSelected($event, 8)"></app-file-upload>
 
+            <!-- mostrar archivos guardados -->
             <div class="w-full"
               *ngIf="(this.formGroup2.get('8')?.value != '' && this.formGroup2.get('8')?.value != null) && this.solicitudGuardada && !isActuFile.includes(8)">
 
@@ -555,7 +793,46 @@
                   </div>
 
                   <!-- button borrar -->
-                  <button class="m-auto w-auto" (click)="deleteFile(1)">
+                  <button class="m-auto w-auto" (click)="deleteFile(8)">
+                    <span class="pi pi-trash w-full h-full sm:text-xl text-base text-primary2 text-medium"></span>
+                  </button>
+
+                </div>
+
+              </div>
+
+            </div>
+            <!-- mostrar archivo que viene de regresar -->
+            <div class="w-full"
+              *ngIf="(this.formGroup2.get('8')?.value != '' && this.formGroup2.get('8')?.value != null) && !this.solicitudGuardada && !isActuFile.includes(8)">
+
+              <div class="mt-2 flex gap-2 items-center cursor-pointer"
+                (click)="viewDocument(formGroup2.get('8')?.value)">
+
+                <!-- Archivos Visibles -->
+                <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
+
+                  <!-- document -->
+                  <div class="w-auto m-auto">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto" viewBox="0 0 384 512">
+                      <path
+                        d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z" />
+                    </svg>
+                  </div>
+
+                  <!-- texto info file -->
+                  <div class="px-2 w-auto">
+                    <p class="truncate text-[8px] font-semibold">
+                      Cédula de ciudadanía
+                    </p>
+                    <p class="truncate text-[8px]">{{
+                      (this.formGroup2.get('8')?.value.size /
+                      1024).toFixed(2)
+                      }} Kb</p>
+                  </div>
+
+                  <!-- button borrar -->
+                  <button class="m-auto w-auto" (click)="deleteFile(8)">
                     <span class="pi pi-trash w-full h-full sm:text-xl text-base text-primary2 text-medium"></span>
                   </button>
 
@@ -583,6 +860,7 @@
             <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" mimes=".pdf" [maxFiles]="1"
               [error]="errorStates[9]" (fileSelected)="onFileSelected($event, 9)"></app-file-upload>
 
+            <!-- mostrar archivos guardados -->
             <div class="w-full"
               *ngIf="(this.formGroup2.get('9')?.value != '' && this.formGroup2.get('9')?.value != null) && this.solicitudGuardada && !isActuFile.includes(9)">
 
@@ -612,7 +890,7 @@
                   </div>
 
                   <!-- button borrar -->
-                  <button class="m-auto w-auto" (click)="deleteFile(1)">
+                  <button class="m-auto w-auto" (click)="deleteFile(9)">
                     <span class="pi pi-trash w-full h-full sm:text-xl text-base text-primary2 text-medium"></span>
                   </button>
 
@@ -621,7 +899,45 @@
               </div>
 
             </div>
+            <!-- mostrar archivo que viene de regresar -->
+            <div class="w-full"
+              *ngIf="(this.formGroup2.get('9')?.value != '' && this.formGroup2.get('9')?.value != null) && !this.solicitudGuardada && !isActuFile.includes(9)">
 
+              <div class="mt-2 flex gap-2 items-center cursor-pointer"
+                (click)="viewDocument(formGroup2.get('9')?.value)">
+
+                <!-- Archivos Visibles -->
+                <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
+
+                  <!-- document -->
+                  <div class="w-auto m-auto">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto" viewBox="0 0 384 512">
+                      <path
+                        d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z" />
+                    </svg>
+                  </div>
+
+                  <!-- texto info file -->
+                  <div class="px-2 w-auto">
+                    <p class="truncate text-[8px] font-semibold">
+                      Estados financieros
+                    </p>
+                    <p class="truncate text-[8px]">{{
+                      (this.formGroup2.get('9')?.value.size /
+                      1024).toFixed(2)
+                      }} Kb</p>
+                  </div>
+
+                  <!-- button borrar -->
+                  <button class="m-auto w-auto" (click)="deleteFile(9)">
+                    <span class="pi pi-trash w-full h-full sm:text-xl text-base text-primary2 text-medium"></span>
+                  </button>
+
+                </div>
+
+              </div>
+
+            </div>
           </div>
 
           <!-- cargue 10 -->
@@ -634,6 +950,7 @@
             <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" mimes=".pdf" [maxFiles]="1"
               [error]="errorStates[10]" (fileSelected)="onFileSelected($event, 10)"></app-file-upload>
 
+            <!-- mostrar archivos guardados -->
             <div class="w-full"
               *ngIf="(this.formGroup2.get('10')?.value != '' && this.formGroup2.get('10')?.value != null) && this.solicitudGuardada && !isActuFile.includes(10)">
 
@@ -663,7 +980,46 @@
                   </div>
 
                   <!-- button borrar -->
-                  <button class="m-auto w-auto" (click)="deleteFile(1)">
+                  <button class="m-auto w-auto" (click)="deleteFile(10)">
+                    <span class="pi pi-trash w-full h-full sm:text-xl text-base text-primary2 text-medium"></span>
+                  </button>
+
+                </div>
+
+              </div>
+
+            </div>
+            <!-- mostrar archivo que viene de regresar -->
+            <div class="w-full"
+              *ngIf="(this.formGroup2.get('10')?.value != '' && this.formGroup2.get('10')?.value != null) && !this.solicitudGuardada && !isActuFile.includes(10)">
+
+              <div class="mt-2 flex gap-2 items-center cursor-pointer"
+                (click)="viewDocument(formGroup2.get('10')?.value)">
+
+                <!-- Archivos Visibles -->
+                <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
+
+                  <!-- document -->
+                  <div class="w-auto m-auto">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto" viewBox="0 0 384 512">
+                      <path
+                        d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z" />
+                    </svg>
+                  </div>
+
+                  <!-- texto info file -->
+                  <div class="px-2 w-auto">
+                    <p class="truncate text-[8px] font-semibold">
+                      Cédula del contador
+                    </p>
+                    <p class="truncate text-[8px]">{{
+                      (this.formGroup2.get('10')?.value.size /
+                      1024).toFixed(2)
+                      }} Kb</p>
+                  </div>
+
+                  <!-- button borrar -->
+                  <button class="m-auto w-auto" (click)="deleteFile(10)">
                     <span class="pi pi-trash w-full h-full sm:text-xl text-base text-primary2 text-medium"></span>
                   </button>
 
@@ -692,6 +1048,7 @@
             <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" mimes=".pdf" [maxFiles]="1"
               [error]="errorStates[11]" (fileSelected)="onFileSelected($event, 11)"></app-file-upload>
 
+            <!-- mostrar archivos guardados -->
             <div class="w-full"
               *ngIf="(this.formGroup2.get('11')?.value != '' && this.formGroup2.get('11')?.value != null) && this.solicitudGuardada && !isActuFile.includes(11)">
 
@@ -721,7 +1078,137 @@
                   </div>
 
                   <!-- button borrar -->
-                  <button class="m-auto w-auto" (click)="deleteFile(1)">
+                  <button class="m-auto w-auto" (click)="deleteFile(11)">
+                    <span class="pi pi-trash w-full h-full sm:text-xl text-base text-primary2 text-medium"></span>
+                  </button>
+
+                </div>
+
+              </div>
+
+            </div>
+            <!-- mostrar archivo que viene de regresar -->
+            <div class="w-full"
+              *ngIf="(this.formGroup2.get('11')?.value != '' && this.formGroup2.get('11')?.value != null) && !this.solicitudGuardada && !isActuFile.includes(11)">
+
+              <div class="mt-2 flex gap-2 items-center cursor-pointer"
+                (click)="viewDocument(formGroup2.get('11')?.value)">
+
+                <!-- Archivos Visibles -->
+                <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
+
+                  <!-- document -->
+                  <div class="w-auto m-auto">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto" viewBox="0 0 384 512">
+                      <path
+                        d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z" />
+                    </svg>
+                  </div>
+
+                  <!-- texto info file -->
+                  <div class="px-2 w-auto">
+                    <p class="truncate text-[8px] font-semibold">
+                      Tarjeta profesional y certificado
+                    </p>
+                    <p class="truncate text-[8px]">{{
+                      (this.formGroup2.get('11')?.value.size /
+                      1024).toFixed(2)
+                      }} Kb</p>
+                  </div>
+
+                  <!-- button borrar -->
+                  <button class="m-auto w-auto" (click)="deleteFile(11)">
+                    <span class="pi pi-trash w-full h-full sm:text-xl text-base text-primary2 text-medium"></span>
+                  </button>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <!-- cargue 13 -->
+          <div class="w-full flex flex-col justify-center items-start pt-6 my-auto mb-2 h-full">
+
+            <p class="text-primary3 font-semibold" [ngClass]="{'!text-error !font-normal': errorStates[13]}">
+              Resolución de la capacidad transportadora actual*
+            </p>
+
+            <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" mimes=".pdf" [maxFiles]="1"
+              [error]="errorStates[13]" (fileSelected)="onFileSelected($event, 13)"></app-file-upload>
+
+            <!-- mostrar archivos guardados -->
+            <div class="w-full"
+              *ngIf="(this.formGroup2.get('13')?.value != '' && this.formGroup2.get('13')?.value != null) && this.solicitudGuardada && !isActuFile.includes(13)">
+
+              <div class="mt-2 flex gap-2 items-center cursor-pointer"
+                (click)="viewDocument(formGroup2.get('13')?.value)">
+
+                <!-- Archivos Visibles -->
+                <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
+
+                  <!-- document -->
+                  <div class="w-auto m-auto">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto" viewBox="0 0 384 512">
+                      <path
+                        d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z" />
+                    </svg>
+                  </div>
+
+                  <!-- texto info file -->
+                  <div class="px-2 w-auto">
+                    <p class="truncate text-[8px] font-semibold">
+                      Resolución de la capacidad transportadora actual
+                    </p>
+                    <p class="truncate text-[8px]">{{
+                      (this.formGroup2.get('13')?.value.size /
+                      1024).toFixed(2)
+                      }} Kb</p>
+                  </div>
+
+                  <!-- button borrar -->
+                  <button class="m-auto w-auto" (click)="deleteFile(13)">
+                    <span class="pi pi-trash w-full h-full sm:text-xl text-base text-primary2 text-medium"></span>
+                  </button>
+
+                </div>
+
+              </div>
+
+            </div>
+            <!-- mostrar archivo que viene de regresar -->
+            <div class="w-full"
+              *ngIf="(this.formGroup2.get('13')?.value != '' && this.formGroup2.get('13')?.value != null) && !this.solicitudGuardada && !isActuFile.includes(13)">
+
+              <div class="mt-2 flex gap-2 items-center cursor-pointer"
+                (click)="viewDocument(formGroup2.get('13')?.value)">
+
+                <!-- Archivos Visibles -->
+                <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
+
+                  <!-- document -->
+                  <div class="w-auto m-auto">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto" viewBox="0 0 384 512">
+                      <path
+                        d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z" />
+                    </svg>
+                  </div>
+
+                  <!-- texto info file -->
+                  <div class="px-2 w-auto">
+                    <p class="truncate text-[8px] font-semibold">
+                      Resolución de la capacidad transportadora actual
+                    </p>
+                    <p class="truncate text-[8px]">{{
+                      (this.formGroup2.get('13')?.value.size /
+                      1024).toFixed(2)
+                      }} Kb</p>
+                  </div>
+
+                  <!-- button borrar -->
+                  <button class="m-auto w-auto" (click)="deleteFile(13)">
                     <span class="pi pi-trash w-full h-full sm:text-xl text-base text-primary2 text-medium"></span>
                   </button>
 
@@ -756,7 +1243,7 @@
                 </p>
                 <div
                   class="mt-2 flex-1 shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent"
-                  type="number"placeholder="0"> 
+                  type="number" placeholder="0">
                   {{ capacidadVehiculos }}
                 </div>
               </div>
@@ -883,7 +1370,7 @@
             </p>
             <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" mimes=".pdf" [maxFiles]="1"
               [error]="errorStates[12]" (fileSelected)="onFileSelected($event, 12)"></app-file-upload>
-
+            <!-- mostrar archivos guardados -->
             <div class="w-full"
               *ngIf="(this.formGroup3.get('12')?.value != '' && this.formGroup3.get('12')?.value != null) && this.solicitudGuardada && !isActuFile.includes(12)">
 
@@ -913,7 +1400,46 @@
                   </div>
 
                   <!-- button borrar -->
-                  <button class="m-auto w-auto" (click)="deleteFile(1)">
+                  <button class="m-auto w-auto" (click)="deleteFile(12)">
+                    <span class="pi pi-trash w-full h-full sm:text-xl text-base text-primary2 text-medium"></span>
+                  </button>
+
+                </div>
+
+              </div>
+
+            </div>
+            <!-- mostrar archivo que viene de regresar -->
+            <div class="w-full"
+              *ngIf="(this.formGroup3.get('12')?.value != '' && this.formGroup3.get('12')?.value != null) && !this.solicitudGuardada && !isActuFile.includes(12)">
+
+              <div class="mt-2 flex gap-2 items-center cursor-pointer"
+                (click)="viewDocument(formGroup3.get('12')?.value)">
+
+                <!-- Archivos Visibles -->
+                <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
+
+                  <!-- document -->
+                  <div class="w-auto m-auto">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto" viewBox="0 0 384 512">
+                      <path
+                        d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z" />
+                    </svg>
+                  </div>
+
+                  <!-- texto info file -->
+                  <div class="px-2 w-auto">
+                    <p class="truncate text-[8px] font-semibold">
+                      Certificado de propiedad
+                    </p>
+                    <p class="truncate text-[8px]">{{
+                      (this.formGroup3.get('12')?.value.size /
+                      1024).toFixed(2)
+                      }} Kb</p>
+                  </div>
+
+                  <!-- button borrar -->
+                  <button class="m-auto w-auto" (click)="deleteFile(12)">
                     <span class="pi pi-trash w-full h-full sm:text-xl text-base text-primary2 text-medium"></span>
                   </button>
 
@@ -929,7 +1455,7 @@
           <div class="w-full flex flex-col justify-center items-start pt-6 my-auto mb-2 h-full">
 
             <p class="text-primary3 font-semibold h-full">
-              Capital pagado en SMLV*
+              Capital pagado
             </p>
 
             <!-- input -->
@@ -986,7 +1512,7 @@
           <!-- input 2 -->
           <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
             <p class="text-primary3 font-semibold h-full">
-              Patrimonio Líquido en SMLV*
+              Patrimonio Líquido
             </p>
 
             <!-- input -->
