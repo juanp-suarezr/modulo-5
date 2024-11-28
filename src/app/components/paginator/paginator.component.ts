@@ -22,8 +22,8 @@ export class PaginatorComponent implements OnInit{
   }
 
   generatePagesToDisplay() {
-    const beforePages = this.currentPage > 2 ? this.currentPage - 1 : 1;
-    const afterPages = this.currentPage < this.totalPages - 1 ? this.currentPage + 1 : this.totalPages;
+    const beforePages = this.currentPage > 2 ? (this.currentPage - 1) : 1;
+    const afterPages = this.currentPage < (this.totalPages - 1) ? (this.currentPage + 1) : this.totalPages;
 
     this.pagesToDisplay = [];
 

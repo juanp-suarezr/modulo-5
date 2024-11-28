@@ -11,7 +11,7 @@
               <li *ngFor="let page of pagesToDisplay" [ngClass]="{'active-govco': page === currentPage}"
                   class="page-item-govco number-govco">
                   <a href="javascript:void(0)" (click)="changePage(page)">
-                      {{ page }}
+                    {{ page === -1 ? '...' : page }}
                   </a>
               </li>
               <li *ngIf="currentPage < totalPages" class="page-item-govco next-page-govco no">
