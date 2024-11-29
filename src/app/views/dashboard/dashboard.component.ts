@@ -185,6 +185,7 @@ export default class DashboardComponent {
           'Aprobado',
           'Rechazado',
           'Pendiente',
+          'Subsanar',
         ];
         console.log(response); // Muestra la respuesta en la consola
         if (this.usuarioRol == 'superTransp') {
@@ -193,6 +194,7 @@ export default class DashboardComponent {
             'En estudio',
             'Aprobado',
             'Rechazado',
+            'Subsanar',
           ];
         } else if (this.usuarioRol == 'gesDoc') {
           descriptionsToInclude = ['Asignar', 'En estudio'];
@@ -319,7 +321,7 @@ export default class DashboardComponent {
                   clase.id +
                   ',' +
                   (clase.estadoSolicitudDescripcion == 'En estudio' ||
-                    clase.estadoSolicitudDescripcion == 'Aprobada' || clase.estadoSolicitudDescripcion == 'Aprobado'),
+                    clase.estadoSolicitudDescripcion == 'Aprobada' || clase.estadoSolicitudDescripcion == 'Aprobado' || clase.estadoSolicitudDescripcion == 'Subsanar'),
                 fecha: clase.fechaSolicitud,
                 nit: clase.nit,
                 empresa: clase.nombreEmpresa,

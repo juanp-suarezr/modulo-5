@@ -82,14 +82,14 @@
           <!-- input -->
           <div class="mt-2 relative w-full h-full flex justify-center items-center">
             <p class="my-auto me-2 flex intems-center font-bold text-primary1 sm:text-base">Activar</p>
-            <p-inputSwitch class="my-auto h-auto flex items-center" [(ngModel)]="checked"
-              (click)="ActiveSubsanacion()" />
+            <p-inputSwitch class="my-auto h-auto flex items-center" [(ngModel)]="checked" (click)="ActiveSubsanacion()"
+              />
           </div>
         </div>
 
         <!-- SEMAFORO SUBSANACION -->
         <div class="w-full flex flex-col justify-start items-stretch pt-6 my-auto h-full mb-6"
-          *ngIf="checked && !solicitud.formulario.radicadoSalida">
+          *ngIf="checked">
           <p class="text-primary3 font-semibold h-full m-auto">
             Semáforo de subsanación
           </p>
@@ -103,15 +103,15 @@
 
               <!-- Barra de progreso con color variable según los días -->
               <div class="absolute top-0 left-0 h-[3px]" [ngStyle]="{
-                width: (diferencias() >= 30 ? 100 : (diferencias() / 30) * 100) + '%',
-                backgroundColor: getColorForSemaforo(diferencias(), 30)
+                width: (diferencias(true) >= 30 ? 100 : (diferencias(true) / 30) * 100) + '%',
+                backgroundColor: getColorForSemaforo(diferencias(true), 30)
               }"></div>
 
               <!-- Círculo en el punto de progreso -->
               <div class="absolute top-[-5px] h-[14px] w-[14px] rounded-full flex items-center justify-center"
                 [ngStyle]="{
-                left: 'calc(' + (diferencias() >= 30 ? 100 : (diferencias() / 30) * 100) + '% - 7px)',
-                backgroundColor: getColorForSemaforo(diferencias(), 30)
+                left: 'calc(' + (diferencias(true) >= 30 ? 100 : (diferencias(true) / 30) * 100) + '% - 7px)',
+                backgroundColor: getColorForSemaforo(diferencias(true), 30)
               }">
                 <div class="h-[8px] w-[8px] rounded-full bg-white"></div>
               </div>
@@ -1877,7 +1877,7 @@
           El concepto de sustentabilidad es*
         </p>
         <!-- select -->
-        <div class="w-full relative mt-2 sm:w-1/2" *ngIf="!solicitud.formulario.radicadoSalida">
+        <div class="w-full relative mt-2 sm:w-1/2" *ngIf="!solicitud.formulario.radicadoSalida && !checked">
 
           <div (click)="toggleDropdown(0)"
             [ngClass]="{'text-error !border border-error': formGroup3.get('concepto')?.invalid && (formGroup3.get('concepto')?.touched || formGroup3.get('concepto')?.dirty)}"
@@ -1910,7 +1910,7 @@
 
         </div>
         <!-- mostrar concepto -->
-        <div class="w-full relative mt-2 sm:w-1/2" *ngIf="solicitud.formulario.radicadoSalida">
+        <div class="w-full relative mt-2 sm:w-1/2" *ngIf="solicitud.formulario.radicadoSalida || checked">
           <!-- input -->
           <div class="mt-2 relative w-full h-full flex items-center">
             <div
@@ -1922,9 +1922,9 @@
       </div>
 
       <div class="mt-8 w-full flex justify-center gap-4">
-        <app-primary-button *ngIf="!solicitud.formulario.radicadoSalida" type="button" class=""
+        <app-primary-button *ngIf="!solicitud.formulario.radicadoSalida && !checked" type="button" class=""
           (click)="EmitirConcepto()">Guardar</app-primary-button>
-        <app-primary-button *ngIf="solicitud.formulario.radicadoSalida" type="button" class=""
+        <app-primary-button *ngIf="solicitud.formulario.radicadoSalida || checked" type="button" class=""
           (click)="changeActiveNum('4', true)">Continuar</app-primary-button>
       </div>
 

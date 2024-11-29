@@ -304,6 +304,8 @@ export default class SolicitudComponent {
     this.setId(newId); // Actualiza el ID usando el método setId
   }
 
+  
+
   loadOptions() {
     return new Promise((resolve, reject) => {
       this.apiSFService
@@ -626,12 +628,18 @@ export default class SolicitudComponent {
       let fechaSolicitud = new Date(
         this.solicitud.formulario.fechaSolicitud
       ).valueOf(); // Fecha de solicitud en milisegundos
+      
       if (subsanar) {
-        fechaSolicitud = new Date(
-          this.solicitud.formulario.fechaSubsanar
-        ).valueOf();
+        
+        if (this.solicitud?.formulario.subsanar == true) {
+          fechaSolicitud = new Date(
+            this.solicitud.formulario.fechaSubsanar
+          ).valueOf();
+        } else {
+          fechaSolicitud = new Date().valueOf();
+        }
       }
-
+      
       // Calcular la diferencia en milisegundos
       const diferenciaMilisegundos = fechaHoy - fechaSolicitud;
 
@@ -640,6 +648,7 @@ export default class SolicitudComponent {
         diferenciaMilisegundos / (1000 * 60 * 60 * 24)
       );
 
+      
       return diferenciaDias;
     } else {
       return 0;
@@ -925,28 +934,20 @@ export default class SolicitudComponent {
 
   get dynamicText(): string {
     let textReq = '';
-    let vehiculos = this.totalVehiculos
+    let vehiculos = this.totalVehiculos;
 
     //Lógica para cambiar el texto dinámico
     if (vehiculos) {
       if (vehiculos <= 50) {
         textReq =
           'Empresa con capacidad transportadora operacional autorizada de hasta 50 vehículos: Capital pagado mínimo: 300 SMLMV – Patrimonio líquido mínimo > 180 SMLMV';
-      } else if (
-        vehiculos >= 51 &&
-        vehiculos <= 300
-      ) {
+      } else if (vehiculos >= 51 && vehiculos <= 300) {
         textReq =
           'Empresa con capacidad transportadora operacional autorizada de hasta 51 y 300 vehículos: Capital pagado mínimo: 400 SMLMV – Patrimonio líquido mínimo > 280 SMLMV';
-      } else if (
-        vehiculos >= 301 &&
-        vehiculos <= 600
-      ) {
+      } else if (vehiculos >= 301 && vehiculos <= 600) {
         textReq =
           'Empresa con capacidad transportadora operacional autorizada de hasta 301 y 600 vehículos: Capital pagado mínimo: 700 SMLMV – Patrimonio líquido mínimo > 500 SMLMV';
-      } else if (
-        vehiculos >= 601
-      ) {
+      } else if (vehiculos >= 601) {
         textReq =
           'Empresa con capacidad transportadora operacional autorizada de más 600 vehículos: Capital pagado mínimo: 1000 SMLMV – Patrimonio líquido mínimo > 700 SMLMV';
       }
@@ -1091,7 +1092,7 @@ export default class SolicitudComponent {
 
     if (activo && pasivo) {
       const capital = parseInt(activo) - parseInt(pasivo);
-      
+
       this.formGroup2.get('capitalTrabajo')?.setValue(capital);
     }
   }
@@ -1176,8 +1177,8 @@ export default class SolicitudComponent {
   }
 
   actualizarConcepto(isfinal?: boolean) {
-    const data = {
-      concepto: this.formGroup3.get('concepto')?.value.value,
+    let data = {
+      concepto: this.formGroup3.get('concepto')?.value.value || 0,
       idEstadoSolicitud:
         this.formGroup3.get('concepto')?.value.label == 'Favorable' &&
         (this.solicitud.formulario.radicadoSalida ||
@@ -1186,13 +1187,25 @@ export default class SolicitudComponent {
           ? 281
           : 282,
     };
+
+    if (this.checked || this.solicitud?.formulario.subsanar) {
+      data = {
+        concepto: 155,
+        idEstadoSolicitud: 303
+      };
+    } 
     // put paso final emitir concepto
     this.apiSFService
       .emitirConcepto(this.solicitud.formulario.id, data)
       .subscribe(
         (response) => {
           if (isfinal) {
-            this.checked = false;
+            if (this.checked || this.solicitud?.formulario.subsanar) {
+              this.checked = true;
+            } else {
+              this.checked = false;
+            }
+            
             this.ActiveSubsanacion();
           }
           this.changeActiveNum('4');
@@ -1262,7 +1275,7 @@ export default class SolicitudComponent {
     const concepto = this.conceptos.find(
       (item: any) => item.value === this.solicitud.formulario.concepto
     );
-    return concepto ? concepto.label : 'Valor no encontrado';
+    return concepto ? concepto.label : this.solicitud.formulario.subsanar ? 'Subsanar' : 'Valor no encontrado';
   }
 
   // Quitar el formato de moneda para obtener solo el número
