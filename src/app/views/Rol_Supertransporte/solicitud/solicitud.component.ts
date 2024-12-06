@@ -114,6 +114,7 @@ export default class SolicitudComponent {
   checked: boolean = false;
 
   //Formularios
+  formGroup!: FormGroup;
   formGroup1!: FormGroup;
   formGroup2!: FormGroup;
   formGroup3!: FormGroup;
@@ -239,6 +240,9 @@ export default class SolicitudComponent {
     this.stepperService.activeStep$.subscribe((step) => {
       this.activeStep = step;
       console.log('Active step:', step);
+    });
+    this.formGroup = this.fb.group({
+      observaciones: ['', Validators.required],
     });
     this.formGroup1 = this.fb.group({
       1: [null, Validators.required],
@@ -396,6 +400,9 @@ export default class SolicitudComponent {
   }
 
   ActuForms(info: any) {
+    this.formGroup.patchValue({
+      ['observaciones']: info.formulario.observaciones,
+    });
     this.formGroup1.patchValue({
       [1]: this.displayFile(info.formulario.radicadoSalida),
     });
@@ -445,6 +452,7 @@ export default class SolicitudComponent {
     this.checked = info.formulario.subsanar;
 
     if (info.formulario.radicadoSalida) {
+      this.formGroup.get('observaciones')?.disable();
       this.formGroup2.get('rentaNeta')?.disable();
       this.formGroup2.get('solidez')?.disable();
       this.formGroup2.get('liquidez')?.disable();
@@ -1053,6 +1061,7 @@ export default class SolicitudComponent {
     const data = {
       subsanar: this.checked,
       fechaSubsanar: new Date(),
+      observaciones: this.formGroup.get('observaciones')?.value,
     };
     // put subsanar
     this.apiSFService

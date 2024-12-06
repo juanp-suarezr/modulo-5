@@ -71,7 +71,7 @@ export default class DashboardComponent {
     { id: 5, titulo: 'Territorial que <br> emitió la solicitud' },
     { id: 6, titulo: 'Categoría de <br> solicitud' },
     { id: 7, titulo: 'Estado <br> solicitud' },
-    { id: 8, titulo: 'concepto <br> solicitud' },
+    { id: 8, titulo: 'observaciones <br> subsanación' },
     { id: 9, titulo: 'Acciones' },
   ];
 
@@ -357,7 +357,7 @@ export default class DashboardComponent {
                   ? 'Incremento de Capacidad Transportadora'
                   : 'Sin categoría',
               estadoSolicitud: clase.estadoSolicitudDescripcion,
-              conceptoSolicitud: clase.estadoSolicitudDescripcion,
+              observaciones: clase.observaciones,
               estadoSolicitudDescripcion: clase.estadoSolicitudDescripcion,
             }));
 

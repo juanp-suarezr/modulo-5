@@ -25,7 +25,6 @@ export class HeaderBarComponent implements OnInit {
 
   ngOnInit(): void {
     this.currentToken = this.authService.getCurrentToken();
-    console.log(this.currentToken);
   }
 
   onFocus() {

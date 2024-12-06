@@ -82,14 +82,14 @@
           <!-- input -->
           <div class="mt-2 relative w-full h-full flex justify-center items-center">
             <p class="my-auto me-2 flex intems-center font-bold text-primary1 sm:text-base">Activar</p>
-            <p-inputSwitch class="my-auto h-auto flex items-center" [(ngModel)]="checked" (click)="ActiveSubsanacion()"
-              />
+            <p-inputSwitch class="my-auto h-auto flex items-center" [(ngModel)]="checked"
+              (click)="ActiveSubsanacion()" />
           </div>
         </div>
 
+
         <!-- SEMAFORO SUBSANACION -->
-        <div class="w-full flex flex-col justify-start items-stretch pt-6 my-auto h-full mb-6"
-          *ngIf="checked">
+        <div class="w-full flex flex-col justify-start items-stretch pt-6 my-auto h-full mb-6" *ngIf="checked">
           <p class="text-primary3 font-semibold h-full m-auto">
             Semáforo de subsanación
           </p>
@@ -128,6 +128,19 @@
             </p>
           </div>
         </div>
+        <!-- Observaciones -->
+        <form [formGroup]="formGroup" class="w-full flex flex-col justify-start items-stretch pt-6 my-auto h-full mb-6"
+          *ngIf="checked">
+          <p class="text-primary3 font-semibold h-full m-auto">
+            Observaciones
+          </p>
+          <!-- input -->
+          <div class="mt-2 relative w-full h-full flex justify-center items-center">
+            <textarea
+              class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-full border focus:outline-none focus:border-primary1 bg-secondary3 border-secondary2 text-primary3 flex items-center justify-center"
+              id="longText" formControlName="observaciones" rows="5" cols="30" placeholder="Escribe aquí..."></textarea>
+          </div>
+        </form>
 
         <!--  Categoría de solicitud -->
         <div class="w-full flex flex-col justify-start items-stretch pt-6 my-auto h-full mb-6">
@@ -843,9 +856,10 @@
           </div>
 
         </div>
-        
+
         <!-- resolucion de la capacidad transportadora actual -->
-        <div *ngIf="solicitud?.formulario.categoriaSolicitud.descripcion == 'Incremento'" class="w-full flex flex-col justify-start items-stretch pt-6 my-auto h-full">
+        <div *ngIf="solicitud?.formulario.categoriaSolicitud.descripcion == 'Incremento'"
+          class="w-full flex flex-col justify-start items-stretch pt-6 my-auto h-full">
           <p class="text-primary3 font-semibold h-full my-auto">
             Resolución de la capacidad transportadora actual
           </p>

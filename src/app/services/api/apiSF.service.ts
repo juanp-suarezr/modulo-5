@@ -1,19 +1,28 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { inject, Injectable, OnInit } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { environment } from '../../../environments/environment';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ApiSFService {
+  private http = inject(HttpClient);
   private baseUrl = environment.API_URL;
   private baseUrlRues = environment.RUES;
+  private token = 'a6edc4af-4b84-4444-8c98-8afa14437cd1';
 
-  constructor(private http: HttpClient) {}
+  // constructor(private http: HttpClient) {}
 
+  setToken(token: string): void {
+    this.token = token;
+    console.log('Token received in DestinoService:', this.token);
+  }
+  
   // GET solicitudes con múltiples filtros
   getSolicitudes(
+    
     estado: string,
     categoria: string,
     search: string,
@@ -22,6 +31,7 @@ export class ApiSFService {
     currentPage: number,
     usuario: string
   ): Observable<any> {
+    
     let params: string[] = [];
     let formulario: string = 'formulario';
     // Expresión regular para detectar caracteres especiales excepto espacios
@@ -64,9 +74,15 @@ export class ApiSFService {
     // Unir todos los parámetros con '&'
     let allParams = params.join('&');
 
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${this.token}`
+    });
+
+    console.log(headers);
+    
     // Realizar la solicitud HTTP con los parámetros construidos
     return this.http.get(
-      `${this.baseUrl}/api/${formulario}?size=${pageSize}&page=${currentPage}&${allParams}`
+      `${this.baseUrl}/api/${formulario}?size=${pageSize}&page=${currentPage}&${allParams}`, { headers }
     );
   }
 
