@@ -20,7 +20,7 @@ export class SidebarComponent {
 
   // Define the menu items
   items: any[] = [
-    { label: 'Inicio', route: '/dashboard' },
+    { label: 'Inicio', route: '/inicio' },
     {
       label: 'Tramitar solicitud',
       isExpanded: false, // Flag to manage the expansion state
@@ -62,7 +62,7 @@ export class SidebarComponent {
     ) {
       this.items = [
         {
-          label: 'Inicio', route: '/dashboard'
+          label: 'Inicio', route: '/inicio'
         }
       ];
     } else if (
@@ -70,7 +70,7 @@ export class SidebarComponent {
             'MSF_SUPERTRANSPORTE'
     ) {
       this.items = [
-        { label: 'Inicio', route: '/dashboard' },
+        { label: 'Inicio', route: '/inicio' },
         { label: 'Indicadores', route: '/indicadores' },
 
       ];

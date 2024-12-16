@@ -178,6 +178,6 @@ export default class ValidacionNitComponent {
   }
 
   handleCloseByButton2() {
-    this.router.navigate(['/dashboard']).then(() => {});
+    this.router.navigate(['/inicio']).then(() => {});
   }
 }

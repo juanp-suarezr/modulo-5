@@ -803,7 +803,7 @@ export default class SolicitudComponent {
 
   finalStep() {
     this.showModal = false;
-    this.router.navigate(['/dashboard']).then(() => {
+    this.router.navigate(['/inicio']).then(() => {
       location.reload();
     });
   }

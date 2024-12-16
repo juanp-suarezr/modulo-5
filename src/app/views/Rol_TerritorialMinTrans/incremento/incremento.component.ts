@@ -2023,7 +2023,7 @@ export default class IncrementoComponent implements AfterViewInit, OnInit {
             this.ShowLoadingModal = false;
             if (contador == this.formGroup1.value[1].length) {
               localStorage.setItem('idSolicitud', '');
-              this.router.navigate(['/dashboard']).then(() => {
+              this.router.navigate(['/inicio']).then(() => {
                 location.reload();
               });
             }
@@ -2065,7 +2065,7 @@ export default class IncrementoComponent implements AfterViewInit, OnInit {
     this.showFinalModal = false;
     localStorage.setItem('idSolicitud', '');
     localStorage.setItem('contratosSolicitudID', '');
-    this.router.navigate(['/dashboard']).then(() => {
+    this.router.navigate(['/inicio']).then(() => {
       location.reload();
     });
   }

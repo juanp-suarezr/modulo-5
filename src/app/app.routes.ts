@@ -1,6 +1,5 @@
-import {Routes} from '@angular/router';
+import { Routes } from '@angular/router';
 import { AuthGuard } from './guards/auth.guard';
-
 
 export const routes: Routes = [
   {
@@ -8,58 +7,67 @@ export const routes: Routes = [
     loadComponent: () => import('./layouts/layout/layout.component'),
     children: [
       {
-        path: 'dashboard',
-        loadComponent: () => import('./views/dashboard/dashboard.component'),
+        path: 'inicio',
+        loadComponent: () => import('./views/inicio/inicio.component'),
         canActivate: [AuthGuard],
-        data: { permission: ['MSF_SF_LISTAR_SOLICITUD_TR', 'MSF_SF_LISTAR_SOLICITUD_GD', 'MSF_SF_LISTAR_SOLICITUD_ST'] }
+        data: { permission: 'MSF_MF_LISTAR_SOLICITUDES' },
       },
       {
         path: 'validador_nit',
-        loadComponent: () => import('./views/Rol_TerritorialMinTrans/validacion-nit/validacion-nit.component'),
+        loadComponent: () =>
+          import(
+            './views/Rol_TerritorialMinTrans/validacion-nit/validacion-nit.component'
+          ),
         canActivate: [AuthGuard],
-        data: { permission: 'MSF_CREAR_SOLICITUD' }
+        data: { permission: 'MSF_CREAR_SOLICITUD' },
       },
       {
         path: 'fijacioncapacidadtransportadora',
-        loadComponent: () => import('./views/Rol_TerritorialMinTrans/fijacion/fijacion.component'),
+        loadComponent: () =>
+          import('./views/Rol_TerritorialMinTrans/fijacion/fijacion.component'),
         canActivate: [AuthGuard],
-        data: { permission: 'MSF_CREAR_SOLICITUD' }
+        data: { permission: 'MSF_CREAR_SOLICITUD' },
       },
       {
         path: 'incrementocapacidadtransportadora',
-        loadComponent: () => import('./views/Rol_TerritorialMinTrans/incremento/incremento.component'),
+        loadComponent: () =>
+          import(
+            './views/Rol_TerritorialMinTrans/incremento/incremento.component'
+          ),
         canActivate: [AuthGuard],
-        data: { permission: 'MSF_CREAR_SOLICITUD' }
+        data: { permission: 'MSF_CREAR_SOLICITUD' },
       },
       {
         path: 'solicitudRadicacion',
-        loadComponent: () => import('./views/Rol_GestionDocumental/solicitud/solicitud.component'),
+        loadComponent: () =>
+          import('./views/Rol_GestionDocumental/solicitud/solicitud.component'),
         canActivate: [AuthGuard],
-        data: { permission: 'MSF_SF_GENERAR_RADICADO_E' }
+        data: { permission: 'MSF_SF_GENERAR_RADICADO_E' },
       },
       {
         path: 'solicitudAprobacion',
-        loadComponent: () => import('./views/Rol_Supertransporte/solicitud/solicitud.component'),
+        loadComponent: () =>
+          import('./views/Rol_Supertransporte/solicitud/solicitud.component'),
         canActivate: [AuthGuard],
-        data: { permission: 'MSF_SF_GENERAR_RADICADO_SALIDA' }
+        data: { permission: 'MSF_SF_GENERAR_RADICADO_SALIDA' },
       },
       {
         path: '',
-        redirectTo: 'dashboard',
-        pathMatch: 'full'
-
+        redirectTo: 'inicio',
+        pathMatch: 'full',
       },
       //INDICADORES
 
       {
         path: 'indicadores',
-        loadComponent: () => import('./views/Rol_Supertransporte/indicadores/power-bi/power-bi.component'),
+        loadComponent: () =>
+          import(
+            './views/Rol_Supertransporte/indicadores/power-bi/power-bi.component'
+          ),
         canActivate: [AuthGuard],
-        data: { permission: 'MSF_LISTAR_INDICADORES' }
+        data: { permission: 'MSF_LISTAR_INDICADORES' },
       },
-
-
-    ]
+    ],
   },
   {
     path: '',
@@ -67,20 +75,21 @@ export const routes: Routes = [
     children: [
       {
         path: 'errorautenticacion',
-        loadComponent: () => import('./views/verificacion/verificacion.component'),
+        loadComponent: () =>
+          import(
+            './views/auth/error-autentication/error-autentication.component'
+          ),
       },
-      
-      {
-        path: '',
-        redirectTo: 'errorAutentication',
-        pathMatch: 'full'
-      }
-    ]
+    ],
+  },
+
+  {
+    path: 'dashboard',
+    loadComponent: () => import('./views/dashboard/dashboard.component'),
   },
 
   {
     path: '**',
-    redirectTo: 'dashboard'
-
-  }
+    redirectTo: 'dashboard',
+  },
 ];

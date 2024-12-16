@@ -36,7 +36,7 @@ export class RouterService {
 
     //routeo dependiendo del rol
     if (this.authService.getUserRoles()[0].sistema === 'MSF_TERRITORIAL') {
-      if (url.includes('dashboard')) {
+      if (url.includes('inicio')) {
         this.breadcrumbSubject.next([
           { name: 'Tramitar solicitud', route: 'NA' },
         ]);
@@ -73,7 +73,7 @@ export class RouterService {
     } else if (
       this.authService.getUserRoles()[0].sistema === 'MSF_GESTION_DOCUMENTAL'
     ) {
-      if (url.includes('dashboard')) {
+      if (url.includes('inicio')) {
         this.breadcrumbSubject.next([
           { name: 'Visualizar solicitudes', route: 'NA' },
         ]);
@@ -96,7 +96,7 @@ export class RouterService {
     ) {
       switch (true) {
         //routeo dashboard
-        case url.includes('dashboard'):
+        case url.includes('inicio'):
           this.breadcrumbSubject.next([{ name: 'Solicitudes', route: 'NA' }]);
           break;
 

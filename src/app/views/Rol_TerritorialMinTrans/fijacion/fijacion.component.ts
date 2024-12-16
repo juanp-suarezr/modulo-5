@@ -1632,7 +1632,7 @@ export default class FijacionComponent {
     this.showFinalModal = false;
     localStorage.setItem('idSolicitud', '');
     localStorage.setItem('contratosSolicitudID', '');
-    this.router.navigate(['/dashboard']).then(() => {
+    this.router.navigate(['/inicio']).then(() => {
       location.reload();
     });
   }

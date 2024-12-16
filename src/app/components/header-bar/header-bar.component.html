@@ -1,45 +1,27 @@
 <div class="header-bar h-[48px] px-[18px] sm:px-[48px] bg-primary1">
-  <div class="flex w-full items-center gap-6">
-    <div class="w-1/2 flex pt-1 justify-start">
-      <!-- logo .gov -->
-      <a href="https://www.gov.co/" target="_blank" title="Ir a la GOV.CO">
-        <img src="assets/logo.svg" alt="Logo de GOV.CO" class="sm:h-[38px] h-[44px] w-auto" />
-      </a>
-      <!-- botones manejo roles -->
-       <!-- territorial -->
-      <button class="bg-green-800 mx-1 text-sm text-white rounded"
-        (click)="changeUser('eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ2aWdpbGFkbyIsImF1dGhvcml0aWVzIjoiW3tcImlkXCI6MTEsXCJub21icmVcIjpcInRlcnJpdG9yaWFsXCIsXCJzaXN0ZW1hXCI6XCJNU0ZfVEVSUklUT1JJQUxcIixcInBlcm1pc29zXCI6W3tcImlkXCI6MjAsXCJub21icmVcIjpcIlNGX0xJU1RBUl9TT0xJQ0lUVURfVFJcIixcInNpc3RlbWFcIjpcIk1TRl9TRl9MSVNUQVJfU09MSUNJVFVEX1RSXCIsXCJpZF9yZWxhY2lvblwiOjE4fSx7XCJpZFwiOjI3LFwibm9tYnJlXCI6XCJDUkVBUl9TT0xJQ0lUVURcIixcInNpc3RlbWFcIjpcIk1TRl9DUkVBUl9TT0xJQ0lUVURcIixcImlkX3JlbGFjaW9uXCI6Mjd9XX1dIiwiaWQiOjM1LCJ1c2VyIjoie1wiaWRcIjozNSxcIm5vbWJyZXNcIjpcInZpZ2lsYWRvXCIsXCJhcGVsbGlkb3NcIjpudWxsLFwiY29ycmVvXCI6XCJmZXJ6YUBnbWFpbC5jb21cIixcImRlbGVnYXR1cmFJZFwiOm51bGwsXCJyYXpvblNvY2lhbFwiOlwidmlnaWxhZG9cIixcImRvY3VtZW50b1wiOlwiODk4ODk4OTAwXCIsXCJ0aXBvVXN1YXJpb0lkXCI6M30iLCJzeXN0ZW0iOiJNU0YiLCJleHAiOjE3MzMzNTE1MTUsImlhdCI6MTczMzM0NzkxNX0.IyjUG55BqXjkUW_Kd9X_205xtuJuJkjY9aFu7vN51xQ', '/dashboard')">Territorial</button>
-      <!-- gestion doc -->
-        <button class="bg-green-800 mx-1 text-sm text-white rounded"
-        (click)="changeUser('eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdGllcyI6Ilt7XCJpZFwiOjEyLFwibm9tYnJlXCI6XCJnZXN0aW9uIGRvY3VtZW50YWxcIixcInNpc3RlbWFcIjpcIk1TRl9HRVNUSU9OX0RPQ1VNRU5UQUxcIixcInBlcm1pc29zXCI6W3tcImlkXCI6MjIsXCJub21icmVcIjpcIlNGX0dFTkVSQVJfUkFESUNBRE9fRVwiLFwic2lzdGVtYVwiOlwiTVNGX1NGX0dFTkVSQVJfUkFESUNBRE9fRVwiLFwiaWRfcmVsYWNpb25cIjoyMH0se1wiaWRcIjoyMyxcIm5vbWJyZVwiOlwiU0ZfTElTVEFSX1NPTElDSVRVRF9HRFwiLFwic2lzdGVtYVwiOlwiTVNGX1NGX0xJU1RBUl9TT0xJQ0lUVURfR0RcIixcImlkX3JlbGFjaW9uXCI6MjF9XX1dIiwiaWQiOjM3LCJ1c2VyIjoie1wiaWRcIjozNyxcIm5vbWJyZXNcIjpudWxsLFwiYXBlbGxpZG9zXCI6bnVsbCxcImNvcnJlb1wiOm51bGwsXCJkZWxlZ2F0dXJhSWRcIjpudWxsLFwicmF6b25Tb2NpYWxcIjpcIm51bGwgbnVsbFwiLFwiZG9jdW1lbnRvXCI6XCJhZGFzZGFzZFwifSIsInN5c3RlbSI6Ik1TRiIsImV4cCI6MTczMjA4MjgxNywiaWF0IjoxNzMyMDc5MjE3fQ.0yVSlSStMCQzNK34FIXEU-KLDU-YLcKdA1FI0H7d8yk', '/dashboard')">gestion
-        Doc</button>
-        <!-- supertransporte -->
-      <button class="bg-green-800 mx-1 text-sm text-white rounded"
-        (click)="changeUser('eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBZG1pbiIsImF1dGhvcml0aWVzIjoiW3tcImlkXCI6MTMsXCJub21icmVcIjpcInN1cGVydHJhbnNwb3J0ZVwiLFwic2lzdGVtYVwiOlwiTVNGX1NVUEVSVFJBTlNQT1JURVwiLFwicGVybWlzb3NcIjpbe1wiaWRcIjoyNCxcIm5vbWJyZVwiOlwiU0ZfTElTVEFSX1NPTElDSVRVRF9TVFwiLFwic2lzdGVtYVwiOlwiTVNGX1NGX0xJU1RBUl9TT0xJQ0lUVURfU1RcIixcImlkX3JlbGFjaW9uXCI6MjJ9LHtcImlkXCI6MjUsXCJub21icmVcIjpcIlNGX0RFU0NBUkdBUl9FWENFTF9PUEVSQVRJVk9cIixcInNpc3RlbWFcIjpcIk1TRl9TRl9ERVNDQVJHQVJfRVhDRUxfT1BFUkFUSVZPXCIsXCJpZF9yZWxhY2lvblwiOjIzfSx7XCJpZFwiOjI2LFwibm9tYnJlXCI6XCJTRl9HRU5FUkFSX1JBRElDQURPX1NBTElEQVwiLFwic2lzdGVtYVwiOlwiTVNGX1NGX0dFTkVSQVJfUkFESUNBRE9fU0FMSURBXCIsXCJpZF9yZWxhY2lvblwiOjI0fSx7XCJpZFwiOjI4LFwibm9tYnJlXCI6XCJMSVNUQVJfSU5ESUNBRE9SRVNcIixcInNpc3RlbWFcIjpcIk1TRl9MSVNUQVJfSU5ESUNBRE9SRVNcIixcImlkX3JlbGFjaW9uXCI6Mjh9XX1dIiwiaWQiOjM2LCJ1c2VyIjoie1wiaWRcIjozNixcIm5vbWJyZXNcIjpcIkFkbWluXCIsXCJhcGVsbGlkb3NcIjpudWxsLFwiY29ycmVvXCI6XCJwcnVlYmFzc3VwZXJwQGdtYWlsLmNvbVwiLFwiZGVsZWdhdHVyYUlkXCI6bnVsbCxcInJhem9uU29jaWFsXCI6XCJBZG1pbiBudWxsXCIsXCJkb2N1bWVudG9cIjpcIjExMTExMTExXCJ9Iiwic3lzdGVtIjoiTVNGIiwiZXhwIjoxNzMyMDgyMzYwLCJpYXQiOjE3MzIwNzg3NjB9.Nb25kC7NVebLq-nC0UZbOPqvV4XRV-eZQnCFF2q5TzY', '/dashboard')">Supertransporte</button>
-      <!-- 
-      private readonly testToken = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJTdXBlclRyYW5zcG9ydGUiLCJhdXRob3JpdGllcyI6Ilt7XCJpZFwiOjEsXCJub21icmVcIjpcIlN1cGVyVHJhbnNwb3J0ZVwiLFwic2lzdGVtYVwiOlwiTUFUX1NVUEVSVFJBTlNQT1JURVwiLFwicGVybWlzb3NcIjpbe1wiaWRcIjoxLFwibm9tYnJlXCI6XCJOYXZlZ2FyIG1lbnUgU3VwZXIgVHJhbnNwb3J0ZVwiLFwic2lzdGVtYVwiOlwiTUFUX01FTlVTVVBFUlRSQU5TUE9SVEVcIn0se1wiaWRcIjoyLFwibm9tYnJlXCI6XCJHZXN0aW9uYXIgdGVtcG9yYWRhc1wiLFwic2lzdGVtYVwiOlwiTUFUX0dFU1RJT05URU1QT1JBREFTXCJ9LHtcImlkXCI6MyxcIm5vbWJyZVwiOlwiVmFsaWRhciB0ZW1wb3JhZGFzXCIsXCJzaXN0ZW1hXCI6XCJNQVRfVkFMSURBQ0lPTlRFTVBPUkFEQVNcIn0sIHtcImlkXCI6NCxcIm5vbWJyZVwiOlwiQ2VycmFyIHRlbXBvcmFkYVwiLFwic2lzdGVtYVwiOlwiTUFUX0NJRVJSRVRFTVBPUkFEQVNcIn1dfV0iLCJpZCI6MjEsInVzZXIiOiJ7XCJpZFwiOjIxLFwibm9tYnJlc1wiOlwiU3VwZXJUcmFuc3BvcnRlXCIsXCJhcGVsbGlkb3NcIjpudWxsLFwiY29ycmVvXCI6XCJwcnVlYmFzc3VwZXJwQGdtYWlsLmNvbVwiLFwiZGVsZWdhdHVyYUlkXCI6bnVsbCxcInJhem9uU29jaWFsXCI6XCJTdXBlclRyYW5zcG9ydGVcIn0iLCJleHAiOjE3MzIyODI2OTQsImlhdCI6MTczMDk4NjY5NH0.HBTg_ZTSvx6ZYkYfktFf4WqmIi1ejFs0iW6qykoaygE';
-      private readonly testToken = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJUZXJtaW5hbGVzIiwiYXV0aG9yaXRpZXMiOiJbe1wiaWRcIjoxLFwibm9tYnJlXCI6XCJUZXJtaW5hbGVzXCIsXCJzaXN0ZW1hXCI6XCJNQVRfVEVSTUlOQUxFU1wiLFwicGVybWlzb3NcIjpbe1wiaWRcIjoxLFwibm9tYnJlXCI6XCJOYXZlZ2FyIG1lbnUgVGVybWluYWxlc1wiLFwic2lzdGVtYVwiOlwiTUFUX01FTlVURVJNSU5BTEVTXCJ9LHtcImlkXCI6MixcIm5vbWJyZVwiOlwiR2VzdGlvbmFyIHNvbGljaXR1ZGVzXCIsXCJzaXN0ZW1hXCI6XCJNQVRfR0VTVElPTlNPTElDSVRVREVTXCJ9XX1dIiwiaWQiOjIxLCJ1c2VyIjoie1wiaWRcIjoyMSxcIm5vbWJyZXNcIjpcIlRlcm1pbmFsZXNcIixcImFwZWxsaWRvc1wiOm51bGwsXCJjb3JyZW9cIjpcInBydWViYXNzdXBlcnBAZ21haWwuY29tXCIsXCJjb2RpZ29cIjo0NzAwMTAwMCxcInJhem9uU29jaWFsXCI6XCJUZXJtaW5hbGVzXCJ9IiwiZXhwIjoxNzMyMjgyNjk0LCJpYXQiOjE3MzA5ODY2OTR9.QRiXt_8MgwjeF80UWwyZ2HsUpYpZgbhhT2Vey47c1_8';
-     -->
-      
-    </div>
-
-    <div class="w-1/2 flex justify-end">
-      <div class="flex items-center gap-4" (focusin)="onFocus()" (focusout)="onFocusOut()">
-        <p class="text-white text-[7px] sm:text-[14px]">{{ user.fullName }}</p>
-        <div class="flex items-center justify-center user cursor-pointer" tabindex="0">
-          <span class="pi pi-user text-white"></span>
+    <div class="flex w-full items-center gap-6 pt-1">
+        <div class="w-1/2 flex pt-1 justify-start">
+            <a href="https://www.gov.co/" target="_blank" title="Ir a la GOV.CO">
+                <img src="assets/logo.svg" alt="Logo de GOV.CO" class="sm:h-[30px] h-[30px] w-auto">
+            </a>
         </div>
-      </div>
 
-      <div *ngIf="menuVisible"
-        class="absolute right-0 z-10 mt-10 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
-        role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
-        <a href="#" class="block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="user-menu-item-0">Perfil</a>
-        <a><button (click)="logout()" class="block px-4 py-2 text-sm w-full text-left" role="menuitem" tabindex="-1"
-            id="user-menu-item-2">
-            Cerrar Sesion
-          </button></a>
-      </div>
+        <div class="w-1/2 flex justify-end items-center gap-4">
+            <div class="flex items-center gap-4">
+              <p class="text-white text-[14px] maximo-texto">{{userInfo.razonSocial}}</p>
+              <div class="flex items-center justify-center user" tabindex="0">
+                <span class="pi pi-user text-white"></span>
+              </div>
+            </div>
+
+            <div>
+              <img src="/assets/home.svg" pTooltip="Volver a SINST" tooltipPosition="bottom" width="25px" alt="" class="cursor-pointer" (click)="volverInicio($event)">
+            </div>
+            <div>
+              <img src="/assets/sign-out-alt.svg" pTooltip="Cerrar sesión" tooltipPosition="bottom" width="25px" alt="" class="cursor-pointer" (click)="cerrarsesion($event)">
+            </div>
+
+        </div>
+
     </div>
-  </div>
 </div>

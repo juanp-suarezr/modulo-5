@@ -11,3 +11,21 @@
     border-radius: 50%;
     background: #5b84d6;
 }
+
+.maximo-texto{
+    max-width: 370px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+
+@media (max-width: 991px) {
+    .maximo-texto{
+        max-width: 120px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+}
+
