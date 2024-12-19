@@ -25,7 +25,7 @@ export class HeaderBarComponent implements OnInit {
   apiUrl = environment.LOGOUT;
 
   ngOnInit() {
-    this.userInfo = this.authService.getUserInfo();
+    this.userInfo = this.authService.getUserInfo() || '';
   }
 
   menuVisible = false;

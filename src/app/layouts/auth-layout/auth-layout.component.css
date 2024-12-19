@@ -6,3 +6,26 @@
     background: #36c;
 }
 
+app-sidebar {
+    position: -webkit-sticky; /* Para compatibilidad con navegadores WebKit */
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.padding-title{
+    padding: 1.5rem 3rem;
+}
+.title-module{
+    font-size: 32px;
+}
+
+
+@media (max-width: 991px) {
+    .padding-title{
+        padding: 1rem 1rem !important;
+    }
+    .title-module{
+        font-size: 18px !important;
+    }
+}

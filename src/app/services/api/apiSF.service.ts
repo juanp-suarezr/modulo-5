@@ -74,16 +74,9 @@ export class ApiSFService {
     // Unir todos los parámetros con '&'
     let allParams = params.join('&');
 
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${this.token}`
-    });
-
-    console.log(headers);
-    
     // Realizar la solicitud HTTP con los parámetros construidos
     return this.http.get(
-      `${this.baseUrl}/api/${formulario}?size=${pageSize}&page=${currentPage}&${allParams}`, { headers }
-    );
+      `${this.baseUrl}/api/${formulario}?size=${pageSize}&page=${currentPage}&${allParams}`);
   }
 
   //GET solicitud by ID

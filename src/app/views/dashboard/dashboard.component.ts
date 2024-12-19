@@ -7,23 +7,25 @@ import { Router } from '@angular/router';
   standalone: true,
   imports: [],
   templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.css'
+  styleUrl: './dashboard.component.css',
 })
 export default class DashboardComponent implements OnInit {
-
-  constructor(private authService: AuthService,
-    private router: Router) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
     const token = this.authService.getTestToken();
 
     if (token) {
-      // Redirigir a inicio si el token es válido
-      this.router.navigate(['/inicio']);
+      if (this.authService.getUserRoles()[0].sistema == "MSF_VIGILADO") {
+        // Redirigir a inicio si el token es válido
+        this.router.navigate(['/vigilado']);
+      } else {
+        // Redirigir a inicio si el token es válido
+        this.router.navigate(['/inicio']);
+      }
     } else {
       // Si no hay token, redirigir a la página de error
       this.router.navigate(['/errorautenticacion']);
     }
   }
-
 }

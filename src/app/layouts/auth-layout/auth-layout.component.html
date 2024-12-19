@@ -1,19 +1,22 @@
 <div class="bg-gray-50/50">
-    <div class="header-bar">
-        <div class="flex w-full items-center gap-6 px-2" style="height: 65px;">
-            <div class="w-1/2">
-                <a href="https://www.gov.co/" target="_blank" title="Ir a la GOV.CO">
-                    <img src="/assets/logo.svg" alt="Logo de GOV.CO" style="width: 140px;">
-                </a>
-            </div>
+    <app-header-bar />
+    <!-- side bar azul -->
+    <app-menu-navegacion></app-menu-navegacion>
+    <!-- indicador - marcador seccion -->
+    <div class="px-4 bg-[#333333] padding-title">
+        <div class="flex items-center">
+            <p class="text-white title-module">
+                <b>Indicadores de gestión y operación y sustentabilidad financiera</b>
+            </p>
         </div>
     </div>
-    <div class="p-4">
-        <div class="mt-2">
+    
+    <div class="z-4">
+        <div class="">
             <router-outlet />
         </div>
     </div>
-    <div class="text-blue-gray-600">
+    <div class="text-blue-gray-600 z-1">
         <app-footer />
     </div>
 </div>

@@ -13,6 +13,13 @@ export const routes: Routes = [
         data: { permission: 'MSF_MF_LISTAR_SOLICITUDES' },
       },
       {
+        path: 'vigilado',
+        loadComponent: () => import('./views/vigilado/vigilado.component'),
+        canActivate: [AuthGuard],
+        data: {permission: 'MSF_MF_LISTAR_SOLICITUDES_VIGILADOS' }
+
+      },
+      {
         path: 'validador_nit',
         loadComponent: () =>
           import(
