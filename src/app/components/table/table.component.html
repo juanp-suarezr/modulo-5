@@ -38,7 +38,7 @@
                       tooltipPosition="right" (click)="onIdClick( getId(item[key]) )">
                       {{ getId(item[key]) }}
                     </button>
-                    
+
                     <!-- datos con rol de escritura gestion doc -->
                     <p *ngIf="key !== 'id' && key !== 'semaforo' && (hasRole('MSF_GESTION_DOCUMENTAL') || hasRole('MSF_SUPERTRANSPORTE'))"
                       class="whitespace-no-wrap">
@@ -72,7 +72,7 @@
                 </tr>
 
               </tbody>
-              <tbody *ngIf="data.length == 0">
+              <tbody *ngIf="data.length == 0 || data.length == undefined">
                 <tr>
                   <td [attr.colspan]="headers.length" class="text-center py-5">
                     <p class="work-sans text-lg font-normal text-primary2 italic">
@@ -131,7 +131,7 @@
                 {{ getId(item[info[i]]) }}
               </button>
 
-              
+
               <!-- Condición: datos con rol de escritura gestion doc -->
               <p *ngIf="info[i] !== 'id' && info[i] !== 'semaforo' && (hasRole('MSF_GESTION_DOCUMENTAL') || hasRole('MSF_SUPERTRANSPORTE'))"
                 class="whitespace-no-wrap">

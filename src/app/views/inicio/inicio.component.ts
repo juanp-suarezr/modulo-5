@@ -251,7 +251,7 @@ export default class InicioComponent {
         (response) => {
           console.log(response);
 
-          this.totalPages = response.totalPages;
+          this.totalPages = response.page.totalPages;
           // Validar roles y generar headers después de cargar los datos
           if (
             this.authService.getUserRoles()[0].sistema ===
@@ -368,6 +368,7 @@ export default class InicioComponent {
         },
         (error) => {
           this.loading = false; // Termina la carga de datos en caso de error
+          this.response = []; // Vacía la respuesta
           this.cdRef.detectChanges(); // Forzar la detección de cambios
           console.error('Error fetching user data', error);
         }
