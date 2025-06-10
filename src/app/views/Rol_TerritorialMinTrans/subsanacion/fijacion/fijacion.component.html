@@ -1,0 +1,1044 @@
+<!-- carga loading -->
+<div class="w-full h-full md:px-8 px-2 pb-24 pt-24" *ngIf="loadingInicio">
+    <div class="card flex justify-center items-center">
+        <p-progressSpinner styleClass="w-6rem h-6rem" strokeWidth="4" fill="var(--surface-ground)" />
+    </div>
+</div>
+<div class="sm:grid sm:grid-cols-10 gap-4 h-full mb-12 pb-4" *ngIf="loadingInicio == false">
+
+    <div class="md:col-span-2 sm:col-span-3 w-auto sm:mt-16 mt-12 mb-12">
+        <app-left-nav [data]="infoMenu" active="{{activeNum}}"></app-left-nav>
+    </div>
+
+    <!-- solicitud contet -->
+    <div class="md:col-span-8 sm:col-span-7 w-auto sm:mt-10 mt-4 md:px-8 px-2" *ngIf="activeNum == '0'">
+        <!-- <h2 class="text-primary4 !font-semibold">
+            Indicadores de gestión y operación y sustentabilidad financiera
+
+        </h2> -->
+        <h3 class="text-primary1 !font-bold mt-4">Fijación de Capacidad Transportadora</h3>
+
+        <!-- sttepper -->
+        <div class="mt-4 w-full inline-flex justify-center">
+            <app-sttepper [dataStep]="infoStepper"></app-sttepper>
+        </div>
+
+        <!-- form 1 -->
+        <form [formGroup]="formGroup1" class="px-4 md:pl-16 md:pe-16 mt-6 active1 mb-6" *ngIf="activeStep == 1">
+            <div class="col-span-2">
+                <p class="font-bold">Cargue de documentación</p>
+                <p class="text-primary4 font-[500]">Los campos marcados con * son obligatorios</p>
+            </div>
+            <!-- content 1 -->
+            <div
+                class="content1 lg:grid lg:grid-cols-2 md:gap-x-24 lg:gap-x-36 md:flex md:flex-wrap items-center h-full">
+                <!-- cargue 1 solicitud fijacion -->
+                <div class="w-full flex flex-col justify-center items-start pt-6 my-auto mb-2 h-full">
+                    <p class="text-primary3 font-semibold" [ngClass]="{'!text-error !font-normal': errorStates[1]}">
+                        Solicitud de fijación de capacidad transportadora*
+                    </p><br>
+                    <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" [maxFiles]="1" mimes=".pdf"
+                        [error]="errorStates[1]" (fileSelected)="onFileSelected($event, 1)"></app-file-upload>
+                    <!-- Opcion que aparece si existe archivo guardado en la solicitud -->
+                    <div class="w-full"
+                        *ngIf="(this.formGroup1.get('1')?.value != '' && this.formGroup1.get('1')?.value != null) && this.solicitudGuardada && !isActuFile.includes(1)">
+
+                        <div class="mt-2 flex gap-2 items-center cursor-pointer"
+                            (click)="viewDocument(formGroup1.get('1')?.value)">
+
+                            <!-- Archivos Visibles -->
+                            <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
+
+                                <!-- document -->
+                                <div class="w-auto m-auto">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto"
+                                        viewBox="0 0 384 512">
+                                        <path
+                                            d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z" />
+                                    </svg>
+                                </div>
+
+                                <!-- texto info file -->
+                                <div class="px-2 w-auto">
+                                    <p class="truncate text-[8px] font-semibold">
+                                        Solicitud de fijación
+                                    </p>
+                                    <p class="truncate text-[8px]">{{ (this.formGroup1.get('1')?.value.size /
+                                        1024).toFixed(2) }} Kb</p>
+                                </div>
+
+                                <!-- button borrar -->
+                                <button class="m-auto w-auto" (click)="deleteFile(1)">
+                                    <span
+                                        class="pi pi-trash w-full h-full sm:text-xl text-base text-primary2 text-medium"></span>
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+
+                    </div>
+                    <!-- mostrar archivo que viene de regresar -->
+                    <div class="w-full"
+                        *ngIf="(this.formGroup1.get('1')?.value != '' && this.formGroup1.get('1')?.value != null) && !this.solicitudGuardada && !isActuFile.includes(1)">
+
+                        <div class="mt-2 flex gap-2 items-center cursor-pointer"
+                            (click)="viewDocument(formGroup1.get('1')?.value)">
+
+                            <!-- Archivos Visibles -->
+                            <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
+
+                                <!-- document -->
+                                <div class="w-auto m-auto">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto"
+                                        viewBox="0 0 384 512">
+                                        <path
+                                            d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z" />
+                                    </svg>
+                                </div>
+
+                                <!-- texto info file -->
+                                <div class="px-2 w-auto">
+                                    <p class="truncate text-[8px] font-semibold">
+                                        Solicitud de fijación
+                                    </p>
+                                    <p class="truncate text-[8px]">{{ (this.formGroup1.get('1')?.value.size /
+                                        1024).toFixed(2) }} Kb</p>
+                                </div>
+
+                                <!-- button borrar -->
+                                <button class="m-auto w-auto" (click)="deleteFile(1)">
+                                    <span
+                                        class="pi pi-trash w-full h-full sm:text-xl text-base text-primary2 text-medium"></span>
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+
+                    </div>
+                </div>
+
+
+            </div>
+
+            <!-- content 2 -->
+            <div
+                class="content2 lg:grid lg:grid-cols-2 md:gap-x-24 lg:gap-x-36 md:flex md:flex-wrap items-center h-full pt-6">
+                <!-- cargue 3 Plan de Rodamiento -->
+                <div class="w-full flex flex-col justify-center items-start pt-6 my-auto mb-2 h-full">
+                    <p class="text-primary3 font-semibold" [ngClass]="{'!text-error !font-normal': errorStates[3]}">
+                        Plan de Rodamiento*
+                    </p>
+                    <!-- texto informativo -->
+                    <div class="flex inline-flex gap-2 h-full w-full">
+
+                        <span
+                            class="lg:w-[11%] md:w-[8%] sm:w-[8%] w-[6%] h-full flex flex-initial justify-center md:px-2 m-auto">
+                            <img class="w-full m-auto flex" src="/assets/iconoInfo.svg">
+                        </span>
+                        <p class="text-primary1 work-sans text-[11px] m-auto w-full flex-1">
+                            Con cuadro detallado de cantidad de pasajeros movilizados por
+                            tipología vehicular
+                        </p>
+                    </div>
+
+
+                    <app-file-upload class="mt-2 h-full"
+                        [dataClass]="{textSize: 'xs', textInfo: 'Archivo PDF o .xlsx. Peso máximo: 2MB'}"
+                        [error]="errorStates[3]" mimes=".pdf,.xlsx" [maxFiles]="1"
+                        (fileSelected)="onFileSelected($event, 3)"></app-file-upload>
+
+                    <!-- Opcion que aparece si existe archivo guardado en la solicitud -->
+                    <div class="w-full"
+                        *ngIf="(this.formGroup1.get('3')?.value != '' && this.formGroup1.get('3')?.value != null) && this.solicitudGuardada && !isActuFile.includes(3)">
+
+                        <div class="mt-2 flex gap-2 items-center cursor-pointer"
+                            (click)="viewDocument(formGroup1.get('3')?.value)">
+
+                            <!-- Archivos Visibles -->
+                            <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
+
+                                <!-- document -->
+                                <div class="w-auto m-auto">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto"
+                                        viewBox="0 0 384 512">
+                                        <path
+                                            d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z" />
+                                    </svg>
+                                </div>
+
+                                <!-- texto info file -->
+                                <div class="px-2 w-auto">
+                                    <p class="truncate text-[8px] font-semibold">
+                                        Plan de Rodamiento
+                                    </p>
+                                    <p class="truncate text-[8px]">{{ (this.formGroup1.get('3')?.value.size /
+                                        1024).toFixed(2) }} Kb</p>
+                                </div>
+
+                                <!-- button borrar -->
+                                <button class="m-auto w-auto" (click)="deleteFile(3)">
+                                    <span
+                                        class="pi pi-trash w-full h-full sm:text-xl text-base text-primary2 text-medium"></span>
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+
+                    </div>
+                    <!-- mostrar archivo que viene de regresar -->
+                    <div class="w-full"
+                        *ngIf="(this.formGroup1.get('3')?.value != '' && this.formGroup1.get('3')?.value != null) && !this.solicitudGuardada && !isActuFile.includes(3)">
+
+                        <div class="mt-2 flex gap-2 items-center cursor-pointer"
+                            (click)="viewDocument(formGroup1.get('3')?.value)">
+
+                            <!-- Archivos Visibles -->
+                            <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
+
+                                <!-- document -->
+                                <div class="w-auto m-auto">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto"
+                                        viewBox="0 0 384 512">
+                                        <path
+                                            d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z" />
+                                    </svg>
+                                </div>
+
+                                <!-- texto info file -->
+                                <div class="px-2 w-auto">
+                                    <p class="truncate text-[8px] font-semibold">
+                                        Plan de Rodamiento
+                                    </p>
+                                    <p class="truncate text-[8px]">{{ (this.formGroup1.get('3')?.value.size /
+                                        1024).toFixed(2) }} Kb</p>
+                                </div>
+
+                                <!-- button borrar -->
+                                <button class="m-auto w-auto" (click)="deleteFile(3)">
+                                    <span
+                                        class="pi pi-trash w-full h-full sm:text-xl text-base text-primary2 text-medium"></span>
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+
+                    </div>
+                </div>
+
+                <!-- cargue 4 Estructura costos básicos contratante y contratista -->
+                <div class="w-full flex flex-col justify-center items-start pt-6 my-auto mb-2 h-full">
+                    <p class="text-primary3 font-semibold" [ngClass]="{'!text-error !font-normal': errorStates[4]}">
+                        Estructura costos básicos contratante y contratista*
+                    </p>
+                    <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" [maxFiles]="1" mimes=".pdf"
+                        [error]="errorStates[4]" (fileSelected)="onFileSelected($event, 4)"></app-file-upload>
+
+                    <!-- Opcion que aparece si existe archivo guardado en la solicitud -->
+                    <div class="w-full"
+                        *ngIf="(this.formGroup1.get('4')?.value != '' && this.formGroup1.get('4')?.value != null) && this.solicitudGuardada && !isActuFile.includes(4)">
+                        <div class="mt-2 flex gap-2 items-center cursor-pointer"
+                            (click)="viewDocument(formGroup1.get('4')?.value)">
+
+                            <!-- Archivos Visibles -->
+                            <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
+
+                                <!-- document -->
+                                <div class="w-auto m-auto">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto"
+                                        viewBox="0 0 384 512">
+                                        <path
+                                            d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z" />
+                                    </svg>
+                                </div>
+
+                                <!-- texto info file -->
+                                <div class="px-2 w-auto">
+                                    <p class="truncate text-[8px] font-semibold">
+                                        Estructura costos básicos contratante y contratista
+                                    </p>
+                                    <p class="truncate text-[8px]">{{ (this.formGroup1.get('4')?.value.size /
+                                        1024).toFixed(2) }} Kb</p>
+                                </div>
+
+                                <!-- button borrar -->
+                                <button class="m-auto w-auto" (click)="deleteFile(4)">
+                                    <span
+                                        class="pi pi-trash w-full h-full sm:text-xl text-base text-primary2 text-medium"></span>
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+
+                    </div>
+                    <!-- mostrar archivo que viene de regresar -->
+                    <div class="w-full"
+                        *ngIf="(this.formGroup1.get('4')?.value != '' && this.formGroup1.get('4')?.value != null) && !this.solicitudGuardada && !isActuFile.includes(4)">
+                        <div class="mt-2 flex gap-2 items-center cursor-pointer"
+                            (click)="viewDocument(formGroup1.get('4')?.value)">
+
+                            <!-- Archivos Visibles -->
+                            <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
+
+                                <!-- document -->
+                                <div class="w-auto m-auto">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto"
+                                        viewBox="0 0 384 512">
+                                        <path
+                                            d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z" />
+                                    </svg>
+                                </div>
+
+                                <!-- texto info file -->
+                                <div class="px-2 w-auto">
+                                    <p class="truncate text-[8px] font-semibold">
+                                        Estructura costos básicos contratante y contratista
+                                    </p>
+                                    <p class="truncate text-[8px]">{{ (this.formGroup1.get('4')?.value.size /
+                                        1024).toFixed(2) }} Kb</p>
+                                </div>
+
+                                <!-- button borrar -->
+                                <button class="m-auto w-auto" (click)="deleteFile(4)">
+                                    <span
+                                        class="pi pi-trash w-full h-full sm:text-xl text-base text-primary2 text-medium"></span>
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- content 3 -->
+            <div
+                class="content1 lg:grid lg:grid-cols-2 md:gap-x-24 lg:gap-x-36 md:flex md:flex-wrap items-center h-full pt-6">
+                <!-- cargue 5 certificado de existencia -->
+                <div class="w-full flex flex-col justify-center items-start pt-6 my-auto mb-2 h-full">
+                    <p class="text-primary3 font-semibold" [ngClass]="{'!text-error !font-normal': errorStates[5]}">
+                        Certificado de Existencia y Representación legal no
+                        menos a 30 días*
+                    </p>
+                    <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" [maxFiles]="1" mimes=".pdf"
+                        [error]="errorStates[5]" (fileSelected)="onFileSelected($event, 5)"></app-file-upload>
+
+                    <!-- Opcion que aparece si existe archivo guardado en la solicitud -->
+                    <div class="w-full"
+                        *ngIf="(this.formGroup1.get('5')?.value != '' && this.formGroup1.get('5')?.value != null) && this.solicitudGuardada && !isActuFile.includes(5)">
+                        <div class="mt-2 flex gap-2 items-center cursor-pointer"
+                            (click)="viewDocument(formGroup1.get('5')?.value)">
+
+                            <!-- Archivos Visibles -->
+                            <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
+
+                                <!-- document -->
+                                <div class="w-auto m-auto">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto"
+                                        viewBox="0 0 384 512">
+                                        <path
+                                            d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z" />
+                                    </svg>
+                                </div>
+
+                                <!-- texto info file -->
+                                <div class="px-2 w-auto">
+                                    <p class="truncate text-[8px] font-semibold">
+                                        Certificado de Existencia y Representación legal
+                                    </p>
+                                    <p class="truncate text-[8px]">{{ (this.formGroup1.get('5')?.value.size /
+                                        1024).toFixed(2) }} Kb</p>
+                                </div>
+
+                                <!-- button borrar -->
+                                <button class="m-auto w-auto" (click)="deleteFile(5)">
+                                    <span
+                                        class="pi pi-trash w-full h-full sm:text-xl text-base text-primary2 text-medium"></span>
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+
+                    </div>
+                    <!-- mostrar archivo que viene de regresar -->
+                    <div class="w-full"
+                        *ngIf="(this.formGroup1.get('5')?.value != '' && this.formGroup1.get('5')?.value != null) && !this.solicitudGuardada && !isActuFile.includes(5)">
+                        <div class="mt-2 flex gap-2 items-center cursor-pointer"
+                            (click)="viewDocument(formGroup1.get('5')?.value)">
+
+                            <!-- Archivos Visibles -->
+                            <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
+
+                                <!-- document -->
+                                <div class="w-auto m-auto">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto"
+                                        viewBox="0 0 384 512">
+                                        <path
+                                            d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z" />
+                                    </svg>
+                                </div>
+
+                                <!-- texto info file -->
+                                <div class="px-2 w-auto">
+                                    <p class="truncate text-[8px] font-semibold">
+                                        Certificado de Existencia y Representación legal
+                                    </p>
+                                    <p class="truncate text-[8px]">{{ (this.formGroup1.get('5')?.value.size /
+                                        1024).toFixed(2) }} Kb</p>
+                                </div>
+
+                                <!-- button borrar -->
+                                <button class="m-auto w-auto" (click)="deleteFile(5)">
+                                    <span
+                                        class="pi pi-trash w-full h-full sm:text-xl text-base text-primary2 text-medium"></span>
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+
+                    </div>
+                </div>
+
+                <!-- cargue 6 Registro Único Tributario -->
+                <div class="w-full flex flex-col justify-center items-start pt-6 my-auto mb-2 h-full">
+                    <p class="text-primary3 font-semibold" [ngClass]="{'!text-error !font-normal': errorStates[6]}">
+                        Registro Único Tributario*
+                    </p>
+                    <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" [maxFiles]="1" mimes=".pdf"
+                        [error]="errorStates[6]" (fileSelected)="onFileSelected($event, 6)"></app-file-upload>
+
+                    <!-- Opcion que aparece si existe archivo guardado en la solicitud -->
+                    <div class="w-full"
+                        *ngIf="(this.formGroup1.get('6')?.value != '' && this.formGroup1.get('6')?.value != null) && this.solicitudGuardada && !isActuFile.includes(6)">
+                        <div class="mt-2 flex gap-2 items-center cursor-pointer"
+                            (click)="viewDocument(formGroup1.get('6')?.value)">
+
+                            <!-- Archivos Visibles -->
+                            <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
+
+                                <!-- document -->
+                                <div class="w-auto m-auto">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto"
+                                        viewBox="0 0 384 512">
+                                        <path
+                                            d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z" />
+                                    </svg>
+                                </div>
+
+                                <!-- texto info file -->
+                                <div class="px-2 w-auto">
+                                    <p class="truncate text-[8px] font-semibold">
+                                        Registro Único Tributario
+                                    </p>
+                                    <p class="truncate text-[8px]">{{ (this.formGroup1.get('6')?.value.size /
+                                        1024).toFixed(2) }} Kb</p>
+                                </div>
+
+                                <!-- button borrar -->
+                                <button class="m-auto w-auto" (click)="deleteFile(6)">
+                                    <span
+                                        class="pi pi-trash w-full h-full sm:text-xl text-base text-primary2 text-medium"></span>
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+
+                    </div>
+                    <!-- mostrar archivo que viene de regresar -->
+                    <div class="w-full"
+                        *ngIf="(this.formGroup1.get('6')?.value != '' && this.formGroup1.get('6')?.value != null) && !this.solicitudGuardada && !isActuFile.includes(6)">
+                        <div class="mt-2 flex gap-2 items-center cursor-pointer"
+                            (click)="viewDocument(formGroup1.get('6')?.value)">
+
+                            <!-- Archivos Visibles -->
+                            <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
+
+                                <!-- document -->
+                                <div class="w-auto m-auto">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto"
+                                        viewBox="0 0 384 512">
+                                        <path
+                                            d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z" />
+                                    </svg>
+                                </div>
+
+                                <!-- texto info file -->
+                                <div class="px-2 w-auto">
+                                    <p class="truncate text-[8px] font-semibold">
+                                        Registro Único Tributario
+                                    </p>
+                                    <p class="truncate text-[8px]">{{ (this.formGroup1.get('6')?.value.size /
+                                        1024).toFixed(2) }} Kb</p>
+                                </div>
+
+                                <!-- button borrar -->
+                                <button class="m-auto w-auto" (click)="deleteFile(6)">
+                                    <span
+                                        class="pi pi-trash w-full h-full sm:text-xl text-base text-primary2 text-medium"></span>
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-6 w-full flex justify-end gap-4">
+
+                <app-primary-button class="" (click)="changeActiveStep(2, true)">Guardar</app-primary-button>
+                <!-- <app-primary-button *ngIf="this.solicitudGuardada" class="" (click)="goToModal(2)">Continuar</app-primary-button> -->
+            </div>
+
+        </form>
+
+        <!-- form 2 -->
+        <form [formGroup]="formGroup2" class="px-4 md:pl-16 md:pe-16 mt-6 active1 mb-6" *ngIf="activeStep == 2">
+            <div class="col-span-2">
+                <p class="font-bold">Cargue de documentación*</p>
+                <p class="text-primary4 font-[500]">Los campos marcados con * son obligatorios</p>
+            </div>
+            <!-- content 1 -->
+            <div
+                class="content1 lg:grid lg:grid-cols-2 md:gap-x-24 lg:gap-x-36 md:flex md:flex-wrap items-center h-full">
+                <!-- cargue 7 Resolución de habilitación* -->
+                <div class="w-full flex flex-col justify-center items-start pt-6 my-auto mb-2 h-full">
+                    <p class="text-primary3 font-semibold" [ngClass]="{'!text-error !font-normal': errorStates[7]}">
+                        Resolución de habilitación*
+                    </p>
+                    <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" mimes=".pdf" [maxFiles]="1"
+                        [error]="errorStates[7]" (fileSelected)="onFileSelected($event, 7)"></app-file-upload>
+
+                    <!-- Opcion que aparece si existe archivo guardado en la solicitud -->
+                    <div class="w-full"
+                        *ngIf="(this.formGroup2.get('7')?.value != '' && this.formGroup2.get('7')?.value != null) && this.solicitudGuardada && !isActuFile.includes(7)">
+                        <div class="mt-2 flex gap-2 items-center cursor-pointer"
+                            (click)="viewDocument(formGroup2.get('7')?.value)">
+
+                            <!-- Archivos Visibles -->
+                            <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
+
+                                <!-- document -->
+                                <div class="w-auto m-auto">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto"
+                                        viewBox="0 0 384 512">
+                                        <path
+                                            d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z" />
+                                    </svg>
+                                </div>
+
+                                <!-- texto info file -->
+                                <div class="px-2 w-auto">
+                                    <p class="truncate text-[8px] font-semibold">
+                                        Resolución de habilitación
+                                    </p>
+                                    <p class="truncate text-[8px]">{{ (this.formGroup2.get('7')?.value.size /
+                                        1024).toFixed(2) }} Kb</p>
+                                </div>
+
+                                <!-- button borrar -->
+                                <button class="m-auto w-auto" (click)="deleteFile(7)">
+                                    <span
+                                        class="pi pi-trash w-full h-full sm:text-xl text-base text-primary2 text-medium"></span>
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+
+                    </div>
+                </div>
+
+                <!-- cargue 8 Cédula de Ciudadanía del Representante Legal* -->
+                <div class="w-full flex flex-col justify-center items-start pt-6 my-auto mb-2 h-full">
+                    <p class="text-primary3 font-semibold" [ngClass]="{'!text-error !font-normal': errorStates[8]}">
+                        Cédula de Ciudadanía del Representante Legal*
+                    </p>
+                    <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" mimes=".pdf" [error]="errorStates[8]"
+                        [maxFiles]="1" (fileSelected)="onFileSelected($event, 8)"></app-file-upload>
+
+                    <!-- Opcion que aparece si existe archivo guardado en la solicitud -->
+                    <div class="w-full"
+                        *ngIf="(this.formGroup2.get('8')?.value != '' && this.formGroup2.get('8')?.value != null) && this.solicitudGuardada && !isActuFile.includes(8)">
+                        <div class="mt-2 flex gap-2 items-center cursor-pointer"
+                            (click)="viewDocument(formGroup2.get('8')?.value)">
+
+                            <!-- Archivos Visibles -->
+                            <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
+
+                                <!-- document -->
+                                <div class="w-auto m-auto">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto"
+                                        viewBox="0 0 384 512">
+                                        <path
+                                            d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z" />
+                                    </svg>
+                                </div>
+
+                                <!-- texto info file -->
+                                <div class="px-2 w-auto">
+                                    <p class="truncate text-[8px] font-semibold">
+                                        Cédula Representante Legal
+                                    </p>
+                                    <p class="truncate text-[8px]">{{ (this.formGroup2.get('8')?.value.size /
+                                        1024).toFixed(2) }} Kb</p>
+                                </div>
+
+                                <!-- button borrar -->
+                                <button class="m-auto w-auto" (click)="deleteFile(8)">
+                                    <span
+                                        class="pi pi-trash w-full h-full sm:text-xl text-base text-primary2 text-medium"></span>
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- content 2 -->
+            <div
+                class="content2 lg:grid lg:grid-cols-2 md:gap-x-24 lg:gap-x-36 md:flex md:flex-wrap items-center h-full pt-6">
+                <!-- cargue 9 Estados financieros de la empresa* -->
+                <div class="w-full flex flex-col justify-center items-start pt-6 my-auto mb-2 h-full">
+                    <p class="text-primary3 font-semibold" [ngClass]="{'!text-error !font-normal': errorStates[9]}">
+                        Estados financieros de la empresa*
+                    </p>
+
+                    <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" mimes=".pdf" [error]="errorStates[9]"
+                        [maxFiles]="1" (fileSelected)="onFileSelected($event, 9)"></app-file-upload>
+
+                    <!-- Opcion que aparece si existe archivo guardado en la solicitud -->
+                    <div class="w-full"
+                        *ngIf="(this.formGroup2.get('9')?.value != '' && this.formGroup2.get('9')?.value != null) && this.solicitudGuardada && !isActuFile.includes(9)">
+                        <div class="mt-2 flex gap-2 items-center cursor-pointer"
+                            (click)="viewDocument(formGroup2.get('9')?.value)">
+
+                            <!-- Archivos Visibles -->
+                            <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
+
+                                <!-- document -->
+                                <div class="w-auto m-auto">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto"
+                                        viewBox="0 0 384 512">
+                                        <path
+                                            d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z" />
+                                    </svg>
+                                </div>
+
+                                <!-- texto info file -->
+                                <div class="px-2 w-auto">
+                                    <p class="truncate text-[8px] font-semibold">
+                                        Estados financieros
+                                    </p>
+                                    <p class="truncate text-[8px]">{{ (this.formGroup2.get('9')?.value.size /
+                                        1024).toFixed(2) }} Kb</p>
+                                </div>
+
+                                <!-- button borrar -->
+                                <button class="m-auto w-auto" (click)="deleteFile(9)">
+                                    <span
+                                        class="pi pi-trash w-full h-full sm:text-xl text-base text-primary2 text-medium"></span>
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+
+                    </div>
+
+
+                </div>
+
+                <!-- cargue 10 Cédula del contador que firma los estados financieros -->
+                <div class="w-full flex flex-col justify-center items-start pt-6 my-auto mb-2 h-full">
+                    <p class="text-primary3 font-semibold" [ngClass]="{'!text-error !font-normal': errorStates[10]}">
+                        Cédula del contador que firma los estados financieros*
+                    </p>
+                    <app-file-upload class="mt-2 h-full" [dataClass]="dataClass" mimes=".pdf" [maxFiles]="1"
+                        [error]="errorStates[10]" (fileSelected)="onFileSelected($event, 10)"></app-file-upload>
+
+                    <!-- Opcion que aparece si existe archivo guardado en la solicitud -->
+                    <div class="w-full"
+                        *ngIf="(this.formGroup2.get('10')?.value != '' && this.formGroup2.get('10')?.value != null) && this.solicitudGuardada && !isActuFile.includes(10)">
+                        <div class="mt-2 flex gap-2 items-center cursor-pointer"
+                            (click)="viewDocument(formGroup2.get('10')?.value)">
+
+                            <!-- Archivos Visibles -->
+                            <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
+
+                                <!-- document -->
+                                <div class="w-auto m-auto">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto"
+                                        viewBox="0 0 384 512">
+                                        <path
+                                            d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z" />
+                                    </svg>
+                                </div>
+
+                                <!-- texto info file -->
+                                <div class="px-2 w-auto">
+                                    <p class="truncate text-[8px] font-semibold">
+                                        Cédula del contador
+                                    </p>
+                                    <p class="truncate text-[8px]">{{ (this.formGroup2.get('10')?.value.size /
+                                        1024).toFixed(2) }} Kb</p>
+                                </div>
+
+                                <!-- button borrar -->
+                                <button class="m-auto w-auto" (click)="deleteFile(10)">
+                                    <span
+                                        class="pi pi-trash w-full h-full sm:text-xl text-base text-primary2 text-medium"></span>
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- content 3 -->
+            <div class="content3 lg:grid lg:grid-cols-2 md:gap-x-36 md:flex md:flex-wrap items-center h-full pt-6">
+                <!-- cargue 11 Tarjeta profesional contador que firma estados financieros* -->
+                <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+                    <p class="text-primary3 font-semibold" [ngClass]="{'!text-error !font-normal': errorStates[11]}">
+                        Tarjeta profesional y certificado de la junta central de contadores del contador que firma
+                        estados financieros*
+                    </p>
+                    <app-file-upload class="mt-2 h-full" [maxFiles]="1" [dataClass]="dataClass" mimes=".pdf"
+                        [error]="errorStates[11]" (fileSelected)="onFileSelected($event, 11)"></app-file-upload>
+
+                    <!-- Opcion que aparece si existe archivo guardado en la solicitud -->
+                    <div class="w-full"
+                        *ngIf="(this.formGroup2.get('11')?.value != '' && this.formGroup2.get('11')?.value != null) && this.solicitudGuardada && !isActuFile.includes(11)">
+                        <div class="mt-2 flex gap-2 items-center cursor-pointer"
+                            (click)="viewDocument(formGroup2.get('11')?.value)">
+
+                            <!-- Archivos Visibles -->
+                            <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
+
+                                <!-- document -->
+                                <div class="w-auto m-auto">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="fill-primary2 h-6 w-6 m-auto"
+                                        viewBox="0 0 384 512">
+                                        <path
+                                            d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z" />
+                                    </svg>
+                                </div>
+
+                                <!-- texto info file -->
+                                <div class="px-2 w-auto">
+                                    <p class="truncate text-[8px] font-semibold">
+                                        Tarjeta profesional contador
+                                    </p>
+                                    <p class="truncate text-[8px]">{{ (this.formGroup2.get('11')?.value.size /
+                                        1024).toFixed(2) }} Kb</p>
+                                </div>
+
+                                <!-- button borrar -->
+                                <button class="m-auto w-auto" (click)="deleteFile(11)">
+                                    <span
+                                        class="pi pi-trash w-full h-full sm:text-xl text-base text-primary2 text-medium"></span>
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="mt-6 w-full flex justify-between">
+                <button type="button" (click)="changeActiveStep(1, false)"
+                    class="inline-flex items-center justify-center px-6 py-1 text-white bg-primary4 hover:bg-primary2 focus:bg-primary2 font-medium rounded-full text-[16px] work-sans text-center">
+                    Regresar
+                </button>
+                <app-primary-button class="" (click)="changeActiveStep(3, true)">Guardar</app-primary-button>
+                <!-- <app-primary-button type="button" class="" (click)="goToModal(3)">Continuar</app-primary-button> -->
+            </div>
+
+        </form>
+
+        <!-- form 3 -->
+        <form [formGroup]="formGroup3" class="px-4 md:pl-16 md:pe-16 mt-6 active1 mb-6"
+            (ngSubmit)="changeActiveStep(4, true)" *ngIf="activeStep == 3">
+            <div class="col-span-2">
+                <p class="font-bold">Digitar los siguientes campos*</p>
+                <p class="text-primary4 font-[500]">Los campos marcados con * son obligatorios</p>
+            </div>
+            <!-- content 1 -->
+            <div class="content1 md:grid sm:grid-cols-2 md:gap-x-36 md:flex items-center h-full">
+                <!-- input 1 Capital Social en SMLV* -->
+                <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+                    <p class="text-primary3 font-semibold h-full">
+                        Capital pagado
+                    </p>
+                    <!-- input -->
+                    <div class="mt-2 relative w-full">
+                        <input
+                            class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent"
+                            type="text" formControlName="capitalSocial" placeholder="Ingrese numero"
+                            (input)="onCurrencyInput($event, 'capitalSocial', formGroup3)"
+                            (focus)="onCurrencyFocus($event)" />
+
+                        <div class="w-full relative">
+                            <!-- Icono de error (rojo) -->
+                            <span
+                                *ngIf="formGroup3.get('capitalSocial')?.invalid && (formGroup3.get('capitalSocial')?.touched || submitted)"
+                                class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
+                                <span class="pi pi-exclamation-circle text-error text-[24px]"></span>
+                            </span>
+
+                            <!-- Icono de éxito (verde) -->
+                            <span
+                                *ngIf="formGroup3.get('capitalSocial')?.valid && (formGroup3.get('capitalSocial')?.touched || submitted)"
+                                class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
+                                <span class="pi pi-check-circle text-success text-[24px]"></span>
+                            </span>
+                        </div>
+                        <span *ngIf="submitted && formGroup3.get('capitalSocial')?.errors?.['required']"
+                            class="text-error">
+                            Capital pagado es obligatorio
+                        </span>
+                        <span
+                            *ngIf="formGroup3.get('capitalSocial')?.hasError('negativeNumber') && (formGroup3.get('capitalSocial')?.touched || submitted)"
+                            class="text-error">
+                            El numeró no puede ser negativo
+                        </span>
+                    </div>
+                    <div class="flex inline-flex md:gap-3 gap-2 h-full w-full mt-2">
+
+                        <span class="lg:w-[12%] sm:w-[12%] w-[10%] h-full flex justify-center lg:px-1 m-auto">
+                            <img class="w-full m-auto" src="/assets/iconoInfo.svg">
+                        </span>
+                        <p class="text-primary1 work-sans text-[11px] mt-2 w-auto">
+                            Empresa con capacidad transportadora operacional autorizada de
+                            {{ formGroup3.get('cantidadVehiculos')?.value }} vehículos: Capital pagado mínimo: 300 SMLMV
+                            –
+                            Patrimonio líquido mínimo > 180 SMLMV
+                        </p>
+                    </div>
+
+                </div>
+
+                <!-- input 2 Patrimonio Líquido en SMLV* -->
+                <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+                    <p class="text-primary3 font-semibold h-full">
+                        Patrimonio Líquido
+                    </p>
+                    <!-- input -->
+                    <div class="mt-2 relative w-full">
+                        <input
+                            class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent"
+                            type="text" formControlName="patrimonioLiquido" placeholder="ingrese numero"
+                            (input)="onCurrencyInput($event, 'patrimonioLiquido', formGroup3)"
+                            (focus)="onCurrencyFocus($event)" />
+                        <div class="w-full relative">
+                            <!-- Icono de error (rojo) -->
+                            <span
+                                *ngIf="formGroup3.get('patrimonioLiquido')?.invalid && (formGroup3.get('patrimonioLiquido')?.touched || submitted)"
+                                class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
+                                <span class="pi pi-exclamation-circle text-error text-[24px]"></span>
+                            </span>
+
+                            <!-- Icono de éxito (verde) -->
+                            <span
+                                *ngIf="formGroup3.get('patrimonioLiquido')?.valid && (formGroup3.get('patrimonioLiquido')?.touched || submitted)"
+                                class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
+                                <span class="pi pi-check-circle text-success text-[24px]"></span>
+                            </span>
+                        </div>
+                        <span *ngIf="submitted && formGroup3.get('patrimonioLiquido')?.errors?.['required']"
+                            class="text-error">
+                            Patrimonio Líquido es obligatorio
+                        </span>
+                        <span
+                            *ngIf="formGroup3.get('patrimonioLiquido')?.hasError('negativeNumber') && (formGroup3.get('patrimonioLiquido')?.touched || submitted)"
+                            class="text-error">
+                            El numeró no puede ser negativo
+                        </span>
+                    </div>
+                    <!-- texto informativo -->
+                    <div class="flex inline-flex md:gap-3 gap-2 h-full w-full mt-2">
+
+                        <span class="lg:w-[12%] sm:w-[12%] w-[10%] h-full flex justify-center lg:px-1 m-auto">
+                            <img class="w-full m-auto" src="/assets/iconoInfo.svg">
+                        </span>
+                        <p class="text-primary1 work-sans text-[11px] mt-2 w-auto">
+                            Empresa con capacidad transportadora operacional autorizada de
+                            {{ formGroup3.get('cantidadVehiculos')?.value }} vehículos: Capital pagado mínimo: 300 SMLMV
+                            –
+                            Patrimonio líquido mínimo > 180 SMLMV
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- content 2 -->
+            <div class="content2 md:grid sm:grid-cols-2 md:gap-x-36 md:flex items-center h-full pt-6">
+                <!-- select1 Cantidad de vehículos que está requiriendo fijar* -->
+                <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+                    <p class="text-primary3 font-semibold h-full">
+                        Cantidad de vehículos que está requiriendo fijar*
+                    </p>
+                    <!-- select -->
+                    <div class="w-full relative mt-2">
+
+                        <input
+                            class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent"
+                            type="number" formControlName="cantidadVehiculos" required placeholder="Ingrese número">
+                        <div class="w-full relative">
+                            <!-- Icono de error (rojo) -->
+                            <span
+                                *ngIf="formGroup3.get('cantidadVehiculos')?.invalid && (formGroup3.get('cantidadVehiculos')?.touched || submitted)"
+                                class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
+                                <span class="pi pi-exclamation-circle text-error text-[24px]"></span>
+                            </span>
+
+                            <!-- Icono de éxito (verde) -->
+                            <span
+                                *ngIf="formGroup3.get('cantidadVehiculos')?.valid && (formGroup3.get('cantidadVehiculos')?.touched || submitted)"
+                                class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
+                                <span class="pi pi-check-circle text-success text-[24px]"></span>
+                            </span>
+                        </div>
+                        <span *ngIf="submitted && formGroup3.get('cantidadVehiculos')?.errors?.['required']"
+                            class="text-error">
+                            Cantidad de vehículos es obligatorio
+                        </span>
+                        <span
+                            *ngIf="formGroup3.get('cantidadVehiculos')?.hasError('negativeNumber') && (formGroup3.get('cantidadVehiculos')?.touched || submitted)"
+                            class="text-error">
+                            El numeró no puede ser negativo
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="mt-6 w-full flex justify-between">
+                <button type="button" (click)="changeActiveStep(2, false, true)"
+                    class="inline-flex items-center justify-center px-6 py-1 text-white bg-primary4 hover:bg-primary2 focus:bg-primary2 font-medium rounded-full text-[16px] work-sans text-center">
+                    Regresar
+                </button>
+                <app-primary-button type="submit" class="">Guardar</app-primary-button>
+                <!-- <app-primary-button type="button" (click)="goToModal(4)" class="">Continuar</app-primary-button> -->
+            </div>
+
+        </form>
+
+    </div>
+
+
+</div>
+
+<!-- APP ALERT continuar sin guardar -->
+<app-alert [showModal]="showModalContinuar" title="Continuar sin guardar" subtitle=""
+    message="Esta seguro que desea continuar sin guardar." cancelButtonText="Cerrar" [showCancelButton]="true"
+    buttonText="Continuar" [showFirstButton]="true" (close)="showModalContinuar = false"
+    (closeByButton1)="changeActiveStep(numberTocontinue, false)" TypeAlert="warning"></app-alert>
+
+<!-- APP ALERT REQUISITO CAPITAL SOCIAL Y PATRIMONIO -->
+<app-alert [showModal]="showModalRequisito" title="No cumple requisito" subtitle=""
+    message="{{ valid1 ? 'No se cumple con el requisito mínimo de patrimonio liquido (mayor a 180 SMLMV)' :valid2 ? 'No se cumple con el requisito mínimo de capital social (300 SMLMV)' : 'No se cumple con el requisito mínimo de capital social (300 SMLMV) y patrimonio liquido (180 SMLMV)'  }}"
+    cancelButtonText="Cerrar" [showCancelButton]="true" [showFirstButton]="false" (close)="showModalRequisito = false"
+    textColor="text-waring" TypeAlert="warning"></app-alert>
+
+
+
+<!-- modal de loading -->
+<app-alert [showModal]="ShowLoadingModal" title="Verificando datos" subtitle="Un momento por favor."
+    message="Se está guardando los datos enviados" [showFirstButton]="false" [showCancelButton]="false"
+    TypeAlert="loader"></app-alert>
+
+<!-- Modal DE INFORMACION GUARDADA -->
+<app-alert [showModal]="showModalInfoSaved" title="Información guardada" textColor="text-success" [showSubtitle]="false"
+    [message]="' La información se ha cargado correctamente'" buttonText="Continuar" [isIcon]="false"
+    [showFirstButton]="true" [showCancelButton]="false" TypeAlert="success" (close)="showModalInfoSaved = false"
+    (closeByButton1)="numberTocontinueSaved == 5 ? finalPart() : changeActiveStep(numberTocontinueSaved, false)"
+    (closeByBackdrop)="numberTocontinueSaved == 5 ? finalPart() : changeActiveStep(numberTocontinueSaved, false)"
+    (close)="showModalInfoSaved = true"></app-alert>
+
+
+<!-- modal final -->
+<app-alert [showModal]="showFinalModal" title="Envío exitoso" textColor="text-success" [showSubtitle]="false"
+    [message]="'Su solicitud ha sido enviada exitosamente, se le asignará un radicado para su trámite'"
+    buttonText="Continuar" [showFirstButton]="true" [showCancelButton]="false" TypeAlert="success"
+    (close)="showFinalModal = false" (closeByButton1)="finalStep()" (closeByIcon)="showFinalModal = false"
+    (closeByBackdrop)="showFinalModal = false" (close)="showFinalModal = false"></app-alert>
+
+<!-- modal error -->
+<app-alert [showModal]="showErrorModal" title="Error en el envió de datos" textColor="text-error" [showSubtitle]="false"
+    [message]="'Estamos experimentando inconvenientes técnicos con el envió de la solicitud, por favor intente más tarde'"
+    buttonText="Continuar" [showFirstButton]="true" [showCancelButton]="false" TypeAlert="error"
+    (close)="showErrorModal = false" (closeByButton1)="showErrorModal = false" (closeByIcon)="showErrorModal = false"
+    (closeByBackdrop)="showErrorModal = false" (close)="showErrorModal = false"></app-alert>
+
+<!-- modal de error en data -->
+<app-alert [showModal]="showModalAlerta" title="No se encuentra registro en RUES" subtitle=""
+    message="Se recomienda solicitar realizar registro RUES, para poder tramitar solicitudes." cancelButtonText="Cerrar"
+    [showCancelButton]="true" [showFirstButton]="false" (close)="showModalAlerta = false" textColor="text-waring"
+    TypeAlert="warning"></app-alert>
+
+<!-- modal de error en data -->
+<app-alert [showModal]="showModalAlerta1" title="Registro con matricula cancelada" subtitle=""
+    message="Se recomienda solicitar actualizar novedad de registro RUES, para poder tramitar solicitudes."
+    cancelButtonText="Cerrar" [showCancelButton]="true" [showFirstButton]="false" (close)="showModalAlerta1 = false"
+    textColor="text-waring" TypeAlert="warning"></app-alert>
+
+<!-- modal de error en data -->
+<app-alert [showModal]="showModalWarning1" title="inconvenientes registros RUES" subtitle=""
+    message="Estamos experimentando inconvenientes técnicos con la consulta del NIT en rues. Se le habilitará el espacio para añadir de manera manual la razón social."
+    cancelButtonText="Cerrar" [showCancelButton]="true" [showFirstButton]="false" (close)="showModalWarning1 = false"
+    textColor="text-waring" TypeAlert="warning"></app-alert>

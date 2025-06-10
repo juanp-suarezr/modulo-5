@@ -45,6 +45,22 @@ export const routes: Routes = [
         data: { permission: 'MSF_CREAR_SOLICITUD' },
       },
       {
+        path: 'fijacioncapacidadtransportadora-subsanacion',
+        loadComponent: () =>
+          import('./views/Rol_TerritorialMinTrans/subsanacion/fijacion/fijacion.component'),
+        canActivate: [AuthGuard],
+        data: { permission: 'MSF_CREAR_SOLICITUD' },
+      },
+      {
+        path: 'incrementocapacidadtransportadora-subsanacion',
+        loadComponent: () =>
+          import(
+            './views/Rol_TerritorialMinTrans/subsanacion/incremento/incremento.component'
+            ),
+        canActivate: [AuthGuard],
+        data: { permission: 'MSF_CREAR_SOLICITUD' },
+      },
+      {
         path: 'solicitudRadicacion',
         loadComponent: () =>
           import('./views/Rol_GestionDocumental/solicitud/solicitud.component'),
@@ -55,6 +71,13 @@ export const routes: Routes = [
         path: 'solicitudAprobacion',
         loadComponent: () =>
           import('./views/Rol_Supertransporte/solicitud/solicitud.component'),
+        canActivate: [AuthGuard],
+        data: { permission: 'MSF_SF_GENERAR_RADICADO_SALIDA' },
+      },
+      {
+        path: 'solicitudAprobacion-subsanacion',
+        loadComponent: () =>
+          import('./views/Rol_Supertransporte/subsanacion/solicitud/solicitud.component'),
         canActivate: [AuthGuard],
         data: { permission: 'MSF_SF_GENERAR_RADICADO_SALIDA' },
       },

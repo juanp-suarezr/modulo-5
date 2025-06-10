@@ -17,6 +17,8 @@ export class TableComponent {
   @Output() idClicked: EventEmitter<number> = new EventEmitter<number>();
   @Output() solicitudGuardada: EventEmitter<{ id: number; categoria: string }> =
     new EventEmitter<{ id: number; categoria: string }>();
+  @Output() solicitudSubsanacion: EventEmitter<{ id: number; categoria: string }> =
+    new EventEmitter<{ id: number; categoria: string }>();
   user: any;
   hasPermission: boolean = false;
 
@@ -70,6 +72,16 @@ export class TableComponent {
     console.log(solicitud);
 
     this.solicitudGuardada.emit({
+      id: this.getId(solicitud.id),
+      categoria: solicitud.categoria,
+    });
+  }
+
+  //Metodo para continuar con registro subsanación
+  onButtonClick1(solicitud: any) {
+    console.log(solicitud);
+
+    this.solicitudSubsanacion.emit({
       id: this.getId(solicitud.id),
       categoria: solicitud.categoria,
     });

@@ -1,90 +1,58 @@
-import { AuthService } from './../../../services/auth/auth.service';
-import { ChangeDetectorRef, Component } from '@angular/core';
-import { FileUploadComponent } from '../../../components/file-upload/file-upload.component';
-import { InputText } from '../../../components/input/input.component';
-import { LeftNavComponent } from '../../../components/left-nav/left-nav.component';
+import {AuthService} from '../../../../services/auth/auth.service';
+import {ChangeDetectorRef, Component} from '@angular/core';
+import {FileUploadComponent} from '../../../../components/file-upload/file-upload.component';
+import {InputText} from '../../../../components/input/input.component';
+import {LeftNavComponent} from '../../../../components/left-nav/left-nav.component';
 import {
-  CommonModule,
-  formatDate,
-  NgClass,
-  NgForOf,
-  NgIf,
+  CommonModule, formatDate, NgClass, NgForOf, NgIf,
 } from '@angular/common';
-import { PaginatorModule } from 'primeng/paginator';
-import { PrimaryButtonComponent } from '../../../components/primary-button/primary-button.component';
-import { SelectComponent } from '../../../components/select/select.component';
-import { SttepperComponent } from '../../../components/sttepper/sttepper.component';
-import { ActiveNumService } from '../../../services/left-nav/active-num.service';
-import { ActiveNumStepperService } from '../../../services/stepper/active-num.service';
-import { ApiService } from '../../../services/api/api.service';
+import {PaginatorModule} from 'primeng/paginator';
+import {PrimaryButtonComponent} from '../../../../components/primary-button/primary-button.component';
+import {SelectComponent} from '../../../../components/select/select.component';
+import {SttepperComponent} from '../../../../components/sttepper/sttepper.component';
+import {ActiveNumService} from '../../../../services/left-nav/active-num.service';
+import {ActiveNumStepperService} from '../../../../services/stepper/active-num.service';
+import {ApiService} from '../../../../services/api/api.service';
 import {
-  FormBuilder,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
+  FormBuilder, FormGroup, ReactiveFormsModule, Validators,
 } from '@angular/forms';
-import { ErrorService } from '../../../services/error/error.service';
-import { AlertComponent } from '../../../components/alert/alert.component';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ApiSFService } from '../../../services/api/apiSF.service';
-import { InputSwitchModule } from 'primeng/inputswitch';
-import { BehaviorSubject } from 'rxjs';
-import { ProgressSpinnerModule } from 'primeng/progressspinner';
-import { blob } from 'stream/consumers';
-import { dateRangeValidator } from '../../../validator/date.validator';
-import { NoNegativeGlobal } from '../../../validator/noNegative.validator';
+import {ErrorService} from '../../../../services/error/error.service';
+import {AlertComponent} from '../../../../components/alert/alert.component';
+import {ActivatedRoute, Router} from '@angular/router';
+import {ApiSFService} from '../../../../services/api/apiSF.service';
+import {InputSwitchModule} from 'primeng/inputswitch';
+import {BehaviorSubject} from 'rxjs';
+import {ProgressSpinnerModule} from 'primeng/progressspinner';
+import {blob} from 'stream/consumers';
+import {dateRangeValidator} from '../../../../validator/date.validator';
+import {NoNegativeGlobal} from '../../../../validator/noNegative.validator';
 
 @Component({
   selector: 'app-solicitud',
   standalone: true,
-  imports: [
-    FileUploadComponent,
-    InputText,
-    LeftNavComponent,
-    NgIf,
-    PaginatorModule,
-    PrimaryButtonComponent,
-    SelectComponent,
-    SttepperComponent,
-    ReactiveFormsModule,
-    NgClass,
-    AlertComponent,
-    NgForOf,
-    InputSwitchModule,
-    CommonModule,
-    ProgressSpinnerModule,
-  ],
+  imports: [FileUploadComponent, InputText, LeftNavComponent, NgIf, PaginatorModule, PrimaryButtonComponent, SelectComponent, SttepperComponent, ReactiveFormsModule, NgClass, AlertComponent, NgForOf, InputSwitchModule, CommonModule, ProgressSpinnerModule,],
   templateUrl: './solicitud.component.html',
   styleUrl: './solicitud.component.css',
 })
 export default class SolicitudComponent {
   item: any;
-  constructor(
-    private stateService: ActiveNumService,
-    private stepperService: ActiveNumStepperService,
-    private authService: AuthService,
-    private fb: FormBuilder,
-    private errorService: ErrorService,
-    private apiSFService: ApiSFService,
-    private apiService: ApiService,
-    private router: Router,
-    private route: ActivatedRoute,
-    private cdr: ChangeDetectorRef // Inyectar ChangeDetectorRef
+
+  constructor(private stateService: ActiveNumService, private stepperService: ActiveNumStepperService, private authService: AuthService, private fb: FormBuilder, private errorService: ErrorService, private apiSFService: ApiSFService, private apiService: ApiService, private router: Router, private route: ActivatedRoute, private cdr: ChangeDetectorRef // Inyectar ChangeDetectorRef
   ) {
     this.user = this.authService.getUserInfo();
     this.hasPermission = this.authService.hasPermission('MSF_SUPERTRANSPORTE');
 
     // TRAER ID DESDE NAVEGACIÓN O LOCALSTORAGE
     const navigation = this.router.getCurrentNavigation();
-    const state = navigation?.extras.state as { id: string };
+    const state = navigation?.extras.state as {id: string};
     console.log(state);
 
-    if (state && state.id) {
+    if(state && state.id) {
       console.log(state.id);
       this.setId(state.id); // Establecer nuevo ID
     } else {
       const storedId = localStorage.getItem('id');
-      if (storedId) {
+      if(storedId) {
         this.setId(storedId); // Establecer ID desde localStorage
       }
     }
@@ -93,7 +61,7 @@ export default class SolicitudComponent {
   //forms
   submitted: boolean = false;
   //identificador de actualización de file
-  isActuFile: [number] = [-1];
+  isActuFile: [number] = [- 1];
   //estado requerimiento
   smlmmv: number = 1300000;
 
@@ -121,7 +89,7 @@ export default class SolicitudComponent {
   formGroup4!: FormGroup;
 
   //Objeto para manejar errores
-  errorStates: { [key: number]: boolean } = {};
+  errorStates: {[key: number]: boolean} = {};
 
   //Respuesta de user activo y rol
   user: any;
@@ -142,79 +110,45 @@ export default class SolicitudComponent {
   showModalFinal: boolean = false;
 
   //Menu left
-  infoMenu = [
-    {
-      num: '0',
-      name: 'Solicitud',
-    },
-    {
-      num: '1',
-      name: 'Operativo',
-    },
-    {
-      num: '2',
-      name: 'Financiero',
-    },
-    {
-      num: '3',
-      name: 'Concepto',
-    },
-    {
-      num: '4',
-      name: 'Radicado',
-    },
-  ];
+  infoMenu = [{
+    num: '0', name: 'Solicitud',
+  }, {
+    num: '1', name: 'Operativo',
+  }, {
+    num: '2', name: 'Financiero',
+  }, {
+    num: '3', name: 'Concepto',
+  }, {
+    num: '4', name: 'Radicado',
+  },];
 
   //Menu stepper
-  infoStepper = [
-    {
-      num: 1,
-      info: 'Visualizar solicitud',
-    },
-    {
-      num: 2,
-      info: 'Visualizar documentos',
-    },
-    {
-      num: 3,
-      info: 'Visualizar información',
-    },
-    {
-      num: 4,
-      info: 'Visualizar radicado',
-    },
-  ];
+  infoStepper = [{
+    num: 1, info: 'Visualizar solicitud',
+  }, {
+    num: 2, info: 'Visualizar documentos',
+  }, {
+    num: 3, info: 'Visualizar información',
+  }, {
+    num: 4, info: 'Visualizar radicado',
+  },];
 
   //Props o datos para input upload
   dataClass = {
-    textSize: 'xs',
-    textInfo: 'Archivo PDF. Peso máximo: 2MB',
+    textSize: 'xs', textInfo: 'Archivo PDF. Peso máximo: 2MB',
   };
 
   conceptos: any = [];
 
   //info selects
-  selects = [
-    //select concepto
+  selects = [//select concepto
     {
-      name: 'concepto',
-      required: true,
-      placeholder: 'Seleccione',
-      value: '', // Valor seleccionado
-      good: 'Selección correcta',
-      errorMessage: 'Concepto es requerido',
-      isDropdownOpen: false,
-    },
-    {
-      name: 'cumplimiento',
-      required: true,
-      placeholder: 'Seleccione',
-      value: 0, // Valor seleccionado
-      good: 'Selección correcta',
-      errorMessage: 'cumplimiento es requerido',
-      isDropdownOpen: false,
-    },
-  ];
+      name: 'concepto', required: true, placeholder: 'Seleccione', value: '', // Valor seleccionado
+      good: 'Selección correcta', errorMessage: 'Concepto es requerido', isDropdownOpen: false,
+    }, {
+      name: 'cumplimiento', required: true, placeholder: 'Seleccione', value: 0, // Valor seleccionado
+      good: 'Selección correcta', errorMessage: 'cumplimiento es requerido', isDropdownOpen: false,
+    },];
 
   currentIndex: number = 0;
   maxVisibleFiles: number = 1;
@@ -245,24 +179,20 @@ export default class SolicitudComponent {
       observaciones: ['', Validators.required],
     });
     this.formGroup1 = this.fb.group({
-      1: [null, Validators.required],
-      numeroRadicadoSalida: ['', Validators.required],
+      1: [null, Validators.required], numeroRadicadoSalida: ['', Validators.required],
     });
-    this.formGroup2 = this.fb.group(
-      {
-        2: [null, Validators.required],
-        rentaNeta: ['', Validators.required],
-        rentaOperacional: ['', Validators.required],
-        liquidez: ['', Validators.required],
-        solidez: ['', Validators.required],
-        activoCorriente: ['', Validators.required],
-        pasivoCorriente: ['', Validators.required],
-        capitalTrabajo: [''],
-        estructuraCostos: ['', Validators.required],
-        cumplimientoIncremento: ['', Validators.required],
-      },
-      { validators: [NoNegativeGlobal] }
-    );
+    this.formGroup2 = this.fb.group({
+      2: [null, Validators.required],
+      rentaNeta: ['', Validators.required],
+      rentaOperacional: ['', Validators.required],
+      liquidez: ['', Validators.required],
+      solidez: ['', Validators.required],
+      activoCorriente: ['', Validators.required],
+      pasivoCorriente: ['', Validators.required],
+      capitalTrabajo: [''],
+      estructuraCostos: ['', Validators.required],
+      cumplimientoIncremento: ['', Validators.required],
+    }, {validators: [NoNegativeGlobal]});
 
     this.formGroup2.get('capitalTrabajo')?.disable();
 
@@ -309,94 +239,65 @@ export default class SolicitudComponent {
     this.setId(newId); // Actualiza el ID usando el método setId
   }
 
-
-
   loadOptions() {
     return new Promise((resolve, reject) => {
-      this.apiSFService
-      .getAllSolicitudByID(this.idSubject.getValue())
-      .subscribe(
-        (response) => {
-          //respuesta formas de pago
-          this.apiService.getFormasPago().subscribe((response1) => {
-            this.formasPago = response1.detalle;
-          });
-          //respuesta clase vehiculos
-          this.apiService.getClaseVehiculo().subscribe((response2) => {
-            this.claseVehiculos = response2.detalle;
-          });
-          //respuesta areas de operacion
-          this.apiService.getDeparts().subscribe((response3) => {
-            this.departamentos = response3;
-          });
-          //salario minimo
-          this.apiService.getSalario().subscribe(
-            (response) => {
-              // Filtrar el detalle para obtener el salario del año actual
-              const salarioActual = response.detalle.find((salario: any) =>
-                salario.descripcion.includes(
-                  new Date().getFullYear().toString()
-                )
-              );
+      this.apiSFService.getAllSolicitudByID(this.idSubject.getValue()).subscribe((response) => {
+        //respuesta formas de pago
+        this.apiService.getFormasPago().subscribe((response1) => {
+          this.formasPago = response1.detalle;
+        });
+        //respuesta clase vehiculos
+        this.apiService.getClaseVehiculo().subscribe((response2) => {
+          this.claseVehiculos = response2.detalle;
+        });
+        //respuesta areas de operacion
+        this.apiService.getDeparts().subscribe((response3) => {
+          this.departamentos = response3;
+        });
+        //salario minimo
+        this.apiService.getSalario().subscribe((response) => {
+          // Filtrar el detalle para obtener el salario del año actual
+          const salarioActual = response.detalle.find((salario: any) => salario.descripcion.includes(new Date().getFullYear().toString()));
 
-              this.smlmmv = salarioActual
-                ? salarioActual.detalle
-                : response.detalle[0].detalle;
-              console.log(this.smlmmv);
-            },
-            (error) => {
-              console.error('Error fetching user data', error);
-            }
-          );
-
-          this.apiSFService
-          .getcantidadVehiculosByNIT(response.formulario?.nit)
-          .subscribe(
-            (response1) => {
-              if (response1.estado) {
-                if (response.formulario.estadoSolicitud.id == 281) {
-                  this.totalVehiculos =
-                    parseInt(response1.cantidadVehiculosIncrementar) +
-                    parseInt(response1.cantidadVehiculos);
-                } else {
-                  this.totalVehiculos =
-                    parseInt(response1.cantidadVehiculosIncrementar) +
-                    parseInt(response1.cantidadVehiculos) +
-                    parseInt(
-                      response.formulario?.cantidadVehiculosIncrementar
-                    );
-                }
-                console.log(this.totalVehiculos);
-              } else {
-                console.log('no hay registros');
-              }
-            },
-            (error) => {
-              console.error('Error fetching user data', error); // Maneja el error si ocurre
-            }
-          );
-
-          //respuesta concepto
-          this.apiService.getConcepto().subscribe((response4) => {
-            this.conceptos = response4.detalle.map((clase: any) => ({
-              value: clase.id,
-              label: clase.descripcion,
-            }));
-            this.ActuForms(response);
-            console.log(this.conceptos);
-          });
-
-          this.solicitud = response;
-
-          console.log(response);
-          this.loadingPage = false;
-          resolve(response); // Resuelve la promesa cuando se haya procesado todo
-        },
-        (error) => {
-          this.loadingPage = false;
+          this.smlmmv = salarioActual ? salarioActual.detalle : response.detalle[0].detalle;
+          console.log(this.smlmmv);
+        }, (error) => {
           console.error('Error fetching user data', error);
-        }
-      );
+        });
+
+        this.apiSFService.getcantidadVehiculosByNIT(response.formulario?.nit).subscribe((response1) => {
+          if(response1.estado) {
+            if(response.formulario.estadoSolicitud.id == 281) {
+              this.totalVehiculos = parseInt(response1.cantidadVehiculosIncrementar) + parseInt(response1.cantidadVehiculos);
+            } else {
+              this.totalVehiculos = parseInt(response1.cantidadVehiculosIncrementar) + parseInt(response1.cantidadVehiculos) + parseInt(response.formulario?.cantidadVehiculosIncrementar);
+            }
+            console.log(this.totalVehiculos);
+          } else {
+            console.log('no hay registros');
+          }
+        }, (error) => {
+          console.error('Error fetching user data', error); // Maneja el error si ocurre
+        });
+
+        //respuesta concepto
+        this.apiService.getConcepto().subscribe((response4) => {
+          this.conceptos = response4.detalle.map((clase: any) => ({
+            value: clase.id, label: clase.descripcion,
+          }));
+          this.ActuForms(response);
+          console.log(this.conceptos);
+        });
+
+        this.solicitud = response;
+
+        console.log(response);
+        this.loadingPage = false;
+        resolve(response); // Resuelve la promesa cuando se haya procesado todo
+      }, (error) => {
+        this.loadingPage = false;
+        console.error('Error fetching user data', error);
+      });
     });
   }
 
@@ -439,20 +340,14 @@ export default class SolicitudComponent {
     });
 
     this.formGroup3.patchValue({
-      ['concepto']:
-      this.conceptos.find(
-        (item: any) => item.value == info.formulario.concepto
-      ) || '',
+      ['concepto']: this.conceptos.find((item: any) => item.value == info.formulario.concepto) || '',
     });
 
-    this.selects[0].value =
-      this.conceptos.find(
-        (item: any) => item.value == info.formulario.concepto
-      ) || '';
+    this.selects[0].value = this.conceptos.find((item: any) => item.value == info.formulario.concepto) || '';
 
     this.checked = info.formulario.subsanar;
 
-    if (info.formulario.radicadoSalida) {
+    if(info.formulario.radicadoSalida) {
       this.formGroup.get('observaciones')?.disable();
       this.formGroup2.get('rentaNeta')?.disable();
       this.formGroup2.get('solidez')?.disable();
@@ -474,7 +369,7 @@ export default class SolicitudComponent {
     });
 
     // Asegúrate de que formaPago no sea undefined
-    if (formaPago) {
+    if(formaPago) {
       return formaPago.descripcion;
     } else {
       console.log('No se encontró el id:', idPago); // Para depurar si no encuentra coincidencia
@@ -486,18 +381,16 @@ export default class SolicitudComponent {
   getAreasOperacion(Areas: any) {
     let found: any[] | undefined = [];
     Areas.filter((area: any) => {
-      found.push(
-        this.departamentos.find((element: any) => {
-          // console.log('Area ID:', area.idMunicipioArea); // Para verificar el ID del municipio en Areas
-          return parseInt(area.idMunicipioArea) === element.id;
-        }).descripcion
-      );
+      found.push(this.departamentos.find((element: any) => {
+        // console.log('Area ID:', area.idMunicipioArea); // Para verificar el ID del municipio en Areas
+        return parseInt(area.idMunicipioArea) === element.id;
+      }).descripcion);
 
       return found !== undefined; // Retorna verdadero si se encuentra coincidencia
     });
 
     // Asegúrate de que areasOp no sea undefined
-    if (found) {
+    if(found) {
       return found.map((depto: any) => depto).join(', ');
     } else {
       console.log('No se encontró el id:'); // Para depurar si no encuentra coincidencia
@@ -513,7 +406,7 @@ export default class SolicitudComponent {
     });
 
     // Asegúrate de que claseVehiculo no sea undefined
-    if (claseVehiculo) {
+    if(claseVehiculo) {
       return claseVehiculo.descripcion;
     } else {
       console.log('No se encontró el id:', clase); // Para depurar si no encuentra coincidencia
@@ -525,7 +418,7 @@ export default class SolicitudComponent {
   formatField(value: any): string {
     // Si el valor es una fecha válida, formatearlo
 
-    if (this.isDateTime(value)) {
+    if(this.isDateTime(value)) {
       return formatDate(value, 'dd/MM/yyyy', 'en-US', 'UTC');
     }
     return value;
@@ -546,11 +439,11 @@ export default class SolicitudComponent {
 
     // Formatear el resultado
     let result = '';
-    if (months > 0) {
+    if(months > 0) {
       result += `${months} mes${months !== 1 ? 'es' : ''}`;
     }
-    if (days > 0) {
-      if (months > 0) result += ' y ';
+    if(days > 0) {
+      if(months > 0) result += ' y ';
       result += `${days} día${days !== 1 ? 's' : ''}`;
     }
 
@@ -560,9 +453,7 @@ export default class SolicitudComponent {
   //FORMATO MONEDA
   formatCurrency(value: number): string {
     return new Intl.NumberFormat('es-CO', {
-      style: 'currency',
-      currency: 'COP',
-      minimumFractionDigits: 0,
+      style: 'currency', currency: 'COP', minimumFractionDigits: 0,
     }).format(value);
   }
 
@@ -571,7 +462,7 @@ export default class SolicitudComponent {
     const dateRegex = /^\d{4}-\d{2}-\d{2}|\d{2}\/\d{2}\/\d{4}$/;
 
     // Si el valor es una cadena que no coincide con el formato de fecha, no es una fecha
-    if (typeof value === 'string' && !dateRegex.test(value)) {
+    if(typeof value === 'string' && !dateRegex.test(value)) {
       return false;
     }
 
@@ -580,15 +471,12 @@ export default class SolicitudComponent {
   }
 
   //validate error
-  validateFormGroup(
-    formGroup: FormGroup,
-    errorStates: { [key: number]: boolean }
-  ): boolean {
+  validateFormGroup(formGroup: FormGroup, errorStates: {[key: number]: boolean}): boolean {
     let isValid = true;
-    for (const key in formGroup.controls) {
-      if (formGroup.controls.hasOwnProperty(key)) {
+    for(const key in formGroup.controls) {
+      if(formGroup.controls.hasOwnProperty(key)) {
         const control = formGroup.controls[key];
-        if (!control.value || control.invalid) {
+        if(!control.value || control.invalid) {
           const errorKey = parseInt(key, 10); // Convierte la clave a número
           errorStates[errorKey] = true;
           isValid = false;
@@ -613,15 +501,13 @@ export default class SolicitudComponent {
           base64Array.push(base64String);
 
           // Si ya hemos procesado todos los archivos, resolvemos la promesa
-          if (base64Array.length === files.length) {
+          if(base64Array.length === files.length) {
             resolve(base64Array);
           }
         };
 
         reader.onerror = () => {
-          reject(
-            new Error(`Error al convertir el archivo ${file.name} a base64.`)
-          );
+          reject(new Error(`Error al convertir el archivo ${file.name} a base64.`));
         };
 
         reader.readAsDataURL(file);
@@ -631,19 +517,15 @@ export default class SolicitudComponent {
 
   //METODO PARA SEMAFORO
   diferencias(subsanar?: boolean): number {
-    if (this.solicitud) {
+    if(this.solicitud) {
       // Convertir las fechas a milisegundos
       const fechaHoy = new Date().valueOf(); // Fecha actual en milisegundos
-      let fechaSolicitud = new Date(
-        this.solicitud.formulario.fechaSolicitud
-      ).valueOf(); // Fecha de solicitud en milisegundos
+      let fechaSolicitud = new Date(this.solicitud.formulario.fechaSolicitud).valueOf(); // Fecha de solicitud en milisegundos
 
-      if (subsanar) {
+      if(subsanar) {
 
-        if (this.solicitud?.formulario.subsanar == true) {
-          fechaSolicitud = new Date(
-            this.solicitud.formulario.fechaSubsanar
-          ).valueOf();
+        if(this.solicitud?.formulario.subsanar == true) {
+          fechaSolicitud = new Date(this.solicitud.formulario.fechaSubsanar).valueOf();
         } else {
           fechaSolicitud = new Date().valueOf();
         }
@@ -653,16 +535,14 @@ export default class SolicitudComponent {
       const diferenciaMilisegundos = fechaHoy - fechaSolicitud;
 
       // Convertir la diferencia de milisegundos a días
-      const diferenciaDias = Math.floor(
-        diferenciaMilisegundos / (1000 * 60 * 60 * 24)
-      );
-
+      const diferenciaDias = Math.floor(diferenciaMilisegundos / (1000 * 60 * 60 * 24));
 
       return diferenciaDias;
     } else {
       return 0;
     }
   }
+
   //OBTENER COLOR SEMAFORO
   getColorForSemaforo(dias: number, maxDias: number): string {
     const diaRojo = maxDias == 30 ? 9 : 3;
@@ -670,11 +550,11 @@ export default class SolicitudComponent {
     const MaxdiaAmarillo = maxDias == 30 ? 19 : 7;
     const diaVerde = maxDias == 30 ? 20 : 8;
 
-    if (dias <= diaRojo) {
+    if(dias <= diaRojo) {
       return '#068460'; // 1-3 días: verde
-    } else if (dias >= MindiaAmarillo && dias <= MaxdiaAmarillo) {
+    } else if(dias >= MindiaAmarillo && dias <= MaxdiaAmarillo) {
       return '#FFAB00'; // 4-7 días: amarillo
-    } else if (dias >= diaVerde) {
+    } else if(dias >= diaVerde) {
       return '#A80521'; // 8-10 días: rojo
     }
     return 'gray'; // Default para valores inesperados
@@ -685,7 +565,7 @@ export default class SolicitudComponent {
     let text = '';
     let min = 1;
     let max = 1.4;
-    switch (name) {
+    switch(name) {
       case 'renta':
         min = 2.1;
         max = 3.1;
@@ -700,9 +580,9 @@ export default class SolicitudComponent {
         break;
     }
 
-    if (porcentaje > max) {
+    if(porcentaje > max) {
       text = 'Bajo';
-    } else if (porcentaje >= min && porcentaje <= max) {
+    } else if(porcentaje >= min && porcentaje <= max) {
       text = 'Medio';
     } else {
       text = 'Alto';
@@ -713,24 +593,24 @@ export default class SolicitudComponent {
 
   //Metodo para cambiar el valor del menuleft
   async changeActiveNum(newValue: string, saved?: any) {
-    if (this.solicitud.formulario.radicadoSalida) {
+    if(this.solicitud.formulario.radicadoSalida) {
       saved = true;
     }
 
-    if (this.solicitud.formulario.excelModeloTransporte) {
+    if(this.solicitud.formulario.excelModeloTransporte) {
       saved = true;
     }
 
-    if (this.solicitud.formulario.concepto) {
+    if(this.solicitud.formulario.concepto) {
       saved = true;
     }
 
-    if (newValue == '3') {
-      if (saved) {
+    if(newValue == '3') {
+      if(saved) {
         this.stateService.setActiveNum(newValue);
       }
-    } else if (newValue == '4') {
-      if (saved) {
+    } else if(newValue == '4') {
+      if(saved) {
         this.stateService.setActiveNum(newValue);
       }
     } else {
@@ -740,7 +620,7 @@ export default class SolicitudComponent {
 
   //Metodo para cambiar el valor del stepper
   changeActiveStep(newValue: number) {
-    switch (newValue) {
+    switch(newValue) {
       case 1:
         this.stepperService.setActiveNum(newValue);
         break;
@@ -769,21 +649,18 @@ export default class SolicitudComponent {
   onFileSelected(file: File[], formControlName: number) {
     this.ActuFileGuardado(formControlName);
 
-    this.convertFilesToBase64(file)
-    .then((base64Array) => {
-      const formControlMap: { [key: number]: FormGroup } = {
-        1: this.formGroup1,
-        2: this.formGroup2,
+    this.convertFilesToBase64(file).then((base64Array) => {
+      const formControlMap: {[key: number]: FormGroup} = {
+        1: this.formGroup1, 2: this.formGroup2,
       };
 
       const formGroup = formControlMap[formControlName];
 
-      if (formGroup) {
+      if(formGroup) {
         // Parchamos el form con los archivos en base64
-        formGroup.patchValue({ [formControlName]: base64Array });
+        formGroup.patchValue({[formControlName]: base64Array});
       }
-    })
-    .catch((error) => {
+    }).catch((error) => {
       console.error('Error al convertir los archivos:', error);
     });
   }
@@ -805,9 +682,10 @@ export default class SolicitudComponent {
   ActuFileGuardado(num: number) {
     this.isActuFile.push(num);
   }
+
   //ELIMINAR ARCHIVO QUE ESTA GUARDADO EN SOLICITUD
   deleteFile(num: number) {
-    switch (num) {
+    switch(num) {
       case 1:
         this.formGroup1.get(num.toString())?.setValue('');
         break;
@@ -820,7 +698,7 @@ export default class SolicitudComponent {
 
   //Metodo para mostrar el pdf
   truncatedFileName(fileName: string, maxLength: number = 20): string {
-    if (fileName.length <= maxLength) {
+    if(fileName.length <= maxLength) {
       return fileName;
     }
     const truncated = fileName.substring(0, maxLength - 3) + '...';
@@ -832,9 +710,9 @@ export default class SolicitudComponent {
     console.log(valor);
 
     // Si es Blob, convertimos a Base64
-    if (valor instanceof Blob) {
+    if(valor instanceof Blob) {
       return this.convertirBlob(valor); // Convertir Blob a Base64
-    } else if (Array.isArray(valor) && valor.length > 0) {
+    } else if(Array.isArray(valor) && valor.length > 0) {
       // Si es un array (Base64), retornamos el primer valor del array
       return Promise.resolve(valor[0]);
     } else {
@@ -862,9 +740,9 @@ export default class SolicitudComponent {
 
   // Detectar si el archivo es PDF o XLSX desde Base64
   detectMimeType(base64: string): string {
-    if (base64.startsWith('JVBERi0')) {
+    if(base64.startsWith('JVBERi0')) {
       return 'application/pdf'; // PDF
-    } else if (base64.startsWith('UEsFB') || base64.startsWith('UEsDB')) {
+    } else if(base64.startsWith('UEsFB') || base64.startsWith('UEsDB')) {
       return 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'; // XLSX
     }
     return 'application/octet-stream'; // Tipo por defecto si no se detecta
@@ -875,18 +753,18 @@ export default class SolicitudComponent {
     const byteCharacters = atob(base64);
     const byteNumbers = new Array(byteCharacters.length);
 
-    for (let i = 0; i < byteCharacters.length; i++) {
+    for(let i = 0; i < byteCharacters.length; i ++) {
       byteNumbers[i] = byteCharacters.charCodeAt(i);
     }
 
     const byteArray = new Uint8Array(byteNumbers);
     const mimeType = this.detectMimeType(base64); // Detectar el tipo MIME
 
-    return new Blob([byteArray], { type: mimeType });
+    return new Blob([byteArray], {type: mimeType});
   }
 
   getDocumentSize(base64File: string) {
-    if (base64File == null || base64File == '') {
+    if(base64File == null || base64File == '') {
       return;
     }
     const blob = this.convertBase64ToBlob(base64File);
@@ -897,7 +775,7 @@ export default class SolicitudComponent {
 
   // Crear un enlace para descargar o mostrar el archivo
   displayFile(base64File: string) {
-    if (base64File == null || base64File == '') {
+    if(base64File == null || base64File == '') {
       return;
     }
     const blob = this.convertBase64ToBlob(base64File);
@@ -908,7 +786,7 @@ export default class SolicitudComponent {
 
   viewDocument(blob: Blob) {
     let url;
-    if (blob instanceof Blob) {
+    if(blob instanceof Blob) {
       url = URL.createObjectURL(blob);
     } else {
       const blobData = this.convertBase64ToBlob(blob);
@@ -920,7 +798,7 @@ export default class SolicitudComponent {
 
   downloadPDF(blob: Blob, name: string) {
     let url;
-    if (blob instanceof Blob) {
+    if(blob instanceof Blob) {
       url = URL.createObjectURL(blob);
     } else {
       const blobData = this.convertBase64ToBlob(blob);
@@ -935,10 +813,7 @@ export default class SolicitudComponent {
 
   //MOSTRAR CONTRATOS GUARDADOS
   get visibleFiles(): any[] {
-    return this.solicitud?.documentos.slice(
-      this.currentIndex,
-      this.currentIndex + this.maxVisibleFiles
-    );
+    return this.solicitud?.documentos.slice(this.currentIndex, this.currentIndex + this.maxVisibleFiles);
   }
 
   get dynamicText(): string {
@@ -946,19 +821,15 @@ export default class SolicitudComponent {
     let vehiculos = this.totalVehiculos;
 
     //Lógica para cambiar el texto dinámico
-    if (vehiculos) {
-      if (vehiculos <= 50) {
-        textReq =
-          'Empresa con capacidad transportadora operacional autorizada de hasta 50 vehículos: Capital pagado mínimo: 300 SMLMV – Patrimonio líquido mínimo > 180 SMLMV';
-      } else if (vehiculos >= 51 && vehiculos <= 300) {
-        textReq =
-          'Empresa con capacidad transportadora operacional autorizada de hasta 51 y 300 vehículos: Capital pagado mínimo: 400 SMLMV – Patrimonio líquido mínimo > 280 SMLMV';
-      } else if (vehiculos >= 301 && vehiculos <= 600) {
-        textReq =
-          'Empresa con capacidad transportadora operacional autorizada de hasta 301 y 600 vehículos: Capital pagado mínimo: 700 SMLMV – Patrimonio líquido mínimo > 500 SMLMV';
-      } else if (vehiculos >= 601) {
-        textReq =
-          'Empresa con capacidad transportadora operacional autorizada de más 600 vehículos: Capital pagado mínimo: 1000 SMLMV – Patrimonio líquido mínimo > 700 SMLMV';
+    if(vehiculos) {
+      if(vehiculos <= 50) {
+        textReq = 'Empresa con capacidad transportadora operacional autorizada de hasta 50 vehículos: Capital pagado mínimo: 300 SMLMV – Patrimonio líquido mínimo > 180 SMLMV';
+      } else if(vehiculos >= 51 && vehiculos <= 300) {
+        textReq = 'Empresa con capacidad transportadora operacional autorizada de hasta 51 y 300 vehículos: Capital pagado mínimo: 400 SMLMV – Patrimonio líquido mínimo > 280 SMLMV';
+      } else if(vehiculos >= 301 && vehiculos <= 600) {
+        textReq = 'Empresa con capacidad transportadora operacional autorizada de hasta 301 y 600 vehículos: Capital pagado mínimo: 700 SMLMV – Patrimonio líquido mínimo > 500 SMLMV';
+      } else if(vehiculos >= 601) {
+        textReq = 'Empresa con capacidad transportadora operacional autorizada de más 600 vehículos: Capital pagado mínimo: 1000 SMLMV – Patrimonio líquido mínimo > 700 SMLMV';
       }
     }
 
@@ -966,17 +837,14 @@ export default class SolicitudComponent {
   }
 
   moveLeft(): void {
-    if (this.currentIndex > 0) {
-      this.currentIndex--;
+    if(this.currentIndex > 0) {
+      this.currentIndex --;
     }
   }
 
   moveRight(): void {
-    if (
-      this.currentIndex <
-      this.solicitud?.documentos.length - this.maxVisibleFiles
-    ) {
-      this.currentIndex++;
+    if(this.currentIndex < this.solicitud?.documentos.length - this.maxVisibleFiles) {
+      this.currentIndex ++;
     }
   }
 
@@ -987,15 +855,15 @@ export default class SolicitudComponent {
 
   // Avanzar al siguiente contrato
   nextContract() {
-    if (this.currentContractIndex < this.totalContracts - 1) {
-      this.currentContractIndex++;
+    if(this.currentContractIndex < this.totalContracts - 1) {
+      this.currentContractIndex ++;
     }
   }
 
   // Retroceder al contrato anterior
   prevContract() {
-    if (this.currentContractIndex > 0) {
-      this.currentContractIndex--;
+    if(this.currentContractIndex > 0) {
+      this.currentContractIndex --;
     }
   }
 
@@ -1033,58 +901,48 @@ export default class SolicitudComponent {
   descargarExcel() {
     // descargar excel
     this.ShowLoadingModal = true;
-    this.apiSFService.descargarExcel(this.solicitud.formulario.id).subscribe(
-      (response) => {
-        // Aquí puedes manejar la respuesta, por ejemplo:
-        this.ShowLoadingModal = false;
+    this.apiSFService.descargarExcel(this.solicitud.formulario.id).subscribe((response) => {
+      // Aquí puedes manejar la respuesta, por ejemplo:
+      this.ShowLoadingModal = false;
 
-        console.log('Datos enviados exitosamente:', response);
-        const url = window.URL.createObjectURL(response);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `detalles_contrato_${this.solicitud.formulario.id}.xlsx`;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        window.URL.revokeObjectURL(url);
-      },
-      (error) => {
-        this.ShowLoadingModal = false;
-        this.showErrorModal = true;
-        // Manejo del error
-        console.error('Error al enviar los datos:', error);
-      }
-    );
+      console.log('Datos enviados exitosamente:', response);
+      const url = window.URL.createObjectURL(response);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `detalles_contrato_${this.solicitud.formulario.id}.xlsx`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    }, (error) => {
+      this.ShowLoadingModal = false;
+      this.showErrorModal = true;
+      // Manejo del error
+      console.error('Error al enviar los datos:', error);
+    });
   }
 
   //Metodo para activar estado subsanación
   ActiveSubsanacion() {
     const data = {
-      subsanar: this.checked,
-      fechaSubsanar: new Date(),
-      observaciones: this.formGroup.get('observaciones')?.value,
+      subsanar: this.checked, fechaSubsanar: new Date(), observaciones: this.formGroup.get('observaciones')?.value,
     };
     // put subsanar
-    this.apiSFService
-    .ActivarSubsanar(this.solicitud.formulario.id, data)
-    .subscribe(
-      (response) => {
-        // Aquí puedes manejar la respuesta, por ejemplo:
-        this.ShowLoadingModal = false;
+    this.apiSFService.ActivarSubsanar(this.solicitud.formulario.id, data).subscribe((response) => {
+      // Aquí puedes manejar la respuesta, por ejemplo:
+      this.ShowLoadingModal = false;
 
-        console.log('Datos enviados exitosamente:', response);
-      },
-      (error) => {
-        this.ShowLoadingModal = false;
-        this.showErrorModal = true;
-        // Manejo del error
-        console.error('Error al enviar los datos:', error);
-      }
-    );
+      console.log('Datos enviados exitosamente:', response);
+    }, (error) => {
+      this.ShowLoadingModal = false;
+      this.showErrorModal = true;
+      // Manejo del error
+      console.error('Error al enviar los datos:', error);
+    });
   }
 
   SaveInfo() {
-    if (this.validateFormGroup(this.formGroup2, this.errorStates)) {
+    if(this.validateFormGroup(this.formGroup2, this.errorStates)) {
       this.ShowLoadingModal = true; // Mostrar modal
 
       this.actualizarFinanciero();
@@ -1100,7 +958,7 @@ export default class SolicitudComponent {
     const activo = this.formGroup2.get('activoCorriente')?.value;
     const pasivo = this.formGroup2.get('pasivoCorriente')?.value;
 
-    if (activo && pasivo) {
+    if(activo && pasivo) {
       const capital = parseInt(activo) - parseInt(pasivo);
 
       this.formGroup2.get('capitalTrabajo')?.setValue(capital);
@@ -1109,73 +967,56 @@ export default class SolicitudComponent {
 
   actualizarFinanciero() {
     // Convertir valores que pueden ser Blob a Base64 (para los archivos en data2)
-    Promise.all([
-      this.convertirSiEsBlob(this.formGroup2.get('2')?.value), // radicadoSalida
-    ])
-    .then(([excelModeloTransporte]) => {
+    Promise.all([this.convertirSiEsBlob(this.formGroup2.get('2')?.value), // radicadoSalida
+    ]).then(([excelModeloTransporte]) => {
       // Creación del objeto data2 con todos los campos procesados
       const data = {
         excelModeloTransporte,
       };
 
       // put paso 2 actualizar - cargue 2 excel
-      this.apiSFService
-      .ExcelTransporte(this.solicitud.formulario.id, data)
-      .subscribe(
-        (response) => {
-          // put paso 2 actualizar - cargue 2
-          const data1 = {
-            rentaNeta: this.formGroup2.get('rentaNeta')?.value,
-            solidez: this.formGroup2.get('solidez')?.value,
-            liquidez: this.formGroup2.get('liquidez')?.value,
-            rentaOperacional:
-            this.formGroup2.get('rentaOperacional')?.value,
-            activoCorriente: this.formGroup2.get('activoCorriente')?.value,
-            pasivoCorriente: this.formGroup2.get('pasivoCorriente')?.value,
-            capitalTrabajo: this.formGroup2.get('capitalTrabajo')?.value,
-            estructuraCostos:
-            this.formGroup2.get('estructuraCostos')?.value,
-            cumplimientoIncremento: this.formGroup2.get(
-              'cumplimientoIncremento'
-            )?.value,
-          };
-          this.apiSFService
-          .GeneradoresRiesgo(this.solicitud.formulario.id, data1)
-          .subscribe(
-            (response) => {
-              // Aquí puedes manejar la respuesta, por ejemplo:
+      this.apiSFService.ExcelTransporte(this.solicitud.formulario.id, data).subscribe((response) => {
+        // put paso 2 actualizar - cargue 2
+        const data1 = {
+          rentaNeta: this.formGroup2.get('rentaNeta')?.value,
+          solidez: this.formGroup2.get('solidez')?.value,
+          liquidez: this.formGroup2.get('liquidez')?.value,
+          rentaOperacional: this.formGroup2.get('rentaOperacional')?.value,
+          activoCorriente: this.formGroup2.get('activoCorriente')?.value,
+          pasivoCorriente: this.formGroup2.get('pasivoCorriente')?.value,
+          capitalTrabajo: this.formGroup2.get('capitalTrabajo')?.value,
+          estructuraCostos: this.formGroup2.get('estructuraCostos')?.value,
+          cumplimientoIncremento: this.formGroup2.get('cumplimientoIncremento')?.value,
+        };
+        this.apiSFService.GeneradoresRiesgo(this.solicitud.formulario.id, data1).subscribe((response) => {
+          // Aquí puedes manejar la respuesta, por ejemplo:
 
-              this.ShowLoadingModal = false;
-              this.showModal1 = true;
-
-              console.log('Datos enviados exitosamente:', response);
-            },
-            (error) => {
-              this.ShowLoadingModal = false;
-              this.showErrorModal = true;
-              // Manejo del error
-              console.error('Error al enviar los datos:', error);
-            }
-          );
+          this.ShowLoadingModal = false;
+          this.showModal1 = true;
 
           console.log('Datos enviados exitosamente:', response);
-        },
-        (error) => {
+        }, (error) => {
           this.ShowLoadingModal = false;
           this.showErrorModal = true;
           // Manejo del error
           console.error('Error al enviar los datos:', error);
-        }
-      );
-    })
-    .catch((error) => {
+        });
+
+        console.log('Datos enviados exitosamente:', response);
+      }, (error) => {
+        this.ShowLoadingModal = false;
+        this.showErrorModal = true;
+        // Manejo del error
+        console.error('Error al enviar los datos:', error);
+      });
+    }).catch((error) => {
       console.error('Error en la conversión de archivos:', error);
       this.ShowLoadingModal = false;
     });
   }
 
   EmitirConcepto() {
-    if (this.validateFormGroup(this.formGroup3, this.errorStates)) {
+    if(this.validateFormGroup(this.formGroup3, this.errorStates)) {
       this.ShowLoadingModal = true; // Mostrar modal
       this.actualizarConcepto();
       console.log(this.formGroup3);
@@ -1189,62 +1030,36 @@ export default class SolicitudComponent {
   actualizarConcepto(isfinal?: boolean) {
     let data = {
       concepto: this.formGroup3.get('concepto')?.value.value || 0,
-      idEstadoSolicitud:
-        this.formGroup3.get('concepto')?.value.label == 'Favorable' &&
-        (this.solicitud.formulario.radicadoSalida ||
-          this.formGroup1.get('1')?.value != null) &&
-        isfinal
-          ? 281
-          : 282,
+      idEstadoSolicitud: this.formGroup3.get('concepto')?.value.label == 'Favorable' && (this.solicitud.formulario.radicadoSalida || this.formGroup1.get('1')?.value != null) && isfinal ? 281 : 282,
     };
 
-    if (this.checked || this.solicitud?.formulario.subsanar) {
-      data = {
-        concepto: 155,
-        idEstadoSolicitud: 303
-      };
-    }
+
     // put paso final emitir concepto
-    this.apiSFService
-    .emitirConcepto(this.solicitud.formulario.id, data)
-    .subscribe(
-      (response) => {
-        if (isfinal) {
-          if (this.checked || this.solicitud?.formulario.subsanar) {
-            this.checked = true;
-          } else {
-            this.checked = false;
-          }
+    this.apiSFService.emitirConcepto(this.solicitud.formulario.id, data).subscribe((response) => {
 
-          this.ActiveSubsanacion();
-        }
-        this.changeActiveNum('4');
-        this.ShowLoadingModal = false;
-        this.showModal2 = true;
+      this.changeActiveNum('4');
+      this.ShowLoadingModal = false;
+      this.showModal2 = true;
 
-        console.log('Datos enviados exitosamente:', response);
-      },
-      (error) => {
-        this.ShowLoadingModal = false;
-        this.showErrorModal = true;
-        // Manejo del error
-        console.error('Error al enviar los datos:', error);
-      }
-    );
+      console.log('Datos enviados exitosamente:', response);
+    }, (error) => {
+      this.ShowLoadingModal = false;
+      this.showErrorModal = true;
+      // Manejo del error
+      console.error('Error al enviar los datos:', error);
+    });
   }
 
   //Metodo para guardar el radicado de salida
   onSubmitAllForms() {
-    if (this.validateFormGroup(this.formGroup1, this.errorStates)) {
+    if(this.validateFormGroup(this.formGroup1, this.errorStates)) {
       this.ShowLoadingModal = true; // Mostrar modal
       console.log(this.formGroup1.get('1')?.value);
       console.log(this.formGroup1);
 
       // Convertir valores que pueden ser Blob a Base64 (para los archivos en data2)
-      Promise.all([
-        this.convertirSiEsBlob(this.formGroup1.get('1')?.value), // radicadoSalida
-      ])
-      .then(([radicadoSalida]) => {
+      Promise.all([this.convertirSiEsBlob(this.formGroup1.get('1')?.value), // radicadoSalida
+      ]).then(([radicadoSalida]) => {
         // Creación del objeto data2 con todos los campos procesados
         const data = {
           radicadoSalida,
@@ -1252,26 +1067,20 @@ export default class SolicitudComponent {
         };
 
         // put paso 2 actualizar - cargue 2
-        this.apiSFService
-        .RadicadoSalida(this.solicitud.formulario.id, data)
-        .subscribe(
-          (response) => {
-            // Aquí puedes manejar la respuesta, por ejemplo:
-            this.ShowLoadingModal = false;
-            this.showModal = true;
-            this.actualizarConcepto(true);
+        this.apiSFService.RadicadoSalida(this.solicitud.formulario.id, data).subscribe((response) => {
+          // Aquí puedes manejar la respuesta, por ejemplo:
+          this.ShowLoadingModal = false;
+          this.showModal = true;
+          this.actualizarConcepto(true);
 
-            console.log('Datos enviados exitosamente:', response);
-          },
-          (error) => {
-            this.ShowLoadingModal = false;
-            this.showErrorModal = true;
-            // Manejo del error
-            console.error('Error al enviar los datos:', error);
-          }
-        );
-      })
-      .catch((error) => {
+          console.log('Datos enviados exitosamente:', response);
+        }, (error) => {
+          this.ShowLoadingModal = false;
+          this.showErrorModal = true;
+          // Manejo del error
+          console.error('Error al enviar los datos:', error);
+        });
+      }).catch((error) => {
         console.error('Error en la conversión de archivos:', error);
         this.ShowLoadingModal = false;
       });
@@ -1283,9 +1092,7 @@ export default class SolicitudComponent {
   }
 
   setConceptoLabel() {
-    const concepto = this.conceptos.find(
-      (item: any) => item.value === this.solicitud.formulario.concepto
-    );
+    const concepto = this.conceptos.find((item: any) => item.value === this.solicitud.formulario.concepto);
     return concepto ? concepto.label : this.solicitud.formulario.subsanar ? 'Subsanar' : 'Valor no encontrado';
   }
 
@@ -1302,7 +1109,7 @@ export default class SolicitudComponent {
     value = value.replace(/[^0-9]/g, '');
 
     // Si no hay valor, establecer a vacío para permitir eliminar
-    if (!value) {
+    if(!value) {
       input.value = '';
       formGroup.get(controlName)?.setValue(null);
       return;

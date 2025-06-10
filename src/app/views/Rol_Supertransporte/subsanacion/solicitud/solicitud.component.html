@@ -13,7 +13,7 @@
 
   <!-- solicitud contenido -->
   <div class="md:col-span-8 sm:col-span-7 w-auto sm:mt-10 mt-4 md:px-8 px-2"
-       *ngIf="activeNum == '0' && loadingPage == false">
+    *ngIf="activeNum == '0' && loadingPage == false">
 
     <h3 class="text-primary1 !font-bold">Solicitud ID {{solicitud?.formulario.id}}</h3>
 
@@ -75,7 +75,7 @@
 
         <!--Estado de subsanacion -->
         <div class="w-full flex flex-col justify-start items-stretch pt-6 my-auto h-full mb-6"
-             *ngIf="!solicitud.formulario.radicadoSalida">
+          *ngIf="!solicitud.formulario.radicadoSalida">
           <p class="text-primary3 font-semibold h-full m-auto">
             Estado de subsanación
           </p>
@@ -83,7 +83,7 @@
           <div class="mt-2 relative w-full h-full flex justify-center items-center">
             <p class="my-auto me-2 flex intems-center font-bold text-primary1 sm:text-base">Activar</p>
             <p-inputSwitch class="my-auto h-auto flex items-center" [(ngModel)]="checked"
-                           (click)="ActiveSubsanacion()" />
+              (click)="ActiveSubsanacion()" />
           </div>
         </div>
 
@@ -109,7 +109,7 @@
 
               <!-- Círculo en el punto de progreso -->
               <div class="absolute top-[-5px] h-[14px] w-[14px] rounded-full flex items-center justify-center"
-                   [ngStyle]="{
+                [ngStyle]="{
                 left: 'calc(' + (diferencias(true) >= 30 ? 100 : (diferencias(true) / 30) * 100) + '% - 7px)',
                 backgroundColor: getColorForSemaforo(diferencias(true), 30)
               }">
@@ -130,7 +130,7 @@
         </div>
         <!-- Observaciones -->
         <form [formGroup]="formGroup" class="w-full flex flex-col justify-start items-stretch pt-6 my-auto h-full mb-6"
-              *ngIf="checked">
+          *ngIf="checked">
           <p class="text-primary3 font-semibold h-full m-auto">
             Observaciones
           </p>
@@ -152,11 +152,11 @@
             <div
               class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-full border focus:outline-none focus:border-primary1 bg-secondary3 border-secondary2 text-primary3 flex items-center justify-center">
               {{
-                solicitud?.formulario.categoriaSolicitud.descripcion === 'Fijación' ?
-                  'Fijación de Capacidad Transportadora'
-                  :solicitud?.formulario.categoriaSolicitud.descripcion === 'Incremento' ?
-                    'Incremento de Capacidad Transportadora'
-                    :'Sin categoría'
+              solicitud?.formulario.categoriaSolicitud.descripcion === 'Fijación' ?
+              'Fijación de Capacidad Transportadora'
+              :solicitud?.formulario.categoriaSolicitud.descripcion === 'Incremento' ?
+              'Incremento de Capacidad Transportadora'
+              :'Sin categoría'
               }}
             </div>
           </div>
@@ -183,7 +183,7 @@
 
               <!-- Círculo en el punto de progreso -->
               <div class="absolute top-[-5px] h-[14px] w-[14px] rounded-full flex items-center justify-center"
-                   [ngStyle]="{
+                [ngStyle]="{
                 left: 'calc(' + (diferencias() >= 10 ? 100 : (diferencias() / 10) * 100) + '% - 7px)',
                 backgroundColor: getColorForSemaforo(diferencias(), 10)
               }">
@@ -208,14 +208,14 @@
 
         <!--  Solicitud de fijación de capacidad transportadora -->
         <div *ngIf="solicitud?.formulario.categoriaSolicitud.descripcion == 'Fijación'"
-             class="w-full flex flex-col justify-start items-stretch pt-6 my-auto h-full">
+          class="w-full flex flex-col justify-start items-stretch pt-6 my-auto h-full">
           <p class="text-primary3 font-semibold h-full my-auto">
             Solicitud de fijación de capacidad transportadora
           </p>
           <div class="w-full h-full flex md:gap-4 lg:gap-6 mt-4">
 
             <div class="flex items-center cursor-pointer"
-                 (click)="viewDocument(solicitud?.formulario.solicitudFijacionCapacidad)">
+              (click)="viewDocument(solicitud?.formulario.solicitudFijacionCapacidad)">
 
               <!-- Archivos Visibles -->
               <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
@@ -267,7 +267,7 @@
             <!-- left arrow -->
             <!-- Botón de Navegación Izquierda (visible solo si hay más de 2 archivos) -->
             <button *ngIf="solicitud?.documentos.length > 1" class="m-auto" (click)="moveLeft()"
-                    [disabled]="currentIndex === 0">
+              [disabled]="currentIndex === 0">
               <span class="pi pi-chevron-left text-primary2 text-xl"></span>
             </button>
 
@@ -293,9 +293,9 @@
                       Contrato {{ currentIndex+1 }}
                     </p>
                     <p class="truncate text-[8px]">{{
-                        (getDocumentSize(doc.documento)
-                          ?? 0 /
-                          1024).toFixed(2) }} Kb</p>
+                      (getDocumentSize(doc.documento)
+                      ?? 0 /
+                      1024).toFixed(2) }} Kb</p>
                   </div>
 
                 </div>
@@ -312,7 +312,7 @@
 
             <!-- Botón de Navegación Derecha (visible solo si hay más de 2 archivos) -->
             <button *ngIf="solicitud?.documentos.length > 1" class="m-auto" (click)="moveRight()"
-                    [disabled]="currentIndex >= solicitud?.documentos.length - maxVisibleFiles">
+              [disabled]="currentIndex >= solicitud?.documentos.length - maxVisibleFiles">
               <span class="pi pi-chevron-right text-primary2 text-xl"></span>
             </button>
 
@@ -377,7 +377,7 @@
           <div class="w-full h-full flex md:gap-4 lg:gap-6 mt-4">
 
             <div class="flex items-center cursor-pointer"
-                 (click)="viewDocument(solicitud?.formulario.estructuraCostosBasicos)">
+              (click)="viewDocument(solicitud?.formulario.estructuraCostosBasicos)">
 
               <!-- Archivos Visibles -->
               <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
@@ -419,7 +419,7 @@
 
         <!--   Certificado de cumplimiento -->
         <div *ngIf="solicitud?.formulario.categoriaSolicitud.descripcion == 'Incremento'"
-             class="w-full flex flex-col justify-start items-stretch pt-6 my-auto h-full">
+          class="w-full flex flex-col justify-start items-stretch pt-6 my-auto h-full">
           <p class="text-primary3 font-semibold h-full my-auto">
             Certificado de cumplimiento del 10% o 7% de flota de la
             contratadas y las tarifas establecidas por el servicio
@@ -428,7 +428,7 @@
           <div class="w-full h-full flex md:gap-4 lg:gap-6 mt-4">
 
             <div class="flex items-center cursor-pointer"
-                 (click)="viewDocument(solicitud?.formulario.certificadoCumplimiento)">
+              (click)="viewDocument(solicitud?.formulario.certificadoCumplimiento)">
 
               <!-- Archivos Visibles -->
               <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
@@ -469,7 +469,7 @@
 
         <!--    Certificado de propiedad de la empresa -->
         <div *ngIf="solicitud?.formulario.categoriaSolicitud.descripcion == 'Incremento'"
-             class="w-full flex flex-col justify-start items-stretch pt-6 my-auto h-full">
+          class="w-full flex flex-col justify-start items-stretch pt-6 my-auto h-full">
           <p class="text-primary3 font-semibold h-full my-auto">
             Certificado del 10% o 7% de propiedad de la empresa
           </p>
@@ -477,7 +477,7 @@
           <div class="w-full h-full flex md:gap-4 lg:gap-6 mt-4">
 
             <div class="flex items-center cursor-pointer"
-                 (click)="viewDocument(solicitud?.formulario.certificadoPropiedadEmpresa)">
+              (click)="viewDocument(solicitud?.formulario.certificadoPropiedadEmpresa)">
 
               <!-- Archivos Visibles -->
               <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
@@ -496,9 +496,9 @@
                     Certificado de propiedad empresa
                   </p>
                   <p class="truncate text-[8px]">{{
-                      (getDocumentSize(solicitud?.formulario.certificadoPropiedadEmpresa)
-                        ?? 0 /
-                        1024).toFixed(2) }} Kb</p>
+                    (getDocumentSize(solicitud?.formulario.certificadoPropiedadEmpresa)
+                    ?? 0 /
+                    1024).toFixed(2) }} Kb</p>
                 </div>
 
               </div>
@@ -527,7 +527,7 @@
           <div class="w-full h-full flex md:gap-4 lg:gap-6 mt-4">
 
             <div class="flex items-center cursor-pointer"
-                 (click)="viewDocument(solicitud?.formulario.certificadoExistencia)">
+              (click)="viewDocument(solicitud?.formulario.certificadoExistencia)">
 
               <!-- Archivos Visibles -->
               <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
@@ -575,7 +575,7 @@
           <div class="w-full h-full flex md:gap-4 lg:gap-6 mt-4">
 
             <div class="flex items-center cursor-pointer"
-                 (click)="viewDocument(solicitud?.formulario.registroUnicoTributario)">
+              (click)="viewDocument(solicitud?.formulario.registroUnicoTributario)">
 
               <!-- Archivos Visibles -->
               <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
@@ -624,7 +624,7 @@
           <div class="w-full h-full flex md:gap-4 lg:gap-6 mt-4">
 
             <div class="flex items-center cursor-pointer"
-                 (click)="viewDocument(solicitud?.formulario.resolucionHabilitacion)">
+              (click)="viewDocument(solicitud?.formulario.resolucionHabilitacion)">
 
               <!-- Archivos Visibles -->
               <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
@@ -672,7 +672,7 @@
           <div class="w-full h-full flex md:gap-4 lg:gap-6 mt-4">
 
             <div class="flex items-center cursor-pointer"
-                 (click)="viewDocument(solicitud?.formulario.cedulaRepresentante)">
+              (click)="viewDocument(solicitud?.formulario.cedulaRepresentante)">
 
               <!-- Archivos Visibles -->
               <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
@@ -721,7 +721,7 @@
           <div class="w-full h-full flex md:gap-4 lg:gap-6 mt-4">
 
             <div class="flex items-center cursor-pointer"
-                 (click)="viewDocument(solicitud?.formulario.estadosFinancieros)">
+              (click)="viewDocument(solicitud?.formulario.estadosFinancieros)">
 
               <!-- Archivos Visibles -->
               <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
@@ -818,7 +818,7 @@
           <div class="w-full h-full flex md:gap-4 lg:gap-6 mt-4">
 
             <div class="flex items-center cursor-pointer"
-                 (click)="viewDocument(solicitud?.formulario.tarjetaProfesionalContador)">
+              (click)="viewDocument(solicitud?.formulario.tarjetaProfesionalContador)">
 
               <!-- Archivos Visibles -->
               <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
@@ -859,7 +859,7 @@
 
         <!-- resolucion de la capacidad transportadora actual -->
         <div *ngIf="solicitud?.formulario.categoriaSolicitud.descripcion == 'Incremento'"
-             class="w-full flex flex-col justify-start items-stretch pt-6 my-auto h-full">
+          class="w-full flex flex-col justify-start items-stretch pt-6 my-auto h-full">
           <p class="text-primary3 font-semibold h-full my-auto">
             Resolución de la capacidad transportadora actual
           </p>
@@ -867,7 +867,7 @@
           <div class="w-full h-full flex md:gap-4 lg:gap-6 mt-4">
 
             <div class="flex items-center cursor-pointer"
-                 (click)="viewDocument(solicitud?.formulario.resolucionCapacidadTransportadora)">
+              (click)="viewDocument(solicitud?.formulario.resolucionCapacidadTransportadora)">
 
               <!-- Archivos Visibles -->
               <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
@@ -886,9 +886,9 @@
                     Resolución de la capacidad transportadora actual
                   </p>
                   <p class="truncate text-[8px]">{{
-                      (getDocumentSize(solicitud?.formulario.resolucionCapacidadTransportadora)
-                        ?? 0 /
-                        1024).toFixed(2) }} Kb</p>
+                    (getDocumentSize(solicitud?.formulario.resolucionCapacidadTransportadora)
+                    ?? 0 /
+                    1024).toFixed(2) }} Kb</p>
                 </div>
 
               </div>
@@ -914,7 +914,7 @@
       <div class="mt-8 w-full flex justify-between gap-4">
 
         <button type="button" (click)="changeActiveStep(1)"
-                class="inline-flex items-center justify-center px-6 py-1 text-white bg-primary4 hover:bg-primary2 focus:bg-primary2 font-medium rounded-full text-[16px] work-sans text-center">
+          class="inline-flex items-center justify-center px-6 py-1 text-white bg-primary4 hover:bg-primary2 focus:bg-primary2 font-medium rounded-full text-[16px] work-sans text-center">
           Regresar
         </button>
         <app-primary-button type="button" class="" (click)="changeActiveStep(3)">Continuar</app-primary-button>
@@ -942,7 +942,7 @@
           </div>
           <!-- texto informativo fijacion -->
           <div class="flex inline-flex md:gap-3 gap-2 h-full w-full mt-2"
-               *ngIf="solicitud?.formulario.categoriaSolicitud.descripcion == 'Fijación'">
+            *ngIf="solicitud?.formulario.categoriaSolicitud.descripcion == 'Fijación'">
             <span class="lg:w-[12%] sm:w-[12%] w-[10%] h-full flex justify-center lg:px-1 m-auto">
               <img class="w-full m-auto" src="/assets/iconoInfo.svg">
             </span>
@@ -955,7 +955,7 @@
           </div>
           <!-- texto informativo incremento -->
           <div class="flex inline-flex md:gap-3 gap-2 h-full w-full mt-2"
-               *ngIf="solicitud?.formulario.categoriaSolicitud.descripcion == 'Incremento'">
+            *ngIf="solicitud?.formulario.categoriaSolicitud.descripcion == 'Incremento'">
             <span class="lg:w-[12%] sm:w-[12%] w-[10%] h-full flex justify-center lg:px-1 m-auto">
               <img class="w-full m-auto" src="/assets/iconoInfo.svg">
             </span>
@@ -981,7 +981,7 @@
 
           <!-- texto informativo fijacion -->
           <div class="flex inline-flex md:gap-3 gap-2 h-full w-full mt-2"
-               *ngIf="solicitud?.formulario.categoriaSolicitud.descripcion == 'Fijación'">
+            *ngIf="solicitud?.formulario.categoriaSolicitud.descripcion == 'Fijación'">
             <span class="lg:w-[12%] sm:w-[12%] w-[10%] h-full flex justify-center lg:px-1 m-auto">
               <img class="w-full m-auto" src="/assets/iconoInfo.svg">
             </span>
@@ -994,7 +994,7 @@
           </div>
           <!-- texto informativo incremento -->
           <div class="flex inline-flex md:gap-3 gap-2 h-full w-full mt-2"
-               *ngIf="solicitud?.formulario.categoriaSolicitud.descripcion == 'Incremento'">
+            *ngIf="solicitud?.formulario.categoriaSolicitud.descripcion == 'Incremento'">
             <span class="lg:w-[12%] sm:w-[12%] w-[10%] h-full flex justify-center lg:px-1 m-auto">
               <img class="w-full m-auto" src="/assets/iconoInfo.svg">
             </span>
@@ -1012,7 +1012,7 @@
 
         <!--  Cantidad de vehículos que está requiriendo fijar -->
         <div *ngIf="solicitud?.formulario.categoriaSolicitud.descripcion == 'Fijación'"
-             class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+          class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
           <p class="text-primary3 font-semibold h-full m-auto">
             Cantidad de vehículos que está requiriendo fijar
           </p>
@@ -1031,7 +1031,7 @@
 
         <!--  Cantidad de vehículos que está requiriendo incrementar -->
         <div *ngIf="solicitud?.formulario.categoriaSolicitud.descripcion == 'Incremento'"
-             class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+          class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
           <p class="text-primary3 font-semibold h-full m-auto">
             Cantidad de vehículos que está requiriendo incrementar
           </p>
@@ -1049,7 +1049,7 @@
 
         <!--  Cantidad de vehículos que está requiriendo incrementar -->
         <div *ngIf="solicitud?.formulario.categoriaSolicitud.descripcion == 'Incremento'"
-             class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
+          class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
           <p class="text-primary3 font-semibold h-full m-auto">
             Total vehículos (fijados e incrementados)
           </p>
@@ -1071,7 +1071,7 @@
       <div class="mt-8 w-full flex justify-between gap-4">
 
         <button type="button" (click)="changeActiveStep(2)"
-                class="inline-flex items-center justify-center px-6 py-1 text-white bg-primary4 hover:bg-primary2 focus:bg-primary2 font-medium rounded-full text-[16px] work-sans text-center">
+          class="inline-flex items-center justify-center px-6 py-1 text-white bg-primary4 hover:bg-primary2 focus:bg-primary2 font-medium rounded-full text-[16px] work-sans text-center">
           Regresar
         </button>
         <app-primary-button type="button" class="" (click)="changeActiveStep(4)">Continuar</app-primary-button>
@@ -1098,7 +1098,7 @@
             <div class="w-full h-full flex md:gap-4 lg:gap-6 mt-4">
 
               <div class="flex items-center cursor-pointer"
-                   (click)="viewDocument(solicitud?.formulario.radicadoEntrada)">
+                (click)="viewDocument(solicitud?.formulario.radicadoEntrada)">
 
                 <!-- Archivos Visibles -->
                 <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
@@ -1183,7 +1183,7 @@
       <div class="mt-8 w-full flex justify-between gap-4">
 
         <button type="button" (click)="changeActiveStep(3)"
-                class="inline-flex items-center justify-center px-6 py-1 text-white bg-primary4 hover:bg-primary2 focus:bg-primary2 font-medium rounded-full text-[16px] work-sans text-center">
+          class="inline-flex items-center justify-center px-6 py-1 text-white bg-primary4 hover:bg-primary2 focus:bg-primary2 font-medium rounded-full text-[16px] work-sans text-center">
           Regresar
         </button>
         <app-primary-button type="button" class="" (click)="changeActiveStep(5)">Continuar</app-primary-button>
@@ -1198,20 +1198,20 @@
   <!-- solicitud operativo -->
 
   <div class="md:col-span-8 sm:col-span-7 w-auto sm:mt-10 mt-4 md:px-8 px-2"
-       *ngIf="activeNum == '1' && loadingPage == false">
+    *ngIf="activeNum == '1' && loadingPage == false">
 
     <h3 class="text-primary1 !font-bold">Solicitud ID {{solicitud?.formulario.id}}</h3>
 
     <div class="w-full flex justify-center gap-x-2 paso1 pb-12">
       <!-- flecha izquierda -->
       <button *ngIf="currentContractIndex > 0" (click)="prevContract()" class="arrow-left flex items-center"
-              [disabled]="currentContractIndex === 0">
+        [disabled]="currentContractIndex === 0">
         <span class="pi pi-chevron-left text-primary2 text-xl"></span>
       </button>
       <!-- contenido -->
       <div class="px-4 md:pl-16 md:pe-16 mt-6 active1 mb-6">
         <div *ngIf="solicitud?.contratos[currentContractIndex]"
-             class="md:grid sm:grid-cols-2 md:grid-cols-3 md:gap-x-24 md:flex items-center h-full">
+          class="md:grid sm:grid-cols-2 md:grid-cols-3 md:gap-x-24 md:flex items-center h-full">
 
           <!-- consecutivo -->
           <div class="w-full flex flex-col justify-center items-start pt-6 my-auto h-full">
@@ -1302,10 +1302,10 @@
             <!-- Headers dinámicos -->
             <div class="headers-container flex flex-wrap gap-4 mt-2">
               <button type="button"
-                      *ngFor="let vehiculo of solicitud?.contratos[currentContractIndex]?.vehiculos; let i = index"
-                      (click)="setActiveHeader(i)"
-                      [ngClass]="{'active-header': activeHeader === i, 'inactive-header': activeHeader !== i}"
-                      class="p-2 text-primary1 border-b-2">
+                *ngFor="let vehiculo of solicitud?.contratos[currentContractIndex]?.vehiculos; let i = index"
+                (click)="setActiveHeader(i)"
+                [ngClass]="{'active-header': activeHeader === i, 'inactive-header': activeHeader !== i}"
+                class="p-2 text-primary1 border-b-2">
                 {{ getClaseVehiculos(vehiculo.idClaseVehiculo) || 'Clase Vehículo ' + (i + 1) }}
               </button>
 
@@ -1315,7 +1315,7 @@
             <!-- Inputs dinámicos basados en el header activo -->
             <div *ngIf="activeHeader != null" class="inputs-container mt-1">
               <div *ngFor="let vehiculo of solicitud?.contratos[currentContractIndex]?.vehiculos; let i = index"
-                   [ngClass]="{'hidden': activeHeader != i}" class="w-full items-start pt-2 my-auto h-full">
+                [ngClass]="{'hidden': activeHeader != i}" class="w-full items-start pt-2 my-auto h-full">
 
                 <!-- Input para el número de vehículos -->
                 <!-- input -->
@@ -1370,8 +1370,8 @@
               <div
                 class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-full border focus:outline-none focus:border-primary1 bg-secondary3 border-secondary2 text-primary3 flex items-center justify-center">
                 {{
-                  getFormasPagos(solicitud?.contratos[currentContractIndex]?.detalleContrato.idFormaPago)
-                  || 'forma de pago invalida'
+                getFormasPagos(solicitud?.contratos[currentContractIndex]?.detalleContrato.idFormaPago)
+                || 'forma de pago invalida'
                 }}
               </div>
             </div>
@@ -1387,8 +1387,8 @@
               <div
                 class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-full border focus:outline-none focus:border-primary1 bg-secondary3 border-secondary2 text-primary3 flex items-center justify-center">
                 {{
-                  getAreasOperacion(solicitud?.contratos[currentContractIndex]?.areasOperacion)
-                  || 'Areas operación invalidas'
+                getAreasOperacion(solicitud?.contratos[currentContractIndex]?.areasOperacion)
+                || 'Areas operación invalidas'
                 }}
               </div>
             </div>
@@ -1414,7 +1414,7 @@
 
         <div class="mt-6 w-full flex justify-between">
           <button type="button" (click)="descargarExcel()"
-                  class="inline-flex items-center justify-center px-6 py-1 text-white bg-primary2 hover:bg-primary1 focus:bg-primary1 font-medium rounded-full text-[16px] work-sans text-center">
+            class="inline-flex items-center justify-center px-6 py-1 text-white bg-primary2 hover:bg-primary1 focus:bg-primary1 font-medium rounded-full text-[16px] work-sans text-center">
             <span class="govco-download me-2 py-2 h-[70%] m-auto"></span> Descargar archivo adjunto
           </button>
           <app-primary-button type="button" (click)="changeActiveNum('2', true)">continuar a
@@ -1424,8 +1424,8 @@
 
       <!-- flecha derecha -->
       <button *ngIf="currentContractIndex < totalContracts - 1" (click)="nextContract()"
-              class="arrow-right flex items-center"
-              [disabled]="currentContractIndex >= solicitud?.documentos.length - maxVisibleFiles">
+        class="arrow-right flex items-center"
+        [disabled]="currentContractIndex >= solicitud?.documentos.length - maxVisibleFiles">
         <span class="pi pi-chevron-right text-primary2 text-xl"></span>
       </button>
     </div>
@@ -1435,7 +1435,7 @@
 
   <!-- solicitud financiera -->
   <div class="md:col-span-8 sm:col-span-7 w-auto sm:mt-10 mt-4 md:px-8 px-2"
-       *ngIf="activeNum == '2' && loadingPage == false">
+    *ngIf="activeNum == '2' && loadingPage == false">
     <h3 class="text-primary1 !font-bold">Solicitud ID {{solicitud?.formulario.id}}</h3>
     <!-- PASO 1 -->
     <form [formGroup]="formGroup2" class="px-4 md:pl-16 md:pe-16 mt-6 active1 mb-6">
@@ -1469,12 +1469,12 @@
 
           <!-- input -->
           <app-file-upload *ngIf="!solicitud.formulario.radicadoSalida" class="mt-2 h-full" [dataClass]="dataClass"
-                           [maxFiles]="1" mimes=".pdf" [error]="errorStates[2]"
-                           (fileSelected)="onFileSelected($event, 2)"></app-file-upload>
+            [maxFiles]="1" mimes=".pdf" [error]="errorStates[2]"
+            (fileSelected)="onFileSelected($event, 2)"></app-file-upload>
 
           <!-- Opcion que aparece si existe archivo guardado en la solicitud -->
           <div class="w-full"
-               *ngIf="(this.formGroup2.get('2')?.value != '' && this.formGroup2.get('2')?.value != null) && this.solicitud && !isActuFile.includes(2)">
+            *ngIf="(this.formGroup2.get('2')?.value != '' && this.formGroup2.get('2')?.value != null) && this.solicitud && !isActuFile.includes(2)">
             <div class="mt-2 flex gap-2 items-center cursor-pointer" (click)="viewDocument(formGroup2.get('2')?.value)">
 
               <!-- Archivos Visibles -->
@@ -1563,11 +1563,11 @@
               <div class="flex w-[30%] p-0 m-0 bg-secondary1">
                 <!-- input -->
                 <input class="shadow-sm rounded-md w-full border bg-transparent" type="number"
-                       formControlName="rentaNeta" required placeholder="00"> %
+                  formControlName="rentaNeta" required placeholder="00"> %
               </div>
             </div>
             <div class="px-4 py-2 rounded-xl shadow-md font-semibold bg-waring/40 text-waring"
-                 [ngClass]="{'!bg-error/40 !text-error': getMedidor(formGroup2.get('rentaNeta')?.value, 'renta') === 'Alto', '!bg-success/40 !text-success': getMedidor(formGroup2.get('rentaNeta')?.value, 'renta') === 'Bajo'}">
+              [ngClass]="{'!bg-error/40 !text-error': getMedidor(formGroup2.get('rentaNeta')?.value, 'renta') === 'Alto', '!bg-success/40 !text-success': getMedidor(formGroup2.get('rentaNeta')?.value, 'renta') === 'Bajo'}">
               {{ getMedidor(formGroup2.get('rentaNeta')?.value, 'renta') }}
             </div>
           </div>
@@ -1595,11 +1595,11 @@
               <div class="flex w-[30%] p-0 m-0 bg-secondary1">
                 <!-- input -->
                 <input class="shadow-sm rounded-md w-full border bg-transparent" type="number"
-                       formControlName="liquidez" required placeholder="00"> %
+                  formControlName="liquidez" required placeholder="00"> %
               </div>
             </div>
             <div class="px-4 py-2 rounded-xl shadow-md font-semibold bg-waring/40 text-waring"
-                 [ngClass]="{'!bg-error/40 !text-error': getMedidor(formGroup2.get('liquidez')?.value) === 'Alto', '!bg-success/40 !text-success': getMedidor(formGroup2.get('liquidez')?.value) === 'Bajo'}">
+              [ngClass]="{'!bg-error/40 !text-error': getMedidor(formGroup2.get('liquidez')?.value) === 'Alto', '!bg-success/40 !text-success': getMedidor(formGroup2.get('liquidez')?.value) === 'Bajo'}">
               {{ getMedidor(formGroup2.get('liquidez')?.value) }}
             </div>
           </div>
@@ -1627,11 +1627,11 @@
               <div class="flex w-[30%] p-0 m-0 bg-secondary1">
                 <!-- input -->
                 <input class="shadow-sm rounded-md w-full border bg-transparent" type="number"
-                       formControlName="rentaOperacional" required placeholder="00"> %
+                  formControlName="rentaOperacional" required placeholder="00"> %
               </div>
             </div>
             <div class="px-4 py-2 rounded-xl shadow-md font-semibold bg-waring/40 text-waring"
-                 [ngClass]="{'!bg-error/40 !text-error': getMedidor(formGroup2.get('rentaOperacional')?.value, 'operacional') === 'Alto', '!bg-success/40 !text-success': getMedidor(formGroup2.get('rentaOperacional')?.value, 'operacional') === 'Bajo'}">
+              [ngClass]="{'!bg-error/40 !text-error': getMedidor(formGroup2.get('rentaOperacional')?.value, 'operacional') === 'Alto', '!bg-success/40 !text-success': getMedidor(formGroup2.get('rentaOperacional')?.value, 'operacional') === 'Bajo'}">
               {{ getMedidor(formGroup2.get('rentaOperacional')?.value, 'operacional') }}
             </div>
           </div>
@@ -1659,11 +1659,11 @@
               <div class="flex w-[30%] p-0 m-0 bg-secondary1">
                 <!-- input -->
                 <input class="shadow-sm rounded-md w-full border bg-transparent" type="number" formControlName="solidez"
-                       required placeholder="00"> %
+                  required placeholder="00"> %
               </div>
             </div>
             <div class="px-4 py-2 rounded-xl shadow-md font-semibold bg-waring/40 text-waring"
-                 [ngClass]="{'!bg-error/40 !text-error': getMedidor(formGroup2.get('solidez')?.value) === 'Alto', '!bg-success/40 !text-success': getMedidor(formGroup2.get('solidez')?.value) === 'Bajo'}">
+              [ngClass]="{'!bg-error/40 !text-error': getMedidor(formGroup2.get('solidez')?.value) === 'Alto', '!bg-success/40 !text-success': getMedidor(formGroup2.get('solidez')?.value) === 'Bajo'}">
               {{ getMedidor(formGroup2.get('solidez')?.value) }}
             </div>
           </div>
@@ -1691,8 +1691,8 @@
               <div class="flex w-[40%] p-0 py-2 m-0 bg-secondary1">
                 <!-- input -->
                 <input class="shadow-sm rounded-md w-full border bg-transparent" type="text"
-                       formControlName="activoCorriente" placeholder="Ingrese numero"
-                       (input)="onCurrencyInput($event, 'activoCorriente', formGroup2)" (focus)="onCurrencyFocus($event)" />
+                  formControlName="activoCorriente" placeholder="Ingrese numero"
+                  (input)="onCurrencyInput($event, 'activoCorriente', formGroup2)" (focus)="onCurrencyFocus($event)" />
 
               </div>
             </div>
@@ -1724,8 +1724,8 @@
               <div class="flex w-[40%] p-0 py-2 m-0 bg-secondary1">
                 <!-- input -->
                 <input class="shadow-sm rounded-md w-full border bg-transparent" type="text"
-                       formControlName="pasivoCorriente" placeholder="Ingrese numero"
-                       (input)="onCurrencyInput($event, 'pasivoCorriente', formGroup2)" (focus)="onCurrencyFocus($event)" />
+                  formControlName="pasivoCorriente" placeholder="Ingrese numero"
+                  (input)="onCurrencyInput($event, 'pasivoCorriente', formGroup2)" (focus)="onCurrencyFocus($event)" />
 
               </div>
             </div>
@@ -1757,7 +1757,7 @@
               <div class="flex w-[40%] p-0 py-2 m-0 bg-secondary1">
                 <!-- input -->
                 <input class="shadow-sm rounded-md w-full border bg-transparent" type="number"
-                       formControlName="capitalTrabajo" placeholder="$" (blur)="onCurrencyFocus($event)">
+                  formControlName="capitalTrabajo" placeholder="$" (blur)="onCurrencyFocus($event)">
 
 
 
@@ -1786,8 +1786,8 @@
               <div class="flex w-[70%] py-2 p-0 m-0 bg-secondary1">
                 <!-- input -->
                 <input class="shadow-sm rounded-md w-full border bg-transparent" type="text"
-                       formControlName="estructuraCostos" placeholder="Ingrese numero"
-                       (input)="onCurrencyInput($event, 'estructuraCostos', formGroup2)" (focus)="onCurrencyFocus($event)" />
+                  formControlName="estructuraCostos" placeholder="Ingrese numero"
+                  (input)="onCurrencyInput($event, 'estructuraCostos', formGroup2)" (focus)="onCurrencyFocus($event)" />
 
               </div>
             </div>
@@ -1813,35 +1813,35 @@
           <div class="w-full relative mt-2 sm:w-1/2" *ngIf="!solicitud.formulario.radicadoSalida">
 
             <div (click)="toggleDropdown(1)"
-                 [ngClass]="{'text-error !border border-error': formGroup2.get('cumplimientoIncremento')?.invalid && (formGroup2.get('cumplimientoIncremento')?.touched || formGroup2.get('cumplimientoIncremento')?.dirty)}"
-                 class="cursor-pointer shadow-sm min-w-[160px] w-full p-[10px] h-[40px] bg-transparent border-2 border-secondary1 focus:outline-none focus:border-primary1 flex justify-between items-center">
+              [ngClass]="{'text-error !border border-error': formGroup2.get('cumplimientoIncremento')?.invalid && (formGroup2.get('cumplimientoIncremento')?.touched || formGroup2.get('cumplimientoIncremento')?.dirty)}"
+              class="cursor-pointer shadow-sm min-w-[160px] w-full p-[10px] h-[40px] bg-transparent border-2 border-secondary1 focus:outline-none focus:border-primary1 flex justify-between items-center">
               <span *ngIf="!selects[1].value" class="font-[500] text-xs">Seleccione</span>
               <span *ngIf="selects[1].value" class="text-normal">{{
-                  formGroup2.get('cumplimientoIncremento')?.value
+                formGroup2.get('cumplimientoIncremento')?.value
                 }}%</span>
 
               <i class="pi pi-chevron-down text-primary2 text-xs"
-                 [ngClass]="{'!text-error': formGroup2.get('cumplimientoIncremento')?.invalid && (formGroup2.get('cumplimientoIncremento')?.touched || formGroup2.get('cumplimientoIncremento')?.dirty)}"></i>
+                [ngClass]="{'!text-error': formGroup2.get('cumplimientoIncremento')?.invalid && (formGroup2.get('cumplimientoIncremento')?.touched || formGroup2.get('cumplimientoIncremento')?.dirty)}"></i>
             </div>
 
             <ul *ngIf="selects[1].isDropdownOpen"
-                class="absolute z-20 bg-secondary4 border border-primary1 shadow-md rounded-bl-md rounded-br-md w-full mt-1 max-h-48 overflow-y-auto">
+              class="absolute z-20 bg-secondary4 border border-primary1 shadow-md rounded-bl-md rounded-br-md w-full mt-1 max-h-48 overflow-y-auto">
               <li (click)="selectOption(1, 7, 'cumplimientoIncremento')"
-                  class="cursor-pointer px-4 py-2 hover:bg-primary1 hover:text-white">
+                class="cursor-pointer px-4 py-2 hover:bg-primary1 hover:text-white">
                 7%
               </li>
               <li (click)="selectOption(1, 10, 'cumplimientoIncremento')"
-                  class="cursor-pointer px-4 py-2 hover:bg-primary1 hover:text-white">
+                class="cursor-pointer px-4 py-2 hover:bg-primary1 hover:text-white">
                 10%
               </li>
             </ul>
             <!-- Mensajes de validación -->
             <span class="text-sm text-success"
-                  *ngIf="formGroup2.get('cumplimientoIncremento')?.valid && formGroup2.get('cumplimientoIncremento')?.touched">
+              *ngIf="formGroup2.get('cumplimientoIncremento')?.valid && formGroup2.get('cumplimientoIncremento')?.touched">
               Selección válida
             </span>
             <span class="text-sm text-error"
-                  *ngIf="formGroup2.get('cumplimientoIncremento')?.invalid && (formGroup2.get('cumplimientoIncremento')?.touched || formGroup2.get('cumplimientoIncremento')?.dirty)">
+              *ngIf="formGroup2.get('cumplimientoIncremento')?.invalid && (formGroup2.get('cumplimientoIncremento')?.touched || formGroup2.get('cumplimientoIncremento')?.dirty)">
               {{ selects[1].errorMessage }}
             </span>
 
@@ -1867,9 +1867,9 @@
 
       <div class="mt-8 w-full flex justify-between gap-4">
         <app-primary-button *ngIf="!solicitud.formulario.radicadoSalida" type="button" class=""
-                            (click)="SaveInfo()">Guardar y continuar</app-primary-button>
+          (click)="SaveInfo()">Guardar y continuar</app-primary-button>
         <app-primary-button *ngIf="solicitud.formulario.radicadoSalida" type="button"
-                            (click)="changeActiveNum('3', true)">Continuar</app-primary-button>
+          (click)="changeActiveNum('3', true)">Continuar</app-primary-button>
       </div>
 
 
@@ -1877,7 +1877,7 @@
   </div>
   <!-- solicitud concepto -->
   <div class="md:col-span-8 sm:col-span-7 w-auto sm:mt-10 mt-4 md:px-8 px-2"
-       *ngIf="activeNum == '3' && loadingPage == false">
+    *ngIf="activeNum == '3' && loadingPage == false">
 
     <h3 class="text-primary1 !font-bold">Solicitud ID {{solicitud?.formulario.id}}</h3>
 
@@ -1891,55 +1891,46 @@
           El concepto de sustentabilidad es*
         </p>
         <!-- select -->
-        <div class="w-full relative mt-2 sm:w-1/2" *ngIf="!solicitud.formulario.radicadoSalida && !checked">
+        <div class="w-full relative mt-2 sm:w-1/2">
 
           <div (click)="toggleDropdown(0)"
-               [ngClass]="{'text-error !border border-error': formGroup3.get('concepto')?.invalid && (formGroup3.get('concepto')?.touched || formGroup3.get('concepto')?.dirty)}"
-               class="cursor-pointer shadow-sm min-w-[160px] w-full p-[10px] h-[40px] bg-transparent border-2 border-secondary1 focus:outline-none focus:border-primary1 flex justify-between items-center">
+            [ngClass]="{'text-error !border border-error': formGroup3.get('concepto')?.invalid && (formGroup3.get('concepto')?.touched || formGroup3.get('concepto')?.dirty)}"
+            class="cursor-pointer shadow-sm min-w-[160px] w-full p-[10px] h-[40px] bg-transparent border-2 border-secondary1 focus:outline-none focus:border-primary1 flex justify-between items-center">
             <span *ngIf="!selects[0].value" class="font-[500] text-xs">Seleccione</span>
             <span *ngIf="selects[0].value" class="text-normal">{{
-                formGroup3.get('concepto')?.value.label
+              formGroup3.get('concepto')?.value.label
               }}</span>
 
             <i class="pi pi-chevron-down text-primary2 text-xs"
-               [ngClass]="{'!text-error': formGroup3.get('concepto')?.invalid && (formGroup3.get('concepto')?.touched || formGroup3.get('concepto')?.dirty)}"></i>
+              [ngClass]="{'!text-error': formGroup3.get('concepto')?.invalid && (formGroup3.get('concepto')?.touched || formGroup3.get('concepto')?.dirty)}"></i>
           </div>
 
           <ul *ngIf="selects[0].isDropdownOpen"
-              class="absolute z-20 bg-secondary4 border border-primary1 shadow-md rounded-bl-md rounded-br-md w-full mt-1 max-h-48 overflow-y-auto">
+            class="absolute z-20 bg-secondary4 border border-primary1 shadow-md rounded-bl-md rounded-br-md w-full mt-1 max-h-48 overflow-y-auto">
             <li *ngFor="let option of conceptos" (click)="selectOption(0, option, 'concepto')"
-                class="cursor-pointer px-4 py-2 hover:bg-primary1 hover:text-white">
+              class="cursor-pointer px-4 py-2 hover:bg-primary1 hover:text-white">
               {{ option.label }}
             </li>
           </ul>
           <!-- Mensajes de validación -->
           <span class="text-sm text-success"
-                *ngIf="formGroup3.get('concepto')?.valid && formGroup3.get('concepto')?.touched">
+            *ngIf="formGroup3.get('concepto')?.valid && formGroup3.get('concepto')?.touched">
             Selección válida
           </span>
           <span class="text-sm text-error"
-                *ngIf="formGroup3.get('concepto')?.invalid && (formGroup3.get('concepto')?.touched || formGroup3.get('concepto')?.dirty)">
+            *ngIf="formGroup3.get('concepto')?.invalid && (formGroup3.get('concepto')?.touched || formGroup3.get('concepto')?.dirty)">
             {{ selects[1].errorMessage }}
           </span>
 
         </div>
-        <!-- mostrar concepto -->
-        <div class="w-full relative mt-2 sm:w-1/2" *ngIf="solicitud.formulario.radicadoSalida || checked">
-          <!-- input -->
-          <div class="mt-2 relative w-full h-full flex items-center">
-            <div
-              class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border focus:outline-none focus:border-primary1 bg-secondary3 border-secondary2 text-primary3 flex items-center justify-center">
-              {{setConceptoLabel()}}
-            </div>
-          </div>
-        </div>
+
       </div>
 
       <div class="mt-8 w-full flex justify-center gap-4">
         <app-primary-button *ngIf="!solicitud.formulario.radicadoSalida && !checked" type="button" class=""
-                            (click)="EmitirConcepto()">Guardar</app-primary-button>
+          (click)="EmitirConcepto()">Guardar</app-primary-button>
         <app-primary-button *ngIf="solicitud.formulario.radicadoSalida || checked" type="button" class=""
-                            (click)="changeActiveNum('4', true)">Continuar</app-primary-button>
+          (click)="changeActiveNum('4', true)">Continuar</app-primary-button>
       </div>
 
     </form>
@@ -1947,7 +1938,7 @@
   </div>
   <!-- solicitud radicado -->
   <div class="md:col-span-8 sm:col-span-7 w-auto sm:mt-10 mt-4 md:px-8 px-2"
-       *ngIf="activeNum == '4' && loadingPage == false">
+    *ngIf="activeNum == '4' && loadingPage == false">
     <div class="w-full paso2 mb-6">
       <!-- formulario 1 -->
       <form [formGroup]="formGroup1" class="px-4 md:pl-12 md:pe-12 mt-6 active1 mb-6">
@@ -1965,14 +1956,13 @@
             </p>
 
             <app-file-upload *ngIf="!solicitud.formulario.radicadoSalida" class="mt-2 h-full" [dataClass]="dataClass"
-                             [maxFiles]="1" mimes=".pdf" [error]="errorStates[1]"
-                             (fileSelected)="onFileSelected($event, 1)"></app-file-upload>
+              [maxFiles]="1" mimes=".pdf" [error]="errorStates[1]"
+              (fileSelected)="onFileSelected($event, 1)"></app-file-upload>
 
             <!-- Opcion que aparece si existe archivo guardado en la solicitud -->
-            <div class="w-full"
-                 *ngIf="(this.formGroup1.get('1')?.value != '' && this.formGroup1.get('1')?.value != null) && this.solicitud && !isActuFile.includes(1)">
+            <div class="w-full">
               <div class="mt-2 flex gap-2 items-center cursor-pointer"
-                   (click)="viewDocument(formGroup1.get('1')?.value)">
+                (click)="viewDocument(formGroup1.get('1')?.value)">
 
                 <!-- Archivos Visibles -->
                 <div class="bg-white border-2 border-secondary2 p-2 flex justify-center w-auto">
@@ -2007,54 +1997,51 @@
 
             </div>
 
-            <!-- input 3 -->
-            <div class="w-auto flex flex-col items-start pt-8 my-auto h-full">
+          </div>
 
-              <p class="text-primary3 font-semibold">
-                Número de radicado*
-              </p>
-              <!-- input -->
-              <div class="mt-4 w-full relative">
-                <input
-                  class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent"
-                  type="text" formControlName="numeroRadicadoSalida" required placeholder="Ingrese número contrato">
-                <div class="w-full relative">
-                  <!-- Icono de error (rojo) -->
-                  <span
-                    *ngIf="formGroup1.get('numeroRadicadoSalida')?.invalid && (formGroup1.get('numeroRadicadoSalida')?.touched || submitted)"
-                    class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
+          <!-- input 3 -->
+          <div class="w-auto flex flex-col items-start pt-8 my-auto h-full">
+
+            <p class="text-primary3 font-semibold">
+              Número de radicado*
+            </p>
+            <!-- input -->
+            <div class="mt-4 w-full relative">
+              <input
+                class="shadow-sm rounded-md min-w-[160px] w-full p-[10px] h-[40px] border border-primary3 focus:outline-none focus:border-primary1 bg-transparent"
+                type="text" formControlName="numeroRadicadoSalida" required placeholder="Ingrese número contrato">
+              <div class="w-full relative">
+                <!-- Icono de error (rojo) -->
+                <span
+                  *ngIf="formGroup1.get('numeroRadicadoSalida')?.invalid && (formGroup1.get('numeroRadicadoSalida')?.touched || submitted)"
+                  class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
                       <span class="pi pi-exclamation-circle text-error text-[24px]"></span>
                     </span>
 
-                  <!-- Icono de éxito (verde) -->
-                  <span
-                    *ngIf="formGroup1.get('numeroRadicadoSalida')?.valid && (formGroup1.get('numeroRadicadoSalida')?.touched || submitted)"
-                    class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
+                <!-- Icono de éxito (verde) -->
+                <span
+                  *ngIf="formGroup1.get('numeroRadicadoSalida')?.valid && (formGroup1.get('numeroRadicadoSalida')?.touched || submitted)"
+                  class="absolute top-[-33px] right-0 flex items-center pr-[10px]">
                       <span class="pi pi-check-circle text-success text-[24px]"></span>
                     </span>
-                </div>
-                <span *ngIf="submitted && formGroup1.get('numeroRadicadoSalida')?.errors?.['required']" class="text-error">
+              </div>
+              <span *ngIf="submitted && formGroup1.get('numeroRadicadoSalida')?.errors?.['required']" class="text-error">
                     El numero de radicado es obligatorio
                   </span>
 
-              </div>
-
-
             </div>
 
+
           </div>
-
-
 
         </div>
 
         <div class="mt-4 w-full relative flex justify-between">
           <button type="button" (click)="changeActiveNum('3', true)"
-                  class="inline-flex items-center justify-center px-6 py-1 text-white bg-primary4 hover:bg-primary2 focus:bg-primary2 font-medium rounded-full text-[16px] work-sans text-center">
+            class="inline-flex items-center justify-center px-6 py-1 text-white bg-primary4 hover:bg-primary2 focus:bg-primary2 font-medium rounded-full text-[16px] work-sans text-center">
             Regresar
           </button>
           <app-primary-button
-            *ngIf="(this.formGroup1.get('1')?.value != '' && this.formGroup1.get('1')?.value != null) && isActuFile.includes(1)"
             (click)="onSubmitAllForms()">Enviar</app-primary-button>
 
         </div>
@@ -2074,40 +2061,40 @@
 
 <!-- modal de loading -->
 <app-alert [showModal]="ShowLoadingModal" title="Verificando datos" subtitle="Un momento por favor."
-           message="Se está guardando los datos enviados" [showFirstButton]="false" [showCancelButton]="false"
-           TypeAlert="loader"></app-alert>
+  message="Se está guardando los datos enviados" [showFirstButton]="false" [showCancelButton]="false"
+  TypeAlert="loader"></app-alert>
 
 <!-- modal error -->
 <app-alert [showModal]="showErrorModal" title="Error en el envió de datos" textColor="text-error" [showSubtitle]="false"
-           [message]="'Estamos experimentando inconvenientes técnicos con el envió de la solicitud, por favor intente más tarde'"
-           buttonText="Continuar" [showFirstButton]="true" [showCancelButton]="false" TypeAlert="error"
-           (close)="showErrorModal = false" (closeByButton1)="showErrorModal = false" (closeByIcon)="showErrorModal = false"
-           (closeByBackdrop)="showErrorModal = false" (close)="showErrorModal = false"></app-alert>
+  [message]="'Estamos experimentando inconvenientes técnicos con el envió de la solicitud, por favor intente más tarde'"
+  buttonText="Continuar" [showFirstButton]="true" [showCancelButton]="false" TypeAlert="error"
+  (close)="showErrorModal = false" (closeByButton1)="showErrorModal = false" (closeByIcon)="showErrorModal = false"
+  (closeByBackdrop)="showErrorModal = false" (close)="showErrorModal = false"></app-alert>
 
 <!-- Modal -->
 <app-alert [showModal]="showModal" title="Radicado guardado exitosamente" textColor="text-success"
-           [showSubtitle]="false" [message]="'Su radicado de salida ha sido guardado con éxito'" buttonText="Continuar"
-           [isIcon]="false" [showFirstButton]="true" [showCancelButton]="false" TypeAlert="success" (close)="handleClose()"
-           (closeByButton1)="showModalFinal = true" (closeByButton2)="handleCloseByButton2()"
-           (closeByBackdrop)="showModalFinal = true" (close)="showModal = true"></app-alert>
+  [showSubtitle]="false" [message]="'Su radicado de salida ha sido guardado con éxito'" buttonText="Continuar"
+  [isIcon]="false" [showFirstButton]="true" [showCancelButton]="false" TypeAlert="success" (close)="handleClose()"
+  (closeByButton1)="showModalFinal = true" (closeByButton2)="handleCloseByButton2()"
+  (closeByBackdrop)="showModalFinal = true" (close)="showModal = true"></app-alert>
 
 <!-- Modal -->
 <app-alert [showModal]="showModal1" title="Información guardada" textColor="text-success" [showSubtitle]="false"
-           [message]="' La información se ha cargado correctamente'" buttonText="Continuar" [isIcon]="false"
-           [showFirstButton]="true" [showCancelButton]="false" TypeAlert="success" (close)="handleClose()"
-           (closeByButton1)="changeActiveNum('3', true)" (closeByButton2)="handleCloseByButton2()"
-           (closeByBackdrop)="changeActiveNum('3', true)" (close)="showModal1 = false"></app-alert>
+  [message]="' La información se ha cargado correctamente'" buttonText="Continuar" [isIcon]="false"
+  [showFirstButton]="true" [showCancelButton]="false" TypeAlert="success" (close)="handleClose()"
+  (closeByButton1)="changeActiveNum('3', true)" (closeByButton2)="handleCloseByButton2()"
+  (closeByBackdrop)="changeActiveNum('3', true)" (close)="showModal1 = false"></app-alert>
 
 <!-- Modal -->
 <app-alert [showModal]="showModal2" title="Información guardada" textColor="text-success" [showSubtitle]="false"
-           [message]="' La información se ha cargado correctamente'" buttonText="Continuar" [isIcon]="false"
-           [showFirstButton]="true" [showCancelButton]="false" TypeAlert="success" (close)="handleClose()"
-           (closeByButton1)="changeActiveNum('4', true)" (closeByButton2)="handleCloseByButton2()"
-           (closeByBackdrop)="changeActiveNum('4', true)" (close)="showModal2 = false"></app-alert>
+  [message]="' La información se ha cargado correctamente'" buttonText="Continuar" [isIcon]="false"
+  [showFirstButton]="true" [showCancelButton]="false" TypeAlert="success" (close)="handleClose()"
+  (closeByButton1)="changeActiveNum('4', true)" (closeByButton2)="handleCloseByButton2()"
+  (closeByBackdrop)="changeActiveNum('4', true)" (close)="showModal2 = false"></app-alert>
 
 <!-- Modal FINAL -->
 <app-alert [showModal]="showModalFinal" title="Solicitud guardada con éxito" textColor="text-success"
-           [showSubtitle]="false" [message]="'El concepto de la solicitud fue asignado por la Superintendencia de Transporte'"
-           buttonText="Continuar" [isIcon]="false" [showFirstButton]="true" [showCancelButton]="false" TypeAlert="success"
-           (close)="handleClose()" (closeByButton1)="finalStep()" (closeByButton2)="handleCloseByButton2()"
-           (closeByBackdrop)="finalStep()" (close)="showModalFinal = true"></app-alert>
+  [showSubtitle]="false" [message]="'El concepto de la solicitud fue asignado por la Superintendencia de Transporte'"
+  buttonText="Continuar" [isIcon]="false" [showFirstButton]="true" [showCancelButton]="false" TypeAlert="success"
+  (close)="handleClose()" (closeByButton1)="finalStep()" (closeByButton2)="handleCloseByButton2()"
+  (closeByBackdrop)="finalStep()" (close)="showModalFinal = true"></app-alert>

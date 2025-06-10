@@ -11,6 +11,7 @@ export class ApiSFService {
   private http = inject(HttpClient);
   private baseUrl = environment.API_URL;
   private baseUrlRues = environment.RUES;
+  private baseUrlFinanciero = environment.FINANCIERO;
   private token = 'a6edc4af-4b84-4444-8c98-8afa14437cd1';
 
   // constructor(private http: HttpClient) {}
@@ -19,10 +20,10 @@ export class ApiSFService {
     this.token = token;
     console.log('Token received in DestinoService:', this.token);
   }
-  
+
   // GET solicitudes con múltiples filtros
   getSolicitudes(
-    
+
     estado: string,
     categoria: string,
     search: string,
@@ -31,7 +32,7 @@ export class ApiSFService {
     currentPage: number,
     usuario: string
   ): Observable<any> {
-    
+
     let params: string[] = [];
     let formulario: string = 'formulario';
     // Expresión regular para detectar caracteres especiales excepto espacios
@@ -128,6 +129,18 @@ export class ApiSFService {
   getDataByNIT(nit: string): Observable<any> {
     return this.http.post(
       `${this.baseUrlRues}/getConfecamaras`,
+      { document: nit },
+      {
+        responseType: 'text',
+      }
+    );
+  }
+
+
+  //OBTENER DATOS DE FINANCIEROOO
+  getFinanciero(nit: number): Observable<any> {
+    return this.http.post(
+      `${this.baseUrlFinanciero}/api/indicadores-gestion/${nit}`,
       { document: nit },
       {
         responseType: 'text',
@@ -243,7 +256,7 @@ export class ApiSFService {
     );
   }
 
-  // PUT Radicado entrada
+  // PUT Radicado salida
   RadicadoSalida(id: string, data2: any): Observable<any> {
     return this.http.put(
       `${this.baseUrl}/api/formulario/radicado-salida/${id}`,
@@ -264,6 +277,7 @@ export class ApiSFService {
       }
     );
   }
+
 
   // PUT generadores riesgo
   GeneradoresRiesgo(id: string, data2: any): Observable<any> {

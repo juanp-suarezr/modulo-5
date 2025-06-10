@@ -113,7 +113,7 @@
     </div>
     <!-- TABLES -->
     <div class="w-full pb-6" *ngIf="loading == false">
-      <app-table [data]="response" [headers]="headers" (idClicked)="onIdClicked($event)" (solicitudGuardada)="solicitudGuardadaClick($event)" ></app-table>
+      <app-table [data]="response" [headers]="headers" (idClicked)="onIdClicked($event)" (solicitudGuardada)="solicitudGuardadaClick($event)" (solicitudSubsanacion)="solicitudSubsanacionClick($event)" ></app-table>
       <app-paginador [totalPages]="totalPages" [initialPage]="currentPage"
         (pageChange)="onPageChange($event)"></app-paginador>
     </div>
